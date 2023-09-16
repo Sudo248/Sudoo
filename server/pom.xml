@@ -1,0 +1,58 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.sudo248</groupId>
+    <artifactId>sudoo</artifactId>
+    <version>0.0.1</version>
+    <packaging>pom</packaging>
+
+    <properties >
+        <main.baseDir>${project.basedir}</main.baseDir>
+    </properties>
+
+    <modules>
+
+<!--    port: 8761 -->
+        <module>registry</module>
+
+<!--    port: 9030    -->
+        <module>api-gateway</module>
+
+        <module>domain</module>
+
+<!--&lt;!&ndash;    port: 8082    &ndash;&gt;-->
+<!--        <module>auth-service</module>-->
+
+<!--&lt;!&ndash;    port: 8081    &ndash;&gt;-->
+<!--        <module>common-service</module>-->
+
+<!--&lt;!&ndash;    port: 8085    &ndash;&gt;-->
+<!--        <module>image-service</module>-->
+
+<!--&lt;!&ndash;    port: 8083    &ndash;&gt;-->
+<!--        <module>discovery-service</module>-->
+
+<!--&lt;!&ndash;    port: 8086    &ndash;&gt;-->
+<!--        <module>payment-service</module>-->
+
+<!--&lt;!&ndash;    port: 8084    &ndash;&gt;-->
+<!--        <module>user-service</module>-->
+
+<!--&lt;!&ndash;    port: 8087&ndash;&gt;-->
+<!--        <module>cart-service</module>-->
+
+<!--&lt;!&ndash;    port: 8088&ndash;&gt;-->
+<!--        <module>invoice-service</module>-->
+
+<!--&lt;!&ndash;    port: 8089&ndash;&gt;-->
+<!--        <module>promotion-service</module>-->
+
+<!--&lt;!&ndash;    port: 8090&ndash;&gt;-->
+<!--        <module>notification-service</module>-->
+
+<!--&lt;!&ndash;    port: 8091&ndash;&gt;-->
+<!--        <module>chat-service</module>-->
+
+    </modules>
+
+</project>
