@@ -20,8 +20,11 @@
 
         <module>domain</module>
 
-<!--&lt;!&ndash;    port: 8082    &ndash;&gt;-->
-<!--        <module>auth-service</module>-->
+<!--    port: 8082    -->
+        <module>auth-service</module>
+
+<!--    port: 8083    -->
+        <module>product-service</module>
 
 <!--&lt;!&ndash;    port: 8081    &ndash;&gt;-->
 <!--        <module>common-service</module>-->
@@ -29,8 +32,7 @@
 <!--&lt;!&ndash;    port: 8085    &ndash;&gt;-->
 <!--        <module>image-service</module>-->
 
-<!--&lt;!&ndash;    port: 8083    &ndash;&gt;-->
-<!--        <module>discovery-service</module>-->
+
 
 <!--&lt;!&ndash;    port: 8086    &ndash;&gt;-->
 <!--        <module>payment-service</module>-->

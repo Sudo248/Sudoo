@@ -46,7 +46,7 @@ class AccountServiceImpl(
     }
 
     override suspend fun signUp(signUpDto: SignUpDto) {
-        if (accountRepository.existsByEmailOrPhoneNumber(signUpDto.emailOrPhoneNumber)) {
+        if (accountRepository.existsByEmailOrPhoneNumber(signUpDto.emailOrPhoneNumber) == 1) {
             throw EmailOrPhoneNumberExistedException()
         }
 

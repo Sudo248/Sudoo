@@ -35,8 +35,8 @@ class OtpServiceImpl(
                 //TODO("Change password here after verify otp")
                 null
             } else {
-                accountRepository.validate(account.get().userId!!)
                 userService.createUserForAccount(account.get())
+                accountRepository.validate(account.get().userId!!)
                 val token = tokenUtils.generateToken(account.get().userId!!)
                 val refreshToken = tokenUtils.generateRefreshToken(token)
                 TokenDto(token, refreshToken)

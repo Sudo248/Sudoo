@@ -6,7 +6,6 @@ import com.sudoo.authservice.controller.dto.SignUpDto
 import com.sudoo.authservice.service.AccountService
 import com.sudoo.domain.base.BaseController
 import com.sudoo.domain.base.BaseResponse
-import com.sudoo.domain.base.SudooController
 import com.sudoo.domain.common.Constants
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 class AccountController(
     private val accountService: AccountService
-) : BaseController by SudooController() {
+) : BaseController() {
 
     @PostMapping("/sign-in")
     suspend fun signIn(@RequestBody body: SignInDto): ResponseEntity<BaseResponse<*>> = handle {

@@ -65,9 +65,8 @@ DELIMITER ;
 SET @default_password = '03092001';
 
 CALL create_database_and_user('auth-db', 'auth-service', @default_password);
-CALL create_database_and_user('discovery-db', 'discovery-service', @default_password);
+CALL create_database_and_user('product-db', 'product-service', @default_password);
 CALL create_database_and_user('payment-db', 'payment-service', @default_password);
 CALL create_database_and_user('user-db', 'user-service', @default_password);
 CALL create_database_and_user('cart-db', 'cart-service', @default_password);
-CALL create_database_and_user('invoice-db', 'invoice-service', @default_password);
-CALL create_database_and_user('promotion-db', 'promotion-service', @default_password);
+CALL create_database_and_user('order-db', 'order-service', @default_password);

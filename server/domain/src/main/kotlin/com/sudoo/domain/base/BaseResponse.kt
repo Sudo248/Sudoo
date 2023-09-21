@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import java.io.Serializable
 
-data class BaseResponse<D>(
+data class BaseResponse<out D>(
     val statusCode: Int,
     val success: Boolean = (statusCode == 200) || (statusCode == 201),
     val message: String?,
@@ -19,7 +19,7 @@ data class BaseResponse<D>(
             )
         )
 
-        fun <Data> status(
+        fun <Data : Any> status(
             status: HttpStatus,
             message: String? = null,
             body: Data? = null,

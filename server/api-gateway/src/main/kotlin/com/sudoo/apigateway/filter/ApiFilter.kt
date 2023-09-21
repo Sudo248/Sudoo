@@ -1,5 +1,6 @@
 package com.sudoo.apigateway.filter
 
+import com.sudoo.apigateway.config.ApiContract
 import com.sudoo.apigateway.utils.TokenUtils
 import com.sudoo.domain.common.Constants
 import com.sudoo.domain.common.SudooError
@@ -53,10 +54,7 @@ class ApiFilter(
 
             if (isApiSecured.test(request)) {
                 if (!request.headers.containsKey(Constants.AUTHORIZATION)) {
-                    newExchange.response.run {
-                        statusCode = HttpStatus.UNAUTHORIZED
-                        setComplete()
-                    }
+                    throw ResponseStatusException(HttpStatus.UNAUTHORIZED, SudooError.UNAUTHORIZED.message)
                 } else {
                     var token = request.headers.getOrEmpty(Constants.AUTHORIZATION)[0]
 

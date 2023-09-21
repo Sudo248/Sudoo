@@ -1,4 +1,4 @@
-package com.sudoo.apigateway.filter
+package com.sudoo.apigateway.config
 
 internal enum class ApiContract(val paths: List<String>) {
     UNSECURED_API_ENDPOINTS(

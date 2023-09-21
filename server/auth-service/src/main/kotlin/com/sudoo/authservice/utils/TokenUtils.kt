@@ -2,7 +2,6 @@ package com.sudoo.authservice.utils
 
 import com.sudoo.domain.common.SudooError
 import com.sudoo.domain.exception.ApiException
-import com.sudoo.domain.utils.Logger
 import io.jsonwebtoken.*
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus

@@ -4,7 +4,7 @@ import java.util.*
 
 object IdentifyCreator {
     fun create(key: String? = null): String {
-        return "${if (key != null) UUID.fromString(key) else UUID.randomUUID()}-${System.currentTimeMillis()}"
+        return "${if (key != null) UUID.fromString(key) else UUID.randomUUID()}}"
     }
 
     fun createOrElse(id: String?): String {

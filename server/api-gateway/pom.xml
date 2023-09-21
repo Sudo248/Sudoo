@@ -15,14 +15,6 @@
     <name>api-gateway</name>
     <description>api-gateway</description>
 
-<!--    <repositories>-->
-<!--        <repository>-->
-<!--            <id>local-maven-repo</id>-->
-<!--            <name>Local Repository</name>-->
-<!--            <url>file://home/sudoo/.m2/</url>-->
-<!--        </repository>-->
-<!--    </repositories>-->
-
     <properties>
         <java.version>11</java.version>
         <kotlin.version>1.6.21</kotlin.version>
@@ -71,6 +63,18 @@
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
             <version>2.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.9.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.9.2</version>
         </dependency>
 
         <dependency>

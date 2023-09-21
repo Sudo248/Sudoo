@@ -1,16 +1,19 @@
 package com.sudoo.apigateway.config
 
 import com.sudoo.apigateway.filter.ApiFilter
+import com.sudoo.apigateway.filter.BaseResponsePostFilter
 import org.springframework.cloud.gateway.route.RouteLocator
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Lazy
 
 @Configuration
 class ApiGatewayConfig(
-    @Lazy private val apiFilter: ApiFilter
+    @Lazy private val apiFilter: ApiFilter,
 ) {
 
+    @Bean
     fun routes(builder: RouteLocatorBuilder): RouteLocator {
         return builder.routes().run {
             SudooServices.values().forEach { service ->
@@ -24,5 +27,8 @@ class ApiGatewayConfig(
             build()
         }
     }
+
+    @Bean
+    fun postBaseResponseFilter() = BaseResponsePostFilter()
 
 }

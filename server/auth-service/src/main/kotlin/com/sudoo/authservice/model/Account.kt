@@ -5,7 +5,7 @@ import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
 import java.time.LocalDateTime
 
-@Table(name = "accounts")
+@Table("accounts")
 data class Account(
     @Id
     @Column("user_id")
@@ -17,15 +17,15 @@ data class Account(
     @Column("password")
     var password: String,
 
-    @Column("provider")
-    var provider: Provider,
-
-    @Column("is_validated")
-    var isValidated: Boolean,
-
-    @Column("create_at")
-    var createAt: LocalDateTime,
-
     @Column("role")
     var role: Role,
+
+    @Column("provider")
+    var provider: Provider = Provider.AUTH_SERVICE,
+
+    @Column("is_validated")
+    var isValidated: Boolean = false,
+
+    @Column("create_at")
+    var createAt: LocalDateTime = LocalDateTime.now(),
 )

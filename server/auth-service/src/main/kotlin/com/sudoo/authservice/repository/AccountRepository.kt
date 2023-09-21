@@ -12,15 +12,27 @@ import java.util.Optional
 @Repository
 interface AccountRepository : CoroutineCrudRepository<Account, String> {
 
-    suspend fun getAccountByEmailOrPhoneNumber(emailOrPhoneNumber: String): Optional<Account>
+    @Query("""
+        SELECT * FROM accounts WHERE accounts.email_or_phone_number = :emailOrPhoneNumber LIMIT 1;
+    """)
+    suspend fun getAccountByEmailOrPhoneNumber(@Param("emailOrPhoneNumber") emailOrPhoneNumber: String): Optional<Account>
 
-    suspend fun existsByEmailOrPhoneNumber(emailOrPhoneNumber: String): Boolean
+    @Query("""
+        SELECT 
+        CASE WHEN EXISTS(
+            SELECT 1 FROM accounts WHERE accounts.email_or_phone_number = :emailOrPhoneNumber LIMIT 1
+        )
+        THEN 1
+        ELSE 0
+        END;
+    """)
+    suspend fun existsByEmailOrPhoneNumber(@Param("emailOrPhoneNumber") emailOrPhoneNumber: String): Int
 
     @Modifying
     @Transactional
     @Query(
         value = """
-            UPDATE accounts SET accounts.is_validate=true WHERE accounts.user_id = :userId
+            UPDATE accounts SET accounts.is_validate=TRUE WHERE accounts.user_id = :userId;
         """
     )
     suspend fun validate(@Param("userId") userId: String)

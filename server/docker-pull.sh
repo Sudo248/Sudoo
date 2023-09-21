@@ -17,4 +17,4 @@ for i in "${strings[@]}"; do
   docker pull "$i"
 done
 
-docker network create --subnet 172.18.0.0/16 --gateway 172.18.0.1 soc-network
+docker network create --subnet 172.18.0.0/16 --gateway 172.18.0.1 sudoo-network
