@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sudoo/app/pages/auth/views/auth_page.dart';
 import 'package:sudoo/app/pages/dashboard/views/dashboard_page.dart';
 import 'package:sudoo/app/routes/app_pages.dart';
-import 'package:sudoo/app/routes/navigation.dart';
-import 'package:sudoo/app/services/navigator_service.dart';
 import 'package:sudoo/app/services/scaffold_message_service.dart';
 import 'package:sudoo/resources/R.dart';
 import 'package:sudoo/utils/di.dart';
@@ -27,7 +26,7 @@ class SudooApp extends StatelessWidget {
       scaffoldMessengerKey: getIt.get<ScaffoldMessengerService>().scaffoldKey,
       theme: R.theme.appTheme,
       routes: AppPages.getAppPageBuilder(),
-      home: DashboardPage(),
+      home: AuthPage(),
     );
   }
 }

@@ -1,19 +1,23 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:sudoo/app/base/base_page.dart';
 import 'package:sudoo/app/pages/auth/auth_bloc.dart';
 import 'package:sudoo/app/pages/auth/auth_form.dart';
+import 'package:sudoo/app/pages/auth/views/otp_form.dart';
 import 'package:sudoo/app/pages/auth/views/sign_in_form.dart';
 import 'package:sudoo/app/pages/auth/views/sign_up_form.dart';
 import 'package:sudoo/app/widgets/loading_view.dart';
 
 import '../../../../resources/R.dart';
+import '../../../routes/app_routes.dart';
 
 class AuthPage extends BasePage<AuthBloc> {
   AuthPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    bloc.setOnNavigationToDashBoard(() {
+      Navigator.of(context).pushReplacementNamed(AppRoutes.dashboard);
+    });
     final size = MediaQuery.sizeOf(context);
     return Scaffold(
       backgroundColor: R.color.primaryColor,
@@ -45,14 +49,21 @@ class AuthPage extends BasePage<AuthBloc> {
                     child: ValueListenableBuilder(
                       valueListenable: bloc.form,
                       builder: (ctx, value, child) {
-                        if (value == AuthForm.signInForm) {
-                          return SignInForm(
-                            bloc: bloc,
-                          );
-                        } else {
-                          return SignUpForm(
-                            bloc: bloc,
-                          );
+                        switch (value) {
+                          case AuthForm.signInForm:
+                            return SignInForm(
+                              bloc: bloc,
+                            );
+                          case AuthForm.signUpForm:
+                            return SignUpForm(
+                              bloc: bloc,
+                            );
+                          case AuthForm.otpForm:
+                            return OtpForm(
+                              bloc: bloc,
+                            );
+                          default:
+                            return const SizedBox();
                         }
                       },
                     ),

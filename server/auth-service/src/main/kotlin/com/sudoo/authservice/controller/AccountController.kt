@@ -1,8 +1,8 @@
 package com.sudoo.authservice.controller
 
-import com.sudoo.authservice.controller.dto.ChangePasswordDto
-import com.sudoo.authservice.controller.dto.SignInDto
-import com.sudoo.authservice.controller.dto.SignUpDto
+import com.sudoo.authservice.dto.ChangePasswordDto
+import com.sudoo.authservice.dto.SignInDto
+import com.sudoo.authservice.dto.SignUpDto
 import com.sudoo.authservice.service.AccountService
 import com.sudoo.domain.base.BaseController
 import com.sudoo.domain.base.BaseResponse

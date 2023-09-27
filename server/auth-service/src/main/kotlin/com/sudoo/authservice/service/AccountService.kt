@@ -1,9 +1,9 @@
 package com.sudoo.authservice.service
 
-import com.sudoo.authservice.controller.dto.ChangePasswordDto
-import com.sudoo.authservice.controller.dto.SignInDto
-import com.sudoo.authservice.controller.dto.SignUpDto
-import com.sudoo.authservice.controller.dto.TokenDto
+import com.sudoo.authservice.dto.ChangePasswordDto
+import com.sudoo.authservice.dto.SignInDto
+import com.sudoo.authservice.dto.SignUpDto
+import com.sudoo.authservice.dto.TokenDto
 
 interface AccountService {
     suspend fun signIn(signInDto: SignInDto): TokenDto

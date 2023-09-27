@@ -10,7 +10,7 @@ import java.time.LocalDateTime
 data class Product(
     @Id
     @Column("product_id")
-    val productId: String? = null,
+    val productId: String,
 
     @Column("supplier_id")
     val supplierId: String,
@@ -46,10 +46,10 @@ data class Product(
     val discount: Int,
 
     @Column("start_date_discount")
-    val startDateDiscount: LocalDateTime,
+    val startDateDiscount: LocalDateTime?,
 
     @Column("end_date_discount")
-    val endDateDiscount: LocalDateTime,
+    val endDateDiscount: LocalDateTime?,
 
     @Column("sellable")
     val sellable: Boolean,

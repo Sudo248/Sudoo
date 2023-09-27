@@ -1,6 +1,5 @@
 import 'package:sudoo/app/pages/dashboard/dashboard_bloc.dart';
 import 'package:sudoo/app/pages/product/product_list/product_list_bloc.dart';
-import 'package:sudoo/app/routes/navigation.dart';
 import 'package:sudoo/app/services/scaffold_message_service.dart';
 
 import '../../utils/di.dart';

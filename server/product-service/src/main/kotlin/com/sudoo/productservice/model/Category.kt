@@ -9,7 +9,7 @@ import org.springframework.data.relational.core.mapping.Table
 data class Category(
     @Id
     @Column("category_id")
-    val categoryId: String? = null,
+    val categoryId: String,
 
     @Column("name")
     val name: String,

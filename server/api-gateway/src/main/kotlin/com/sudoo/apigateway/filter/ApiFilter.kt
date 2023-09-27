@@ -56,7 +56,7 @@ class ApiFilter(
                 if (!request.headers.containsKey(Constants.AUTHORIZATION)) {
                     throw ResponseStatusException(HttpStatus.UNAUTHORIZED, SudooError.UNAUTHORIZED.message)
                 } else {
-                    var token = request.headers.getOrEmpty(Constants.AUTHORIZATION)[0]
+                    var token = request.headers.getOrEmpty(Constants.AUTHORIZATION).first()
 
                     if (token.startsWith(Constants.TOKEN_TYPE)) {
                         token = token.replace(Constants.TOKEN_TYPE + " ", "")

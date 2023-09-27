@@ -9,5 +9,4 @@ enum class SudooServices(val id: String, val uri: String, val pattern: Array<Str
     PAYMENT_SERVICE("PAYMENT-SERVICE", "lb://PAYMENT-SERVICE", arrayOf("/api/v1/payment/**", "/payment/**")),
     ORDER_SERVICE("ORDER-SERVICE", "lb://ORDER-SERVICE", arrayOf("/api/v1/order/**")),
     NOTIFICATION_SERVICE("NOTIFICATION-SERVICE", "lb://NOTIFICATION-SERVICE", arrayOf("/api/v1/notification/**", "/api/v1/chat/**")),
-
 }

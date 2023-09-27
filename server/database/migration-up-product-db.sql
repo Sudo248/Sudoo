@@ -4,9 +4,9 @@ USE
 DROP TABLE IF EXISTS `suppliers`;
 CREATE TABLE `suppliers`
 (
-    `supplier_id`  VARCHAR(255) NOT NULL PRIMARY KEY,
-    `user_id`      VARCHAR(255) NOT NULL,
-    `name`         TEXT         NOT NULL,
+    `supplier_id`  CHAR(32)     NOT NULL PRIMARY KEY,
+    `user_id`      CHAR(32)     NOT NULL,
+    `name`         VARCHAR(255) NOT NULL,
     `avatar`       VARCHAR(255),
     `brand`        VARCHAR(255),
     `contact_url`  VARCHAR(255),
@@ -21,10 +21,10 @@ CREATE TABLE `suppliers`
 DROP TABLE IF EXISTS `products`;
 CREATE TABLE `products`
 (
-    `product_id`          VARCHAR(255) NOT NULL PRIMARY KEY,
-    `supplier_id`         VARCHAR(255) NOT NULL,
-    `sku`                 VARCHAR(255) NOT NULL UNIQUE,
-    `name`                TEXT         NOT NULL,
+    `product_id`          CHAR(32)     NOT NULL PRIMARY KEY,
+    `supplier_id`         CHAR(32)     NOT NULL,
+    `sku`                 CHAR(15)     NOT NULL UNIQUE,
+    `name`                VARCHAR(255) NOT NULL,
     `price`               FLOAT4,
     `listed_price`        FLOAT4,
     `amount`              INT4         NOT NULL,
@@ -47,8 +47,8 @@ CREATE TABLE `products`
 DROP TABLE IF EXISTS `categories`;
 CREATE TABLE `categories`
 (
-    `category_id` VARCHAR(255) NOT NULL PRIMARY KEY,
-    `name`        TEXT         NOT NULL,
+    `category_id` CHAR(32)     NOT NULL PRIMARY KEY,
+    `name`        VARCHAR(255) NOT NULL,
     `image`       VARCHAR(255) NOT NULL
 ) CHARACTER SET = utf8mb4
     COMMENT = 'Store all categories';
@@ -56,10 +56,9 @@ CREATE TABLE `categories`
 DROP TABLE IF EXISTS `categories_products`;
 CREATE TABLE `categories_products`
 (
-    `product_id`  VARCHAR(255) NOT NULL,
-    `category_id` VARCHAR(255) NOT NULL,
-
-    PRIMARY KEY (product_id, category_id),
+    `category_product_id` CHAR(32) NOT NULL PRIMARY KEY ,
+    `product_id`          CHAR(32) NOT NULL,
+    `category_id`         CHAR(32) NOT NULL,
 
     FOREIGN KEY (product_id) REFERENCES products (product_id) ON DELETE CASCADE,
     FOREIGN KEY (category_id) REFERENCES categories (category_id) ON DELETE CASCADE
@@ -69,13 +68,15 @@ CREATE TABLE `categories_products`
 DROP TABLE IF EXISTS `users_products`;
 CREATE TABLE `users_products`
 (
-    `user_product_id` VARCHAR(255) NOT NULL PRIMARY KEY,
-    `product_id`      VARCHAR(255) NOT NULL,
-    `userId`          VARCHAR(255) NOT NULL,
+    `user_product_id` CHAR(32) NOT NULL PRIMARY KEY,
+    `product_id`      CHAR(32) NOT NULL,
+    `userId`          CHAR(32) NOT NULL,
     `rate`            FLOAT4   DEFAULT 0.0,
     `is_like`         BOOLEAN  DEFAULT FALSE,
     `comment`         TEXT,
     `create_at`       DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    INDEX product_id_index (product_id),
 
     FOREIGN KEY (product_id) REFERENCES products (product_id) ON DELETE CASCADE
 
@@ -85,8 +86,9 @@ CREATE TABLE `users_products`
 DROP TABLE IF EXISTS `images`;
 CREATE TABLE `images`
 (
-    `image_id` VARCHAR(255) NOT NULL PRIMARY KEY,
-    `ownerId`  VARCHAR(255) NOT NULL,
+    `image_id` CHAR(32)     NOT NULL PRIMARY KEY,
+    `ownerId`  CHAR(32)     NOT NULL,
     `url`      VARCHAR(255) NOT NULL
 ) CHARACTER SET = utf8mb4
     COMMENT = 'Store all images';
+

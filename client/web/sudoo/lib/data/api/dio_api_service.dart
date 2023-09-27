@@ -2,11 +2,11 @@ import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sudoo/data/api/api_service.dart';
 import 'package:sudoo/domain/exceptions/api_exception.dart';
-import 'package:sudoo/extensions/scope_function.dart';
 
 import '../../utils/logger.dart';
 import '../config/api_config.dart';
 import '../config/pref_keys.dart';
+import 'base_request.dart';
 
 class DioApiService implements ApiService {
   final Dio dio;
@@ -32,8 +32,9 @@ class DioApiService implements ApiService {
     return InterceptorsWrapper(
       onRequest: (request, handler) {
         final token = pref.getString(PrefKeys.token);
-        request.headers
-            .addAll({ApiConfig.tokenName: "${ApiConfig.tokenType} $token"});
+        request.headers.addAll({
+          ApiConfig.tokenName: "${ApiConfig.tokenType} $token",
+        });
         return handler.next(request);
       },
       onResponse: (response, handler) {
@@ -61,9 +62,8 @@ class DioApiService implements ApiService {
       final response = await dio.get(path, queryParameters: queryParameters);
       return response;
     } on Exception catch (e) {
-      throw _handleException(e).also((it) {
-        Logger.error(message: it.message);
-      });
+      Logger.error(message: e.toString());
+      return _handleException(e);
     }
   }
 
@@ -71,38 +71,37 @@ class DioApiService implements ApiService {
   Future<Response> post(
     String path, {
     dynamic body,
+    BaseRequest? request,
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
-      final response = await dio.post(
-        path,
-        data: body,
-        queryParameters: queryParameters,
+      final response = await dio.post(path,
+          data: body ?? request?.toJson(),
+          queryParameters: queryParameters,
       );
       return response;
     } on Exception catch (e) {
-      throw _handleException(e).also((it) {
-        Logger.error(message: it.message);
-      });
+      Logger.error(message: e.toString());
+      return _handleException(e);
     }
   }
 
   Future<Response> put(
     String path, {
     dynamic body,
+    BaseRequest? request,
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
       final response = await dio.put(
         path,
-        data: body,
+        data: body ?? request?.toJson(),
         queryParameters: queryParameters,
       );
       return response;
     } on Exception catch (e) {
-      throw _handleException(e).also((it) {
-        Logger.error(message: it.message);
-      });
+      Logger.error(message: e.toString());
+      return _handleException(e);
     }
   }
 
@@ -118,9 +117,8 @@ class DioApiService implements ApiService {
       );
       return response;
     } on Exception catch (e) {
-      throw _handleException(e).also((it) {
-        Logger.error(message: it.message);
-      });
+      Logger.error(message: e.toString());
+      return _handleException(e);
     }
   }
 
@@ -144,29 +142,20 @@ class DioApiService implements ApiService {
       );
       return response;
     } on Exception catch (e) {
-      throw _handleException(e).also((it) {
-        Logger.error(message: it.message);
-      });
+      Logger.error(message: e.toString());
+      return _handleException(e);
     }
   }
 
-  ApiException _handleException(Exception exception) {
+  Response _handleException(Exception exception) {
     if (exception is DioException) {
-      switch (exception.type) {
-        case DioExceptionType.cancel:
-          return const RequestCancelled();
-        case DioExceptionType.connectionTimeout:
-          return const RequestTimeout();
-        case DioExceptionType.receiveTimeout:
-          return const ReceiveTimeout();
-        case DioExceptionType.badResponse:
-          final statusCode = exception.response?.statusCode ?? 0;
-          return ApiException(statusCode, "Bad Resonse");
-        default:
-          final statusCode = exception.response?.statusCode ?? 0;
-          return ApiException(statusCode, "Unexpected error");
+      final response = exception.response;
+      if (response != null) {
+        return response;
+      } else {
+        throw const InternalServerError();
       }
     }
-    return const ServiceUnavailable();
+    throw const ServiceUnavailable();
   }
 }

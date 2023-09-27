@@ -15,7 +15,7 @@ interface AccountRepository : CoroutineCrudRepository<Account, String> {
     @Query("""
         SELECT * FROM accounts WHERE accounts.email_or_phone_number = :emailOrPhoneNumber LIMIT 1;
     """)
-    suspend fun getAccountByEmailOrPhoneNumber(@Param("emailOrPhoneNumber") emailOrPhoneNumber: String): Optional<Account>
+    suspend fun getAccountByEmailOrPhoneNumber(@Param("emailOrPhoneNumber") emailOrPhoneNumber: String): Account?
 
     @Query("""
         SELECT 

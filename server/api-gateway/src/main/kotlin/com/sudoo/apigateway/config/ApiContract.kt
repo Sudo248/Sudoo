@@ -6,6 +6,7 @@ internal enum class ApiContract(val paths: List<String>) {
             "/sign-in",
             "/sign-up",
             "/logout",
+            "/refresh-token",
             "/generate-otp",
             "/verify-otp",
             "/images",

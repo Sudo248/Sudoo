@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:sudoo/app/base/base_page.dart';
 import 'package:sudoo/app/pages/dashboard/dashboard_bloc.dart';
-import 'package:sudoo/app/pages/product/product_list/product_list_page.dart';
 import 'package:sudoo/app/routes/app_pages.dart';
 import 'package:sudoo/app/routes/app_routes.dart';
 import 'package:sudoo/app/widgets/app_navigation_rail.dart';
 import 'package:sudoo/resources/R.dart';
 import 'package:sudoo/utils/di.dart';
-
-import '../../../../main.dart';
 
 class DashboardPage extends StatelessWidget {
   DashboardPage({super.key});

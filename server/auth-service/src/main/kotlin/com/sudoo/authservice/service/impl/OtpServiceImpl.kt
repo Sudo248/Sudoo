@@ -1,7 +1,7 @@
 package com.sudoo.authservice.service.impl
 
-import com.sudoo.authservice.controller.dto.TokenDto
-import com.sudoo.authservice.controller.dto.VerifyDto
+import com.sudoo.authservice.dto.TokenDto
+import com.sudoo.authservice.dto.VerifyDto
 import com.sudoo.authservice.exception.EmailOrPhoneNumberInvalidException
 import com.sudoo.authservice.repository.AccountRepository
 import com.sudoo.authservice.service.OtpService
@@ -27,17 +27,15 @@ class OtpServiceImpl(
     override suspend fun verifyOtp(verifyDto: VerifyDto): TokenDto? {
         if (getOtpUtils(verifyDto.emailOrPhoneNumber).verifyOtp(verifyDto)) {
             val account = accountRepository.getAccountByEmailOrPhoneNumber(verifyDto.emailOrPhoneNumber)
-            if (!account.isPresent) {
-                throw EmailOrPhoneNumberInvalidException()
-            }
+                ?: throw EmailOrPhoneNumberInvalidException()
 
-            return if (account.get().isValidated) {
+            return if (account.isValidated) {
                 //TODO("Change password here after verify otp")
                 null
             } else {
-                userService.createUserForAccount(account.get())
-                accountRepository.validate(account.get().userId!!)
-                val token = tokenUtils.generateToken(account.get().userId!!)
+                userService.createUserForAccount(account)
+                accountRepository.validate(account.userId)
+                val token = tokenUtils.generateToken(account.userId)
                 val refreshToken = tokenUtils.generateRefreshToken(token)
                 TokenDto(token, refreshToken)
             }

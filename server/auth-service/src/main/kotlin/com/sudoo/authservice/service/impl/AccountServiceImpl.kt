@@ -1,9 +1,9 @@
 package com.sudoo.authservice.service.impl
 
-import com.sudoo.authservice.controller.dto.ChangePasswordDto
-import com.sudoo.authservice.controller.dto.SignInDto
-import com.sudoo.authservice.controller.dto.SignUpDto
-import com.sudoo.authservice.controller.dto.TokenDto
+import com.sudoo.authservice.dto.ChangePasswordDto
+import com.sudoo.authservice.dto.SignInDto
+import com.sudoo.authservice.dto.SignUpDto
+import com.sudoo.authservice.dto.TokenDto
 import com.sudoo.authservice.exception.EmailOrPhoneNumberExistedException
 import com.sudoo.authservice.exception.EmailOrPhoneNumberInvalidException
 import com.sudoo.authservice.exception.EmailOrPhoneNumberNotValidatedException
@@ -16,7 +16,6 @@ import com.sudoo.authservice.service.OtpService
 import com.sudoo.authservice.utils.TokenUtils
 import com.sudoo.domain.exception.ApiException
 import com.sudoo.domain.exception.CommonException
-import com.sudoo.domain.utils.IdentifyCreator
 import org.springframework.http.HttpStatus
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -30,17 +29,15 @@ class AccountServiceImpl(
 ) : AccountService {
     override suspend fun signIn(signInDto: SignInDto): TokenDto {
         val account = accountRepository.getAccountByEmailOrPhoneNumber(signInDto.emailOrPhoneNumber)
-        if (!account.isPresent) {
-            throw EmailOrPhoneNumberInvalidException()
-        }
+            ?: throw EmailOrPhoneNumberInvalidException()
 
-        if (!encoder.matches(signInDto.password, account.get().password)) {
+        if (!encoder.matches(signInDto.password, account.password)) {
             throw WrongPasswordException()
         }
-        if (!account.get().isValidated) {
+        if (!account.isValidated) {
             throw EmailOrPhoneNumberNotValidatedException()
         }
-        val token = tokenUtils.generateToken(account.get().userId!!)
+        val token = tokenUtils.generateToken(account.userId)
         val refreshToken = tokenUtils.generateRefreshToken(token)
         return TokenDto(token, refreshToken)
     }
@@ -73,14 +70,12 @@ class AccountServiceImpl(
 
     private suspend fun saveAccount(account: Account, isHashPassword: Boolean = true) {
         try {
-            if (account.userId.isNullOrEmpty()) {
-                account.userId = IdentifyCreator.create()
-            }
             if (isHashPassword) {
                 account.password = encoder.encode(account.password)
             }
             accountRepository.save(account)
         } catch (e: Exception) {
+            e.printStackTrace()
             throw ApiException(HttpStatus.INSUFFICIENT_STORAGE, e.message)
         }
     }

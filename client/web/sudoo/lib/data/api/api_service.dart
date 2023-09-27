@@ -1,3 +1,5 @@
+import 'base_request.dart';
+
 abstract class ApiService {
   Future get(
     String path, {
@@ -7,12 +9,14 @@ abstract class ApiService {
   Future post(
     String path, {
     dynamic body,
+    BaseRequest? request,
     Map<String, dynamic>? queryParameters,
   });
 
   Future put(
     String path, {
     dynamic body,
+    BaseRequest? request,
     Map<String, dynamic>? queryParameters,
   });
 

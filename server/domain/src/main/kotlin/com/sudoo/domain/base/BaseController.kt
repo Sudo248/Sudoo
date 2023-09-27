@@ -10,9 +10,9 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 
 abstract class BaseController {
-    suspend fun <T> handle(block: suspend CoroutineScope.() -> T?): ResponseEntity<BaseResponse<*>> {
+    suspend fun <T> handle(block: suspend () -> T?): ResponseEntity<BaseResponse<*>> {
         try {
-            return BaseResponse.ok(coroutineScope(block))
+            return BaseResponse.ok(block.invoke())
         } catch (e: Exception) {
             Logger.error(message = e.message, throwable = e)
             if (e is ApiException) {
@@ -21,12 +21,13 @@ abstract class BaseController {
             return BaseResponse.status(HttpStatus.INTERNAL_SERVER_ERROR, e.message, body = null)
         }
     }
+
     suspend fun <T> handleOn(
         dispatcher: CoroutineDispatcher,
-        block: suspend CoroutineScope.() -> T
+        block: suspend () -> T
     ): ResponseEntity<BaseResponse<*>> {
         try {
-            return BaseResponse.ok(withContext(dispatcher,block))
+            return BaseResponse.ok(withContext(dispatcher) { block.invoke() })
         } catch (e: Exception) {
             Logger.error(message = e.message, throwable = e)
             if (e is ApiException) {

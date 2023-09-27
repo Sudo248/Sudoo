@@ -41,6 +41,18 @@ class TokenUtils {
             .compact()
     }
 
+    fun getUserIdFromRefreshToken(refreshToken: String): String {
+        val claims = Jwts.parser()
+            .setSigningKey(jwtSecret)
+            .parseClaimsJws(refreshToken)
+            .body
+        return try {
+            getUserIdFromToken(claims.subject)
+        } catch (e: ExpiredJwtException) {
+            e.claims.id
+        }
+    }
+
     fun getUserIdFromToken(token: String?): String {
         val claims = Jwts.parser()
             .setSigningKey(jwtSecret)

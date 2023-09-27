@@ -1,6 +1,6 @@
 package com.sudoo.authservice.utils
 
-import com.sudoo.authservice.controller.dto.VerifyDto
+import com.sudoo.authservice.dto.VerifyDto
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component

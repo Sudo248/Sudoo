@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sudoo/extensions/scope_function.dart';
 
 import '../../extensions/list_ext.dart';
 

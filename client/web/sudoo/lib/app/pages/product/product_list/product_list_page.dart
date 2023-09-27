@@ -3,14 +3,13 @@ import 'package:sudoo/app/base/base_page.dart';
 import 'package:sudoo/app/pages/product/product_list/product_list_bloc.dart';
 import 'package:sudoo/app/pages/product/product_list/product_list_data_table.dart';
 
-import 'product_list_item.dart';
 
 class ProductListPage extends BasePage<ProductListBloc> {
   ProductListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final itemHeight = MediaQuery.sizeOf(context).height * 0.25;
+    // final itemHeight = MediaQuery.sizeOf(context).height * 0.25;
     // return StreamBuilder(
     //   stream: bloc.products.stream,
     //   builder: (context, snapshot) {

@@ -8,4 +8,12 @@ object Logger {
     fun error(throwable: Throwable, message: String? = null) {
         logger.error(message ?: "[ERROR]", throwable)
     }
+
+    fun debug(message: String) {
+        logger.debug(message)
+    }
+
+    fun info(message: String) {
+        logger.info(message)
+    }
 }

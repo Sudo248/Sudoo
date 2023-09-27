@@ -1,5 +1,6 @@
 package com.sudoo.productservice.model
 
+import com.sudoo.domain.utils.IdentifyCreator
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
@@ -15,4 +16,14 @@ data class Image(
 
     @Column("url")
     val url: String,
-)
+) {
+    companion object {
+        fun from(ownerId: String, url: String): Image {
+            return Image(
+                imageId = IdentifyCreator.create(),
+                ownerId = ownerId,
+                url = url,
+            )
+        }
+    }
+}

@@ -4,7 +4,36 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="389fd2dc-9d8f-4819-b2d8-a91464002ed2" name="Changes" comment="" />
+    <list default="true" id="389fd2dc-9d8f-4819-b2d8-a91464002ed2" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/app/pages/auth/views/otp_form.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/data/api/auth/request/verify_otp_request.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/data/api/base_request.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/domain/model/auth/verify_otp.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/app/base/base_bloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/app/base/base_bloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/app/base/base_mixin.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/app/base/base_mixin.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/app/di/app_module.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/app/di/app_module.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/app/pages/auth/auth_bloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/app/pages/auth/auth_bloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/app/pages/auth/auth_form.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/app/pages/auth/auth_form.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/app/pages/auth/views/auth_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/app/pages/auth/views/auth_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/app/pages/auth/views/sign_in_form.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/app/pages/auth/views/sign_in_form.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/app/pages/auth/views/sign_up_form.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/app/pages/auth/views/sign_up_form.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/app/pages/dashboard/views/dashboard_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/app/pages/dashboard/views/dashboard_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/app/pages/product/product_list/product_list_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/app/pages/product/product_list/product_list_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/app/widgets/app_navigation_item.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/app/widgets/app_navigation_item.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/app/widgets/email_form_field.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/app/widgets/email_form_field.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/data/api/api_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/data/api/api_service.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/data/api/auth/auth_api_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/data/api/auth/auth_api_service.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/data/api/auth/request/account_request.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/data/api/auth/request/account_request.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/data/api/auth/request/change_password_request.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/data/api/auth/request/change_password_request.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/data/api/dio_api_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/data/api/dio_api_service.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/data/config/api_config.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/data/config/api_config.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/data/config/pref_keys.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/data/config/pref_keys.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/data/di/data_module.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/data/di/data_module.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/data/repository/auth_repository_impl.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/data/repository/auth_repository_impl.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/domain/repository/auth_repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/domain/repository/auth_repository.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/resources/R.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/resources/R.dart" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,10 +43,12 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Kotlin Object" />
-        <option value="Kotlin Data Class" />
         <option value="Kotlin Enum" />
+        <option value="Kotlin File" />
+        <option value="Kotlin Data Class" />
         <option value="Kotlin Interface" />
         <option value="Kotlin Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -36,44 +67,55 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;11&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Global Libraries&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.19655173&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "jdk.selected.JAVA_MODULE": "11",
+    "last_opened_file_path": "/mnt/39178B285F7A3DB1/Code/Sudoo/server",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Global Libraries",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.19655173",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mysql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
     ],
-    &quot;com.intellij.ide.scratch.LRUPopupBuilder$1/&quot;: [
-      &quot;MySQL&quot;
+    "com.intellij.ide.scratch.LRUPopupBuilder$1/": [
+      "MySQL"
     ]
   }
-}</component>
+}]]></component>
   <component name="ReactorSettings">
     <option name="notificationShown" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/libs" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/database" />
     </key>
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
       <recent name="com.sudoo.apigateway.config" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.sudoo.notification.service" />
+      <recent name="com.sudoo.notification.service.impl" />
+      <recent name="com.sudoo.notification.repository" />
+      <recent name="com.sudoo.notification.repository.entity" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -83,7 +125,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.AuthServiceApplication">
+  <component name="RunManager" selected="Spring Boot.NotificationApplication">
     <configuration default="true" type="JetRunConfigurationType">
       <module name="sudoo" />
       <method v="2">
@@ -106,11 +148,25 @@
     </configuration>
     <configuration name="AuthServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <envs>
+        <env name="MAIL_PASSWORD" value="cnrzunazrgoouinr" />
         <env name="MAIL_USERNAME" value="sudo248.dev@gmail.com" />
-        <env name="MAIL_PASSWORD" value="Duong7480201" />
       </envs>
       <module name="auth-service" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.sudoo.authservice.AuthServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="NotificationApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="notification-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sudoo.notification.NotificationApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ProductServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="product-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sudoo.productservice.ProductServiceApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -124,9 +180,29 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="UserServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="user-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sudoo.userservice.UserServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
       <deployment type="docker-compose.yml">
         <settings />
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration name="docker-compose.yml.cache-service: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="services">
+            <list>
+              <option value="cache-service" />
+            </list>
+          </option>
+          <option name="sourceFilePath" value="docker-compose.yml" />
+        </settings>
       </deployment>
       <method v="2" />
     </configuration>
@@ -144,13 +220,18 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Docker.docker-compose.yml.cache-service: Compose Deployment" />
       <item itemvalue="Docker.docker-compose.yml.db-service: Compose Deployment" />
+      <item itemvalue="Spring Boot.NotificationApplication" />
+      <item itemvalue="Spring Boot.UserServiceApplication" />
+      <item itemvalue="Spring Boot.ProductServiceApplication" />
       <item itemvalue="Spring Boot.AuthServiceApplication" />
       <item itemvalue="Spring Boot.ApiGatewayApplication" />
       <item itemvalue="Spring Boot.RegistryApplication" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Docker.docker-compose.yml.cache-service: Compose Deployment" />
         <item itemvalue="Docker.docker-compose.yml.db-service: Compose Deployment" />
       </list>
     </recent_temporary>
@@ -175,6 +256,14 @@
       <workItem from="1695044530462" duration="10044000" />
       <workItem from="1695127462436" duration="1198000" />
       <workItem from="1695215434336" duration="2103000" />
+      <workItem from="1695303636015" duration="15222000" />
+      <workItem from="1695524997013" duration="21675000" />
+      <workItem from="1695712454942" duration="1455000" />
+      <workItem from="1695729593147" duration="13769000" />
+      <workItem from="1695776931001" duration="716000" />
+      <workItem from="1695796436400" duration="3660000" />
+      <workItem from="1695817652167" duration="3248000" />
+      <workItem from="1695824272674" duration="7228000" />
     </task>
     <servers />
   </component>

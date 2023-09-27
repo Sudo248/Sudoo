@@ -16,9 +16,17 @@ class SignUpForm extends StatefulWidget {
 }
 
 class _SignUpFormState extends State<SignUpForm> {
-  final phoneNumberForcus = FocusNode();
-  final passwordForcus = FocusNode();
-  final confirmPasswordForcus = FocusNode();
+  final phoneNumberFocus = FocusNode();
+  final passwordFocus = FocusNode();
+  final confirmPasswordFocus = FocusNode();
+
+  @override
+  void dispose() {
+    phoneNumberFocus.dispose();
+    passwordFocus.dispose();
+    confirmPasswordFocus.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +58,8 @@ class _SignUpFormState extends State<SignUpForm> {
             child: EmailFormField(
               controller: widget.bloc.emailController,
               validator: widget.bloc.emailValidator,
-              nextForcusNode: passwordForcus,
-              focusNode: phoneNumberForcus,
+              nextFocusNode: passwordFocus,
+              focusNode: phoneNumberFocus,
             ),
           ),
           const SizedBox(
@@ -61,9 +69,9 @@ class _SignUpFormState extends State<SignUpForm> {
             padding: const EdgeInsets.symmetric(horizontal: 50),
             child: PasswordFormField(
               controller: widget.bloc.passwordController,
-              validator: widget.bloc.passwordValidatetor,
-              focusNode: passwordForcus,
-              nextForcusNode: confirmPasswordForcus,
+              validator: widget.bloc.passwordValidator,
+              focusNode: passwordFocus,
+              nextForcusNode: confirmPasswordFocus,
             ),
           ),
           const SizedBox(
@@ -73,9 +81,9 @@ class _SignUpFormState extends State<SignUpForm> {
             padding: const EdgeInsets.symmetric(horizontal: 50),
             child: PasswordFormField(
               controller: widget.bloc.confirmPasswordController,
-              validator: widget.bloc.passwordValidatetor,
+              validator: widget.bloc.passwordValidator,
               label: R.string.confirmPassword,
-              focusNode: confirmPasswordForcus,
+              focusNode: confirmPasswordFocus,
             ),
           ),
           const SizedBox(

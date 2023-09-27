@@ -19,7 +19,9 @@ class ApiGatewayConfig(
             SudooServices.values().forEach { service ->
                 route(service.id) { predicate ->
                     predicate.path(*service.pattern).filters {
-                        filter -> filter.filter(apiFilter)
+                        filter ->
+                        filter.filter(apiFilter)
+                        filter.dedupeResponseHeader("Access-Control-Allow-Origin", "RETAIN_UNIQUE")
                     }
                         .uri(service.uri)
                 }

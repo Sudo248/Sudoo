@@ -10,7 +10,7 @@ import java.time.LocalDateTime
 data class Supplier(
     @Id
     @Column("supplier_id")
-    val supplierId: String? = null,
+    val supplierId: String,
 
     @Column("user_id")
     val userId: String,

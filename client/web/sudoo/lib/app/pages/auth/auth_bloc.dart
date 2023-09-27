@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:sudoo/app/base/base_bloc.dart';
 import 'package:sudoo/app/pages/auth/auth_form.dart';
 import 'package:sudoo/app/widgets/loading_view.dart';
+import 'package:sudoo/domain/model/auth/verify_otp.dart';
 import 'package:sudoo/domain/repository/auth_repository.dart';
 import 'package:sudoo/resources/R.dart';
 import 'package:sudoo/utils/validator.dart';
+
+import '../../../domain/model/auth/account.dart';
 
 class AuthBloc extends BaseBloc {
   final AuthRepository authRepository;
@@ -12,10 +15,18 @@ class AuthBloc extends BaseBloc {
   final ValueNotifier<AuthForm> form = ValueNotifier(AuthForm.signInForm);
   final TextEditingController emailController = TextEditingController(),
       passwordController = TextEditingController(),
-      confirmPasswordController = TextEditingController();
+      confirmPasswordController = TextEditingController(),
+      otpController = TextEditingController();
+
   final LoadingViewController loadingController = LoadingViewController();
 
+  late VoidCallback _navigateToDashboard;
+
   AuthBloc(this.authRepository);
+
+  void setOnNavigationToDashBoard(VoidCallback navigation) {
+    _navigateToDashboard = navigation;
+  }
 
   @override
   void onInit() {}
@@ -28,7 +39,7 @@ class AuthBloc extends BaseBloc {
     }
   }
 
-  String? passwordValidatetor(String? password) {
+  String? passwordValidator(String? password) {
     if (Validator.validatePassword(password)) {
       return null;
     } else {
@@ -47,23 +58,55 @@ class AuthBloc extends BaseBloc {
   }
 
   Future<void> signIn() async {
-    // if (formKey.currentState!.validate() == true) {
-    // loadingController.showLoading();
-    // Account account = Account(
-    //   emailOrPhoneNumber: emailController.text,
-    //   password: passwordController.text,
-    // );
-    // // final result = await authRepository.signIn(account);
-    // await Future.delayed(Duration(minutes: 2));
-    // loadingController.hideLoading();
-    // }
-    scaffoldMessenger.showErrorMessage("message");
+    if (formKey.currentState?.validate() == true) {
+      loadingController.showLoading();
+      Account account = Account(
+        emailOrPhoneNumber: emailController.text,
+        password: passwordController.text,
+      );
+      final result = await authRepository.signIn(account);
+      loadingController.hideLoading();
+      if (result.isSuccess) {
+        _navigateToDashboard.call();
+      } else {
+        showErrorMessage(result.requireError());
+      }
+    }
   }
 
-  Future<void> signUp() async {}
+  Future<void> signUp() async {
+    if (formKey.currentState?.validate() == true) {
+      loadingController.showLoading();
+      Account account = Account(
+        emailOrPhoneNumber: emailController.text,
+        password: passwordController.text,
+      );
+      final result = await authRepository.signUp(account);
+      loadingController.hideLoading();
+      if (result.isSuccess) {
+        form.value = AuthForm.otpForm;
+      } else {
+        showErrorMessage(result.requireError());
+      }
+    }
+  }
+
+  Future<void> submitOtp() async {
+    loadingController.showLoading();
+    VerifyOtp verifyOtp = VerifyOtp(emailController.text, otpController.text);
+    final result = await authRepository.submitOtp(verifyOtp);
+    if (result.isSuccess) {
+      _navigateToDashboard.call();
+    } else {
+      showErrorMessage(result.requireError());
+    }
+  }
 
   @override
   void onDispose() {
-    // TODO: implement onDispose
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    otpController.dispose();
   }
 }

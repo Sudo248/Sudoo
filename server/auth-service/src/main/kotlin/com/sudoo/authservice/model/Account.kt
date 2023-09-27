@@ -1,6 +1,8 @@
 package com.sudoo.authservice.model
 
 import org.springframework.data.annotation.Id
+import org.springframework.data.annotation.Transient
+import org.springframework.data.domain.Persistable
 import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
 import java.time.LocalDateTime
@@ -9,7 +11,7 @@ import java.time.LocalDateTime
 data class Account(
     @Id
     @Column("user_id")
-    var userId: String? = null,
+    val userId: String,
 
     @Column("email_or_phone_number")
     var emailOrPhoneNumber: String,
@@ -28,4 +30,13 @@ data class Account(
 
     @Column("create_at")
     var createAt: LocalDateTime = LocalDateTime.now(),
-)
+) : Persistable<String> {
+
+    @Transient
+    internal var isNewAccount: Boolean = true
+
+    override fun getId(): String = userId
+
+    override fun isNew(): Boolean = isNewAccount
+
+}

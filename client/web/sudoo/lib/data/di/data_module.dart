@@ -31,7 +31,5 @@ class DataModule {
 
     getIt.registerLazySingleton<AuthRepository>(
         () => AuthRepositoryImpl(getIt.get(), pref: getIt.get()));
-
-
   }
 }

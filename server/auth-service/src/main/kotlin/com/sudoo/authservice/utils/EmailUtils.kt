@@ -1,7 +1,9 @@
 package com.sudoo.authservice.utils
 
-import com.sudoo.authservice.controller.dto.VerifyDto
+import com.sudoo.authservice.dto.VerifyDto
+import com.sudoo.authservice.exception.ErrorSendEmail
 import com.sudoo.authservice.exception.OTPExpired
+import com.sudoo.domain.utils.Logger
 import org.apache.commons.lang.RandomStringUtils
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
@@ -10,13 +12,14 @@ import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Component
 import java.util.concurrent.TimeUnit
+import kotlin.random.Random
 
 @Component
 @Qualifier("Email")
-class EmailUtils (
+class EmailUtils(
     private val mailSender: JavaMailSender,
     private val redis: RedisTemplate<String, Any>,
-) : OtpUtils{
+) : OtpUtils {
 
     @Value("\${otp.timeout}")
     private var otpTimeout: Long = 0
@@ -25,30 +28,32 @@ class EmailUtils (
     private lateinit var senderEmail: String
 
     override suspend fun generateOtp(emailOrPhoneNumber: String): Boolean {
-        val otp = RandomStringUtils.random(8)
+        val otp = (100000 + Random.Default.nextInt(900000)).toString()
         redis.opsForValue().set(emailOrPhoneNumber, otp, otpTimeout, TimeUnit.MILLISECONDS)
-        sendOTPEmail(emailOrPhoneNumber, otp)
+        Logger.info(message = "otp = $otp")
+//        sendOTPEmail(emailOrPhoneNumber, otp)
         return true
     }
 
     override suspend fun verifyOtp(verifyDto: VerifyDto): Boolean {
-        val otp = redis.opsForValue().getAndDelete(verifyDto.emailOrPhoneNumber)
-        if (otp is String? && !otp.isNullOrEmpty()) {
+        val otp = redis.opsForValue().getAndDelete(verifyDto.emailOrPhoneNumber) as String?
+        if (!otp.isNullOrEmpty()) {
             return otp == verifyDto.otp
         }
         throw OTPExpired()
     }
 
     private fun sendOTPEmail(email: String, otp: String) {
-        val message = mailSender.createMimeMessage()
-        val helper = MimeMessageHelper(message)
+        try {
+            val message = mailSender.createMimeMessage()
+            val helper = MimeMessageHelper(message)
 
-        helper.apply {
-            setFrom(senderEmail, "Sudoo")
-            setTo(email)
+            helper.apply {
+                setFrom(senderEmail, "Sudoo")
+                setTo(email)
 
-            val subject = "Here's your One Time Password (OTP) - Expire in 2 minutes!"
-            val content = """
+                val subject = "Here's your One Time Password (OTP) - Expire in 2 minutes!"
+                val content = """
                 <p>Hello $email!<p>
                 <p>For security reason, you're required to use the following One Time Password to verify:</p>
                 <p><b> $otp <b><p>
@@ -56,10 +61,14 @@ class EmailUtils (
                 <p>Note: this OTP is set to expire in 2 minutes.<p>
             """.trimIndent()
 
-            helper.setSubject(subject)
-            helper.setText(content, true)
+                helper.setSubject(subject)
+                helper.setText(content, true)
 
-            mailSender.send(message)
+                mailSender.send(message)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            throw ErrorSendEmail()
         }
     }
 }

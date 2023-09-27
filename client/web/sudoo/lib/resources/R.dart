@@ -59,6 +59,16 @@ class AppString extends R {
   String get from => "From";
 
   String get to => "To";
+
+  String get otpAuthentication => "OTP Authentication";
+
+  String get otpDescription => "We will send the verification code to your email.";
+
+  String get resendOtp => "Resend OTP";
+
+  String get notReceiveOtp => "Don't receive OTP?";
+
+  String get submit => "Submit";
 }
 
 class AppColor extends R {
@@ -123,7 +133,7 @@ class AppStyle extends R {
 }
 
 class AppDrawable extends R {
-  static const String _imagePath = "assets/images";
+  // static const String _imagePath = "assets/images";
   static const String _iconPath = "assets/icons";
 
   String get iconLauncher => "$_iconPath/ic_launcher.svg";

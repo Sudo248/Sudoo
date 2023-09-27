@@ -18,13 +18,13 @@ class SignInForm extends StatefulWidget {
 }
 
 class _SignInFormState extends State<SignInForm> {
-  final phoneNumberForcus = FocusNode();
-  final passwordForcus = FocusNode();
+  final phoneNumberFocus = FocusNode();
+  final passwordFocus = FocusNode();
 
   @override
   void dispose() {
-    phoneNumberForcus.dispose();
-    passwordForcus.dispose();
+    phoneNumberFocus.dispose();
+    passwordFocus.dispose();
     super.dispose();
   }
 
@@ -59,8 +59,8 @@ class _SignInFormState extends State<SignInForm> {
             child: EmailFormField(
               controller: widget.bloc.emailController,
               validator: widget.bloc.emailValidator,
-              nextForcusNode: passwordForcus,
-              focusNode: phoneNumberForcus,
+              nextFocusNode: passwordFocus,
+              focusNode: phoneNumberFocus,
             ),
           ),
           const SizedBox(
@@ -70,8 +70,8 @@ class _SignInFormState extends State<SignInForm> {
             padding: const EdgeInsets.symmetric(horizontal: 50),
             child: PasswordFormField(
               controller: widget.bloc.passwordController,
-              validator: widget.bloc.passwordValidatetor,
-              focusNode: passwordForcus,
+              validator: widget.bloc.passwordValidator,
+              focusNode: passwordFocus,
             ),
           ),
           const SizedBox(
