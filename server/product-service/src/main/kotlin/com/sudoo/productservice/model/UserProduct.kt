@@ -2,6 +2,7 @@ package com.sudoo.productservice.model
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.Transient
+import org.springframework.data.domain.Persistable
 import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
 import java.time.LocalDateTime
@@ -30,6 +31,15 @@ data class UserProduct(
     @Column("create_at")
     val createAt: LocalDateTime = LocalDateTime.now(),
 
+) : Persistable<String> {
+
     @Transient
-    val images: List<String>? = null
-)
+    var images: List<Image>? = null
+
+    @Transient
+    internal var isNewUserProduct: Boolean = false
+
+    override fun getId(): String = userProductId
+
+    override fun isNew(): Boolean = isNewUserProduct
+}

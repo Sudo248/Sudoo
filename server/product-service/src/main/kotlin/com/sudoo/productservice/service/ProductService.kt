@@ -1,26 +1,21 @@
 package com.sudoo.productservice.service
 
-import com.sudoo.domain.base.PaginationDto
 import com.sudoo.domain.base.OffsetRequest
-import com.sudoo.productservice.dto.CategoryProductDto
-import com.sudoo.productservice.dto.ProductDto
-import com.sudoo.productservice.dto.ProductInfoDto
-import com.sudoo.productservice.dto.UpsertProductDto
-import kotlinx.coroutines.flow.Flow
+import com.sudoo.productservice.dto.*
 
 interface ProductService {
     suspend fun addProductToCategory(categoryProductDto: CategoryProductDto): CategoryProductDto
     suspend fun deleteProductOfCategory(categoryProductDto: CategoryProductDto): CategoryProductDto
 
-    suspend fun upsertProduct(userId: String, productDto: UpsertProductDto): ProductDto
-    suspend fun patchProduct(productDto: UpsertProductDto): ProductDto
+    suspend fun upsertProduct(userId: String, productDto: UpsertProductDto): UpsertProductDto
+    suspend fun patchProduct(productDto: UpsertProductDto): UpsertProductDto
     suspend fun deleteProduct(productId: String): String
 
-    suspend fun getListProductInfo(userId: String, offsetRequest: OffsetRequest): PaginationDto<Flow<ProductInfoDto>>
-    suspend fun getListProductInfoByCategory(userId: String, categoryId: String, offsetRequest: OffsetRequest): PaginationDto<Flow<ProductInfoDto>>
-    suspend fun getListProductInfoBySupplier(userId: String, supplierId: String, offsetRequest: OffsetRequest): PaginationDto<Flow<ProductInfoDto>>
-    suspend fun getProductDetailById(userId: String, productId: String): ProductDto
-    suspend fun getProductDetailBySku(userId: String, sku: String): ProductDto
+    suspend fun getListProductInfo(offsetRequest: OffsetRequest): ProductPagination<ProductInfoDto>
+    suspend fun getListProductInfoByCategory(categoryId: String, offsetRequest: OffsetRequest): ProductPagination<ProductInfoDto>
+    suspend fun getListProductInfoBySupplier(supplierId: String, offsetRequest: OffsetRequest): ProductPagination<ProductInfoDto>
+    suspend fun getProductDetailById(productId: String): ProductDto
+    suspend fun getProductDetailBySku(sku: String): ProductDto
 
-    suspend fun searchProductByName(userId: String, name: String, offsetRequest: OffsetRequest): PaginationDto<Flow<ProductInfoDto>>
+    suspend fun searchProductByName(userId: String, name: String, offsetRequest: OffsetRequest): ProductPagination<ProductInfoDto>
 }

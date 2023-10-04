@@ -21,4 +21,9 @@ interface SupplierRepository : CoroutineCrudRepository<Supplier, String> {
           SELECT suppliers.brand FROM suppliers WHERE suppliers.user_id = :userId LIMIT 1
      """)
      suspend fun getBrandByUserId(@Param("userId") userId: String): String
+
+     @Query("""
+          SELECT suppliers.brand FROM suppliers WHERE suppliers.supplier_id = :supplierId LIMIT 1     
+     """)
+     suspend fun getBrand(@Param("supplierId") supplierId: String): String
 }

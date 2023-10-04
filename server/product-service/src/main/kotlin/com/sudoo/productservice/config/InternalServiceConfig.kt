@@ -16,7 +16,7 @@ class InternalServiceConfig {
     @Qualifier("user-service")
     fun userWebClient(): WebClient {
         return WebClient.builder()
-            .baseUrl("http://user-service/api/v1/user")
+            .baseUrl("http://user-service:8084/api/v1/users")
             .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
             .build()
     }

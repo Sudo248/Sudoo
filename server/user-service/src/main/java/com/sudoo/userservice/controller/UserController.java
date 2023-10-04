@@ -4,12 +4,16 @@ import com.sudo248.domain.base.BaseResponse;
 import com.sudo248.domain.common.Constants;
 import com.sudo248.domain.util.Utils;
 import com.sudoo.userservice.controller.dto.UserDto;
+import com.sudoo.userservice.controller.dto.UserInfoDto;
 import com.sudoo.userservice.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
-@RequestMapping("/")
+@RequestMapping("/users")
+@Slf4j
 public class UserController {
 
     private final UserService userService;
@@ -25,6 +29,16 @@ public class UserController {
         return Utils.handleException(() -> {
             UserDto userDto = userService.getUser(userId);
             return BaseResponse.ok(userDto);
+        });
+    }
+
+    @GetMapping("/info")
+    public ResponseEntity<BaseResponse<?>> getUserInfo(
+            @RequestHeader(Constants.HEADER_USER_ID) String userId
+    ) {
+        return Utils.handleException(() -> {
+            UserInfoDto userInfoDto = userService.getUserInfo(userId);
+            return BaseResponse.ok(userInfoDto);
         });
     }
 

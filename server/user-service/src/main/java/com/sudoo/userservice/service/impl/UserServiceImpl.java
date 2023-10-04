@@ -1,19 +1,24 @@
 package com.sudoo.userservice.service.impl;
 
+import com.sudo248.domain.exception.ApiException;
 import com.sudo248.domain.util.Utils;
 import com.sudoo.userservice.controller.dto.AddressDto;
 import com.sudoo.userservice.controller.dto.FirebaseUserDto;
 import com.sudoo.userservice.controller.dto.UserDto;
+import com.sudoo.userservice.controller.dto.UserInfoDto;
 import com.sudoo.userservice.internal.FirebaseService;
 import com.sudoo.userservice.repository.UserRepository;
 import com.sudoo.userservice.repository.entitity.Address;
 import com.sudoo.userservice.repository.entitity.User;
+import com.sudoo.userservice.repository.entitity.UserInfo;
 import com.sudoo.userservice.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -35,12 +40,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserInfoDto getUserInfo(String userId) throws ApiException {
+        UserInfo userInfo = userRepository.getUserInfoById(userId);
+        if (userInfo == null) throw new ApiException(HttpStatus.NOT_FOUND, "Not found user " + userId);
+        return new UserInfoDto(
+                userInfo.getUserId(),
+                userInfo.getFullName(),
+                userInfo.getAvatar()
+        );
+    }
+
+    @Override
     public UserDto postUser(UserDto userDto) {
-        log.error("Sudoo " + userDto);
         User user = toEntity(userDto);
-//        log.error("Sudoo " + user);
         userRepository.save(user);
-        firebaseService.upsertFirebaseUser(createUserFirebaseFromUser(user));
+//        firebaseService.upsertFirebaseUser(createUserFirebaseFromUser(user));
         return toDto(user);
     }
 
@@ -79,7 +93,7 @@ public class UserServiceImpl implements UserService {
         UserDto userDto = new UserDto();
         userDto.setUserId(user.getUserId());
         userDto.setFullName(user.getFullName());
-        userDto.setPhone(user.getPhone());
+        userDto.setEmailOrPhoneNumber(user.getEmailOrPhoneNumber());
         userDto.setDob(user.getDob());
         userDto.setBio(user.getBio());
         userDto.setAvatar(user.getAvatar());
@@ -107,7 +121,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setUserId(Utils.createIdOrElse(userDto.getUserId()));
         user.setFullName(userDto.getFullName());
-        user.setPhone(userDto.getPhone());
+        user.setEmailOrPhoneNumber(userDto.getEmailOrPhoneNumber());
         user.setDob(userDto.getDob() != null ? userDto.getDob() : LocalDate.now());
         user.setBio(userDto.getBio());
         user.setAvatar(userDto.getAvatar());

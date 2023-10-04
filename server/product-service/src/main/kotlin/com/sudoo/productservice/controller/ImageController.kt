@@ -13,24 +13,22 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/discovery/image")
+@RequestMapping("/discovery/images")
 class ImageController(
     private val imageService: ImageService
 ) : BaseController() {
 
-    @PostMapping("/product")
-    suspend fun addImageToProduct(
+    @PostMapping
+    suspend fun upsertImage(
         @RequestBody imageDto: ImageDto
     ): ResponseEntity<BaseResponse<*>> = handle {
-        val response = imageService.addImageToProduct(imageDto)
-        BaseResponse.ok(response)
+        imageService.upsertImage(imageDto)
     }
 
     @DeleteMapping("/{imageId}")
     suspend fun deleteImage(
         @PathVariable("imageId") imageId: String
     ): ResponseEntity<BaseResponse<*>> = handle {
-        val response = imageService.deleteImage(imageId)
-        BaseResponse.ok(response)
+        imageService.deleteImage(imageId)
     }
 }

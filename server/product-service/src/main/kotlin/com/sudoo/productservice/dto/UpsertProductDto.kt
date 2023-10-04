@@ -14,7 +14,7 @@ data class UpsertProductDto(
     val discount: Int? = null,
     val startDateDiscount: LocalDateTime? = null,
     val endDateDiscount: LocalDateTime? = null,
-    val sellable: Boolean? = null,
+    val saleable: Boolean? = null,
     val categoryIds: List<String>? = null,
     // list url
     val images: List<String>? = null,

@@ -22,10 +22,8 @@ public class ImageController {
     @PostMapping("/upload")
     public ResponseEntity<BaseResponse<?>> upload(
             @RequestParam("image") MultipartFile image,
-            @RequestParam(value = "source", required = false, defaultValue = "sudoo") String source
+            @RequestParam(value = "source", required = false, defaultValue = "cloudinary") String source
     ) {
         return imageService.storeImage(image, source);
     }
-
-
 }

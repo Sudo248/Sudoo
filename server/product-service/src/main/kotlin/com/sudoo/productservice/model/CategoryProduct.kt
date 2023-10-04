@@ -2,6 +2,8 @@ package com.sudoo.productservice.model
 
 import com.sudoo.domain.utils.IdentifyCreator
 import org.springframework.data.annotation.Id
+import org.springframework.data.annotation.Transient
+import org.springframework.data.domain.Persistable
 import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
 
@@ -14,14 +16,23 @@ data class CategoryProduct(
     val productId: String,
     @Column("category_id")
     val categoryId: String,
-) {
+) : Persistable<String> {
     companion object {
         fun from(productId: String, categoryId: String): CategoryProduct {
             return CategoryProduct(
                 categoryProductId = IdentifyCreator.create(),
                 productId = productId,
                 categoryId = categoryId,
-            )
+            ).apply {
+                isNewCategoryProduct = true
+            }
         }
     }
+
+    @Transient
+    internal var isNewCategoryProduct: Boolean = false
+
+    override fun getId(): String = categoryProductId
+
+    override fun isNew(): Boolean = isNewCategoryProduct
 }

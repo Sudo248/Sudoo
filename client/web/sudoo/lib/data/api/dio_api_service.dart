@@ -57,9 +57,15 @@ class DioApiService implements ApiService {
   Future<Response> get(
     String path, {
     Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? headers,
   }) async {
     try {
-      final response = await dio.get(path, queryParameters: queryParameters);
+      final options = Options(headers: headers);
+      final response = await dio.get(
+        path,
+        queryParameters: queryParameters,
+        options: options,
+      );
       return response;
     } on Exception catch (e) {
       Logger.error(message: e.toString());
@@ -73,11 +79,15 @@ class DioApiService implements ApiService {
     dynamic body,
     BaseRequest? request,
     Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? headers,
   }) async {
     try {
-      final response = await dio.post(path,
-          data: body ?? request?.toJson(),
-          queryParameters: queryParameters,
+      final options = Options(headers: headers);
+      final response = await dio.post(
+        path,
+        data: body ?? request?.toJson(),
+        queryParameters: queryParameters,
+        options: options,
       );
       return response;
     } on Exception catch (e) {
@@ -86,17 +96,42 @@ class DioApiService implements ApiService {
     }
   }
 
+  @override
   Future<Response> put(
     String path, {
     dynamic body,
     BaseRequest? request,
     Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? headers,
   }) async {
     try {
+      final options = Options(headers: headers);
       final response = await dio.put(
         path,
         data: body ?? request?.toJson(),
         queryParameters: queryParameters,
+        options: options,
+      );
+      return response;
+    } on Exception catch (e) {
+      Logger.error(message: e.toString());
+      return _handleException(e);
+    }
+  }
+
+  @override
+  Future<Response> patch(String path,
+      {body,
+      BaseRequest? request,
+      Map<String, dynamic>? queryParameters,
+      Map<String, dynamic>? headers}) async {
+    try {
+      final options = Options(headers: headers);
+      final response = await dio.patch(
+        path,
+        data: body ?? request?.toJson(),
+        queryParameters: queryParameters,
+        options: options,
       );
       return response;
     } on Exception catch (e) {
@@ -109,11 +144,14 @@ class DioApiService implements ApiService {
   Future<Response> delete(
     String path, {
     Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? headers,
   }) async {
     try {
+      final options = Options(headers: headers);
       final response = await dio.delete(
         path,
         queryParameters: queryParameters,
+        options: options,
       );
       return response;
     } on Exception catch (e) {

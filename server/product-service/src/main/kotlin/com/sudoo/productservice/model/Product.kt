@@ -1,7 +1,9 @@
 package com.sudoo.productservice.model
 
+import kotlinx.coroutines.flow.Flow
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.Transient
+import org.springframework.data.domain.Persistable
 import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
 import java.time.LocalDateTime
@@ -34,13 +36,13 @@ data class Product(
     val amount: Int,
 
     @Column("sold_amount")
-    val soldAmount: Int,
+    var soldAmount: Int,
 
     @Column("rate")
-    val rate: Float,
+    var rate: Float,
 
     @Column("total_rate_amount")
-    val totalRateAmount: Int,
+    var totalRateAmount: Int,
 
     @Column("discount")
     val discount: Int,
@@ -51,15 +53,27 @@ data class Product(
     @Column("end_date_discount")
     val endDateDiscount: LocalDateTime?,
 
-    @Column("sellable")
-    val sellable: Boolean,
+    @Column("saleable")
+    val saleable: Boolean,
+
+) : Persistable<String> {
 
     @Transient
-    val images: List<String>? = null,
+    var brand: String = ""
 
     @Transient
-    val supplier: Supplier? = null,
+    var images: List<Image>? = null
 
     @Transient
-    val categories: List<Category>? = null,
-)
+    var supplier: Supplier? = null
+
+    @Transient
+    var categories: List<Category>? = null
+
+    @Transient
+    internal var isNewProduct: Boolean = false
+
+    override fun getId(): String = productId
+
+    override fun isNew(): Boolean = isNewProduct
+}

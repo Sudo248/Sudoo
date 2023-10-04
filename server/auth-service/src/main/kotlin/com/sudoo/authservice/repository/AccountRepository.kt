@@ -32,7 +32,7 @@ interface AccountRepository : CoroutineCrudRepository<Account, String> {
     @Transactional
     @Query(
         value = """
-            UPDATE accounts SET accounts.is_validate=TRUE WHERE accounts.user_id = :userId;
+            UPDATE accounts SET accounts.is_validated=TRUE WHERE accounts.user_id = :userId;
         """
     )
     suspend fun validate(@Param("userId") userId: String)

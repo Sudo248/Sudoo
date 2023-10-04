@@ -1,11 +1,6 @@
-class Pagination<T> {
+class Pagination {
   final int offset;
-  final int limit;
-  final List<T> data;
+  final int total;
 
-  Pagination(this.offset, this.limit, this.data);
-
-  factory Pagination.first({int limit = 30, List<T> initData = const [] }) {
-    return Pagination(0, limit, initData);
-  }
+  Pagination(this.offset, this.total);
 }

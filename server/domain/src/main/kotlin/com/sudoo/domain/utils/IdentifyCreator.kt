@@ -25,4 +25,8 @@ object IdentifyCreator {
     fun genProductSkuOrElse(sku: String?, brand: String, nameProduct: String): String {
         return if (!sku.isNullOrEmpty()) sku else genProductSku(brand, nameProduct)
     }
+
+    fun genRefreshToken(): String {
+        return UUID.randomUUID().toString()
+    }
 }

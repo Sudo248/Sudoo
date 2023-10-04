@@ -2,6 +2,7 @@ package com.sudoo.productservice.model
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.Transient
+import org.springframework.data.domain.Persistable
 import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
 import java.time.LocalDateTime
@@ -37,11 +38,19 @@ data class Supplier(
     val contactUrl: String,
 
     @Column("rate")
-    val rate: Float,
+    var rate: Float,
 
     @Column("create_at")
     val createAt: LocalDateTime = LocalDateTime.now(),
+) : Persistable<String> {
 
     @Transient
     val products: List<Product>? = null
-)
+
+    @Transient
+    internal var isNewSupplier: Boolean = false
+
+    override fun getId(): String = supplierId
+
+    override fun isNew(): Boolean = isNewSupplier
+}

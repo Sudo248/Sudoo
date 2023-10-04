@@ -2,6 +2,7 @@ package com.sudoo.productservice.model
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.Transient
+import org.springframework.data.domain.Persistable
 import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
 
@@ -17,6 +18,15 @@ data class Category(
     @Column("image")
     val image: String,
 
+) : Persistable<String> {
+
     @Transient
     val products: List<Product>? = null
-)
+
+    @Transient
+    internal var isNewCategory: Boolean = false
+
+    override fun getId(): String = categoryId
+
+    override fun isNew(): Boolean = isNewCategory
+}

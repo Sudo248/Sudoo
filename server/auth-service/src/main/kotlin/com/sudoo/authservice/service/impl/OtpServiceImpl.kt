@@ -36,7 +36,7 @@ class OtpServiceImpl(
                 userService.createUserForAccount(account)
                 accountRepository.validate(account.userId)
                 val token = tokenUtils.generateToken(account.userId)
-                val refreshToken = tokenUtils.generateRefreshToken(token)
+                val refreshToken = tokenUtils.generateRefreshToken(account.userId)
                 TokenDto(token, refreshToken)
             }
         } else {

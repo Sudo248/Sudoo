@@ -10,6 +10,7 @@ import 'package:sudoo/domain/core/data_state.dart';
 import 'package:sudoo/domain/model/auth/account.dart';
 import 'package:sudoo/domain/model/auth/verify_otp.dart';
 import 'package:sudoo/domain/repository/auth_repository.dart';
+import 'package:sudoo/extensions/string_ext.dart';
 
 class AuthRepositoryImpl with HandleResponse implements AuthRepository {
   final AuthApiService authApiService;
@@ -18,7 +19,7 @@ class AuthRepositoryImpl with HandleResponse implements AuthRepository {
   const AuthRepositoryImpl(this.authApiService, {required this.pref});
 
   @override
-  Future<DataState<void, Exception>> changePassword(
+  Future<DataState<dynamic, Exception>> changePassword(
     String oldPassword,
     String newPassword,
   ) async {
@@ -33,12 +34,12 @@ class AuthRepositoryImpl with HandleResponse implements AuthRepository {
   }
 
   @override
-  Future<DataState<void, Exception>> logout() async {
+  Future<DataState<dynamic, Exception>> logout() async {
     return await handleResponse(() => authApiService.logout());
   }
 
   @override
-  Future<DataState<void, Exception>> signIn(Account account) async {
+  Future<DataState<dynamic, Exception>> signIn(Account account) async {
     final request = AccountRequest(
       emailOrPhoneNumber: account.emailOrPhoneNumber,
       password: account.password,
@@ -56,7 +57,7 @@ class AuthRepositoryImpl with HandleResponse implements AuthRepository {
   }
 
   @override
-  Future<DataState<void, Exception>> signUp(Account account) async {
+  Future<DataState<dynamic, Exception>> signUp(Account account) async {
     final request = AccountRequest(
       emailOrPhoneNumber: account.emailOrPhoneNumber,
       password: account.password,
@@ -68,11 +69,28 @@ class AuthRepositoryImpl with HandleResponse implements AuthRepository {
   }
 
   @override
-  Future<DataState<void, Exception>> submitOtp(VerifyOtp verifyOtp) async {
+  Future<DataState<dynamic, Exception>> submitOtp(VerifyOtp verifyOtp) async {
     final request =
         VerifyOtpRequest(verifyOtp.emailOrPhoneNumber, verifyOtp.otp);
     final response = await handleResponse(
         () => authApiService.verifyOtp(request),
+        fromJson: (json) => TokenDto.fromJson(json as Map<String, dynamic>));
+    if (response.isSuccess) {
+      final TokenDto token = response.get();
+      pref.setString(PrefKeys.token, token.token);
+      pref.setString(PrefKeys.refreshToken, token.refreshToken ?? "");
+    }
+    return response;
+  }
+
+  @override
+  Future<DataState<dynamic, Exception>> refreshToken() async {
+    final refreshToken = pref.getString(PrefKeys.refreshToken);
+    if (refreshToken.isNullOrEmpty) {
+      return DataState.error(Exception());
+    }
+    final response = await handleResponse(
+        () => authApiService.refreshToken(refreshToken!),
         fromJson: (json) => TokenDto.fromJson(json as Map<String, dynamic>));
     if (response.isSuccess) {
       final TokenDto token = response.get();

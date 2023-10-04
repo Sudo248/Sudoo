@@ -23,7 +23,7 @@ class UserServiceImpl(
             .uri("/")
             .bodyValue(userDto)
             .retrieve()
-            .awaitBodyOrNull<ResponseEntity<BaseResponse<*>>>() ?: throw UserException()
+            .awaitBodyOrNull<BaseResponse<*>>() ?: throw UserException()
 
         return true
     }

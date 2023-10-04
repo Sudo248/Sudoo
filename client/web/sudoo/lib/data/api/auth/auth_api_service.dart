@@ -7,9 +7,11 @@ class AuthApiService {
   static const auth = "/auth";
   static const signInPath = "$auth/sign-in";
   static const signUpPath = "$auth/sign-up";
+  static const refreshTokenPath = "$auth/refresh-token";
   static const verifyOtpPath = "$auth/verify-otp";
   static const changePasswordPath = "$auth/change-password";
   static const logoutPath = "$auth/logout";
+  static const refreshTokenKey = "refresh-token";
 
   final ApiService api;
 
@@ -20,6 +22,11 @@ class AuthApiService {
 
   Future signUp(AccountRequest request) =>
       api.post(signUpPath, request: request);
+
+  Future refreshToken(String refreshToken) =>
+      api.get(refreshTokenPath, headers: {
+        refreshTokenKey: refreshToken,
+      });
 
   Future verifyOtp(VerifyOtpRequest request) =>
       api.post(verifyOtpPath, request: request);

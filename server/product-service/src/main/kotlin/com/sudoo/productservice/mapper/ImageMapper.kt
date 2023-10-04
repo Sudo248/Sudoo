@@ -9,7 +9,9 @@ fun ImageDto.toImage(): Image {
         imageId = IdentifyCreator.createOrElse(imageId),
         ownerId = ownerId,
         url = url,
-    )
+    ).also {
+        it.isNewImage = imageId.isNullOrEmpty()
+    }
 }
 
 fun Image.toImageDto(): ImageDto {

@@ -21,7 +21,8 @@ public class User {
     @Column(name = "full_name")
     private String fullName;
 
-    private String phone;
+    @Column(name = "email_or_phone_number")
+    private String emailOrPhoneNumber;
 
     private LocalDate dob;
 
@@ -33,7 +34,7 @@ public class User {
 
     private Gender gender;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @PrimaryKeyJoinColumn
     private Address address;
 }

@@ -78,7 +78,25 @@ public class Address {
     @PostPersist
     @PostUpdate
     private void setFullAddress() {
-        fullAddress = address + ", " + wardName + ", " + districtName + ", " + provinceName;
+        StringBuilder builder = new StringBuilder();
+        if (!address.isBlank()) builder.append(address);
+        if (!wardCode.isBlank()) {
+            if (builder.length() > 0) builder.append(", ");
+            builder.append(wardCode);
+        }
+        if (!districtName.isBlank()) {
+            if (builder.length() > 0) builder.append(", ");
+            builder.append(districtName);
+        }
+        if (!provinceName.isBlank()) {
+            if (builder.length() > 0) builder.append(", ");
+            builder.append(provinceName);
+        }
+        if (builder.length() > 0) {
+            fullAddress = builder.toString();
+        } else {
+            fullAddress = "";
+        }
     }
 
     public String getAddressId() {

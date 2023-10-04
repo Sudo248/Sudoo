@@ -30,8 +30,8 @@
         <module>storage-service</module>
 
 
-        <!--&lt;!&ndash;    port: 8086    &ndash;&gt;-->
-        <!--        <module>payment-service</module>-->
+        <!--    port: 8086    -->
+        <module>payment-service</module>
 
         <!--    port: 8084    -->
         <module>user-service</module>
@@ -39,17 +39,14 @@
         <!--&lt;!&ndash;    port: 8087&ndash;&gt;-->
         <!--        <module>cart-service</module>-->
 
-        <!--&lt;!&ndash;    port: 8088&ndash;&gt;-->
-        <!--        <module>invoice-service</module>-->
+        <!--    port: 8088-->
+        <module>order-service</module>
 
         <!--&lt;!&ndash;    port: 8089&ndash;&gt;-->
         <!--        <module>promotion-service</module>-->
 
         <!--    port: 8090-->
         <module>notification-service</module>
-
-        <!--&lt;!&ndash;    port: 8091&ndash;&gt;-->
-        <!--        <module>chat-service</module>-->
 
     </modules>
 

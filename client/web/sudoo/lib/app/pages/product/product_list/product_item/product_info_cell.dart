@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:sudoo/domain/model/discovery/product.dart';
 
+import '../../../../../domain/model/discovery/product_info.dart';
+import '../../../../../domain/model/discovery/upsert_product.dart';
 import '../../../../../resources/R.dart';
 import '../../../../widgets/text_section.dart';
 
 class ProductInfoCell extends StatelessWidget {
-  final Product product;
+  final ProductInfo product;
   final TextStyle? textStyle;
-  const ProductInfoCell({super.key, required this.product, this.textStyle});
+
+  const ProductInfoCell({
+    super.key,
+    required this.product,
+    this.textStyle,
+  });
 
   @override
   Widget build(BuildContext context) {

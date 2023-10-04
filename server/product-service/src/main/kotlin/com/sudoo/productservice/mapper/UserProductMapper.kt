@@ -15,10 +15,12 @@ fun UserProductDto.toUserProduct(userId: String): UserProduct {
         isLike = isLike,
         comment = comment,
         createAt = createAt ?: LocalDateTime.now(),
-    )
+    ).also {
+        it.isNewUserProduct = userProductId.isNullOrEmpty()
+    }
 }
 
-fun UserProduct.toUserProductDto(userInfo: UserInfoDto? = null, images: List<String>? = null): UserProductDto {
+fun UserProduct.toUserProductDto(userInfo: UserInfoDto? = null): UserProductDto {
     return UserProductDto(
         userProductId = userProductId,
         productId = productId,
@@ -27,6 +29,6 @@ fun UserProduct.toUserProductDto(userInfo: UserInfoDto? = null, images: List<Str
         comment = comment,
         createAt = createAt,
         userInfo = userInfo,
-        images = images
+        images = images?.map { it.url }
     )
 }

@@ -6,10 +6,10 @@ class Category {
   final String image;
   final List<Product>? products;
 
-  Category(
+  const Category(
     this.categoryId,
     this.name,
-    this.image, [
+    this.image, {
     this.products,
-  ]);
+  });
 }

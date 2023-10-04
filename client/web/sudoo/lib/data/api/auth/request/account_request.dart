@@ -2,7 +2,7 @@
 
 import 'package:sudoo/data/api/base_request.dart';
 
-class AccountRequest extends BaseRequest{
+class AccountRequest extends BaseRequest {
   final String emailOrPhoneNumber;
   final String password;
 

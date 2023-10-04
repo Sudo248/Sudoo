@@ -38,7 +38,7 @@ class AccountServiceImpl(
             throw EmailOrPhoneNumberNotValidatedException()
         }
         val token = tokenUtils.generateToken(account.userId)
-        val refreshToken = tokenUtils.generateRefreshToken(token)
+        val refreshToken = tokenUtils.generateRefreshToken(account.userId)
         return TokenDto(token, refreshToken)
     }
 

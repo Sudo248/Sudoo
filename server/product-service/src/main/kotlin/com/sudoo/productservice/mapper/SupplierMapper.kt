@@ -10,7 +10,6 @@ import java.time.LocalDateTime
 fun Supplier.toSupplierDto(totalProducts: Int): SupplierDto {
     return SupplierDto(
         supplierId = supplierId,
-        userId = userId,
         name = name,
         avatar = avatar,
         brand = brand,
@@ -36,7 +35,7 @@ fun Supplier.toSupplierInfoDto(): SupplierInfoDto {
     )
 }
 
-fun SupplierDto.toSupplier(): Supplier {
+fun SupplierDto.toSupplier(userId: String): Supplier {
     return Supplier(
         supplierId = IdentifyCreator.createOrElse(supplierId),
         userId = userId,
@@ -47,7 +46,9 @@ fun SupplierDto.toSupplier(): Supplier {
         latitude = location.latitude,
         locationName = locationName,
         contactUrl = contactUrl,
-        rate = rate,
+        rate = rate ?: 5.0f,
         createAt = createAt ?: LocalDateTime.now()
-    )
+    ).also {
+        it.isNewSupplier = supplierId.isNullOrEmpty()
+    }
 }

@@ -3,7 +3,7 @@ import 'package:sudoo/app/base/base_route.dart';
 import 'package:sudoo/app/pages/auth/views/auth_page.dart';
 import 'package:sudoo/app/pages/dashboard/views/dashboard_page.dart';
 import 'package:sudoo/app/pages/home/home_page.dart';
-import 'package:sudoo/app/pages/product/add_product/add_product_page.dart';
+import 'package:sudoo/app/pages/product/product/product_page.dart';
 import 'package:sudoo/app/pages/product/product_list/product_list_page.dart';
 import 'package:sudoo/app/routes/app_routes.dart';
 
@@ -15,8 +15,8 @@ abstract class AppPages {
         return BaseRoute(builder: (ctx) => HomePage());
       case AppRoutes.productList:
         return BaseRoute(builder: (ctx) => ProductListPage());
-      case AppRoutes.addProduct:
-        return BaseRoute(builder: (ctx) => AddProductPage());
+      case AppRoutes.product:
+        return BaseRoute(builder: (ctx) => ProductPage());
       default:
         return BaseRoute(builder: (ctx) => const SizedBox.shrink());
     }

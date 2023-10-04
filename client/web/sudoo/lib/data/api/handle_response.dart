@@ -46,7 +46,7 @@ mixin HandleResponse {
         }
       }
     } on ApiException catch (e) {
-      return DataState.error<ApiException>(e);
+      return DataState.error<dynamic, ApiException>(e);
     }
   }
 }

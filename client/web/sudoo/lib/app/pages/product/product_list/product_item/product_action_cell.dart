@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:sudoo/domain/model/discovery/product.dart';
+import 'package:sudoo/app/model/product_info_action_callback.dart';
+import 'package:sudoo/app/widgets/confirm_dialog.dart';
+import 'package:sudoo/domain/model/discovery/product_info.dart';
 
 import '../../../../../resources/R.dart';
 
 enum ProductAction {
+  viewDetail("View detail"),
   manageImages("Manage images"),
   delete("Delete");
 
@@ -13,9 +16,16 @@ enum ProductAction {
 }
 
 class ProductActionCell extends StatelessWidget {
-  final Product product;
+  final ProductInfo product;
+  final ProductInfoActionCallback callback;
   final TextStyle? textStyle;
-  const ProductActionCell({super.key, required this.product, this.textStyle});
+
+  const ProductActionCell({
+    super.key,
+    required this.product,
+    required this.callback,
+    this.textStyle,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +46,12 @@ class ProductActionCell extends StatelessWidget {
           padding: const EdgeInsets.only(left: 10),
           items: [
             DropdownMenuItem(
+              value: ProductAction.viewDetail,
+              child: Text(
+                ProductAction.viewDetail.value,
+              ),
+            ),
+            DropdownMenuItem(
               value: ProductAction.manageImages,
               child: Text(
                 ProductAction.manageImages.value,
@@ -48,7 +64,27 @@ class ProductActionCell extends StatelessWidget {
               ),
             ),
           ],
-          onChanged: (value) {},
+          onChanged: (value) {
+            switch (value) {
+              case ProductAction.viewDetail:
+                callback.viewDetailProduct(product.productId);
+                break;
+              case ProductAction.manageImages:
+                callback.manageImages();
+                break;
+              case ProductAction.delete:
+                showDialog(
+                  context: context,
+                  builder: (context) => ConfirmDialog(
+                    title: "Delete this product?",
+                    onPositive: () {
+                      callback.deleteProduct(product.productId);
+                    },
+                  ),
+                );
+              default:
+            }
+          },
         ),
       ],
     );

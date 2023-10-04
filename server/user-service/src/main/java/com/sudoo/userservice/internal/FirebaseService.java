@@ -7,10 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(value = "CHAT-SERVICE")
+@FeignClient(value = "NOTIFICATION-SERVICE")
 public interface FirebaseService {
 
-    @PostMapping("/api/v1/chat/user")
+    @PostMapping("/api/v1/chats/user")
     ResponseEntity<BaseResponse<?>> upsertFirebaseUser(@RequestBody FirebaseUserDto user);
 
 }

@@ -24,6 +24,10 @@ class CurrencyFormatUtils {
     return currencyFormat.format(value);
   }
 
+  num parser(String text) {
+    return currencyFormat.parse(text);
+  }
+
   String formatWithDecimalDigits(double value, int decimalDigits) {
     return NumberFormat.simpleCurrency(
       locale: "vi-VN",

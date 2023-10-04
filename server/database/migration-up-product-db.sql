@@ -1,20 +1,19 @@
-USE
-    `product-db`;
+USE `product-db`;
 
 DROP TABLE IF EXISTS `suppliers`;
 CREATE TABLE `suppliers`
 (
-    `supplier_id`  CHAR(32)     NOT NULL PRIMARY KEY,
-    `user_id`      CHAR(32)     NOT NULL,
-    `name`         VARCHAR(255) NOT NULL,
-    `avatar`       VARCHAR(255),
-    `brand`        VARCHAR(255),
-    `contact_url`  VARCHAR(255),
-    `longitude`    FLOAT8   DEFAULT 0.0,
-    `latitude`     FLOAT8   DEFAULT 0.0,
-    `locationName` VARCHAR(255),
-    `rate`         FLOAT4   DEFAULT 0.0,
-    `create_at`    DATETIME DEFAULT CURRENT_TIMESTAMP
+    `supplier_id`   CHAR(32)     NOT NULL PRIMARY KEY,
+    `user_id`       CHAR(32)     NOT NULL,
+    `name`          VARCHAR(255) NOT NULL,
+    `avatar`        VARCHAR(255),
+    `brand`         VARCHAR(255),
+    `contact_url`   VARCHAR(255),
+    `longitude`     FLOAT8   DEFAULT 0.0,
+    `latitude`      FLOAT8   DEFAULT 0.0,
+    `location_name` VARCHAR(255),
+    `rate`          FLOAT4   DEFAULT 0.0,
+    `create_at`     DATETIME DEFAULT CURRENT_TIMESTAMP
 ) CHARACTER SET = utf8mb4
     COMMENT = 'Store all supplier';
 
@@ -25,6 +24,7 @@ CREATE TABLE `products`
     `supplier_id`         CHAR(32)     NOT NULL,
     `sku`                 CHAR(15)     NOT NULL UNIQUE,
     `name`                VARCHAR(255) NOT NULL,
+    `description`         TEXT,
     `price`               FLOAT4,
     `listed_price`        FLOAT4,
     `amount`              INT4         NOT NULL,
@@ -32,7 +32,7 @@ CREATE TABLE `products`
     `rate`                FLOAT4                DEFAULT 0.0,
     `total_rate_amount`   INT4,
     `discount`            INT4                  DEFAULT 0,
-    `sellable`            BOOLEAN               DEFAULT TRUE,
+    `saleable`            BOOLEAN               DEFAULT TRUE,
     `start_date_discount` DATETIME              DEFAULT CURRENT_TIMESTAMP,
     `end_date_discount`   DATETIME              DEFAULT CURRENT_TIMESTAMP,
 
@@ -56,7 +56,7 @@ CREATE TABLE `categories`
 DROP TABLE IF EXISTS `categories_products`;
 CREATE TABLE `categories_products`
 (
-    `category_product_id` CHAR(32) NOT NULL PRIMARY KEY ,
+    `category_product_id` CHAR(32) NOT NULL PRIMARY KEY,
     `product_id`          CHAR(32) NOT NULL,
     `category_id`         CHAR(32) NOT NULL,
 
@@ -70,7 +70,7 @@ CREATE TABLE `users_products`
 (
     `user_product_id` CHAR(32) NOT NULL PRIMARY KEY,
     `product_id`      CHAR(32) NOT NULL,
-    `userId`          CHAR(32) NOT NULL,
+    `user_id`          CHAR(32) NOT NULL,
     `rate`            FLOAT4   DEFAULT 0.0,
     `is_like`         BOOLEAN  DEFAULT FALSE,
     `comment`         TEXT,
@@ -87,7 +87,7 @@ DROP TABLE IF EXISTS `images`;
 CREATE TABLE `images`
 (
     `image_id` CHAR(32)     NOT NULL PRIMARY KEY,
-    `ownerId`  CHAR(32)     NOT NULL,
+    `owner_id`  CHAR(32)     NOT NULL,
     `url`      VARCHAR(255) NOT NULL
 ) CHARACTER SET = utf8mb4
     COMMENT = 'Store all images';

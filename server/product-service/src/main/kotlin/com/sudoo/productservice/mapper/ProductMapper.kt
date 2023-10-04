@@ -21,8 +21,10 @@ fun UpsertProductDto.toProduct(supplierId: String, brand: String): Product {
         discount = discount ?: 0,
         startDateDiscount = startDateDiscount,
         endDateDiscount = endDateDiscount,
-        sellable = sellable ?: true,
-    )
+        saleable = saleable ?: true,
+    ).also {
+        it.isNewProduct = productId.isNullOrEmpty()
+    }
 }
 
 fun UpsertProductDto.combineProduct(product: Product): Product {
@@ -41,15 +43,11 @@ fun UpsertProductDto.combineProduct(product: Product): Product {
         discount = discount ?: product.discount,
         startDateDiscount = startDateDiscount ?: product.startDateDiscount,
         endDateDiscount = endDateDiscount ?: product.endDateDiscount,
-        sellable = sellable ?: product.sellable,
+        saleable = saleable ?: product.saleable,
     )
 }
 
-fun Product.toProductDto(
-    supplier: SupplierInfoDto? = null,
-    categories: List<CategoryInfoDto>? = null,
-    images: List<ImageDto>? = null,
-): ProductDto {
+fun Product.toProductDto(): ProductDto {
     return ProductDto(
         productId = productId,
         sku = sku,
@@ -63,10 +61,29 @@ fun Product.toProductDto(
         discount = discount,
         startDateDiscount = startDateDiscount,
         endDateDiscount = endDateDiscount,
-        sellable = sellable,
-        supplier = supplier,
-        categories = categories,
-        images = images,
+        saleable = saleable,
+        supplier = supplier?.toSupplierInfoDto(),
+        categories = categories?.map { it.toCategoryInfoDto() },
+        images = images?.map { it.url },
+    )
+}
+
+fun Product.toUpsertProductDto(categoryIds: List<String>? = null, images: List<String>? = null): UpsertProductDto {
+    return UpsertProductDto(
+        productId,
+        sku,
+        name,
+        description,
+        price,
+        listedPrice,
+        amount,
+        soldAmount,
+        discount,
+        startDateDiscount,
+        endDateDiscount,
+        saleable,
+        categoryIds = categoryIds,
+        images = images
     )
 }
 
@@ -76,13 +93,14 @@ fun ProductInfo.toProductInfoDto(): ProductInfoDto {
         sku = sku,
         name = name,
         price = price,
+        amount = amount,
         listedPrice = listedPrice,
         discount = discount,
         startDateDiscount = startDateDiscount,
         endDateDiscount = endDateDiscount,
         brand = brand,
         rate = rate,
-        sellable = sellable,
-        images = images.orEmpty(),
+        saleable = saleable,
+        images = images,
     )
 }

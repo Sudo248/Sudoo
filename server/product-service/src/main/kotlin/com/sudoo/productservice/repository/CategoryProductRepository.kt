@@ -31,4 +31,6 @@ interface CategoryProductRepository : CoroutineCrudRepository<CategoryProduct, S
 
 
     fun getByProductId(productId: String): Flow<CategoryProduct>
+
+    suspend fun deleteCategoryProductByCategoryIdAndProductId(categoryId: String, productId: String)
 }

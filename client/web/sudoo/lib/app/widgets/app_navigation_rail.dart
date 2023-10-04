@@ -57,7 +57,7 @@ class _AppNavigationRailState extends State<AppNavigationRail> {
                   widget.navigator.navigateTo(AppRoutes.productList);
                   break;
                 case 1:
-                  widget.navigator.navigateTo(AppRoutes.addProduct);
+                  widget.navigator.navigateTo(AppRoutes.product);
                   break;
                 default:
                   break;

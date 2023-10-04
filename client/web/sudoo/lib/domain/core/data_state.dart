@@ -1,9 +1,9 @@
 
 abstract class DataState<T, E extends Exception> {
-  static DataState<void, Exception> idle() => _Idle();
-  static DataState<void, Exception> loading() => _Loading();
+  static DataState<T, Exception> idle<T>() => _Idle<T>();
+  static DataState<T, Exception> loading<T>() => _Loading<T>();
   static DataState<T, Exception> success<T>(T data) => _Success<T>(data: data);
-  static DataState<void, E> error<E extends Exception>(E error) => _Error<E>(error: error);
+  static DataState<T, E> error<T, E extends Exception>(E error) => _Error<T, E>(error: error);
 
   bool get isLoading => this is _Loading;
   bool get isSuccess => this is _Success;
@@ -31,16 +31,16 @@ abstract class DataState<T, E extends Exception> {
   E getError() => requireError();
 }
 
-class _Idle extends DataState<void, Exception> {}
+class _Idle<T> extends DataState<T, Exception> {}
 
-class _Loading extends DataState<void, Exception> {}
+class _Loading<T> extends DataState<T, Exception> {}
 
 class _Success<T> extends DataState<T, Exception> {
   final T data;
   _Success({required this.data});
 }
 
-class _Error<E extends Exception> extends DataState<void, E> {
+class _Error<T, E extends Exception> extends DataState<T, E> {
   final E error;
   _Error({required this.error});
 }

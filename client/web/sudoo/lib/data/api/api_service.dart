@@ -4,6 +4,7 @@ abstract class ApiService {
   Future get(
     String path, {
     Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? headers,
   });
 
   Future post(
@@ -11,6 +12,7 @@ abstract class ApiService {
     dynamic body,
     BaseRequest? request,
     Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? headers,
   });
 
   Future put(
@@ -18,11 +20,21 @@ abstract class ApiService {
     dynamic body,
     BaseRequest? request,
     Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? headers,
+  });
+
+  Future patch(
+    String path, {
+    dynamic body,
+    BaseRequest? request,
+    Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? headers,
   });
 
   Future delete(
     String path, {
     Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? headers,
   });
 
   Future upload(

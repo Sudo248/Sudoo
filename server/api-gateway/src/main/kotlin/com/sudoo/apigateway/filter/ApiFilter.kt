@@ -7,6 +7,7 @@ import com.sudoo.domain.common.SudooError
 import com.sudoo.domain.exception.ApiException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.reactive.awaitFirstOrNull
+import kotlinx.coroutines.reactive.awaitLast
 import kotlinx.coroutines.reactor.mono
 import org.slf4j.LoggerFactory
 import org.springframework.cloud.gateway.filter.GatewayFilter
@@ -67,7 +68,10 @@ class ApiFilter(
                     try {
                         if (tokenUtils.validateToken(token)) {
                             val userId = tokenUtils.getUserIdFromToken(token)
-                            request = request.mutate().header(Constants.HEADER_USER_ID, userId).build()
+                            request = request.mutate().headers {
+                                it.remove(Constants.AUTHORIZATION)
+                                it.add(Constants.HEADER_USER_ID, userId)
+                            }.build()
                             newExchange = exchange.mutate().request(request).build()
                         }
                     } catch (e: ApiException) {

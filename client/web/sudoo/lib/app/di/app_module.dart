@@ -18,6 +18,6 @@ class AppModule {
 
     getIt.registerFactory(() => DashboardBloc());
 
-    getIt.registerFactory(() => ProductListBloc());
+    getIt.registerFactory(() => ProductListBloc(getIt.get(), getIt.get()));
   }
 }

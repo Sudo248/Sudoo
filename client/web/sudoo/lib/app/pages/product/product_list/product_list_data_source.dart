@@ -1,43 +1,62 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:sudoo/app/model/category_callback.dart';
+import 'package:sudoo/app/model/product_info_action_callback.dart';
+import 'package:sudoo/domain/model/discovery/upsert_product.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+
+import '../../../../domain/model/discovery/product_info.dart';
 import 'product_item/product_action_cell.dart';
 import 'product_item/product_info_cell.dart';
 import 'product_item/product_sale_info_cell.dart';
 import 'product_item/product_sale_status_cell.dart';
 import 'product_list_data_table.dart';
-import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-
-import '../../../../domain/model/discovery/product.dart';
 
 class ProductListDataSource extends DataGridSource {
   final AsyncCallback loadMore;
-  final List<Product> products = List.empty(growable: true);
+  final CategoryCallback categoryCallback;
+  final ProductInfoActionCallback productActionCallback;
+  final Future<UpsertProduct> Function(UpsertProduct) patchProduct;
+  final List<ProductInfo> products = List.empty(growable: true);
   List<DataGridRow> _dataRows = List.empty();
 
-  ProductListDataSource({required this.loadMore});
+  ProductListDataSource({
+    required this.loadMore,
+    required this.categoryCallback,
+    required this.productActionCallback,
+    required this.patchProduct,
+  });
 
   @override
   DataGridRowAdapter? buildRow(DataGridRow row) {
     return DataGridRowAdapter(
       cells: row.getCells().map<Widget>(
-            (cell) {
+        (cell) {
           switch (cell.columnName) {
             case "product":
               return Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: ProductInfoCell(product: cell.value),
+                child: ProductInfoCell(
+                  product: cell.value,
+                ),
               );
             case "sale-info":
               return Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: ProductSaleInfoCell(product: cell.value),
+                child: ProductSaleInfoCell(
+                  product: cell.value,
+                  categoryCallback: categoryCallback,
+                  patchProduct: patchProduct,
+                ),
               );
             case "sale-status":
               return Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: ProductSaleStatusCell(
                   isSellable: cell.value,
-                  onChanged: (isSellable) {},
+                  onChanged: (saleable) {
+                    patchProduct(UpsertProduct(saleable: saleable));
+                  },
                 ),
               );
             case "action":
@@ -45,6 +64,7 @@ class ProductListDataSource extends DataGridSource {
                 padding: const EdgeInsets.all(10.0),
                 child: ProductActionCell(
                   product: cell.value,
+                  callback: productActionCallback,
                 ),
               );
             default:
@@ -61,26 +81,26 @@ class ProductListDataSource extends DataGridSource {
   @override
   Future<void> handleLoadMoreRows() => loadMore();
 
-  DataGridRow _mapFromProduct(Product product) => DataGridRow(
-    cells: [
-      DataGridCell(
-        columnName: ColumnName.product.name,
-        value: product,
-      ),
-      DataGridCell(
-        columnName: ColumnName.saleInfo.name,
-        value: product,
-      ),
-      DataGridCell(
-        columnName: ColumnName.saleStatus.name,
-        value: product.saleable,
-      ),
-      DataGridCell(
-        columnName: ColumnName.action.name,
-        value: product,
-      )
-    ],
-  );
+  DataGridRow _mapFromProduct(ProductInfo product) => DataGridRow(
+        cells: [
+          DataGridCell(
+            columnName: ColumnName.product.name,
+            value: product,
+          ),
+          DataGridCell(
+            columnName: ColumnName.saleInfo.name,
+            value: product,
+          ),
+          DataGridCell(
+            columnName: ColumnName.saleStatus.name,
+            value: product.saleable,
+          ),
+          DataGridCell(
+            columnName: ColumnName.action.name,
+            value: product,
+          )
+        ],
+      );
 
   void buildDataRows() {
     _dataRows = products
@@ -88,12 +108,17 @@ class ProductListDataSource extends DataGridSource {
         .toList();
   }
 
-  void addProducts(List<Product> products) {
-    products.addAll(products);
+  void addProducts(List<ProductInfo> products) {
+    this.products.addAll(products);
     notifyDataSetChange();
   }
 
-  void setProducts(List<Product> products) {
+  void deleteProduct(String productId) {
+    products.removeWhere((element) => element.productId == productId);
+    notifyDataSetChange();
+  }
+
+  void setProducts(List<ProductInfo> products) {
     this.products.clear();
     this.products.addAll(products);
     notifyDataSetChange();

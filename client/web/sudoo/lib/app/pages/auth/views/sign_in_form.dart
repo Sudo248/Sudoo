@@ -34,6 +34,7 @@ class _SignInFormState extends State<SignInForm> {
       key: widget.bloc.formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             R.string.welcomeBack,

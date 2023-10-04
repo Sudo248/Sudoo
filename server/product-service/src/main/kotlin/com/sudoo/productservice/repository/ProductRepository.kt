@@ -7,33 +7,11 @@ import org.springframework.data.r2dbc.repository.Query
 import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
-import org.springframework.transaction.annotation.Transactional
 
 @Repository
 interface ProductRepository : CoroutineCrudRepository<Product, String> {
     suspend fun getProductBySku(sku: String): Product?
 
-    @Transactional
-    @Query("""
-        SELECT 
-        products.product_id, 
-        products.sku, 
-        products.name, 
-        products.price,
-        products.listed_price,
-        products.sellable,
-        products.rate,
-        products.discount,
-        products.start_date_discount,
-        product.end_date_discount
-        FROM products
-        WHERE products.product_id = :productId
-        LIMIT 1;
-    """)
-    suspend fun getProductInfoById(@Param("productId") productId: String): ProductInfo
-
-
-    @Transactional
     @Query(
         """
         SELECT 
@@ -42,7 +20,29 @@ interface ProductRepository : CoroutineCrudRepository<Product, String> {
         products.name, 
         products.price,
         products.listed_price,
-        products.sellable,
+        products.amount,
+        products.saleable,
+        products.rate,
+        products.discount,
+        products.start_date_discount,
+        products.end_date_discount
+        FROM products
+        WHERE products.product_id = :productId
+        LIMIT 1;
+    """
+    )
+    suspend fun getProductInfoById(@Param("productId") productId: String): ProductInfo
+
+    @Query(
+        """
+        SELECT 
+        products.product_id, 
+        products.sku, 
+        products.name, 
+        products.price,
+        products.listed_price,
+        products.amount,
+        products.saleable,
         products.rate,
         products.discount,
         products.start_date_discount,
@@ -55,20 +55,21 @@ interface ProductRepository : CoroutineCrudRepository<Product, String> {
     )
     fun searchProductInfoByName(@Param("_name") name: String): Flow<ProductInfo>
 
-    @Transactional
     @Query(
         """
         SELECT 
         products.product_id, 
+        products.supplier_id,
         products.sku, 
         products.name, 
         products.price,
         products.listed_price,
-        products.sellable,
+        products.amount,
+        products.saleable,
         products.rate,
         products.discount,
         products.start_date_discount,
-        product.end_date_discount
+        products.end_date_discount
         FROM products 
         LIMIT :_limit
         OFFSET :_offset
@@ -76,8 +77,8 @@ interface ProductRepository : CoroutineCrudRepository<Product, String> {
     )
     fun getProductInfoWithOffset(@Param("_offset") offset: Int = 0, @Param("_limit") limit: Int = 0): Flow<ProductInfo>
 
-    @Transactional
-    @Query("""
+    @Query(
+        """
         SELECT categories_products.product_id 
         FROM categories_products 
         WHERE categories_products.category_id = :categoryId 
@@ -93,16 +94,17 @@ interface ProductRepository : CoroutineCrudRepository<Product, String> {
 
     suspend fun countBySupplierId(supplierId: String): Long
 
-    @Transactional
     @Query(
         """
         SELECT 
         products.product_id, 
+        products.supplier_id,
         products.sku, 
         products.name, 
         products.price,
         products.listed_price,
-        products.sellable,
+        products.amount,
+        products.saleable,
         products.rate,
         products.discount,
         products.start_date_discount,

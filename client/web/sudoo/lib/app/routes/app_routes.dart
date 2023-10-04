@@ -4,5 +4,5 @@ abstract class AppRoutes {
   static const String dashboard = "/dashboard";
   static const String auth = "/auth";
   static const String productList = "/product/list";
-  static const String addProduct = "/product/add";
+  static const String product = "/product";
 }

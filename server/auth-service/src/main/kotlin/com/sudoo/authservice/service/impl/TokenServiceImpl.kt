@@ -13,7 +13,7 @@ class TokenServiceImpl(
         tokenUtils.validateToken(refreshToken)
         val userId = tokenUtils.getUserIdFromRefreshToken(refreshToken)
         val token = tokenUtils.generateToken(userId)
-        val newRefreshToken = tokenUtils.generateRefreshToken(token)
+        val newRefreshToken = tokenUtils.generateRefreshToken(userId)
         return TokenDto(
             token = token,
             refreshToken = newRefreshToken

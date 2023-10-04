@@ -7,6 +7,7 @@ abstract class R {
   static AppDrawable drawable = AppDrawable();
   static AppFont font = AppFont();
   static AppStyle style = AppStyle();
+  static AppButtonStyle buttonStyle = AppButtonStyle();
 }
 
 class AppString extends R {
@@ -137,4 +138,52 @@ class AppDrawable extends R {
   static const String _iconPath = "assets/icons";
 
   String get iconLauncher => "$_iconPath/ic_launcher.svg";
+}
+
+class AppButtonStyle extends R {
+  ButtonStyle filledButtonStyle({
+    Color? backgroundColor,
+    OutlinedBorder? shape,
+    EdgeInsetsGeometry? padding,
+  }) {
+    return ButtonStyle(
+      backgroundColor: MaterialStateProperty.all<Color?>(
+        backgroundColor ?? R.color.primaryColor,
+      ),
+      shape: MaterialStateProperty.all<OutlinedBorder>(
+        shape ??
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+      ),
+      padding: MaterialStateProperty.all<EdgeInsetsGeometry?>(padding),
+    );
+  }
+
+  ButtonStyle outlinedButtonStyle({
+    Color? backgroundColor,
+    BorderSide? side,
+    OutlinedBorder? shape,
+    EdgeInsetsGeometry? padding,
+  }) {
+    return ButtonStyle(
+      backgroundColor: MaterialStateProperty.all<Color>(
+        backgroundColor ?? Colors.white,
+      ),
+      side: MaterialStateProperty.all<BorderSide>(
+        side ??
+            BorderSide(
+              width: 1.5,
+              color: R.color.primaryColor,
+            ),
+      ),
+      shape: MaterialStateProperty.all<OutlinedBorder>(
+        shape ??
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+      ),
+      padding: MaterialStateProperty.all<EdgeInsetsGeometry?>(padding),
+    );
+  }
 }

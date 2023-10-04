@@ -26,5 +26,7 @@ fun CategoryDto.toCategory(): Category {
         categoryId = IdentifyCreator.createOrElse(categoryId),
         name = name,
         image = image,
-    )
+    ).also {
+        it.isNewCategory = categoryId.isNullOrEmpty()
+    }
 }
