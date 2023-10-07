@@ -6,8 +6,8 @@ import javax.persistence.*
 
 @Table(name = "cartSupplierProduct")
 data class CartSupplierProduct(
-
-        @EmbeddedId
+        @Id
+        @Column("id")
         var id: SupplierProductKey,
 
         @Column("amount")

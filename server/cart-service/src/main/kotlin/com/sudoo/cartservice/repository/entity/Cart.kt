@@ -3,13 +3,12 @@ package com.sudoo.cartservice.repository.entity
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
-import javax.persistence.*
 
 @Table(name = "cart")
 data class Cart(
         @Id
         @Column("cart_id")
-        var cardId: String? = null,
+        var cartId: String? = null,
 
         @Column("total_price")
         var totalPrice: Double? = null,
@@ -24,6 +23,6 @@ data class Cart(
         var status: String? = null,
 
         @Column("cart")
-        var cartSupplierProduct: List<CartSupplierProduct> = listOf()
+        var cartSupplierProduct: List<CartSupplierProduct?> = listOf()
 
 )

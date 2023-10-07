@@ -10,5 +10,5 @@ interface CartService {
     suspend fun getCartById(userId: String, cartId: String, hasRoute: Boolean): CartDto
     suspend fun getActiveCartByUserId(userId: String): CartDto
     suspend fun getCountItemActiveCart(userId: String): Int
-    suspend fun getSupplierProduct(userId: String, cartId: String, list: List<CartSupplierProduct>, hasRoute: Boolean): List<CartSupplierProductDto>
+    suspend fun getSupplierProduct(userId: String, cartId: String, list: List<CartSupplierProduct?>, hasRoute: Boolean): List<CartSupplierProductDto>
 }

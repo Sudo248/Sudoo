@@ -1,10 +1,15 @@
 package com.sudoo.cartservice.repository.entity
 
+import lombok.*
 import java.io.Serializable
 import javax.persistence.Column
-import javax.persistence.Embeddable
+import javax.persistence.Entity
 
-@Embeddable
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 class SupplierProductKey : Serializable {
     @Column(name = "product_id")
     var productId: String? = null
