@@ -4,31 +4,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="389fd2dc-9d8f-4819-b2d8-a91464002ed2" name="Changes" comment="feat: model cart service + config docker">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+    <list default="true" id="389fd2dc-9d8f-4819-b2d8-a91464002ed2" name="Changes" comment="feat: logic cart-service">
+      <change afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/controller/CartProductController.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/controller/dto/CartProductDto.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/repository/CartProductRepository.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/repository/entity/CartProduct.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/service/CartProductService.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/service/impl/CartProductServiceImpl.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api-gateway/src/main/kotlin/com/sudoo/apigateway/utils/TokenUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/api-gateway/src/main/kotlin/com/sudoo/apigateway/utils/TokenUtils.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/controller/CartController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/controller/CartController.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/controller/CartSupplierProductController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/controller/CartSupplierProductController.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/controller/CartSupplierProductController.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/controller/dto/AddSupplierProductDto.kt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/controller/dto/CartDto.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/controller/dto/CartDto.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/controller/dto/CartSupplierProductDto.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/controller/dto/CartSupplierProductDto.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/controller/dto/CartSupplierProductDto.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/controller/dto/SupplierDto.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/controller/dto/SupplierProductDto.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/internal/DiscoveryService.kt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/repository/CartRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/repository/CartRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/repository/CartSupplierProductRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/repository/CartSupplierProductRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/repository/CartSupplierProductRepository.kt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/repository/entity/Cart.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/repository/entity/Cart.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/repository/entity/CartSupplierProduct.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/repository/entity/CartSupplierProduct.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/repository/entity/SupplierProductKey.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/repository/entity/SupplierProductKey.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/repository/entity/CartSupplierProduct.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/repository/entity/SupplierProductKey.kt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/service/CartService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/service/CartService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/service/CartSupplierProductService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/service/CartSupplierProductService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/service/CartSupplierProductService.kt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/service/impl/CartServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/service/impl/CartServiceImpl.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/service/impl/CartSupplierProductServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/service/impl/CartSupplierProductServiceImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/payment-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/payment-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/repository/CategoryProductRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/repository/CategoryProductRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/src/main/kotlin/com/sudoo/domain/utils/IdentifyCreator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/kotlin/com/sudoo/domain/utils/IdentifyCreator.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,6 +49,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/.." value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="HighlightingSettingsPerFile">
@@ -78,7 +83,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;cart-service&quot;,
     &quot;jdk.selected.JAVA_MODULE&quot;: &quot;11&quot;,
     &quot;last_opened_file_path&quot;: &quot;/Users/DATN/DATN/Sudoo/server&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -86,7 +91,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Global Libraries&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.19655173&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
@@ -112,6 +117,7 @@
       <recent name="$PROJECT_DIR$/database" />
     </key>
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="com.sudoo.cartservice.service" />
       <recent name="com.sudoo.authservice.config" />
       <recent name="com.sudoo.apigateway.config" />
     </key>
@@ -312,12 +318,49 @@
       <workItem from="1696517000946" duration="5946000" />
       <workItem from="1696600441316" duration="1726000" />
       <workItem from="1696605151523" duration="2114000" />
-      <workItem from="1696642735196" duration="374000" />
+      <workItem from="1696642735196" duration="16297000" />
+      <workItem from="1696730079143" duration="6943000" />
     </task>
+    <task id="LOCAL-00001" summary="feat: logic cart-service">
+      <option name="closed" value="true" />
+      <created>1696643290908</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1696643290908</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="cart-service" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="feat: logic cart-service" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: logic cart-service" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -326,6 +369,24 @@
           <url>file://$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/impl/ProductServiceImpl.kt</url>
           <line>99</line>
           <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-function">
+          <url>file://$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/ProductService.kt</url>
+          <line>16</line>
+          <properties class="com.sudoo.productservice.service.ProductService" method="getProductDetailById">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-function">
+          <url>file://$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/UserService.kt</url>
+          <line>5</line>
+          <properties class="com.sudoo.productservice.service.UserService" method="getUserInfo">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
