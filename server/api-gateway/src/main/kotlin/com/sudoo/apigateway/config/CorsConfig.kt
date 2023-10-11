@@ -19,6 +19,7 @@ class CorsConfig {
     fun corsConfigurationSource(): CorsConfigurationSource {
         val source = UrlBasedCorsConfigurationSource()
         val config = CorsConfiguration().applyPermitDefaultValues()
+//        val config = CorsConfiguration()
         config.addAllowedMethod(HttpMethod.GET)
         config.addAllowedMethod(HttpMethod.PUT)
         config.addAllowedMethod(HttpMethod.POST)

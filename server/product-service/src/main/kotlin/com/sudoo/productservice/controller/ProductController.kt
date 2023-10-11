@@ -82,6 +82,14 @@ class ProductController(
         imageService.getImageByOwnerId(productId)
     }
 
+    @DeleteMapping("/{productId}/images/{imageId}")
+    suspend fun deleteImageByProductId(
+            @PathVariable("productId") productId: String,
+            @PathVariable("imageId") imageId: String
+    ): ResponseEntity<BaseResponse<*>> = handle {
+        imageService.deleteImage(imageId)
+    }
+
     @GetMapping("/{productId}/categories")
     suspend fun getCategoriesByProductId(
         @PathVariable("productId") productId: String,

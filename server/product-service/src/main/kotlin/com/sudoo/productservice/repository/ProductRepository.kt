@@ -16,6 +16,7 @@ interface ProductRepository : CoroutineCrudRepository<Product, String> {
         """
         SELECT 
         products.product_id, 
+        products.supplier_id,
         products.sku, 
         products.name, 
         products.price,
@@ -37,6 +38,7 @@ interface ProductRepository : CoroutineCrudRepository<Product, String> {
         """
         SELECT 
         products.product_id, 
+        products.supplier_id,
         products.sku, 
         products.name, 
         products.price,

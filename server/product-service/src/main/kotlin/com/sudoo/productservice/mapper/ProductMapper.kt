@@ -64,28 +64,28 @@ fun Product.toProductDto(): ProductDto {
         saleable = saleable,
         supplier = supplier?.toSupplierInfoDto(),
         categories = categories?.map { it.toCategoryInfoDto() },
-        images = images?.map { it.url },
+        images = images?.map { it.toImageDto() },
     )
 }
 
-fun Product.toUpsertProductDto(categoryIds: List<String>? = null, images: List<String>? = null): UpsertProductDto {
-    return UpsertProductDto(
-        productId,
-        sku,
-        name,
-        description,
-        price,
-        listedPrice,
-        amount,
-        soldAmount,
-        discount,
-        startDateDiscount,
-        endDateDiscount,
-        saleable,
-        categoryIds = categoryIds,
-        images = images
-    )
-}
+//fun Product.toUpsertProductDto(categoryIds: List<String>? = null, images: List<String>? = null): UpsertProductDto {
+//    return UpsertProductDto(
+//        productId,
+//        sku,
+//        name,
+//        description,
+//        price,
+//        listedPrice,
+//        amount,
+//        soldAmount,
+//        discount,
+//        startDateDiscount,
+//        endDateDiscount,
+//        saleable,
+//        categoryIds = categoryIds,
+//        images = images
+//    )
+//}
 
 fun ProductInfo.toProductInfoDto(): ProductInfoDto {
     return ProductInfoDto(

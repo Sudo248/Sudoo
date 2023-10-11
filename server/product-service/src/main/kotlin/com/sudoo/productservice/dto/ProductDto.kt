@@ -16,7 +16,7 @@ data class ProductDto(
     val startDateDiscount: LocalDateTime? = null,
     val endDateDiscount: LocalDateTime? = null,
     val saleable: Boolean,
-    var images: List<String>? = null,
+    var images: List<ImageDto>? = null,
     var supplier: SupplierInfoDto? = null,
     var categories: List<CategoryInfoDto>? = null,
 )

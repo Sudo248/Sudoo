@@ -2,6 +2,7 @@ package com.sudo248.invoiceservice.controller;
 
 import com.sudo248.domain.base.BaseResponse;
 import com.sudo248.domain.common.Constants;
+import com.sudo248.domain.exception.ApiException;
 import com.sudo248.invoiceservice.controller.dto.UpsertOrderDto;
 import com.sudo248.invoiceservice.controller.dto.OrderDto;
 import com.sudo248.invoiceservice.service.OrderService;
@@ -23,7 +24,7 @@ public class OrderController {
     public ResponseEntity<BaseResponse<?>> addInvoice(
             @RequestHeader(Constants.HEADER_USER_ID) String userId,
             @RequestBody UpsertOrderDto upsertOrderDto
-    ) {
+    ) throws ApiException {
         UpsertOrderDto upsertOrderDto1 = orderService.upsertOrder(userId, upsertOrderDto);
         return BaseResponse.ok(upsertOrderDto1);
     }
@@ -31,13 +32,13 @@ public class OrderController {
     @GetMapping
     public ResponseEntity<BaseResponse<?>> getOrderByUserId(
             @RequestHeader(Constants.HEADER_USER_ID) String userId
-    ) {
+    ) throws ApiException {
         List<OrderDto> list = orderService.getOrdersByUserId(userId);
         return BaseResponse.ok(list);
     }
 
     @GetMapping("/{invoiceId}")
-    public ResponseEntity<BaseResponse<?>> getInvoiceByInvoiceId(@PathVariable String invoiceId) {
+    public ResponseEntity<BaseResponse<?>> getInvoiceByInvoiceId(@PathVariable String invoiceId) throws ApiException {
         OrderDto orderDto = orderService.getOrderById(invoiceId);
         return BaseResponse.ok(orderDto);
     }
@@ -55,7 +56,7 @@ public class OrderController {
             @PathVariable(name = "orderId") String orderId,
             @PathVariable(name = "field") String field,
             @PathVariable(name = "fieldId") String fieldId
-    ){
+    ) throws ApiException {
         OrderDto orderDto = orderService.updateOrderByField(orderId, field, fieldId);
         return BaseResponse.ok(orderDto);
     }

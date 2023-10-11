@@ -16,6 +16,7 @@ import org.springframework.core.annotation.Order
 import org.springframework.http.HttpStatus
 import org.springframework.http.server.reactive.ServerHttpRequest
 import org.springframework.stereotype.Component
+import org.springframework.web.reactive.server.awaitMultipartData
 import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.server.ServerWebExchange
 import reactor.core.publisher.Mono
@@ -43,7 +44,7 @@ class ApiFilter(
     }
 
     override fun filter(exchange: ServerWebExchange, chain: GatewayFilterChain): Mono<Void> {
-        return mono(Dispatchers.Unconfined) {
+//        return mono(Dispatchers.Unconfined) {
             var request = exchange.request
             var newExchange = exchange
 
@@ -80,7 +81,7 @@ class ApiFilter(
                     }
                 }
             }
-            chain.filter(newExchange).awaitFirstOrNull()
-        }
+            return chain.filter(newExchange)
+//        }
     }
 }

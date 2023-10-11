@@ -4,67 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="389fd2dc-9d8f-4819-b2d8-a91464002ed2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/app/dialog/choose_category_dialog.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/app/dialog/edit_price_dialog.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/app/model/category_callback.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/app/model/product_info_action_callback.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/app/pages/product/product/product_page.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/app/widgets/confirm_button.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/app/widgets/confirm_dialog.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/data/api/discovery/discovery_api_service.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/data/api/discovery/request/upsert_product_request.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/data/dto/discovery/category_dto.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/data/dto/discovery/category_product_dto.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/data/dto/discovery/pagination_dto.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/data/dto/discovery/product_dto.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/data/dto/discovery/product_info_dto.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/data/dto/discovery/product_pagination_dto.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/data/dto/discovery/supplier_dto.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/data/dto/discovery/upsert_product_dto.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/data/repository/category_repository_impl.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/data/repository/product_repository_impl.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/domain/model/discovery/Price.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/domain/model/discovery/category_product.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/domain/model/discovery/product_info.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/domain/model/discovery/product_pagination.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/domain/model/discovery/upsert_product.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/domain/repository/category_repository.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/domain/repository/product_repository.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/extensions/int_extensions.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/app/di/app_module.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/app/di/app_module.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/app/pages/auth/views/sign_in_form.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/app/pages/auth/views/sign_in_form.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/app/pages/product/add_product/add_product_page.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/app/pages/product/product_list/product_item/product_action_cell.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/app/pages/product/product_list/product_item/product_action_cell.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/app/pages/product/product_list/product_item/product_info_cell.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/app/pages/product/product_list/product_item/product_info_cell.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/app/pages/product/product_list/product_item/product_sale_info_cell.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/app/pages/product/product_list/product_item/product_sale_info_cell.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/app/pages/product/product_list/product_list_bloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/app/pages/product/product_list/product_list_bloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/app/pages/product/product_list/product_list_data_source.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/app/pages/product/product_list/product_list_data_source.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/app/pages/product/product_list/product_list_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/app/pages/product/product_list/product_list_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/app/routes/app_pages.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/app/routes/app_pages.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/app/routes/app_routes.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/app/routes/app_routes.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/app/widgets/app_navigation_rail.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/app/widgets/app_navigation_rail.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/data/api/api_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/data/api/api_service.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/data/api/auth/auth_api_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/data/api/auth/auth_api_service.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/data/api/auth/request/account_request.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/data/api/auth/request/account_request.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/data/api/dio_api_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/data/api/dio_api_service.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/data/api/handle_response.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/data/api/handle_response.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/data/di/data_module.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/data/di/data_module.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/data/repository/auth_repository_impl.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/data/repository/auth_repository_impl.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/domain/core/data_state.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/domain/core/data_state.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/domain/model/discovery/category.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/domain/model/discovery/category.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/domain/model/discovery/product.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/domain/model/discovery/product.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/domain/model/discovery/supplier.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/domain/model/discovery/supplier.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/domain/model/pagination.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/domain/model/pagination.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/domain/model/user/location.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/domain/model/user/location.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/domain/repository/auth_repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/domain/repository/auth_repository.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/extensions/list_ext.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/extensions/list_ext.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/extensions/string_ext.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/extensions/string_ext.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/resources/R.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/resources/R.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/utils/currency.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/utils/currency.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/sudoo/lib/utils/validator.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/lib/utils/validator.dart" afterDir="false" />
-    </list>
+    <list default="true" id="389fd2dc-9d8f-4819-b2d8-a91464002ed2" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -107,16 +47,18 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;jdk.selected.JAVA_MODULE&quot;: &quot;11&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/mnt/39178B285F7A3DB1/Code/Sudoo/server&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/leduong/Sudo248/Sudoo/server&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Global Libraries&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.19655173&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.customizations&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
   &quot;keyToStringList&quot;: {
@@ -160,7 +102,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.ProductServiceApplication">
+  <component name="RunManager" selected="Spring Boot.StorageServiceApplication">
     <configuration name="ApiGatewayApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="api-gateway" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.sudoo.apigateway.ApiGatewayApplication" />
@@ -330,6 +272,14 @@
       <workItem from="1696124557607" duration="5964000" />
       <workItem from="1696341093640" duration="2019000" />
       <workItem from="1696426957814" duration="2410000" />
+      <workItem from="1696513528440" duration="25000" />
+      <workItem from="1696513560209" duration="534000" />
+      <workItem from="1696514643986" duration="18000" />
+      <workItem from="1696516567598" duration="3145000" />
+      <workItem from="1696641439560" duration="3991000" />
+      <workItem from="1696733902620" duration="786000" />
+      <workItem from="1696863648320" duration="3356000" />
+      <workItem from="1696946086229" duration="10237000" />
     </task>
     <servers />
   </component>
@@ -341,8 +291,18 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/impl/ProductServiceImpl.kt</url>
-          <line>99</line>
+          <line>101</line>
           <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/storage-service/src/main/java/com/sudoo/storageservice/controller/ImageController.java</url>
+          <line>27</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/storage-service/src/main/java/com/sudoo/storageservice/controller/ImageController.java</url>
+          <line>28</line>
+          <option name="timeStamp" value="13" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

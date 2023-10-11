@@ -23,7 +23,7 @@ interface CategoryProductRepository : CoroutineCrudRepository<CategoryProduct, S
 
     @Transactional
     @Query("""
-        COUNT * FROM categories_products 
+        SELECT COUNT(categories_products.product_id) FROM categories_products 
         WHERE categories_products.category_id = :categoryId;
     """
     )
@@ -31,6 +31,8 @@ interface CategoryProductRepository : CoroutineCrudRepository<CategoryProduct, S
 
 
     fun getByProductId(productId: String): Flow<CategoryProduct>
+
+    suspend fun getByProductIdAndCategoryId(productId: String, categoryId: String): CategoryProduct?
 
     suspend fun deleteCategoryProductByCategoryIdAndProductId(categoryId: String, productId: String)
 }
