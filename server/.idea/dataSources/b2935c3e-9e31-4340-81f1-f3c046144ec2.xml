@@ -1,7 +1,273 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="sudoo@localhost">
   <database-model serializer="dbm" dbms="MYSQL" family-id="MYSQL" format-version="4.49">
-    <root id="1"/>
+    <root id="1">
+      <DefaultCasing>exact</DefaultCasing>
+      <DefaultEngine>InnoDB</DefaultEngine>
+      <DefaultTmpEngine>InnoDB</DefaultTmpEngine>
+      <Grants>|root||root||ALTER|G
+|root||root|localhost|ALTER|G
+|root||root||ALTER ROUTINE|G
+|root||root|localhost|ALTER ROUTINE|G
+|root||root||APPLICATION_PASSWORD_ADMIN|G
+|root||root|localhost|APPLICATION_PASSWORD_ADMIN|G
+|root||mysql.infoschema|localhost|AUDIT_ABORT_EXEMPT|G
+|root||mysql.session|localhost|AUDIT_ABORT_EXEMPT|G
+|root||mysql.sys|localhost|AUDIT_ABORT_EXEMPT|G
+|root||root||AUDIT_ABORT_EXEMPT|G
+|root||root|localhost|AUDIT_ABORT_EXEMPT|G
+|root||root||AUDIT_ADMIN|G
+|root||root|localhost|AUDIT_ADMIN|G
+|root||mysql.session|localhost|AUTHENTICATION_POLICY_ADMIN|G
+|root||root||AUTHENTICATION_POLICY_ADMIN|G
+|root||root|localhost|AUTHENTICATION_POLICY_ADMIN|G
+|root||mysql.session|localhost|BACKUP_ADMIN|G
+|root||root||BACKUP_ADMIN|G
+|root||root|localhost|BACKUP_ADMIN|G
+|root||root||BINLOG_ADMIN|G
+|root||root|localhost|BINLOG_ADMIN|G
+|root||root||BINLOG_ENCRYPTION_ADMIN|G
+|root||root|localhost|BINLOG_ENCRYPTION_ADMIN|G
+|root||mysql.session|localhost|CLONE_ADMIN|G
+|root||root||CLONE_ADMIN|G
+|root||root|localhost|CLONE_ADMIN|G
+|root||mysql.session|localhost|CONNECTION_ADMIN|G
+|root||root||CONNECTION_ADMIN|G
+|root||root|localhost|CONNECTION_ADMIN|G
+|root||root||CREATE|G
+|root||root|localhost|CREATE|G
+|root||root||CREATE ROLE|G
+|root||root|localhost|CREATE ROLE|G
+|root||root||CREATE ROUTINE|G
+|root||root|localhost|CREATE ROUTINE|G
+|root||root||CREATE TABLESPACE|G
+|root||root|localhost|CREATE TABLESPACE|G
+|root||root||CREATE TEMPORARY TABLES|G
+|root||root|localhost|CREATE TEMPORARY TABLES|G
+|root||root||CREATE USER|G
+|root||root|localhost|CREATE USER|G
+|root||root||CREATE VIEW|G
+|root||root|localhost|CREATE VIEW|G
+|root||root||DELETE|G
+|root||root|localhost|DELETE|G
+|root||root||DROP|G
+|root||root|localhost|DROP|G
+|root||root||DROP ROLE|G
+|root||root|localhost|DROP ROLE|G
+|root||root||ENCRYPTION_KEY_ADMIN|G
+|root||root|localhost|ENCRYPTION_KEY_ADMIN|G
+|root||root||EVENT|G
+|root||root|localhost|EVENT|G
+|root||root||EXECUTE|G
+|root||root|localhost|EXECUTE|G
+|root||root||FILE|G
+|root||root|localhost|FILE|G
+|root||mysql.infoschema|localhost|FIREWALL_EXEMPT|G
+|root||mysql.session|localhost|FIREWALL_EXEMPT|G
+|root||mysql.sys|localhost|FIREWALL_EXEMPT|G
+|root||root||FIREWALL_EXEMPT|G
+|root||root|localhost|FIREWALL_EXEMPT|G
+|root||root||FLUSH_OPTIMIZER_COSTS|G
+|root||root|localhost|FLUSH_OPTIMIZER_COSTS|G
+|root||root||FLUSH_STATUS|G
+|root||root|localhost|FLUSH_STATUS|G
+|root||root||FLUSH_TABLES|G
+|root||root|localhost|FLUSH_TABLES|G
+|root||root||FLUSH_USER_RESOURCES|G
+|root||root|localhost|FLUSH_USER_RESOURCES|G
+|root||root||GROUP_REPLICATION_ADMIN|G
+|root||root|localhost|GROUP_REPLICATION_ADMIN|G
+|root||root||GROUP_REPLICATION_STREAM|G
+|root||root|localhost|GROUP_REPLICATION_STREAM|G
+|root||root||INDEX|G
+|root||root|localhost|INDEX|G
+|root||root||INNODB_REDO_LOG_ARCHIVE|G
+|root||root|localhost|INNODB_REDO_LOG_ARCHIVE|G
+|root||root||INNODB_REDO_LOG_ENABLE|G
+|root||root|localhost|INNODB_REDO_LOG_ENABLE|G
+|root||root||INSERT|G
+|root||root|localhost|INSERT|G
+|root||root||LOCK TABLES|G
+|root||root|localhost|LOCK TABLES|G
+|root||root||PASSWORDLESS_USER_ADMIN|G
+|root||root|localhost|PASSWORDLESS_USER_ADMIN|G
+|root||mysql.session|localhost|PERSIST_RO_VARIABLES_ADMIN|G
+|root||root||PERSIST_RO_VARIABLES_ADMIN|G
+|root||root|localhost|PERSIST_RO_VARIABLES_ADMIN|G
+|root||root||PROCESS|G
+|root||root|localhost|PROCESS|G
+|root||root||REFERENCES|G
+|root||root|localhost|REFERENCES|G
+|root||root||RELOAD|G
+|root||root|localhost|RELOAD|G
+|root||root||REPLICATION CLIENT|G
+|root||root|localhost|REPLICATION CLIENT|G
+|root||root||REPLICATION SLAVE|G
+|root||root|localhost|REPLICATION SLAVE|G
+|root||root||REPLICATION_APPLIER|G
+|root||root|localhost|REPLICATION_APPLIER|G
+|root||root||REPLICATION_SLAVE_ADMIN|G
+|root||root|localhost|REPLICATION_SLAVE_ADMIN|G
+|root||root||RESOURCE_GROUP_ADMIN|G
+|root||root|localhost|RESOURCE_GROUP_ADMIN|G
+|root||root||RESOURCE_GROUP_USER|G
+|root||root|localhost|RESOURCE_GROUP_USER|G
+|root||root||ROLE_ADMIN|G
+|root||root|localhost|ROLE_ADMIN|G
+|root||mysql.infoschema|localhost|SELECT|G
+|root||root||SELECT|G
+|root||root|localhost|SELECT|G
+|root||root||SENSITIVE_VARIABLES_OBSERVER|G
+|root||root|localhost|SENSITIVE_VARIABLES_OBSERVER|G
+|root||root||SERVICE_CONNECTION_ADMIN|G
+|root||root|localhost|SERVICE_CONNECTION_ADMIN|G
+|root||mysql.session|localhost|SESSION_VARIABLES_ADMIN|G
+|root||root||SESSION_VARIABLES_ADMIN|G
+|root||root|localhost|SESSION_VARIABLES_ADMIN|G
+|root||root||SET_USER_ID|G
+|root||root|localhost|SET_USER_ID|G
+|root||root||SHOW DATABASES|G
+|root||root|localhost|SHOW DATABASES|G
+|root||root||SHOW VIEW|G
+|root||root|localhost|SHOW VIEW|G
+|root||root||SHOW_ROUTINE|G
+|root||root|localhost|SHOW_ROUTINE|G
+|root||mysql.session|localhost|SHUTDOWN|G
+|root||root||SHUTDOWN|G
+|root||root|localhost|SHUTDOWN|G
+|root||mysql.session|localhost|SUPER|G
+|root||root||SUPER|G
+|root||root|localhost|SUPER|G
+|root||mysql.infoschema|localhost|SYSTEM_USER|G
+|root||mysql.session|localhost|SYSTEM_USER|G
+|root||mysql.sys|localhost|SYSTEM_USER|G
+|root||root||SYSTEM_USER|G
+|root||root|localhost|SYSTEM_USER|G
+|root||mysql.session|localhost|SYSTEM_VARIABLES_ADMIN|G
+|root||root||SYSTEM_VARIABLES_ADMIN|G
+|root||root|localhost|SYSTEM_VARIABLES_ADMIN|G
+|root||root||TABLE_ENCRYPTION_ADMIN|G
+|root||root|localhost|TABLE_ENCRYPTION_ADMIN|G
+|root||root||TRIGGER|G
+|root||root|localhost|TRIGGER|G
+|root||root||UPDATE|G
+|root||root|localhost|UPDATE|G
+|root||root||XA_RECOVER_ADMIN|G
+|root||root|localhost|XA_RECOVER_ADMIN|G
+|root||root||grant option|G
+|root||root|localhost|grant option|G
+auth-db|schema||auth-service||ALTER|G
+auth-db|schema||auth-service||ALTER ROUTINE|G
+auth-db|schema||auth-service||CREATE|G
+auth-db|schema||auth-service||CREATE ROUTINE|G
+auth-db|schema||auth-service||CREATE TEMPORARY TABLES|G
+auth-db|schema||auth-service||CREATE VIEW|G
+auth-db|schema||auth-service||DELETE|G
+auth-db|schema||auth-service||DROP|G
+auth-db|schema||auth-service||EVENT|G
+auth-db|schema||auth-service||EXECUTE|G
+auth-db|schema||auth-service||INDEX|G
+auth-db|schema||auth-service||INSERT|G
+auth-db|schema||auth-service||LOCK TABLES|G
+auth-db|schema||auth-service||REFERENCES|G
+auth-db|schema||auth-service||SELECT|G
+auth-db|schema||auth-service||SHOW VIEW|G
+auth-db|schema||auth-service||TRIGGER|G
+auth-db|schema||auth-service||UPDATE|G
+cart-db|schema||cart-service||ALTER|G
+cart-db|schema||cart-service||ALTER ROUTINE|G
+cart-db|schema||cart-service||CREATE|G
+cart-db|schema||cart-service||CREATE ROUTINE|G
+cart-db|schema||cart-service||CREATE TEMPORARY TABLES|G
+cart-db|schema||cart-service||CREATE VIEW|G
+cart-db|schema||cart-service||DELETE|G
+cart-db|schema||cart-service||DROP|G
+cart-db|schema||cart-service||EVENT|G
+cart-db|schema||cart-service||EXECUTE|G
+cart-db|schema||cart-service||INDEX|G
+cart-db|schema||cart-service||INSERT|G
+cart-db|schema||cart-service||LOCK TABLES|G
+cart-db|schema||cart-service||REFERENCES|G
+cart-db|schema||cart-service||SELECT|G
+cart-db|schema||cart-service||SHOW VIEW|G
+cart-db|schema||cart-service||TRIGGER|G
+cart-db|schema||cart-service||UPDATE|G
+order-db|schema||order-service||ALTER|G
+order-db|schema||order-service||ALTER ROUTINE|G
+order-db|schema||order-service||CREATE|G
+order-db|schema||order-service||CREATE ROUTINE|G
+order-db|schema||order-service||CREATE TEMPORARY TABLES|G
+order-db|schema||order-service||CREATE VIEW|G
+order-db|schema||order-service||DELETE|G
+order-db|schema||order-service||DROP|G
+order-db|schema||order-service||EVENT|G
+order-db|schema||order-service||EXECUTE|G
+order-db|schema||order-service||INDEX|G
+order-db|schema||order-service||INSERT|G
+order-db|schema||order-service||LOCK TABLES|G
+order-db|schema||order-service||REFERENCES|G
+order-db|schema||order-service||SELECT|G
+order-db|schema||order-service||SHOW VIEW|G
+order-db|schema||order-service||TRIGGER|G
+order-db|schema||order-service||UPDATE|G
+payment-db|schema||payment-service||ALTER|G
+payment-db|schema||payment-service||ALTER ROUTINE|G
+payment-db|schema||payment-service||CREATE|G
+payment-db|schema||payment-service||CREATE ROUTINE|G
+payment-db|schema||payment-service||CREATE TEMPORARY TABLES|G
+payment-db|schema||payment-service||CREATE VIEW|G
+payment-db|schema||payment-service||DELETE|G
+payment-db|schema||payment-service||DROP|G
+payment-db|schema||payment-service||EVENT|G
+payment-db|schema||payment-service||EXECUTE|G
+payment-db|schema||payment-service||INDEX|G
+payment-db|schema||payment-service||INSERT|G
+payment-db|schema||payment-service||LOCK TABLES|G
+payment-db|schema||payment-service||REFERENCES|G
+payment-db|schema||payment-service||SELECT|G
+payment-db|schema||payment-service||SHOW VIEW|G
+payment-db|schema||payment-service||TRIGGER|G
+payment-db|schema||payment-service||UPDATE|G
+performance_schema|schema||mysql.session|localhost|SELECT|G
+product-db|schema||product-service||ALTER|G
+product-db|schema||product-service||ALTER ROUTINE|G
+product-db|schema||product-service||CREATE|G
+product-db|schema||product-service||CREATE ROUTINE|G
+product-db|schema||product-service||CREATE TEMPORARY TABLES|G
+product-db|schema||product-service||CREATE VIEW|G
+product-db|schema||product-service||DELETE|G
+product-db|schema||product-service||DROP|G
+product-db|schema||product-service||EVENT|G
+product-db|schema||product-service||EXECUTE|G
+product-db|schema||product-service||INDEX|G
+product-db|schema||product-service||INSERT|G
+product-db|schema||product-service||LOCK TABLES|G
+product-db|schema||product-service||REFERENCES|G
+product-db|schema||product-service||SELECT|G
+product-db|schema||product-service||SHOW VIEW|G
+product-db|schema||product-service||TRIGGER|G
+product-db|schema||product-service||UPDATE|G
+sys|schema||mysql.sys|localhost|TRIGGER|G
+user-db|schema||user-service||ALTER|G
+user-db|schema||user-service||ALTER ROUTINE|G
+user-db|schema||user-service||CREATE|G
+user-db|schema||user-service||CREATE ROUTINE|G
+user-db|schema||user-service||CREATE TEMPORARY TABLES|G
+user-db|schema||user-service||CREATE VIEW|G
+user-db|schema||user-service||DELETE|G
+user-db|schema||user-service||DROP|G
+user-db|schema||user-service||EVENT|G
+user-db|schema||user-service||EXECUTE|G
+user-db|schema||user-service||INDEX|G
+user-db|schema||user-service||INSERT|G
+user-db|schema||user-service||LOCK TABLES|G
+user-db|schema||user-service||REFERENCES|G
+user-db|schema||user-service||SELECT|G
+user-db|schema||user-service||SHOW VIEW|G
+user-db|schema||user-service||TRIGGER|G
+user-db|schema||user-service||UPDATE|G</Grants>
+      <ServerVersion>8.0.32</ServerVersion>
+    </root>
     <collation id="2" parent="1" name="armscii8_general_ci">
       <Charset>armscii8</Charset>
       <DefaultForCharset>1</DefaultForCharset>

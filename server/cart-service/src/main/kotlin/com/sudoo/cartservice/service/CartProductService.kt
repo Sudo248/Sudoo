@@ -4,7 +4,7 @@ import com.sudoo.cartservice.controller.dto.CartDto
 import com.sudoo.cartservice.controller.dto.CartProductDto
 import org.springframework.stereotype.Service
 
-@Service
+
 interface CartProductService {
 
     suspend fun addProductToActiveCart(

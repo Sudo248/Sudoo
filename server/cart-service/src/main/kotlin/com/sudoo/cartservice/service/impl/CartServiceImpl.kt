@@ -25,7 +25,7 @@ class CartServiceImpl(
                 totalAmount = 0,
                 totalPrice = 0.0,
                 status = "active",
-        )
+        ).apply { isNewCart = true }
         var savedCart = cartRepository.save(cart)
         var cartDto = getCartById(userId = userId, cartId = savedCart.cartId, false)
         return cartDto
@@ -51,7 +51,7 @@ class CartServiceImpl(
                 totalPrice += cartProduct.totalPrice
                 totalAmount += cartProduct.quantity
             }
-            cartProductDtos = getCartProducts(userId, cartId,  hasRoute)
+            cartProductDtos = getCartProducts(userId, cartId, hasRoute)
         }
         return CartDto(
                 cart?.cartId ?: "",
@@ -93,7 +93,7 @@ class CartServiceImpl(
     override suspend fun getCartProducts(userId: String, cartId: String, hasRoute: Boolean): List<CartProductDto> {
         val cartProductDtos: MutableList<CartProductDto> = mutableListOf()
         val cartProductsOfCart = cartProductRepository.findCartProductByCartId(cartId).toList()
-        for(cartProduct in cartProductsOfCart){
+        for (cartProduct in cartProductsOfCart) {
             cartProductDtos.add(cartProduct.toCartProductDto())
         }
         return cartProductDtos.toList()

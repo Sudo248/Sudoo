@@ -13,7 +13,7 @@ class CartController(
         val cartService: CartService
 ) : BaseController() {
     @PostMapping("/new/{userId}")
-    suspend fun addCart(@PathVariable userId: String): ResponseEntity<BaseResponse<*>> = handle {
+    suspend fun createNewCart(@PathVariable userId: String): ResponseEntity<BaseResponse<*>> = handle {
         cartService.createNewCart(userId)
     }
 
