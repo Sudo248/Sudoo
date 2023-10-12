@@ -24,7 +24,9 @@ ProductDto _$ProductDtoFromJson(Map<String, dynamic> json) => ProductDto(
           ? null
           : DateTime.parse(json['endDateDiscount'] as String),
       json['saleable'] as bool,
-      (json['images'] as List<dynamic>).map((e) => e as String).toList(),
+      (json['images'] as List<dynamic>)
+          .map((e) => ImageDto.fromJson(e as Map<String, dynamic>))
+          .toList(),
       SupplierDto.fromJson(json['supplier'] as Map<String, dynamic>),
       (json['categories'] as List<dynamic>)
           .map((e) => CategoryDto.fromJson(e as Map<String, dynamic>))

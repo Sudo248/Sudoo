@@ -10,26 +10,6 @@ class ProductListPage extends BasePage<ProductListBloc> {
 
   @override
   Widget build(BuildContext context) {
-    // final itemHeight = MediaQuery.sizeOf(context).height * 0.25;
-    // return StreamBuilder(
-    //   stream: bloc.products.stream,
-    //   builder: (context, snapshot) {
-    //     if (snapshot.data == null || snapshot.data!.length <= 0)
-    //       return SizedBox.shrink();
-    //
-    //     return ListView.separated(
-    //       itemBuilder: (context, index) => ProductListItem(
-    //         product: snapshot.data![index],
-    //         height: itemHeight,
-    //       ),
-    //       separatorBuilder: (context, index) => Divider(
-    //         thickness: 1,
-    //         height: 5,
-    //       ),
-    //       itemCount: snapshot.data?.length ?? 0,
-    //     );
-    //   },
-    // );
     return Column(
       children: [
         Padding(
@@ -49,8 +29,10 @@ class ProductListPage extends BasePage<ProductListBloc> {
             },
           ),
         ),
-        ProductListDataTable(
-          productDataSource: bloc.productDataSource,
+        Expanded(
+          child: ProductListDataTable(
+            productDataSource: bloc.productDataSource,
+          ),
         )
       ],
     );

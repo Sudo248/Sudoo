@@ -35,9 +35,9 @@ class AppString extends R {
 
   String get welcomeTo => "Welcome to Sudoo";
 
-  String get dontHaveAcount => "I don't have an account?";
+  String get dontHaveAccount => "I don't have an account?";
 
-  String get haveAcount => "I have an account?";
+  String get haveAccount => "I have an account?";
 
   String get sellerSKU => "Seller SKU";
 
@@ -70,6 +70,18 @@ class AppString extends R {
   String get notReceiveOtp => "Don't receive OTP?";
 
   String get submit => "Submit";
+
+  String get images => "Images";
+
+  String get name => "Name";
+
+  String get description => "Description";
+
+  String get optional => "Optional";
+
+  String get save => "Save";
+
+  String get upload => "Upload";
 }
 
 class AppColor extends R {
@@ -172,9 +184,9 @@ class AppButtonStyle extends R {
       ),
       side: MaterialStateProperty.all<BorderSide>(
         side ??
-            BorderSide(
+            const BorderSide(
               width: 1.5,
-              color: R.color.primaryColor,
+              color: Colors.blueGrey,
             ),
       ),
       shape: MaterialStateProperty.all<OutlinedBorder>(

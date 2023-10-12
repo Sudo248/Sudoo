@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sudoo/app/pages/auth/views/auth_page.dart';
 import 'package:sudoo/app/pages/dashboard/views/dashboard_page.dart';
+import 'package:sudoo/app/pages/home/home_page.dart';
+import 'package:sudoo/app/pages/splash/splash_page.dart';
 import 'package:sudoo/app/routes/app_pages.dart';
 import 'package:sudoo/app/services/scaffold_message_service.dart';
 import 'package:sudoo/resources/R.dart';

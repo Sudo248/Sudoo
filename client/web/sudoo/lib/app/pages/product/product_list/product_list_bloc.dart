@@ -13,6 +13,7 @@ import 'package:sudoo/domain/repository/product_repository.dart';
 import 'package:sudoo/extensions/list_ext.dart';
 
 import '../../../../domain/model/discovery/category_product.dart';
+import '../../../routes/app_routes.dart';
 
 class ProductListBloc extends BaseBloc implements CategoryCallback, ProductInfoActionCallback {
   final ProductRepository productRepository;
@@ -60,10 +61,14 @@ class ProductListBloc extends BaseBloc implements CategoryCallback, ProductInfoA
     }
   }
 
-  Future<void> navigateToProductDetail(String productId) async {}
+  Future<void> navigateToProductDetail(String productId) async {
+    await navigator.navigateTo(AppRoutes.product, arguments: productId);
+  }
 
-  Future<UpsertProduct> patchProduct(UpsertProduct product) async {
+  Future<bool> patchProduct(UpsertProduct product) async {
+    loadingController.showLoading();
     final result = await productRepository.patchProduct(product);
+    loadingController.hideLoading();
     if (result.isSuccess) {
       return Future.value(result.get());
     } else {
@@ -74,7 +79,6 @@ class ProductListBloc extends BaseBloc implements CategoryCallback, ProductInfoA
 
   @override
   Future<List<Category>> getCategoriesOfProduct(String productId) async {
-    print("Sudoo => getCategoriesOfProduct: $productId");
     final result = await productRepository.getCategories(productId);
     return result.getDataOrNull().orEmpty;
   }
@@ -110,7 +114,7 @@ class ProductListBloc extends BaseBloc implements CategoryCallback, ProductInfoA
     CategoryProduct categoryProduct,
   ) async {
     final result =
-        await productRepository.deleteCategoryToProduct(categoryProduct);
+        await productRepository.deleteCategoryOfProduct(categoryProduct);
     if (result.isSuccess) {
       return Future.value(result.get());
     } else {
@@ -132,7 +136,7 @@ class ProductListBloc extends BaseBloc implements CategoryCallback, ProductInfoA
   Future<void> deleteProduct(String productId) async {
     final result = await productRepository.deleteProduct(productId);
     if (result.isSuccess) {
-      productDataSource.deleteProduct(result.get() as String);
+      productDataSource.deleteProduct(result.get());
     } else {
       showErrorMessage(result.requireError());
     }

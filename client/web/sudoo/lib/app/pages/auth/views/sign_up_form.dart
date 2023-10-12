@@ -114,7 +114,7 @@ class _SignUpFormState extends State<SignUpForm> {
                   ),
                   children: <TextSpan>[
                     TextSpan(
-                      text: R.string.haveAcount,
+                      text: R.string.haveAccount,
                     ),
                     const TextSpan(
                       text: " ",

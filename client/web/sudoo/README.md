@@ -18,3 +18,6 @@ samples, guidance on mobile development, and a full API reference.
 Run command: `flutter pub run build_runner build --delete-conflicting-outputs` to scans the source
 code in your Flutter project and generates new code (if necessary) based on the annotations and
 configurations you have defined.
+
+run web:  `flutter run -d chrome --web-port 5555`
+

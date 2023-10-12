@@ -1,6 +1,8 @@
 import 'package:sudoo/domain/model/discovery/category_product.dart';
+import 'package:sudoo/domain/model/discovery/image.dart';
 import 'package:sudoo/domain/model/discovery/product.dart';
 import 'package:sudoo/domain/model/discovery/product_info.dart';
+import 'package:sudoo/domain/model/discovery/upsert_image.dart';
 import 'package:sudoo/domain/model/discovery/upsert_product.dart';
 
 import '../core/data_state.dart';
@@ -18,7 +20,7 @@ abstract class ProductRepository {
   Future<DataState<UpsertProduct, Exception>> upsertProduct(
       UpsertProduct product);
 
-  Future<DataState<UpsertProduct, Exception>> patchProduct(
+  Future<DataState<dynamic, Exception>> patchProduct(
       UpsertProduct product);
 
   Future<DataState<String, Exception>> deleteProduct(String productId);
@@ -27,5 +29,9 @@ abstract class ProductRepository {
 
   Future<DataState<CategoryProduct, Exception>> upsertCategoryToProduct(CategoryProduct categoryProduct);
 
-  Future<DataState<CategoryProduct, Exception>> deleteCategoryToProduct(CategoryProduct categoryProduct);
+  Future<DataState<CategoryProduct, Exception>> deleteCategoryOfProduct(CategoryProduct categoryProduct);
+
+  Future<DataState<Image, Exception>> upsertImage(UpsertImage upsertImage);
+
+  Future<DataState<Image, Exception>> deleteImage(String imageId);
 }

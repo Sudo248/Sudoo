@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:sudoo/app/dialog/choose_category_dialog.dart';
 import 'package:sudoo/app/dialog/edit_price_dialog.dart';
 import 'package:sudoo/app/model/category_callback.dart';
-import 'package:sudoo/app/widgets/date_time_selector.dart';
-import 'package:sudoo/domain/common/Constants.dart';
+import 'package:sudoo/app/widgets/blocks/category_block.dart';
+import 'package:sudoo/app/widgets/blocks/range_time_block.dart';
 import 'package:sudoo/domain/model/discovery/Price.dart';
-import 'package:sudoo/domain/model/discovery/category_product.dart';
 import 'package:sudoo/domain/model/discovery/product_info.dart';
 import 'package:sudoo/extensions/double_ext.dart';
 import 'package:sudoo/extensions/int_extensions.dart';
-import 'package:sudoo/extensions/list_ext.dart';
 
 import '../../../../../domain/model/discovery/category.dart';
 import '../../../../../domain/model/discovery/upsert_product.dart';
@@ -19,8 +16,14 @@ class ProductSaleInfoCell extends StatelessWidget {
   final ProductInfo product;
   final TextStyle? textStyle;
   final CategoryCallback categoryCallback;
-  final Future<UpsertProduct> Function(UpsertProduct) patchProduct;
+  final Future<bool> Function(UpsertProduct) patchProduct;
   final ValueNotifier<List<Category>?> categories = ValueNotifier(null);
+  final ValueNotifier<double> listedPrice = ValueNotifier(0.0);
+  final ValueNotifier<double> price = ValueNotifier(0.0);
+  final ValueNotifier<int> discount = ValueNotifier(0);
+  final ValueNotifier<DateTime> endDateDiscount = ValueNotifier(DateTime.now());
+  final ValueNotifier<DateTime> startDateDiscount =
+      ValueNotifier(DateTime.now());
 
   ProductSaleInfoCell({
     super.key,
@@ -30,12 +33,29 @@ class ProductSaleInfoCell extends StatelessWidget {
     this.textStyle,
   }) {
     getCategories();
+    _setPriceData();
+    _setEndDateDiscount();
+    _setStartDateDiscount();
   }
 
   Future<void> getCategories() async {
     categories.value = null;
     categories.value =
         await categoryCallback.getCategoriesOfProduct(product.productId);
+  }
+
+  void _setPriceData() {
+    listedPrice.value = product.listedPrice;
+    price.value = product.price;
+    discount.value = product.discount;
+  }
+
+  void _setEndDateDiscount() {
+    endDateDiscount.value = product.endDateDiscount ?? DateTime.now();
+  }
+
+  void _setStartDateDiscount() {
+    startDateDiscount.value = product.startDateDiscount ?? DateTime.now();
   }
 
   @override
@@ -55,7 +75,11 @@ class ProductSaleInfoCell extends StatelessWidget {
             TableRow(
               children: [
                 _buildTitle(R.string.categories, style),
-                _buildStateCategories(context, product.productId),
+                CategoryBlock(
+                  productId: product.productId,
+                  categories: categories,
+                  callback: categoryCallback,
+                ),
               ],
             ),
             TableRow(
@@ -88,126 +112,16 @@ class ProductSaleInfoCell extends StatelessWidget {
     );
   }
 
-  Widget _buildStateCategories(BuildContext context, String productId) {
-    return ValueListenableBuilder(
-        valueListenable: categories,
-        builder: (context, categories, child) {
-          return Container(
-            width: double.infinity,
-            constraints: const BoxConstraints(
-              maxHeight: 80,
-            ),
-            padding: const EdgeInsets.all(5),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey),
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: categories == null
-                ? const CircularProgressIndicator(
-                    strokeWidth: 1,
-                  )
-                : _buildCategories(context, categories),
-          );
-        });
-  }
-
-  Widget _buildCategories(BuildContext context, List<Category> categories) {
-    final List<Widget> categoryWidgets = categories
-        .map<Widget>(
-          (category) => _buildCategory(category),
-        )
-        .toList();
-    if (categories.length < Constants.maxCategoryOfEachProduct) {
-      categoryWidgets.add(
-        GestureDetector(
-          onTap: () {
-            showDialogAddCategory(context);
-          },
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.grey,
-              ),
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: const Icon(
-              Icons.add,
-              color: Colors.grey,
-            ),
-          ),
-        ),
-      );
-    }
-    return Wrap(
-      spacing: 8,
-      runSpacing: 10,
-      children: categoryWidgets,
-    );
-  }
-
-  Widget _buildCategory(Category category) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey),
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const SizedBox(
-            width: 3,
-          ),
-          Text(
-            category.name,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: R.style.h5.copyWith(
-              color: Colors.black,
-            ),
-          ),
-          const SizedBox(
-            width: 2,
-          ),
-          const Icon(
-            Icons.list_alt_rounded,
-            color: Colors.blue,
-          ),
-          GestureDetector(
-            child: const Icon(
-              size: 16,
-              Icons.clear_outlined,
-              color: Colors.grey,
-            ),
-            onTap: () async {
-              final categoryProduct =
-                  await categoryCallback.deleteCategoryToProduct(
-                CategoryProduct(
-                  productId: product.productId,
-                  categoryId: category.categoryId,
-                ),
-              );
-              if (categoryProduct.categoryProductId != null) {
-                deleteCategory(category);
-              }
-            },
-          ),
-          const SizedBox(
-            width: 2,
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildListedPrice(BuildContext context, TextStyle style) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          product.listedPrice.formatCurrency(),
-          style: style,
+        ValueListenableBuilder(
+          valueListenable: listedPrice,
+          builder: (context, value, child) => Text(
+            value.formatCurrency(),
+            style: style,
+          ),
         ),
         const SizedBox(
           width: 8,
@@ -233,17 +147,23 @@ class ProductSaleInfoCell extends StatelessWidget {
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              product.price.formatCurrency(),
-              style: style,
+            ValueListenableBuilder(
+              valueListenable: price,
+              builder: (context, value, child) => Text(
+                value.formatCurrency(),
+                style: style,
+              ),
             ),
             const Icon(
               Icons.remove,
               size: 12,
             ),
-            Text(
-              product.discount.formatPercent(),
-              style: style,
+            ValueListenableBuilder(
+              valueListenable: discount,
+              builder: (context, value, child) => Text(
+                value.formatPercent(),
+                style: style,
+              ),
             ),
             const SizedBox(
               width: 8,
@@ -263,81 +183,38 @@ class ProductSaleInfoCell extends StatelessWidget {
         const SizedBox(
           height: 10,
         ),
-        _buildRangeTimeDiscount(style),
-      ],
-    );
-  }
-
-  Widget _buildRangeTimeDiscount(TextStyle style) {
-    return Row(
-      children: [
-        Text(
-          R.string.from,
-          style: style.copyWith(fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        DateTimeSelector(
-          value: product.startDateDiscount,
-          isEditable: false,
-          onSelectedDate: (selectedDate) {},
-        ),
-        const SizedBox(
-          width: 5,
-        ),
-        const Icon(
-          Icons.remove,
-          size: 10,
-          color: Colors.black,
-        ),
-        const SizedBox(
-          width: 3,
-        ),
-        Text(
-          R.string.to,
-          style: style.copyWith(fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        DateTimeSelector(
-          value: product.endDateDiscount,
-          onSelectedDate: (selectedDate) {},
+        RangeTimeBlock(
+          startDate: startDateDiscount,
+          endDate: endDateDiscount,
+          onSelectedStartTime: (selectedDate) async {
+            await patchProduct(
+              UpsertProduct(
+                productId: product.productId,
+                startDateDiscount: selectedDate,
+              ),
+            ).then((isSuccess) {
+              if (isSuccess) {
+                product.startDateDiscount = selectedDate;
+                startDateDiscount.value = selectedDate;
+              }
+            });
+          },
+          onSelectedEndTime: (selectedDate) async {
+            await patchProduct(
+              UpsertProduct(
+                productId: product.productId,
+                endDateDiscount: selectedDate,
+              ),
+            ).then((isSuccess) {
+              if (isSuccess) {
+                product.endDateDiscount = selectedDate;
+                endDateDiscount.value = selectedDate;
+              }
+            });
+          },
         ),
       ],
     );
-  }
-
-  void showDialogAddCategory(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => ChooseCategoryDialog(
-        categories:
-            categoryCallback.getCategoriesWithout(categories.value.orEmpty),
-        onPositive: (value) async {
-          final result = await categoryCallback.upsertCategoryToProduct(
-            CategoryProduct(
-                productId: product.productId, categoryId: value.categoryId),
-          );
-          if (result.categoryProductId != null) {
-            addCategory(value);
-          }
-        },
-      ),
-    );
-  }
-
-  void addCategory(Category category) {
-    final currentCategories = categories.value.orEmpty.toList(growable: true);
-    currentCategories.add(category);
-    categories.value = currentCategories;
-  }
-
-  void deleteCategory(Category category) {
-    final currentCategories = categories.value.orEmpty.toList(growable: true);
-    currentCategories.remove(category);
-    categories.value = currentCategories;
   }
 
   void showEditPriceDialog(BuildContext context, TextStyle style) {
@@ -353,11 +230,19 @@ class ProductSaleInfoCell extends StatelessWidget {
         style: style,
         onPositive: (value) async {
           final UpsertProduct upsertProduct = UpsertProduct(
+            productId: product.productId,
             listedPrice: value.listedPrice,
             price: value.price,
             discount: value.discount,
           );
-          patchProduct(upsertProduct);
+          await patchProduct(upsertProduct).then((isSuccess) {
+            if (isSuccess) {
+              product.listedPrice = value.listedPrice;
+              product.price = value.price;
+              product.discount = value.discount;
+              _setPriceData();
+            }
+          });
         },
       ),
     );

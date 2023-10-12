@@ -103,7 +103,7 @@ class _SignInFormState extends State<SignInForm> {
                   ),
                   children: <TextSpan>[
                     TextSpan(
-                      text: R.string.dontHaveAcount,
+                      text: R.string.dontHaveAccount,
                     ),
                     const TextSpan(text: " "),
                     TextSpan(

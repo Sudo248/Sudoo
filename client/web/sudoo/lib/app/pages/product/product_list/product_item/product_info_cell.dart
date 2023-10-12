@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../domain/model/discovery/product_info.dart';
-import '../../../../../domain/model/discovery/upsert_product.dart';
 import '../../../../../resources/R.dart';
 import '../../../../widgets/text_section.dart';
 

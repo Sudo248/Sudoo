@@ -16,7 +16,7 @@ class ProductListDataSource extends DataGridSource {
   final AsyncCallback loadMore;
   final CategoryCallback categoryCallback;
   final ProductInfoActionCallback productActionCallback;
-  final Future<UpsertProduct> Function(UpsertProduct) patchProduct;
+  final Future<bool> Function(UpsertProduct) patchProduct;
   final List<ProductInfo> products = List.empty(growable: true);
   List<DataGridRow> _dataRows = List.empty();
 
@@ -53,10 +53,8 @@ class ProductListDataSource extends DataGridSource {
               return Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: ProductSaleStatusCell(
-                  isSellable: cell.value,
-                  onChanged: (saleable) {
-                    patchProduct(UpsertProduct(saleable: saleable));
-                  },
+                  product: cell.value,
+                  patchProduct: patchProduct,
                 ),
               );
             case "action":
@@ -93,7 +91,7 @@ class ProductListDataSource extends DataGridSource {
           ),
           DataGridCell(
             columnName: ColumnName.saleStatus.name,
-            value: product.saleable,
+            value: product,
           ),
           DataGridCell(
             columnName: ColumnName.action.name,

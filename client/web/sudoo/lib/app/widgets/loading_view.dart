@@ -58,4 +58,8 @@ class LoadingViewController {
       isShow.value = false;
     }
   }
+
+  void dispose() {
+    isShow.dispose();
+  }
 }

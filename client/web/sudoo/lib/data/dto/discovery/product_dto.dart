@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sudoo/data/dto/discovery/category_dto.dart';
+import 'package:sudoo/data/dto/discovery/image_dto.dart';
 import 'package:sudoo/data/dto/discovery/supplier_dto.dart';
 import 'package:sudoo/domain/model/discovery/product.dart';
 
@@ -20,7 +21,7 @@ class ProductDto {
   final DateTime? startDateDiscount;
   final DateTime? endDateDiscount;
   final bool saleable;
-  final List<String> images;
+  final List<ImageDto> images;
   final SupplierDto supplier;
   final List<CategoryDto> categories;
 
@@ -64,7 +65,7 @@ extension Mapper on ProductDto {
       startDateDiscount,
       endDateDiscount,
       saleable,
-      images,
+      images.map((e) => e.toImage()).toList(),
       supplier.toSupplier(),
       categories.map((e) => e.toCategory()).toList(),
     );

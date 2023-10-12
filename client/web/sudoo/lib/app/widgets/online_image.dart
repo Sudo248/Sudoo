@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 
 class OnlineImage extends StatelessWidget {
   final String src;
-  const OnlineImage(this.src, {super.key});
+  final double? width, height;
+  final BoxFit? fit;
+  const OnlineImage(this.src, {super.key, this.height, this.width, this.fit});
 
   @override
   Widget build(BuildContext context) {
     return Image.network(
       src,
+      height: height,
+      width: width,
       loadingBuilder: (context, child, loadingProgress) {
         if (loadingProgress == null) return child;
         return const Center(
@@ -15,7 +19,7 @@ class OnlineImage extends StatelessWidget {
         );
       },
       errorBuilder: (context, error, stackTrace) => const Icon(Icons.image),
-      fit: BoxFit.fill,
+      fit: fit ?? BoxFit.fill,
     );
   }
 }

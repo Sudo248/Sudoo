@@ -1,3 +1,4 @@
+import 'package:sudoo/data/api/discovery/request/upsert_image_request.dart';
 import 'package:sudoo/data/api/discovery/request/upsert_product_request.dart';
 
 import '../api_service.dart';
@@ -6,6 +7,7 @@ class DiscoveryService {
   static const discovery = "/discovery";
   static const products = "$discovery/products";
   static const categories = "$discovery/categories";
+  static const images = "$discovery/images";
   static const offsetKey = "offset";
   static const limitKey = "limit";
 
@@ -37,8 +39,12 @@ class DiscoveryService {
   Future getCategories() => api.get(categories);
 
   Future upsertCategoryToProduct(String productId, String categoryId) =>
-      api.post("$products/$productId/categories/$categories");
+      api.post("$products/$productId/categories/$categoryId");
 
   Future deleteCategoryToProduct(String productId, String categoryId) =>
-      api.delete("$products/$productId/categories/$categories");
+      api.delete("$products/$productId/categories/$categoryId");
+
+  Future upsertImage(UpsertImageRequest request) => api.post(images, request: request);
+
+  Future deleteImage(String imageId) => api.delete("$images/$imageId");
 }

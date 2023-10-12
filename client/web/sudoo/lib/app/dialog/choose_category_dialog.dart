@@ -23,58 +23,75 @@ class _ChooseCategoryDialogState extends State<ChooseCategoryDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
-    return Container(
-      height: size.height * 0.6,
-      width: size.width * 0.3,
-      padding: const EdgeInsets.all(10.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      child: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: widget.categories.length,
-              itemBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      widget.categories[index].name,
-                      style: R.style.h5,
-                    ),
-                    Checkbox(
-                      value: category != null &&
-                          category!.categoryId ==
-                              widget.categories[index].categoryId,
-                      onChanged: (value) {
-                        if (value == true) {
-                          setState(() {
-                            category = widget.categories[index];
-                          });
-                        }
-                      },
-                    ),
-                  ],
+    final size = MediaQuery.of(context).size;
+    return Dialog(
+      child: Container(
+        padding: const EdgeInsets.all(15.0),
+        constraints: BoxConstraints(
+            minWidth: 300,
+            minHeight: 400,
+            maxWidth: size.width * 0.3,
+            maxHeight: size.height * 0.5),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              "Choose category",
+              style: R.style.h4_1.copyWith(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: widget.categories.length,
+                itemBuilder: (context, index) => Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Checkbox(
+                        value: category != null &&
+                            category!.categoryId ==
+                                widget.categories[index].categoryId,
+                        onChanged: (value) {
+                          if (value == true) {
+                            setState(() {
+                              category = widget.categories[index];
+                            });
+                          }
+                        },
+                      ),
+                      Expanded(
+                        child: Text(
+                          widget.categories[index].name,
+                          style: R.style.h5.copyWith(color: Colors.black),
+                          textAlign: TextAlign.start,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          ConfirmButton(
-            onPositive: () {
-              if (category == null) Navigator.of(context).pop();
-              widget.onPositive?.call(category!);
-            },
-            onNegative: () {
-              Navigator.of(context).pop();
-            },
-          )
-        ],
+            const SizedBox(
+              height: 20,
+            ),
+            ConfirmButton(
+              onPositive: () {
+                if (category == null) {
+                  Navigator.of(context).pop();
+                } else {
+                  widget.onPositive?.call(category!);
+                  Navigator.of(context).pop();
+                }
+              },
+              onNegative: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        ),
       ),
     );
   }

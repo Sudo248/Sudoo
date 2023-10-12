@@ -5,6 +5,7 @@ import 'package:sudoo/app/pages/dashboard/views/dashboard_page.dart';
 import 'package:sudoo/app/pages/home/home_page.dart';
 import 'package:sudoo/app/pages/product/product/product_page.dart';
 import 'package:sudoo/app/pages/product/product_list/product_list_page.dart';
+import 'package:sudoo/app/pages/splash/splash_page.dart';
 import 'package:sudoo/app/routes/app_routes.dart';
 
 abstract class AppPages {
@@ -16,7 +17,8 @@ abstract class AppPages {
       case AppRoutes.productList:
         return BaseRoute(builder: (ctx) => ProductListPage());
       case AppRoutes.product:
-        return BaseRoute(builder: (ctx) => ProductPage());
+        final String? productId = route.arguments as String?;
+        return BaseRoute(builder: (ctx) => ProductPage(productId: productId));
       default:
         return BaseRoute(builder: (ctx) => const SizedBox.shrink());
     }
@@ -24,6 +26,7 @@ abstract class AppPages {
 
   static Map<String, WidgetBuilder> getAppPageBuilder() {
     return {
+      AppRoutes.splash: (context) => SplashPage(),
       AppRoutes.auth: (context) => AuthPage(),
       AppRoutes.dashboard: (context) => DashboardPage(),
     };

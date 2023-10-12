@@ -1,3 +1,5 @@
+import 'package:sudoo/domain/model/discovery/image.dart';
+
 import 'category.dart';
 import 'supplier.dart';
 
@@ -6,20 +8,20 @@ class Product {
   final String sku;
   final String name;
   final String description;
-  final double price;
-  final double listedPrice;
+  double price;
+  double listedPrice;
   final int amount;
   final int soldAmount;
   final double rate;
-  final int discount;
+  int discount;
   final DateTime? startDateDiscount;
-  final DateTime? endDateDiscount;
-  final bool saleable;
-  final List<String> images;
+  DateTime? endDateDiscount;
+  bool saleable;
+  final List<Image> images;
   final Supplier supplier;
   final List<Category> categories;
 
-  const Product(
+  Product(
     this.productId,
     this.sku,
     this.name,

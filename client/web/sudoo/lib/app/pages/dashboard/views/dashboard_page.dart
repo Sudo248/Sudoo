@@ -12,7 +12,6 @@ class DashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("Sudoo: ${MaterialLocalizations.of(context)}");
     return Row(
       children: [
         Expanded(
@@ -28,7 +27,7 @@ class DashboardPage extends StatelessWidget {
             body: Navigator(
               key: bloc.navigator.navigatorKey,
               onGenerateRoute: (settings) => AppPages.getPages(settings),
-              initialRoute: AppRoutes.productList,
+              initialRoute: AppRoutes.home,
             ),
           ),
         ),

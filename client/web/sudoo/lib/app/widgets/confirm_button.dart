@@ -9,7 +9,7 @@ class ConfirmButton extends StatelessWidget {
   final VoidCallback? onNegative;
   const ConfirmButton({
     super.key,
-    this.textPositive = "Ok",
+    this.textPositive = "OK",
     this.textNegative = "Cancel",
     required this.onPositive,
     this.onNegative,
@@ -18,7 +18,7 @@ class ConfirmButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
         FilledButton(
           style: R.buttonStyle.filledButtonStyle(),
@@ -28,12 +28,15 @@ class ConfirmButton extends StatelessWidget {
             style: R.style.h5,
           ),
         ),
+        const SizedBox(
+          width: 20,
+        ),
         OutlinedButton(
           style: R.buttonStyle.outlinedButtonStyle(),
           onPressed: onNegative,
           child: Text(
             textNegative,
-            style: R.style.h5,
+            style: R.style.h5.copyWith(color: Colors.blueGrey),
           ),
         )
       ],

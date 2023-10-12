@@ -19,10 +19,9 @@ class CategoryRepositoryImpl with HandleResponse implements CategoryRepository {
         fromJson: (json) =>
             (json as List<dynamic>).map((e) =>
                 CategoryDto.fromJson(e as Map<String, dynamic>),
-            ));
+            ).toList());
 
     if (response.isSuccess) {
-      print("Sudoo: ${response.get()}");
       final categories = response.get() as List<CategoryDto>;
       return DataState.success(categories.map((e) => e.toCategory()).toList());
     } else {

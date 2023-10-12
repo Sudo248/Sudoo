@@ -2,18 +2,18 @@ class ProductInfo {
   final String productId;
   final String sku;
   final String name;
-  final double price;
-  final double listedPrice;
+  double price;
+  double listedPrice;
   final int amount;
   final double rate;
-  final int discount;
-  final DateTime? startDateDiscount;
-  final DateTime? endDateDiscount;
-  final bool saleable;
+  int discount;
+  DateTime? startDateDiscount;
+  DateTime? endDateDiscount;
+  bool saleable;
   final String brand;
   final List<String> images;
 
-  const ProductInfo(
+  ProductInfo(
     this.productId,
     this.sku,
     this.name,

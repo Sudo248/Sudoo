@@ -29,7 +29,7 @@ class ProductListItem extends StatelessWidget {
             Expanded(
               flex: 1,
               child: OnlineImage(
-                product.images[0],
+                product.images[0].url,
               ),
             ),
             const SizedBox(
