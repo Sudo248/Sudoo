@@ -23,7 +23,7 @@ data class Cart(
         var userId: String = "",
 
         @Column("status")
-        var status: String = "completed",
+        var status: String = "active",
 
 
         ) : Persistable<String> {

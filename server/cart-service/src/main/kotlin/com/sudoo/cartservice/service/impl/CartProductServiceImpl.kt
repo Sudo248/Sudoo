@@ -19,7 +19,7 @@ import java.lang.Exception
 class CartProductServiceImpl(val cartRepository: CartRepository, val cartProductRepository: CartProductRepository, val cartService: CartService) : CartProductService {
 
     suspend fun getActiveCart(userId: String): Cart {
-        return cartRepository.findCartByUserIdAndStatus(userId, "active")
+        return cartRepository.findCartByUserIdAndStatus(userId, "active").toList()[0]
     }
 
     override suspend fun addProductToActiveCart(userId: String, cartProductDto: CartProductDto): CartDto {

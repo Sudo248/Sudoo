@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.*
 class CartController(
         val cartService: CartService
 ) : BaseController() {
-    @PostMapping("/new/{userId}")
-    suspend fun createNewCart(@PathVariable userId: String): ResponseEntity<BaseResponse<*>> = handle {
+    @PostMapping
+    suspend fun createNewCart(@RequestHeader(Constants.HEADER_USER_ID) userId: String): ResponseEntity<BaseResponse<*>> = handle {
         cartService.createNewCart(userId)
     }
 
@@ -48,7 +48,7 @@ class CartController(
     }
 
     //Call from other service
-    @GetMapping("/service/{cartId}")
+    @GetMapping("/internal/{cartId}")
     suspend fun serviceGetCartById(
             @RequestHeader(Constants.HEADER_USER_ID) userId: String,
             @PathVariable cartId: String,

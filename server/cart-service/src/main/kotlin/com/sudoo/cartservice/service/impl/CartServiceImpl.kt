@@ -32,7 +32,7 @@ class CartServiceImpl(
     }
 
     override suspend fun updateStatusCart(userId: String): CartDto {
-        var cart = cartRepository.findCartByUserIdAndStatus(userId, "active")
+        var cart = cartRepository.findCartByUserIdAndStatus(userId, "active").toList()[0]
         cart.status = "completed"
         var savedCart = cartRepository.save(cart)
         return getCartById(userId, savedCart.cartId, false)
@@ -64,7 +64,9 @@ class CartServiceImpl(
 
     override suspend fun getActiveCartByUserId(userId: String): CartDto {
         return try {
-            var cart: Cart? = cartRepository.findCartByUserIdAndStatus(userId, "active")
+            var count: Int = cartRepository.countByUserIdAndStatus(userId, "active")
+            println(count)
+            var cart: Cart? = cartRepository.findCartByUserIdAndStatus(userId, "active").toList()[0]
             CartDto(
                     cart?.cartId ?: "",
                     cart?.totalPrice ?: 0.0,

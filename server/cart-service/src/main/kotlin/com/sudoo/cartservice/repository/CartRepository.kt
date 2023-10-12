@@ -12,6 +12,6 @@ import org.springframework.transaction.annotation.Transactional
 
 @Repository
 interface CartRepository: CoroutineCrudRepository<Cart, String> {
-    suspend fun findCartByUserIdAndStatus(userId:String,status:String):  Cart
+    suspend fun findCartByUserIdAndStatus(userId:String,status:String):  Flow<Cart>
     suspend fun countByUserIdAndStatus(userId: String,status: String):Int
 }
