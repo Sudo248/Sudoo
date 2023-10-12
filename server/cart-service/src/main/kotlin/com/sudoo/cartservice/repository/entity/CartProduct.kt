@@ -2,6 +2,8 @@ package com.sudoo.cartservice.repository.entity
 
 import com.sudoo.cartservice.controller.dto.CartProductDto
 import org.springframework.data.annotation.Id
+import org.springframework.data.annotation.Transient
+import org.springframework.data.domain.Persistable
 import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
 
@@ -17,12 +19,18 @@ data class CartProduct(
         @Column("product_id")
         var productId: String = "",
 
-        @Column("quantity")
+        @Column("total_amount")
         var quantity: Int = 0,
 
         @Column("total_price")
         var totalPrice: Double = 0.0
-)
+): Persistable<String> {
+
+    @Transient
+    internal var isNewCartProduct: Boolean = false
+    override fun getId(): String = cartProductId
+    override fun isNew(): Boolean = isNewCartProduct
+}
 
 fun CartProduct.toCartProductDto(): CartProductDto {
     return CartProductDto(

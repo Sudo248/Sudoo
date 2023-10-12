@@ -4,13 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="389fd2dc-9d8f-4819-b2d8-a91464002ed2" name="Changes" comment="feat: thêm dendency, thêm được cart mới">
+    <list default="true" id="389fd2dc-9d8f-4819-b2d8-a91464002ed2" name="Changes" comment="feat: done cart">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/controller/CartController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/controller/CartController.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/repository/CartRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/repository/CartRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/repository/entity/Cart.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/repository/entity/Cart.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/controller/CartProductController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/controller/CartProductController.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/repository/entity/CartProduct.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/repository/entity/CartProduct.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/service/CartProductService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/service/CartProductService.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/service/impl/CartProductServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/service/impl/CartProductServiceImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/service/impl/CartServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/service/impl/CartServiceImpl.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -309,7 +308,7 @@
       <workItem from="1696730079143" duration="13340000" />
       <workItem from="1696863568627" duration="7222000" />
       <workItem from="1697036744973" duration="4737000" />
-      <workItem from="1697112281558" duration="1525000" />
+      <workItem from="1697112281558" duration="5442000" />
     </task>
     <task id="LOCAL-00001" summary="feat: logic cart-service">
       <option name="closed" value="true" />
@@ -335,7 +334,15 @@
       <option name="project" value="LOCAL" />
       <updated>1697042943787</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="feat: done cart">
+      <option name="closed" value="true" />
+      <created>1697120267743</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1697120267743</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -368,7 +375,8 @@
     <MESSAGE value="feat: logic cart-service" />
     <MESSAGE value="feat: Thay SupplierCartProduct bằng CartProduct" />
     <MESSAGE value="feat: thêm dendency, thêm được cart mới" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: thêm dendency, thêm được cart mới" />
+    <MESSAGE value="feat: done cart" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: done cart" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -398,6 +406,36 @@
           <line>35</line>
           <option name="timeStamp" value="15" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/service/impl/CartProductServiceImpl.kt</url>
+          <line>23</line>
+          <option name="timeStamp" value="17" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/service/impl/CartProductServiceImpl.kt</url>
+          <line>26</line>
+          <option name="timeStamp" value="18" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/service/impl/CartProductServiceImpl.kt</url>
+          <line>24</line>
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/service/impl/CartProductServiceImpl.kt</url>
+          <line>42</line>
+          <option name="timeStamp" value="21" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/service/impl/CartProductServiceImpl.kt</url>
+          <line>46</line>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/service/impl/CartProductServiceImpl.kt</url>
+          <line>69</line>
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-function">
           <url>file://$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/ProductService.kt</url>
           <line>16</line>
@@ -424,6 +462,15 @@
             <option name="WATCH_EXIT" value="false" />
           </properties>
           <option name="timeStamp" value="16" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-function">
+          <url>file://$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/service/CartProductService.kt</url>
+          <line>15</line>
+          <properties class="com.sudoo.cartservice.service.CartProductService" method="updateProductInCart">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="20" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
