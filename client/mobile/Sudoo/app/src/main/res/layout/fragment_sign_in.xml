@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.sudo248.sudoo.ui.activity.auth.fragment.sign_in.SignInViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="15dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilPhoneNumber"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/phone_number"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/primaryColor"
+            app:hintTextColor="@color/primaryColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:text="@={viewModel.accountUiModel.phoneNumber}"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilPassword"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="@string/password"
+            app:boxStrokeColor="@color/primaryColor"
+            app:endIconMode="password_toggle"
+            app:hintTextColor="@color/primaryColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tilPhoneNumber">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:text="@={viewModel.accountUiModel.password}"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/txtForgotPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.forgotPassword()}"
+            android:padding="10dp"
+            android:text="@string/forgot_password"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintTop_toBottomOf="@+id/tilPassword" />
+
+        <TextView
+            android:id="@+id/txtError"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="20dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{viewModel.error}"
+            android:textColor="@color/primaryColor"
+            android:textSize="12sp"
+            android:visibility="@{viewModel.error != null ? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintEnd_toStartOf="@+id/txtForgotPassword"
+            app:layout_constraintStart_toStartOf="@+id/tilPassword"
+            app:layout_constraintTop_toBottomOf="@+id/tilPassword"
+            tools:text="@string/invalid_phone_number" />
+
+        <TextView
+            android:id="@+id/btnSignIn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rectangle_conner_25"
+            android:backgroundTint="@color/primaryColor"
+            android:gravity="center_horizontal"
+            android:onClick="@{(v) -> viewModel.signIn()}"
+            android:paddingVertical="10dp"
+            android:text="@string/sign_in"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:backgroundTint="@color/primaryColor"
+            app:layout_constraintVertical_bias="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtForgotPassword" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

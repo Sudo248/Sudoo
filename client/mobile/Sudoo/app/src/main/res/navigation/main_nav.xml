@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav"
+    app:startDestination="@id/discoveryFragment">
+
+    <fragment
+        android:id="@+id/discoveryFragment"
+        android:name="com.sudo248.sudoo.ui.activity.main.fragment.discovery.DiscoveryFragment"
+        android:label="DiscoveryFragment"
+        tools:layout="@layout/fragment_discovery">
+        <action
+            android:id="@+id/action_discoveryFragment_to_productDetailFragment"
+            app:destination="@id/productDetailFragment"></action>
+        <action
+            android:id="@+id/action_discoveryFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/productDetailFragment"
+        android:name="com.sudo248.sudoo.ui.activity.main.fragment.product_detail.ProductDetailFragment"
+        android:label="ProductDetailFragment"
+        tools:layout="@layout/fragment_product_detail">
+        <argument
+            android:name="product"
+            app:argType="com.sudo248.sudoo.ui.uimodel.ProductUiModel"
+            app:nullable="false" />
+        <action
+            android:id="@+id/action_productDetailFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+        <action
+            android:id="@+id/action_productDetailFragment_to_cartFragment"
+            app:destination="@id/cartFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userFragment"
+        android:name="com.sudo248.sudoo.ui.activity.main.fragment.user.UserFragment"
+        android:label="UserFragment"
+        tools:layout="@layout/fragment_user">
+        <action
+            android:id="@+id/action_userFragment_to_userEditFragment"
+            app:destination="@id/userEditFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userEditFragment"
+        android:name="com.sudo248.sudoo.ui.activity.main.fragment.user.UserEditFragment"
+        android:label="UserEditFragment"
+        tools:layout="@layout/fragment_edit_user" />
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.sudo248.sudoo.ui.activity.main.fragment.search.SearchFragment"
+        android:label="SearchFragment"
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/action_searchFragment_to_productDetailFragment"
+            app:destination="@id/productDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="com.sudo248.sudoo.ui.activity.main.fragment.cart.CartFragment"
+        android:label="CartFragment"
+        tools:layout="@layout/fragment_cart" />
+    <fragment
+        android:id="@+id/promotionFragment"
+        android:name="com.sudo248.sudoo.ui.activity.main.fragment.promotion.PromotionFragment"
+        android:label="PromotionFragment"
+        tools:layout="@layout/fragment_promotion">
+        <argument
+            android:name="forChoosePromotion"
+            android:defaultValue="false"
+            app:argType="boolean" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.sudo248.sudoo.ui.activity.main.fragment.chat.ChatFragment"
+        android:label="ChatFragment"
+        tools:layout="@layout/fragment_chat">
+        <argument
+            android:name="supplierId"
+            app:argType="string"
+            app:nullable="false" />
+    </fragment>
+</navigation>

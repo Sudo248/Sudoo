@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.sudo248.sudoo.ui.util.Utils" />
+        <import type="android.view.View" />
+
+        <variable
+            name="product"
+            type="com.sudo248.sudoo.ui.uimodel.ProductUiModel" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="190dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="5dp"
+        app:cardUseCompatPadding="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/materialCardViewProduct"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:cardCornerRadius="30dp"
+                app:layout_constraintDimensionRatio="8:5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/imageProduct"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY"
+                    app:imageUrl="@{product.images.get(0)}"
+                    tools:src="@drawable/zing_burger" />
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <ImageView
+                android:id="@+id/icPin"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="5dp"
+                android:src="@drawable/ic_pin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/materialCardViewProduct" />
+
+            <TextView
+                android:id="@+id/txtDistances"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:gravity="bottom"
+                android:text="@{Utils.INSTANCE.formatDistance(product.route.distance.value, product.route.distance.unit)}"
+                android:textColor="@color/black"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="@+id/icPin"
+                app:layout_constraintStart_toEndOf="@id/icPin"
+                app:layout_constraintTop_toTopOf="@id/icPin"
+                tools:ignore="SmallSp"
+                tools:text="0.75km" />
+
+            <androidx.constraintlayout.widget.Group
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:visibility="invisible"
+                android:visibility="@{product.route.distance.value != 0.0 ? View.VISIBLE : View.INVISIBLE}"
+                app:constraint_referenced_ids="icPin, txtDistances"/>
+
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="0dp"
+                android:src="@drawable/ic_star_rate"
+                app:layout_constraintBottom_toBottomOf="@id/txtStarts"
+                app:layout_constraintEnd_toStartOf="@id/txtStarts"
+                app:layout_constraintTop_toTopOf="@id/txtStarts" />
+
+            <TextView
+                android:id="@+id/txtStarts"
+                android:layout_width="wrap_content"
+                android:layout_height="15dp"
+                android:gravity="bottom"
+                android:text="@{Utils.INSTANCE.format(product.rate, 1)}"
+                android:textColor="@color/black"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="@+id/txtDistances"
+                app:layout_constraintEnd_toStartOf="@id/txtSoldAmount"
+                app:layout_constraintTop_toTopOf="@+id/txtDistances"
+                tools:ignore="SmallSp"
+                tools:text="4.5" />
+
+            <TextView
+                android:id="@+id/txtSoldAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginEnd="15dp"
+                android:gravity="bottom"
+                android:text="@{Utils.INSTANCE.formatShortSold(product.soldAmount)}"
+                android:textColor="@color/black"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="@id/txtStarts"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/txtStarts"
+                tools:ignore="SmallSp"
+                tools:text=" .100+" />
+
+            <TextView
+                android:id="@+id/nameProduct"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:lines="2"
+                android:ellipsize="end"
+                android:text="@{product.name}"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_marginHorizontal="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/icPin"
+                tools:text="Chicken Burger" />
+
+            <TextView
+                android:id="@+id/pricesProduct"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="15dp"
+                android:text="@{Utils.INSTANCE.formatVnCurrency(product.price)}"
+                android:textColor="@color/primaryColor"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@id/nameProduct"
+                app:layout_constraintTop_toBottomOf="@id/nameProduct"
+                app:layout_constraintVertical_bias="0.15"
+                tools:text="25.0000đ" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>
+
