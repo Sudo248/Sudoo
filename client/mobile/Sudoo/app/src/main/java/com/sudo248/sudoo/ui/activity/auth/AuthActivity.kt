@@ -28,4 +28,8 @@ class AuthActivity : BaseActivity<ActivityAuthBinding, AuthViewModel>() {
     fun requestViewPagerLayout() {
         binding.vpAuth.requestLayout()
     }
+
+    fun selectedTab(index: Int) {
+        binding.tabAuth.getTabAt(index)?.select()
+    }
 }

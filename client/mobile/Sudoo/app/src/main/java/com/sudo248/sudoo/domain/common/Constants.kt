@@ -11,10 +11,12 @@ object Constants {
     const val TIMEOUT_OTP = 30_000L
     const val PATTERN_OTP = "(|^)\\d{6}"
     const val UNKNOWN_ERROR = "Unknown error"
+    const val DEFAULT_LIMIT = 10
 
     object Key {
         const val PHONE_NUMBER = "PHONE_NUMBER"
         const val TOKEN = "TOKEN"
+        const val REFRESH_TOKEN = "REFRESH_TOKEN"
         const val USER_ID = "USER_ID"
         const val INVOICE_ID = "INVOICE_ID"
         const val PROMOTION = "PROMOTION"

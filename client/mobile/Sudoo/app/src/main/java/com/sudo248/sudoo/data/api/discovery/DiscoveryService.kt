@@ -7,8 +7,8 @@ import com.sudo248.base_android_annotation.apiservice.logging_level.LoggingLever
 import com.sudo248.sudoo.BuildConfig
 import com.sudo248.sudoo.data.api.BaseResponse
 import com.sudo248.sudoo.data.dto.discovery.CategoryDto
-import com.sudo248.sudoo.data.dto.discovery.CategoryInfoDto
 import com.sudo248.sudoo.data.dto.discovery.ProductDto
+import com.sudo248.sudoo.data.dto.discovery.ProductListDto
 import com.sudo248.sudoo.data.dto.user.AddressDto
 import com.sudo248.sudoo.domain.common.Constants
 import retrofit2.Response
@@ -20,24 +20,26 @@ import retrofit2.http.Query
 @EnableAuthentication(Constants.Key.TOKEN)
 @LoggingLever(level = Level.BODY)
 interface DiscoveryService {
-    @GET("category/info")
-    suspend fun getAllCategoryInfo(): Response<BaseResponse<List<CategoryInfoDto>>>
-
-    @GET("category")
-    suspend fun getAllCategory(
+    @GET("categories")
+    suspend fun getCategories(
         @Query("location") location: String = Constants.location
     ): Response<BaseResponse<List<CategoryDto>>>
 
-    @GET("category/{categoryId}")
+    @GET("categories/{categoryId}")
     suspend fun getCategoryById(
-        @Path("categoryId") categoryId: String,
-        @Query("location") location: String = Constants.location
+        @Path("categoryId") categoryId: String
     ): Response<BaseResponse<CategoryDto>>
 
-    @GET("product/{productId}")
-    suspend fun getProductById(
-        @Path("productId") productId: String,
-        @Query("location") location: String = Constants.location
+    @GET("categories/{categoryId}/products")
+    suspend fun getProductListByCategoryId(
+        @Path("categoryId") categoryId: String,
+        @Query("offset") offset: Int = 0,
+        @Query("limit") limit: Int = Constants.DEFAULT_LIMIT,
+    ): Response<BaseResponse<ProductListDto>>
+
+    @GET("products/{productId}")
+    suspend fun getProductDetail(
+        @Path("productId") productId: String
     ): Response<BaseResponse<ProductDto>>
 
     @GET("supplier/{supplierId}/address")
@@ -45,8 +47,8 @@ interface DiscoveryService {
         @Path("supplierId") supplierId: String
     ): Response<BaseResponse<AddressDto>>
 
-    @GET("product/search/{productName}")
+    @GET("products/search/{productName}")
     suspend fun searchProductByName(
         @Path("productName") productName: String
-    ): Response<BaseResponse<List<ProductDto>>>
+    ): Response<BaseResponse<ProductListDto>>
 }

@@ -36,7 +36,7 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
     private val callbackManager = CallbackManager.Factory.create()
 
     override fun initView() {
-        viewModel.product = args.product
+//        viewModel.product = args.product
         binding.viewModel = viewModel
         viewModel.viewController = this
         viewModel.getSupplierAddress()

@@ -20,6 +20,9 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        //buildConfigField("String", "BASE_URL", "\"https://sudo.eastasia.cloudapp.azure.com/api/v1/\"")
+        buildConfigField("String", "BASE_URL", "\"http://192.168.1.212:9030/api/v1/\"")
+        buildConfigField("boolean", "ENABLE_OTP", "false")
     }
 
     buildTypes {
@@ -35,10 +38,14 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildFeatures{
+        dataBinding true
+        viewBinding true
+        buildConfig true
+    }
 }
 
 dependencies {
-
     implementation fileTree(dir: "libs", include: ["*.jar","*.aar"])
 
     implementation "androidx.core:core-ktx:$core_version"

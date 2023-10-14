@@ -11,9 +11,9 @@ import com.sudo248.base_android.ktx.onError
 import com.sudo248.base_android.ktx.onSuccess
 import com.sudo248.sudoo.BuildConfig
 import com.sudo248.sudoo.domain.entity.cart.AddSupplierProduct
+import com.sudo248.sudoo.domain.entity.discovery.Product
 import com.sudo248.sudoo.domain.repository.CartRepository
 import com.sudo248.sudoo.domain.repository.DiscoveryRepository
-import com.sudo248.sudoo.ui.uimodel.ProductUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -37,35 +37,35 @@ class ProductDetailViewModel @Inject constructor(
     val supplierLocation: LiveData<String> = _supplierLocation
 
     var error: SingleEvent<String?> = SingleEvent(null)
-    // Khi khởi tạo view observer dữ liệu trong viewmodel nên sẽ hiển thị sai. Khi set lại value nhưng k notify nên k có dữ liệu
-    var product: ProductUiModel = ProductUiModel()
+//     Khi khởi tạo view observer dữ liệu trong viewmodel nên sẽ hiển thị sai. Khi set lại value nhưng k notify nên k có dữ liệu
+//    var product: Product = Product()
 
     fun getSupplierAddress() = launch {
-        discoveryRepository.getSupplierAddress(product.supplierId)
-            .onSuccess {
-                _supplierLocation.postValue(it.fullAddress)
-            }
+//        discoveryRepository.getSupplierAddress(product.supplierId)
+//            .onSuccess {
+//                _supplierLocation.postValue(it.fullAddress)
+//            }
     }
 
     fun addSupplierProduct() = launch {
-        val addSupplierProduct = AddSupplierProduct(
-            product.supplierId,
-            product.productId,
-            1
-        )
-        setState(UiState.LOADING)
-        cartRepository.addSupplierProduct(addSupplierProduct)
-            .onSuccess {
-                viewController?.setBadgeCart(it.cartSupplierProducts.size)
-            }
-            .onError {
-                error = SingleEvent(it.message)
-            }.bindUiState(_uiState)
+//        val addSupplierProduct = AddSupplierProduct(
+//            product.supplierId,
+//            product.productId,
+//            1
+//        )
+//        setState(UiState.LOADING)
+//        cartRepository.addSupplierProduct(addSupplierProduct)
+//            .onSuccess {
+//                viewController?.setBadgeCart(it.cartSupplierProducts.size)
+//            }
+//            .onError {
+//                error = SingleEvent(it.message)
+//            }.bindUiState(_uiState)
     }
 
     fun onClickLike() {
-        product.isLike.set(!product.isLike.get()!!)
-        product.isLike.notifyChange()
+//        product.isLike.set(!product.isLike.get()!!)
+//        product.isLike.notifyChange()
     }
 
     fun onBack() {
@@ -73,7 +73,7 @@ class ProductDetailViewModel @Inject constructor(
     }
 
     fun openChat() {
-        navigator.navigateTo(ProductDetailFragmentDirections.actionProductDetailFragmentToChatFragment(product.supplierId))
+//        navigator.navigateTo(ProductDetailFragmentDirections.actionProductDetailFragmentToChatFragment(product.supplierId))
     }
 
     fun buyNow() = launch {
@@ -82,7 +82,8 @@ class ProductDetailViewModel @Inject constructor(
     }
 
     fun getDeeplinkToProduction(): String {
-        return "${BuildConfig.BASE_URL}discovery/product/share/${product.productId}"
+        return ""
+//        return "${BuildConfig.BASE_URL}discovery/product/share/${product.productId}"
     }
 
 }

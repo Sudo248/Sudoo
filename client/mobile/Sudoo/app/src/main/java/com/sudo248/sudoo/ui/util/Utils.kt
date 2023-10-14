@@ -14,7 +14,7 @@ object Utils {
     private val locale = Locale("vi", "VN")
     private const val dateFormat = "dd/MM/yyyy"
 
-    fun format(value: Double, digit: Int): String {
+    fun format(value: Double, digit: Int = 2): String {
         return value.format(digit)
     }
 

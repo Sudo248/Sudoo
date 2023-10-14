@@ -8,7 +8,6 @@ import com.sudo248.base_android.base.BaseViewModel
 import com.sudo248.base_android.core.UiState
 import com.sudo248.base_android.ktx.createActionIntentDirections
 import com.sudo248.base_android.ktx.onState
-import com.sudo248.sudoo.domain.entity.auth.Account
 import com.sudo248.sudoo.domain.repository.AuthRepository
 import com.sudo248.sudoo.ui.activity.auth.AuthViewModel
 import com.sudo248.sudoo.ui.activity.main.MainActivity
@@ -47,7 +46,6 @@ class SignInViewModel @Inject constructor(
         delay(2000)
         authRepository.signIn(accountUiModel.toAccount()).onState(
             onSuccess = {
-                authRepository.saveToken(it.token)
                 parentViewModel?.setState(UiState.SUCCESS)
                 parentViewModel?.navigator()
                     ?.navigateOff(MainActivity::class.createActionIntentDirections())

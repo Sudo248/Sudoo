@@ -23,7 +23,7 @@ import com.sudo248.sudoo.R
 fun loadImage(image: ImageView, url: String) {
     if (url.isEmpty()) return
     var imageUrl = url
-    if (!imageUrl.startsWith("http")) imageUrl = "${BuildConfig.BASE_URL}images/$url"
+    if (!imageUrl.startsWith("http")) imageUrl = "${BuildConfig.BASE_URL}storage/images/$url"
     val circularProgressDrawable = CircularProgressDrawable(image.context)
     circularProgressDrawable.strokeWidth = 5f
     circularProgressDrawable.centerRadius = 30f

@@ -2,16 +2,12 @@ package com.sudo248.sudoo.ui.activity.main.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import com.apachat.swipereveallayout.core.ViewBinder
 import com.sudo248.base_android.base.BaseListAdapter
 import com.sudo248.base_android.base.BaseViewHolder
-import com.sudo248.sudoo.R
 import com.sudo248.sudoo.databinding.ItemCartBinding
-import com.sudo248.sudoo.databinding.ItemProductBinding
 import com.sudo248.sudoo.domain.entity.cart.AddSupplierProduct
 import com.sudo248.sudoo.domain.entity.cart.CartSupplierProduct
-import com.sudo248.sudoo.ui.uimodel.ProductUiModel
 import com.sudo248.sudoo.ui.uimodel.adapter.loadImage
 import com.sudo248.sudoo.ui.util.Utils
 

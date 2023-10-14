@@ -6,7 +6,6 @@ data class CategoryInfo(
     val categoryId: String = "",
     val name: String,
     val image: String,
-    val supplierId: String? = null,
 ) : ItemDiff, java.io.Serializable {
     override fun isContentTheSame(other: ItemDiff): Boolean {
         return other == this

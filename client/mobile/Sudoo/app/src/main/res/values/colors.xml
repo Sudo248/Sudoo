@@ -25,4 +25,6 @@
     <color name="gray_91">#919191</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="white_F7">#F7F7F7</color>
+    <color name="white_B3">#B3F7F7F7</color>
+    <color name="bg_search">#26333333</color>
 </resources>

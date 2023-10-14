@@ -27,6 +27,8 @@ import com.sudo248.sudoo.data.api.notification.NotificationService
 import com.sudo248.sudoo.data.api.payment.PaymentService
 import com.sudo248.sudoo.data.api.promotion.PromotionService
 import com.sudo248.sudoo.data.api.user.UserService
+import com.sudo248.sudoo.data.converter.LocalDateTimeConverter
+import java.time.LocalDateTime
 
 
 /**
@@ -46,7 +48,11 @@ object DataModule {
 
     @Singleton
     @Provides
-    fun provideDiscoveryService(): DiscoveryService = ApiService()
+    fun provideDiscoveryService(): DiscoveryService = api {
+        converterFactory = GsonConverterFactory.create(
+            GsonBuilder().registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeConverter()).create()
+        )
+    }
 
     @Singleton
     @Provides

@@ -26,6 +26,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
     override fun initView() {
         binding.viewModel = viewModel
         viewModel.setParentViewModel(authViewModel)
+        viewModel.gotoSignIn = { (activity as AuthActivity).selectedTab(0) }
         (activity as AuthActivity).requestViewPagerLayout()
     }
 }

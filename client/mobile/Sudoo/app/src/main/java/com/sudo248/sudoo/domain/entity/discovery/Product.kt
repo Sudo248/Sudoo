@@ -1,5 +1,7 @@
 package com.sudo248.sudoo.domain.entity.discovery
 
+import java.time.LocalDateTime
+
 
 /**
  * **Created by**
@@ -13,6 +15,15 @@ data class Product(
     val description: String,
     val sku: String,
     val images: List<String>,
-    val supplierProducts: List<SupplierProduct>,
-    val isLike: Boolean = false,
+    val price: Double,
+    val listedPrice: Double,
+    val amount: Int,
+    val soldAmount: Int,
+    val rate: Float,
+    val discount: Int,
+    val startDateDiscount: LocalDateTime,
+    val endDateDiscount: LocalDateTime,
+    val saleable: Boolean,
+    val supplier: SupplierInfo? = null,
+    val categories: List<CategoryInfo>? = null,
 ) :  java.io.Serializable

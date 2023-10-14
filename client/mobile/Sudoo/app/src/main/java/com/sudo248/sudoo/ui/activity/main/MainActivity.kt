@@ -14,6 +14,7 @@ import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupWithNavController
 import com.sudo248.base_android.base.BaseActivity
 import com.sudo248.base_android.ktx.gone
 import com.sudo248.base_android.ktx.visible
@@ -68,14 +69,17 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), PickIma
     override fun initView() {
         requestPermission()
         viewModel.pickImageController = this
-        val navHost = supportFragmentManager.findFragmentById(R.id.fcv) as NavHostFragment
+        val navHost = supportFragmentManager.findFragmentById(R.id.fcvMain) as NavHostFragment
         navController = navHost.navController
+        navController.setGraph(R.navigation.main_nav)
         NavigationUI.setupWithNavController(
             binding.bottomNav,
             navController
         )
+
         setupBadgeCart()
     }
+    // 2131230946
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
@@ -101,12 +105,12 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), PickIma
 
     override fun onResume() {
         super.onResume()
-        navController.addOnDestinationChangedListener(listener)
+//        navController.addOnDestinationChangedListener(listener)
     }
 
     override fun onPause() {
         super.onPause()
-        navController.removeOnDestinationChangedListener(listener)
+//        navController.removeOnDestinationChangedListener(listener)
     }
 
     override fun observer() {

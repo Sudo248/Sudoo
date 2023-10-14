@@ -6,8 +6,9 @@ import com.sudo248.base_android.base.BaseFragment
 import com.sudo248.base_android.ktx.gone
 import com.sudo248.base_android.ktx.visible
 import com.sudo248.sudoo.databinding.FragmentSearchBinding
-import com.sudo248.sudoo.ui.activity.main.adapter.ProductAdapter
-import com.sudo248.sudoo.ui.uimodel.ProductUiModel
+import com.sudo248.sudoo.domain.entity.discovery.ProductInfo
+import com.sudo248.sudoo.ui.activity.main.adapter.ProductInfoAdapter
+import com.sudo248.sudoo.ui.base.LoadMoreRecyclerViewListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -16,10 +17,16 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
     override val enableStateScreen: Boolean
         get() = true
 
-    private val productAdapter = ProductAdapter(::onProductItemClick)
+    private val productLoadMore = object : LoadMoreRecyclerViewListener {
+        override fun onLoadMore(page: Int, itemCount: Int) {
+
+        }
+    }
+
+    val productInfoAdapter = ProductInfoAdapter(::onProductItemClick, productLoadMore)
 
     override fun initView() {
-        binding.rcvProduct.adapter = productAdapter
+        binding.rcvProduct.adapter = productInfoAdapter
         binding.imgBack.setOnClickListener {
             back()
         }
@@ -53,12 +60,12 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
             } else {
                 binding.rcvProduct.visible()
                 binding.imgNotFound.gone()
-                productAdapter.submitList(it)
+                productInfoAdapter.submitList(it)
             }
         }
     }
 
-    private fun onProductItemClick(item: ProductUiModel) {
-        navigateTo(SearchFragmentDirections.actionSearchFragmentToProductDetailFragment(item))
+    private fun onProductItemClick(item: ProductInfo) {
+//        navigateTo(SearchFragmentDirections.actionSearchFragmentToProductDetailFragment(item))
     }
 }

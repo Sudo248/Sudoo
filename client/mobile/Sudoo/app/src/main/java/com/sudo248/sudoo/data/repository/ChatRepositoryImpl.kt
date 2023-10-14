@@ -8,8 +8,6 @@ import com.sudo248.sudoo.data.api.chat.ChatService
 import com.sudo248.sudoo.data.dto.chat.ChatDto
 import com.sudo248.sudoo.data.ktx.data
 import com.sudo248.sudoo.data.ktx.errorBody
-import com.sudo248.sudoo.data.mapper.toAddSupplierProductDto
-import com.sudo248.sudoo.data.mapper.toCart
 import com.sudo248.sudoo.domain.common.Constants
 import com.sudo248.sudoo.domain.entity.chat.Chat
 import com.sudo248.sudoo.domain.entity.chat.Conversation

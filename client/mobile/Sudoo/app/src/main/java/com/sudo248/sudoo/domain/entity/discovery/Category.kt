@@ -1,5 +1,7 @@
 package com.sudo248.sudoo.domain.entity.discovery
 
+import com.sudo248.base_android.base.ItemDiff
+
 
 /**
  * **Created by**
@@ -10,6 +12,15 @@ package com.sudo248.sudoo.domain.entity.discovery
 data class Category(
     val categoryId: String,
     val name: String,
-    val imageUrl: String,
-    var products: List<Product>
-) : java.io.Serializable
+    val image: String,
+    var products: MutableList<ProductInfo>? = null,
+) : java.io.Serializable, ItemDiff {
+    override fun isContentTheSame(other: ItemDiff): Boolean {
+        return other is Category && this == other
+    }
+
+    override fun isItemTheSame(other: ItemDiff): Boolean {
+        return other is Category && categoryId == other.categoryId
+    }
+
+}

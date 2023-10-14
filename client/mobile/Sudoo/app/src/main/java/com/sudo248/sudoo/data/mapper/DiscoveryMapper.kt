@@ -1,20 +1,29 @@
 package com.sudo248.sudoo.data.mapper
 
-import com.sudo248.sudoo.data.dto.discovery.*
-import com.sudo248.sudoo.domain.entity.discovery.*
-import kotlin.random.Random
-
-fun SupplierProductDto.toSupplierProduct(): SupplierProduct {
-    return SupplierProduct(
-        supplierId = supplierId,
-        productId = productId,
-        route = route,
-        amountLeft = amountLeft,
-        price = price,
-        soldAmount = soldAmount,
-        rate = if (rate <= 0) Random.nextDouble(3.0,5.0) else rate,
-    )
-}
+import com.sudo248.sudoo.data.dto.discovery.CategoryDto
+import com.sudo248.sudoo.data.dto.discovery.CategoryInfoDto
+import com.sudo248.sudoo.data.dto.discovery.CommentDto
+import com.sudo248.sudoo.data.dto.discovery.CommentListDto
+import com.sudo248.sudoo.data.dto.discovery.LocationDto
+import com.sudo248.sudoo.data.dto.discovery.PaginationDto
+import com.sudo248.sudoo.data.dto.discovery.ProductDto
+import com.sudo248.sudoo.data.dto.discovery.ProductInfoDto
+import com.sudo248.sudoo.data.dto.discovery.ProductListDto
+import com.sudo248.sudoo.data.dto.discovery.SupplierDto
+import com.sudo248.sudoo.data.dto.discovery.SupplierInfoDto
+import com.sudo248.sudoo.data.dto.discovery.UserInfoDto
+import com.sudo248.sudoo.domain.entity.discovery.Category
+import com.sudo248.sudoo.domain.entity.discovery.CategoryInfo
+import com.sudo248.sudoo.domain.entity.discovery.Comment
+import com.sudo248.sudoo.domain.entity.discovery.CommentList
+import com.sudo248.sudoo.domain.entity.discovery.Location
+import com.sudo248.sudoo.domain.entity.discovery.Pagination
+import com.sudo248.sudoo.domain.entity.discovery.Product
+import com.sudo248.sudoo.domain.entity.discovery.ProductInfo
+import com.sudo248.sudoo.domain.entity.discovery.ProductList
+import com.sudo248.sudoo.domain.entity.discovery.Supplier
+import com.sudo248.sudoo.domain.entity.discovery.SupplierInfo
+import com.sudo248.sudoo.domain.entity.discovery.UserInfo
 
 fun ProductDto.toProduct(): Product {
     return Product(
@@ -22,29 +31,122 @@ fun ProductDto.toProduct(): Product {
         name = name,
         description = description,
         sku = sku,
-        images = images?.map { it.url } ?: listOf("https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YnVyZ2VyfGVufDB8fDB8fA%3D%3D&w=1000&q=80"),
-        supplierProducts = supplierProducts?.map { it.toSupplierProduct() } ?: listOf()
+        price = price,
+        listedPrice = listedPrice,
+        amount = amount,
+        soldAmount = soldAmount,
+        rate = rate,
+        discount = discount,
+        startDateDiscount = startDateDiscount,
+        endDateDiscount = endDateDiscount,
+        saleable = saleable,
+        images = images.map { it.url },
+        supplier = supplier?.toSupplierInfo(),
+        categories = categories?.map { it.toCategoryInfo() },
     )
-    //
+}
+
+fun ProductInfoDto.toProductInfo(): ProductInfo {
+    return ProductInfo(
+        productId = productId,
+        name = name,
+        sku = sku,
+        price = price,
+        listedPrice = listedPrice,
+        amount = amount,
+        rate = rate,
+        discount = discount,
+        startDateDiscount = startDateDiscount,
+        endDateDiscount = endDateDiscount,
+        saleable = saleable,
+        images = images,
+        brand = brand,
+    )
+}
+
+fun ProductListDto.toProductList(): ProductList {
+    return ProductList(
+        products = products.map { it.toProductInfo() },
+        pagination = pagination.toPagination()
+    )
 }
 
 fun CategoryDto.toCategory(): Category {
     return Category(
         categoryId = categoryId,
         name = name,
-        imageUrl = image,
-        products = products.map { it.toProduct() }
+        image = image,
     )
 }
 
 fun CategoryInfoDto.toCategoryInfo(): CategoryInfo {
     return CategoryInfo(
-        categoryId, name, image, supplierId
+        categoryId, name, image
     )
 }
 
 fun SupplierDto.toSupplier(): Supplier {
     return Supplier(
-        supplierId, name, avatar
+        supplierId = supplierId,
+        name = name,
+        avatar = avatar,
+        brand = brand,
+        contactUrl = contactUrl,
+        location = location.toLocation(),
+        locationName = locationName,
+        totalProducts = totalProducts,
+        rate = rate,
+        createAt = createAt,
+    )
+}
+
+fun SupplierInfoDto.toSupplierInfo(): SupplierInfo {
+    return SupplierInfo(
+        supplierId = supplierId,
+        userId = userId,
+        name = name,
+        avatar = avatar,
+        brand = brand,
+        contactUrl = contactUrl,
+        rate = rate,
+    )
+}
+
+fun LocationDto.toLocation(): Location {
+    return Location(longitude, latitude)
+}
+
+fun CommentDto.toComment(): Comment {
+    return Comment(
+        commentId = commentId,
+        productId = productId,
+        rate = rate,
+        isLike = isLike,
+        comment = comment,
+        createAt = createAt,
+        userInfo = userInfo.toUserInfo(),
+        images = images,
+    )
+}
+
+fun UserInfoDto.toUserInfo(): UserInfo {
+    return UserInfo(
+        userId,
+        fullName,
+        avatar,
+    )
+}
+
+fun CommentListDto.toCommentList(): CommentList {
+    return CommentList(
+        comments = comments.map { it.toComment() },
+        pagination = pagination.toPagination(),
+    )
+}
+
+fun PaginationDto.toPagination(): Pagination {
+    return Pagination(
+        offset = offset,
+        total = total
     )
 }

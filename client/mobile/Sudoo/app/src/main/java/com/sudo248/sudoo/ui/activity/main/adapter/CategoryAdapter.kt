@@ -3,12 +3,12 @@ package com.sudo248.sudoo.ui.activity.main.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
 import com.sudo248.base_android.base.BaseListAdapter
 import com.sudo248.base_android.base.BaseViewHolder
 import com.sudo248.sudoo.R
 import com.sudo248.sudoo.databinding.ItemCategoryBinding
-import com.sudo248.sudoo.ui.uimodel.CategoryUiModel
+import com.sudo248.sudoo.domain.entity.discovery.Category
+import com.sudo248.sudoo.ui.uimodel.adapter.loadImage
 
 
 /**
@@ -18,16 +18,20 @@ import com.sudo248.sudoo.ui.uimodel.CategoryUiModel
  * @since 09:37 - 12/03/2023
  */
 class CategoryAdapter(
-    private val onItemClick: (CategoryUiModel) -> Unit,
-) : BaseListAdapter<CategoryUiModel, CategoryAdapter.ViewHolder>() {
+    private val onItemClick: (Category) -> Unit,
+    private val showCategoryImage: Boolean = false,
+) : BaseListAdapter<Category, CategoryAdapter.ViewHolder>() {
     private lateinit var lastSelectedItemBinding: ItemCategoryBinding
     private var currentSelectedPosition = 0
 
+    fun getCurrentSelectedCategory(): Category {
+        return currentList[currentSelectedPosition]
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            DataBindingUtil.inflate(
+            ItemCategoryBinding.inflate(
                 LayoutInflater.from(parent.context),
-                R.layout.item_category,
                 parent,
                 false
             )
@@ -35,10 +39,11 @@ class CategoryAdapter(
     }
 
     inner class ViewHolder(binding: ItemCategoryBinding) :
-        BaseViewHolder<CategoryUiModel, ItemCategoryBinding>(binding) {
+        BaseViewHolder<Category, ItemCategoryBinding>(binding) {
 
-        override fun onBind(item: CategoryUiModel) {
-            binding.category = item
+        override fun onBind(item: Category) {
+            loadImage(binding.imgCategory, item.image)
+            binding.txtNameCategory.text = item.name
             if (bindingAdapterPosition == currentSelectedPosition) {
                 lastSelectedItemBinding = binding
                 selectedItem(binding)

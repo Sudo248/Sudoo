@@ -74,13 +74,13 @@ class MainViewModel @Inject constructor(
     }
 
     fun getItemInCart() = launch {
-        cartRepository.getItemInCart()
-            .onSuccess {
-                _itemInCart.postValue(it)
-            }
-            .onError {
-                _itemInCart.postValue(0)
-            }
+//        cartRepository.getItemInCart()
+//            .onSuccess {
+//                _itemInCart.postValue(it)
+//            }
+//            .onError {
+//                _itemInCart.postValue(0)
+//            }
     }
 
 }

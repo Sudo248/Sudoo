@@ -1,11 +1,22 @@
 package com.sudo248.sudoo.data.dto.discovery
 
+import java.time.LocalDateTime
+
 data class ProductDto(
     val productId: String,
     val name: String,
     val description: String,
     val sku: String,
-    val images: List<ImageDto>? = null,
-    val categoryIds: List<String> = listOf(),
-    val supplierProducts: List<SupplierProductDto>? = null,
+    val price: Double,
+    val listedPrice: Double,
+    val amount: Int,
+    val soldAmount: Int,
+    val rate: Float,
+    val discount: Int,
+    val startDateDiscount: LocalDateTime,
+    val endDateDiscount: LocalDateTime,
+    val saleable: Boolean,
+    val images: List<ImageDto> = listOf(),
+    val supplier: SupplierInfoDto? = null,
+    val categories: List<CategoryInfoDto>? = null,
 )

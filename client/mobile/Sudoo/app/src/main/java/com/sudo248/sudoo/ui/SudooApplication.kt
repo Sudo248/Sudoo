@@ -2,7 +2,6 @@ package com.sudo248.sudoo.ui
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.os.Build
 import com.facebook.FacebookSdk
 import com.google.firebase.messaging.FirebaseMessaging
 import com.sudo248.base_android.app.BaseApplication
@@ -19,7 +18,7 @@ import dagger.hilt.android.HiltAndroidApp
  */
 
 @HiltAndroidApp
-class sudooApplication : BaseApplication() {
+class SudooApplication : BaseApplication() {
     override val enableNetworkObserver: Boolean = true
     override fun onCreate() {
         super.onCreate()

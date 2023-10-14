@@ -13,7 +13,6 @@ fun SupplierProductDetailDto.toSupplierProductDetail(): SupplierProductDetail {
     return SupplierProductDetail(
         supplier = supplier.toSupplier(),
         product = product.toProduct(),
-        route = route,
         amountLeft, price, soldAmount, rate
     )
 }

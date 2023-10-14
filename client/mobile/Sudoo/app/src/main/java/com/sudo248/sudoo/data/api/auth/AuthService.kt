@@ -14,6 +14,7 @@ import com.sudo248.sudoo.domain.common.Constants
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
 
@@ -30,8 +31,8 @@ import retrofit2.http.Path
 @LoggingLever(level = Level.BODY)
 interface AuthService {
 
-    @GET("try-token")
-    suspend fun tryGetToken(): Response<BaseResponse<TokenDto>>
+    @GET("refresh-token")
+    suspend fun refreshToken(@Header("refresh-token") refreshToken: String): Response<BaseResponse<TokenDto>>
 
     @POST("sign-in")
     suspend fun signIn(@Body accountRequest: AccountRequest): Response<BaseResponse<TokenDto>>

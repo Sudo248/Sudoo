@@ -90,7 +90,7 @@
                     android:autofillHints="Burger"
                     android:background="@drawable/rectangle_conner_25_stroke_1"
                     android:focusable="false"
-                    android:hint="@string/search_food"
+                    android:hint="@string/search"
                     android:inputType="none"
                     android:onClick="@{(v) -> viewModel.navigateToSearchView()}"
                     android:paddingHorizontal="20dp"

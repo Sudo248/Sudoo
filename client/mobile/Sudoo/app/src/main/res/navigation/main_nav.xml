@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_discovery">
         <action
             android:id="@+id/action_discoveryFragment_to_productDetailFragment"
-            app:destination="@id/productDetailFragment"></action>
+            app:destination="@id/productDetailFragment"/>
         <action
             android:id="@+id/action_discoveryFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
@@ -24,8 +24,8 @@
         android:label="ProductDetailFragment"
         tools:layout="@layout/fragment_product_detail">
         <argument
-            android:name="product"
-            app:argType="com.sudo248.sudoo.ui.uimodel.ProductUiModel"
+            android:name="productId"
+            app:argType="string"
             app:nullable="false" />
         <action
             android:id="@+id/action_productDetailFragment_to_chatFragment"

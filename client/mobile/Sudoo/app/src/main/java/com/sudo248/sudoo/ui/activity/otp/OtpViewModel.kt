@@ -68,7 +68,6 @@ class OtpViewModel @Inject constructor(
         setState(UiState.LOADING)
         authRepository.verifyOtp(_phoneNumber.value!!, otp).onState(
             onSuccess = {
-                authRepository.saveToken(it.token)
                 setState(UiState.SUCCESS)
                 navigator.navigateOff(MainActivity::class.createActionIntentDirections())
             },
