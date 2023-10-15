@@ -38,7 +38,7 @@ abstract class BasePageListAdapter<T : Any, VH : BasePageViewHolder<T, *>> :
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
-        if (enableLoadMore) {
+        if (enableLoadMore && loadMoreScrollListener == null) {
             loadMoreScrollListener = object : LoadMoreRecyclerViewScrollListener(
                 recyclerView.layoutManager!!,
                 thresholdInvisibleItem ?: 0
@@ -49,6 +49,11 @@ abstract class BasePageListAdapter<T : Any, VH : BasePageViewHolder<T, *>> :
             }
             recyclerView.addOnScrollListener(loadMoreScrollListener!!)
         }
+    }
+
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
+        loadMoreScrollListener?.let { recyclerView.removeOnScrollListener(it) }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BasePageViewHolder<T, *> {
@@ -68,6 +73,27 @@ abstract class BasePageListAdapter<T : Any, VH : BasePageViewHolder<T, *>> :
             holder.onBind(getItem(position))
         }
     }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (
+            enableLoadMore &&
+            loadMoreScrollListener?.isLastPage == false &&
+            isLastPosition(position)
+        ) {
+            TYPE_VIEW_LOADING
+        } else {
+            getViewType(position)
+        }
+    }
+
+    override fun getItemCount(): Int =
+        if (enableLoadMore && currentList.isNotEmpty() && loadMoreScrollListener?.isLastPage == false)
+            currentList.size + 1
+        else
+            currentList.size
+
+    private fun isLastPosition(position: Int): Boolean = position >= itemCount - 1
+
 
     open fun submitData(list: List<T>?, extend: Boolean = false) {
         if (extend) {
@@ -95,26 +121,6 @@ abstract class BasePageListAdapter<T : Any, VH : BasePageViewHolder<T, *>> :
     fun isLastPage(isLastPage: Boolean) {
         loadMoreScrollListener?.isLastPage = isLastPage
     }
-
-    override fun getItemViewType(position: Int): Int {
-        return if (
-            enableLoadMore &&
-            loadMoreScrollListener?.isLastPage == false &&
-            isLastPosition(position)
-        ) {
-            TYPE_VIEW_LOADING
-        } else {
-            getViewType(position)
-        }
-    }
-
-    override fun getItemCount(): Int =
-        if (enableLoadMore && loadMoreScrollListener?.isLastPage == false)
-            currentList.size + 1
-        else
-            currentList.size
-
-    private fun isLastPosition(position: Int): Boolean = position >= itemCount - 1
 
     private fun getMethodInflateViewBinding(vhClass: Class<BasePageViewHolder<T, *>>): Method {
         val viewBindingClass =

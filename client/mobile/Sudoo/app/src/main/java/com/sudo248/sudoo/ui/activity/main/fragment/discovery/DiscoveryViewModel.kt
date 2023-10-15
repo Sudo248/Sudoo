@@ -76,12 +76,12 @@ class DiscoveryViewModel @Inject constructor(
             }
             discoveryRepository.getProductListByCategoryId(categoryId, nextOffset)
                 .onSuccess {
-                    productInfoAdapter.submitData(it.products, extend = isLoadMore)
                     if (it.products.size < nextOffset.limit) {
                         productInfoAdapter.isLastPage(true)
                     } else {
                         nextOffset.offset = it.pagination.offset
                     }
+                    productInfoAdapter.submitData(it.products, extend = isLoadMore)
                 }
                 .onError {
                     error = SingleEvent(it.message)

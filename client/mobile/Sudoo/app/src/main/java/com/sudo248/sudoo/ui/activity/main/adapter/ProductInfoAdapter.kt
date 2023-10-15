@@ -21,8 +21,8 @@ class ProductInfoAdapter(
     private val onItemClick: (ProductInfo) -> Unit,
     onLoadMore: LoadMoreRecyclerViewListener
 ) : BasePageListAdapter<ProductInfo, ProductInfoAdapter.ProductInfoViewHolder>() {
-
     override val enableLoadMore: Boolean = true
+
     init {
         setLoadMoreListener(onLoadMore)
     }
