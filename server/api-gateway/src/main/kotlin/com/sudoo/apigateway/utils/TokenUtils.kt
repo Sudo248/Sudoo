@@ -35,5 +35,4 @@ class TokenUtils {
             throw ApiException(HttpStatus.UNAUTHORIZED, SudooError.TOKEN_CLAIM_EMPTY.message)
         }
     }
-
 }

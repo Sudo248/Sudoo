@@ -14,7 +14,7 @@ interface CategoryProductRepository : CoroutineCrudRepository<CategoryProduct, S
 
     @Modifying
     @Transactional
-    @Query("""
+    @Query ("""
         DELETE FROM categories_products 
         WHERE categories_products.product_id = :productId AND categories_products.category_id = :categoryId;
     """
