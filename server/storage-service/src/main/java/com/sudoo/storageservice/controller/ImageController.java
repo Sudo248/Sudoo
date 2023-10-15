@@ -25,7 +25,6 @@ public class ImageController {
             @RequestParam(value = "image") MultipartFile image,
             @RequestParam(value = "source", required = false, defaultValue = "cloudinary") String source
     ) {
-        request.getHeader("");
         return imageService.storeImage(image, source);
     }
 }

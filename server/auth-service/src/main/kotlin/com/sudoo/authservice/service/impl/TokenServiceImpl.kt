@@ -10,7 +10,6 @@ class TokenServiceImpl(
     private val tokenUtils: TokenUtils
 ) : TokenService {
     override suspend fun refreshToken(refreshToken: String): TokenDto {
-        tokenUtils.validateToken(refreshToken)
         val userId = tokenUtils.getUserIdFromRefreshToken(refreshToken)
         val token = tokenUtils.generateToken(userId)
         val newRefreshToken = tokenUtils.generateRefreshToken(userId)

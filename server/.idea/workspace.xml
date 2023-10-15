@@ -280,6 +280,9 @@
       <workItem from="1696733902620" duration="786000" />
       <workItem from="1696863648320" duration="3356000" />
       <workItem from="1696946086229" duration="10237000" />
+      <workItem from="1696993381794" duration="565000" />
+      <workItem from="1697119255256" duration="4482000" />
+      <workItem from="1697270765845" duration="5026000" />
     </task>
     <servers />
   </component>
@@ -289,19 +292,9 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/impl/ProductServiceImpl.kt</url>
-          <line>101</line>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/storage-service/src/main/java/com/sudoo/storageservice/controller/ImageController.java</url>
           <line>27</line>
-          <option name="timeStamp" value="12" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/storage-service/src/main/java/com/sudoo/storageservice/controller/ImageController.java</url>
-          <line>28</line>
           <option name="timeStamp" value="13" />
         </line-breakpoint>
       </breakpoints>

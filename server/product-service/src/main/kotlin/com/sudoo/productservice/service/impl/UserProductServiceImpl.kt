@@ -35,7 +35,7 @@ class UserProductServiceImpl(
                 coreService.upsertComment(userProduct)
                 userProduct.images = userProductDto.images?.map {
                     async {
-                        imageRepository.save(Image.from(userProduct.userId, it))
+                        imageRepository.save(Image.from(userProduct.userProductId, it))
                     }
                 }?.awaitAll()
             }

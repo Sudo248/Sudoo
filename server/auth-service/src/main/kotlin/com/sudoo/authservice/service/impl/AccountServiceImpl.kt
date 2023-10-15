@@ -13,23 +13,30 @@ import com.sudoo.authservice.model.Account
 import com.sudoo.authservice.repository.AccountRepository
 import com.sudoo.authservice.service.AccountService
 import com.sudoo.authservice.service.OtpService
+import com.sudoo.authservice.service.UserService
 import com.sudoo.authservice.utils.TokenUtils
 import com.sudoo.domain.exception.ApiException
 import com.sudoo.domain.exception.CommonException
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
 class AccountServiceImpl(
-    private val accountRepository: AccountRepository,
-    private val encoder: PasswordEncoder,
-    private val tokenUtils: TokenUtils,
-    private val otpService: OtpService,
+        private val accountRepository: AccountRepository,
+        private val encoder: PasswordEncoder,
+        private val tokenUtils: TokenUtils,
+        private val otpService: OtpService,
+        private val userService: UserService,
 ) : AccountService {
+
+    @Value("\${otp.enable}")
+    private var enableOtp: Boolean = true
+
     override suspend fun signIn(signInDto: SignInDto): TokenDto {
         val account = accountRepository.getAccountByEmailOrPhoneNumber(signInDto.emailOrPhoneNumber)
-            ?: throw EmailOrPhoneNumberInvalidException()
+                ?: throw EmailOrPhoneNumberInvalidException()
 
         if (!encoder.matches(signInDto.password, account.password)) {
             throw WrongPasswordException()
@@ -46,12 +53,13 @@ class AccountServiceImpl(
         if (accountRepository.existsByEmailOrPhoneNumber(signUpDto.emailOrPhoneNumber) == 1) {
             throw EmailOrPhoneNumberExistedException()
         }
-
-        if (otpService.generateOtp(signUpDto.emailOrPhoneNumber)) {
-            saveAccount(signUpDto.toModel())
+        val account = signUpDto.toModel(isValidated = !enableOtp)
+        if (enableOtp) {
+            otpService.generateOtp(signUpDto.emailOrPhoneNumber)
         } else {
-            throw CommonException()
+            userService.createUserForAccount(account)
         }
+        saveAccount(account)
     }
 
     override suspend fun changePassword(userId: String, changePasswordDto: ChangePasswordDto): Boolean {
