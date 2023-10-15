@@ -29,7 +29,7 @@ class SupplierController(
         supplierService.getSupplierById(supplierId)
     }
 
-    @GetMapping("/info/{supplierId}")
+    @GetMapping("/{supplierId}/info")
     suspend fun getSupplierInfoById(
         @PathVariable("supplierId") supplierId: String
     ): ResponseEntity<BaseResponse<*>> = handle {
