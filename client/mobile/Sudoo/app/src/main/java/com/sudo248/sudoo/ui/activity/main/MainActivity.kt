@@ -105,12 +105,12 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), PickIma
 
     override fun onResume() {
         super.onResume()
-//        navController.addOnDestinationChangedListener(listener)
+        navController.addOnDestinationChangedListener(listener)
     }
 
     override fun onPause() {
         super.onPause()
-//        navController.removeOnDestinationChangedListener(listener)
+        navController.removeOnDestinationChangedListener(listener)
     }
 
     override fun observer() {
