@@ -1,74 +1,161 @@
 package com.sudoo.cartservice.service.impl
 
 import com.sudoo.cartservice.controller.dto.CartDto
+import com.sudoo.cartservice.controller.dto.ProductInfoDto
+import com.sudoo.cartservice.controller.dto.UpsertCartProductDto
+import com.sudoo.cartservice.controller.dto.toCartProduct
 import com.sudoo.cartservice.repository.CartProductRepository
 import com.sudoo.cartservice.repository.CartRepository
 import com.sudoo.cartservice.repository.entity.Cart
 import com.sudoo.cartservice.repository.entity.CartProduct
-import com.sudoo.cartservice.repository.entity.toCartDto
-import com.sudoo.cartservice.repository.entity.toCartProductDto
+import com.sudoo.cartservice.repository.entity.CartStatus
 import com.sudoo.cartservice.service.CartProductService
 import com.sudoo.cartservice.service.CartService
+import com.sudoo.cartservice.service.ProductService
+import com.sudoo.domain.exception.BadRequestException
+import com.sudoo.domain.exception.NotFoundException
+import com.sudoo.domain.utils.IdentifyCreator
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.toList
 import org.springframework.stereotype.Service
 
 @Service
-class CartProductServiceImpl(val cartRepository: CartRepository, val cartProductRepository: CartProductRepository, val cartService: CartService) : CartProductService {
+class CartProductServiceImpl(
+    val cartRepository: CartRepository,
+    val cartProductRepository: CartProductRepository,
+    val cartService: CartService,
+    val productService: ProductService,
+) : CartProductService {
 
-    suspend fun getActiveCart(userId: String): Cart {
-        return cartRepository.findCartByUserIdAndStatus(userId, "active").toList()[0]
+    private suspend fun getActiveCart(userId: String): Cart? {
+        val carts = cartRepository.findCartByUserIdAndStatus(userId, "active").toList()
+        return if (carts.isEmpty()) null else carts.first()
     }
 
-    override suspend fun addProductToActiveCart(userId: String, cartProduct: CartProduct): CartDto {
-        val activeCart: Cart = getActiveCart(userId)
-        cartProductRepository.save(cartProduct.apply { isNewCartProduct = true })
-        activeCart.totalPrice += cartProduct.totalPrice
-        activeCart.totalAmount += cartProduct.quantity
-        activeCart.cartProducts.toMutableList().add(cartProduct)
-        cartRepository.save(activeCart)
+    override suspend fun addProductToActiveCart(userId: String, upsertCartProductDto: UpsertCartProductDto): CartDto =
+        coroutineScope {
+            val activeCart = getActiveCart(userId) ?: createNewCart(userId)
 
-        return CartDto(
+            val productInfo = productService.getProductInfo(upsertCartProductDto.productId)
+            val cartProduct = cartProductRepository.findCartProductByCartIdAndProductId(
+                activeCart.cartId,
+                upsertCartProductDto.productId
+            )
+
+            if (activeCart.isNewCart || cartProduct == null) {
+                val newCartProduct = upsertCartProductDto.toCartProduct(activeCart.cartId)
+                activeCart.totalPrice += (newCartProduct.quantity * productInfo.price)
+                activeCart.totalAmount += newCartProduct.quantity
+
+                joinAll(
+                    launch {
+                        cartProductRepository.save(newCartProduct)
+                    },
+                    launch {
+                        cartRepository.save(activeCart)
+                    }
+                )
+            } else {
+                cartProduct.quantity += 1
+                activeCart.totalPrice += productInfo.price
+                activeCart.totalAmount += 1
+                joinAll(
+                    launch {
+                        cartProductRepository.save(cartProduct)
+                    },
+                    launch {
+                        cartRepository.save(activeCart)
+                    }
+                )
+            }
+
+            CartDto(
                 activeCart.cartId,
                 activeCart.totalPrice,
                 activeCart.totalAmount,
                 activeCart.status,
-                cartService.getCartProducts(userId, activeCart.cartId, false)
-        )
-    }
+                cartService.getCartProducts(activeCart.cartId)
+            )
+        }
 
-    override suspend fun updateProductInCart(userId: String, cartProduct: CartProduct): CartDto {
-        val cart: Cart = cartRepository.findById(cartProduct.cartId) ?: Cart()
-        cart.cartProducts = cartProductRepository.findCartProductByCartId(cartProduct.cartId).toList()
-        val cartProductUpdate: CartProduct = cartProductRepository.findCartProductByCartIdAndProductId(cartProduct.cartId, cartProduct.productId)
-        cartProductUpdate.quantity += cartProductUpdate.quantity
-        cartProductUpdate.totalPrice += cartProductUpdate.totalPrice
-        cartProductRepository.save(cartProductUpdate)
-
-        cart.totalAmount += cartProductUpdate.quantity
-        cart.totalPrice += cartProductUpdate.totalPrice
-        cart.cartProducts = cartProductRepository.findCartProductByCartId(cartProduct.cartId).toList()
+    private suspend fun createNewCart(userId: String): Cart {
+        val cart = Cart(
+            cartId = IdentifyCreator.create(),
+            userId = userId,
+            totalAmount = 0,
+            totalPrice = 0.0,
+            status = CartStatus.ACTIVE.value,
+        ).apply { isNewCart = true }
         cartRepository.save(cart)
+        return cart
+    }
 
+    override suspend fun updateProductInCart(cartId: String, upsertCartProductDto: UpsertCartProductDto): CartDto = coroutineScope {
+        if (upsertCartProductDto.cartProductId == null) throw BadRequestException("Require cart product id")
 
-        return CartDto(
-                cartId = cart.cartId,
-                status = cart.status,
-                totalPrice = cart.totalPrice,
-                totalAmount = cart.totalAmount,
-                cartProducts = cart.cartProducts.map { it.toCartProductDto() }
+        val deferreds = awaitAll(
+            async {
+                cartRepository.findById(cartId) ?: throw NotFoundException("Not found cart $cartId")
+            },
+            async {
+                cartProductRepository.findById(upsertCartProductDto.cartProductId) ?: throw NotFoundException(
+                    "Not found cart product ${upsertCartProductDto.cartProductId}"
+                )
+            },
+            async {
+                productService.getProductInfo(upsertCartProductDto.productId)
+            }
+        )
+
+        val cart = deferreds[0] as Cart
+        val cartProduct = deferreds[1] as CartProduct
+        val productInfo = deferreds[2] as ProductInfoDto
+
+        val updateQuantity = upsertCartProductDto.quantity - cartProduct.quantity
+        cartProduct.quantity += updateQuantity
+
+        cart.totalAmount += updateQuantity
+        cart.totalPrice += (updateQuantity * productInfo.price)
+
+        joinAll(
+            launch {
+                cartProductRepository.save(cartProduct)
+            },
+            launch {
+                cartRepository.save(cart)
+            }
+        )
+
+        CartDto(
+            cartId = cart.cartId,
+            status = cart.status,
+            totalPrice = cart.totalPrice,
+            totalAmount = cart.totalAmount,
+            cartProducts = cartService.getCartProducts(cartId)
         )
     }
 
-    override suspend fun deleteCartProduct(userId: String?, cartProduct: CartProduct): CartDto {
+    override suspend fun deleteCartProduct(cartId: String, cartProductId: String): Boolean = coroutineScope {
+        val deferreds = awaitAll(
+            async {
+                cartRepository.findById(cartId) ?: throw NotFoundException("Not found cart $cartId")
+            },
+            async {
+                cartProductRepository.findById(cartProductId) ?: throw NotFoundException(
+                    "Not found cart product ${cartProductId}"
+                )
+            },
+        )
 
-        val cart = cartRepository.findById(cartProduct.cartId) ?: Cart()
-        val index = cartProductRepository.deleteCartProductByCartIdAndProductId(cartProduct.cartId, cartProduct.productId)
-        if (index == -1) throw Exception("Not found item")
+        val cart = deferreds[0] as Cart
+        val cartProduct = deferreds[1] as CartProduct
+        val productInfo = productService.getProductInfo(cartProduct.productId)
+
+        cartProductRepository.deleteById(cartProductId)
+
         cart.totalAmount -= cartProduct.quantity
-        cart.totalPrice -= cartProduct.totalPrice
-        cart.cartProducts.toMutableList().removeIf { it.cartProductId == cartProduct.cartProductId }
+        cart.totalPrice -= (cartProduct.quantity * productInfo.price)
         cartRepository.save(cart)
-
-        return cart.toCartDto()
+        true
     }
 }

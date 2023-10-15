@@ -32,7 +32,7 @@ interface ProductRepository : CoroutineCrudRepository<Product, String> {
         LIMIT 1;
     """
     )
-    suspend fun getProductInfoById(@Param("productId") productId: String): ProductInfo
+    suspend fun getProductInfoById(@Param("productId") productId: String): ProductInfo?
 
     @Query(
         """

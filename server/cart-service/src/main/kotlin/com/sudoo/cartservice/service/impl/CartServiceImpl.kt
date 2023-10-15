@@ -3,12 +3,13 @@ package com.sudoo.cartservice.service.impl
 import com.sudoo.cartservice.controller.dto.CartDto
 import com.sudoo.cartservice.controller.dto.CartProductDto
 import com.sudoo.cartservice.repository.CartProductRepository
-//import com.sudoo.cartservice.service.DiscoveryService
+//import com.sudoo.cartservice.service.ProductService
 import com.sudoo.cartservice.repository.CartRepository
 import com.sudoo.cartservice.repository.entity.Cart
-import com.sudoo.cartservice.repository.entity.CartProduct
+import com.sudoo.cartservice.repository.entity.CartStatus
 import com.sudoo.cartservice.repository.entity.toCartProductDto
 import com.sudoo.cartservice.service.CartService
+import com.sudoo.domain.exception.NotFoundException
 import com.sudoo.domain.utils.IdentifyCreator
 import kotlinx.coroutines.flow.toList
 import org.springframework.stereotype.Service
@@ -24,7 +25,7 @@ class CartServiceImpl(
                 userId = userId,
                 totalAmount = 0,
                 totalPrice = 0.0,
-                status = "active",
+                status = CartStatus.ACTIVE.value,
         ).apply { isNewCart = true }
         var savedCart = cartRepository.save(cart)
         var cartDto = getCartById(userId = userId, cartId = savedCart.cartId, false)
@@ -32,8 +33,8 @@ class CartServiceImpl(
     }
 
     override suspend fun updateStatusCart(userId: String): CartDto {
-        var cart = cartRepository.findCartByUserIdAndStatus(userId, "active").toList()[0]
-        cart.status = "completed"
+        var cart = cartRepository.findCartByUserIdAndStatus(userId, CartStatus.ACTIVE.value).toList()[0]
+        cart.status = CartStatus.COMPLETED.value
         var savedCart = cartRepository.save(cart)
         return getCartById(userId, savedCart.cartId, false)
     }
@@ -42,16 +43,15 @@ class CartServiceImpl(
      * Lấy chính xác 1 cart của user
      */
     override suspend fun getCartById(userId: String, cartId: String, hasRoute: Boolean): CartDto {
-        val cart: Cart? = cartRepository.findById(cartId)
+        val cart = cartRepository.findById(cartId) ?: throw NotFoundException("Not found cart $cartId")
         var totalPrice = 0.0
         var totalAmount = 0
         var cartProductDtos: List<CartProductDto> = ArrayList()
         if (cart?.cartProducts?.isNotEmpty() == true) {
             for (cartProduct in cart.cartProducts) {
-                totalPrice += cartProduct.totalPrice
                 totalAmount += cartProduct.quantity
             }
-            cartProductDtos = getCartProducts(userId, cartId, hasRoute)
+            cartProductDtos = getCartProducts(cartId)
         }
         return CartDto(
                 cart?.cartId ?: "",
@@ -72,7 +72,7 @@ class CartServiceImpl(
                     cart?.totalPrice ?: 0.0,
                     cart?.totalAmount ?: 0,
                     cart?.status ?: "active",
-                    getCartProducts(userId, cart?.cartId ?: "", false)
+                    getCartProducts(cart?.cartId ?: "")
             )
         } catch (e: Exception) {
             e.printStackTrace()
@@ -92,7 +92,7 @@ class CartServiceImpl(
     /**
      * Lấy danh sách product trong 1 cart
      */
-    override suspend fun getCartProducts(userId: String, cartId: String, hasRoute: Boolean): List<CartProductDto> {
+    override suspend fun getCartProducts(cartId: String): List<CartProductDto> {
         val cartProductDtos: MutableList<CartProductDto> = mutableListOf()
         val cartProductsOfCart = cartProductRepository.findCartProductByCartId(cartId).toList()
         for (cartProduct in cartProductsOfCart) {

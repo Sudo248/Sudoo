@@ -67,6 +67,13 @@ class ProductController(
         }
     }
 
+    @GetMapping("/{productId}/info")
+    suspend fun getProductInfo(
+        @PathVariable("productId") productId: String
+    ): ResponseEntity<BaseResponse<*>> = handle {
+        productService.getProductInfoById(productId)
+    }
+
     @GetMapping("/sku/{sku}")
     suspend fun getProductDetailBySku(
         @RequestHeader(Constants.HEADER_USER_ID) userId: String,

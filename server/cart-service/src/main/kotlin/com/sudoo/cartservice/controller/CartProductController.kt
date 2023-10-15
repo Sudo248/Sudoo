@@ -1,8 +1,6 @@
 package com.sudoo.cartservice.controller
 
-import com.sudoo.cartservice.controller.dto.CartDto
-import com.sudoo.cartservice.controller.dto.CartProductDto
-import com.sudoo.cartservice.repository.entity.CartProduct
+import com.sudoo.cartservice.controller.dto.UpsertCartProductDto
 import com.sudoo.cartservice.service.CartProductService
 import com.sudoo.domain.base.BaseController
 import com.sudoo.domain.base.BaseResponse
@@ -12,31 +10,30 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 class CartProductController(val cartProductService: CartProductService) : BaseController() {
-    @PostMapping("/item")
+    @PostMapping("/items")
     suspend fun addProductToCart(
-            @RequestHeader(Constants.HEADER_USER_ID) userId: String,
-            @RequestBody cartProduct: CartProduct
-    ): ResponseEntity<BaseResponse<*>> {
-        val savedCart: CartDto = cartProductService.addProductToActiveCart(userId, cartProduct)
-        return BaseResponse.ok(savedCart)
+        @RequestHeader(Constants.HEADER_USER_ID) userId: String,
+        @RequestBody upsertCartProductDto: UpsertCartProductDto
+    ): ResponseEntity<BaseResponse<*>> = handle {
+        cartProductService.addProductToActiveCart(userId, upsertCartProductDto)
     }
 
-    @PutMapping("/item")
+    @PutMapping("{cartId}/items/")
     suspend fun updateProductInCart(
-            @RequestHeader(Constants.HEADER_USER_ID) userId: String,
-            @RequestBody cartProduct: CartProduct
+        @RequestHeader(Constants.HEADER_USER_ID) userId: String,
+        @PathVariable("cartId") cartId: String,
+        @RequestBody upsertCartProductDto: UpsertCartProductDto
     ): ResponseEntity<BaseResponse<*>> = handle {
-        val savedCart: CartDto = cartProductService.updateProductInCart(userId, cartProduct)
-        BaseResponse.ok(savedCart)
+        cartProductService.updateProductInCart(cartId, upsertCartProductDto)
     }
 
-    @DeleteMapping("/item")
+    @DeleteMapping("{cartId}/items/{cartProductId}")
     suspend fun deleteProductInCart(
-            @RequestHeader(Constants.HEADER_USER_ID) userId: String,
-            @RequestBody cartProduct: CartProduct
+        @RequestHeader(Constants.HEADER_USER_ID) userId: String,
+        @PathVariable("cartId") cartId: String,
+        @PathVariable("cartProductId") cartProductId: String
     ): ResponseEntity<BaseResponse<*>> = handle {
-        val savedCart: CartDto = cartProductService.deleteCartProduct(userId, cartProduct)
-        BaseResponse.ok(savedCart)
+        cartProductService.deleteCartProduct(userId, cartProductId)
     }
 
 }
