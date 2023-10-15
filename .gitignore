@@ -33,7 +33,7 @@
 .sts4-cache
 
 ### IntelliJ IDEA ###
-/server/.idea
+/server/.idea/
 *.iws
 *.iml
 *.ipr
