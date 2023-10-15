@@ -4,14 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavDirections
 import com.sudo248.base_android.base.BaseViewModel
-import com.sudo248.base_android.core.UiState
 import com.sudo248.base_android.event.SingleEvent
-import com.sudo248.base_android.ktx.bindUiState
 import com.sudo248.base_android.ktx.onError
 import com.sudo248.base_android.ktx.onSuccess
-import com.sudo248.sudoo.BuildConfig
-import com.sudo248.sudoo.domain.entity.cart.AddSupplierProduct
 import com.sudo248.sudoo.domain.entity.discovery.Product
+import com.sudo248.sudoo.domain.entity.discovery.Supplier
 import com.sudo248.sudoo.domain.repository.CartRepository
 import com.sudo248.sudoo.domain.repository.DiscoveryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,28 +30,45 @@ class ProductDetailViewModel @Inject constructor(
 
     var viewController: ViewController? = null
 
-    private val _supplierLocation =MutableLiveData("")
-    val supplierLocation: LiveData<String> = _supplierLocation
-
     var error: SingleEvent<String?> = SingleEvent(null)
-//     Khi khởi tạo view observer dữ liệu trong viewmodel nên sẽ hiển thị sai. Khi set lại value nhưng k notify nên k có dữ liệu
-//    var product: Product = Product()
 
-    fun getSupplierAddress() = launch {
-//        discoveryRepository.getSupplierAddress(product.supplierId)
-//            .onSuccess {
-//                _supplierLocation.postValue(it.fullAddress)
-//            }
+    private val _product = MutableLiveData<Product>()
+    val product: LiveData<Product> = _product
+
+    private val _supplier = MutableLiveData<Supplier>()
+    val supplier: LiveData<Supplier> = _supplier
+
+    fun getProduct(productId: String) = launch {
+        discoveryRepository.getProductDetail(productId)
+            .onSuccess {
+                _product.value = it
+                it.supplier?.let {supplierInfo ->
+                    getSupplierDetail(supplierInfo.supplierId)
+                }
+            }
+            .onError {
+                error = SingleEvent(it.message)
+            }
     }
 
-    fun addSupplierProduct() = launch {
-//        val addSupplierProduct = AddSupplierProduct(
+    private fun getSupplierDetail(supplierId: String) = launch {
+        discoveryRepository.getSupplierDetail(supplierId)
+            .onSuccess {
+                _supplier.value = it
+            }
+            .onError {
+                error = SingleEvent(it.message)
+            }
+    }
+
+    fun addProductToCart() = launch {
+//        val addProductToCart = AddSupplierProduct(
 //            product.supplierId,
 //            product.productId,
 //            1
 //        )
 //        setState(UiState.LOADING)
-//        cartRepository.addSupplierProduct(addSupplierProduct)
+//        cartRepository.addProductToCart(addProductToCart)
 //            .onSuccess {
 //                viewController?.setBadgeCart(it.cartSupplierProducts.size)
 //            }
@@ -77,7 +91,7 @@ class ProductDetailViewModel @Inject constructor(
     }
 
     fun buyNow() = launch {
-        addSupplierProduct().join()
+        addProductToCart().join()
         navigator.navigateOff(ProductDetailFragmentDirections.actionProductDetailFragmentToCartFragment())
     }
 

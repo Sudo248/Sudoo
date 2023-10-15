@@ -5,6 +5,7 @@ import com.sudo248.sudoo.domain.entity.discovery.Category
 import com.sudo248.sudoo.domain.entity.discovery.Offset
 import com.sudo248.sudoo.domain.entity.discovery.Product
 import com.sudo248.sudoo.domain.entity.discovery.ProductList
+import com.sudo248.sudoo.domain.entity.discovery.Supplier
 
 interface DiscoveryRepository {
     suspend fun getCategories(): DataState<List<Category>, Exception>
@@ -16,4 +17,6 @@ interface DiscoveryRepository {
     suspend fun searchProductByName(productName: String): DataState<ProductList, Exception>
 
     suspend fun getProductListByCategoryId(categoryId: String, offset: Offset): DataState<ProductList, Exception>
+
+    suspend fun getSupplierDetail(supplierId: String): DataState<Supplier, Exception>
 }

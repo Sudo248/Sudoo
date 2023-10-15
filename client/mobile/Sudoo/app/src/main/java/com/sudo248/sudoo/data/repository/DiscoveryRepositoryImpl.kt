@@ -9,10 +9,12 @@ import com.sudo248.sudoo.data.ktx.errorBody
 import com.sudo248.sudoo.data.mapper.toCategory
 import com.sudo248.sudoo.data.mapper.toProduct
 import com.sudo248.sudoo.data.mapper.toProductList
+import com.sudo248.sudoo.data.mapper.toSupplier
 import com.sudo248.sudoo.domain.entity.discovery.Category
 import com.sudo248.sudoo.domain.entity.discovery.Offset
 import com.sudo248.sudoo.domain.entity.discovery.Product
 import com.sudo248.sudoo.domain.entity.discovery.ProductList
+import com.sudo248.sudoo.domain.entity.discovery.Supplier
 import com.sudo248.sudoo.domain.repository.DiscoveryRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
@@ -78,7 +80,17 @@ class DiscoveryRepositoryImpl @Inject constructor(
         if (response.isSuccess) {
             response.data().toProductList()
         } else {
-            response.error().errorBody().printStackTrace()
+            throw response.error().errorBody()
+        }
+    }
+
+    override suspend fun getSupplierDetail(
+        supplierId: String
+    ): DataState<Supplier, Exception> = stateOn(ioDispatcher) {
+        val response = handleResponse(discoveryService.getSupplierDetail(supplierId))
+        if (response.isSuccess) {
+            response.data().toSupplier()
+        } else {
             throw response.error().errorBody()
         }
     }

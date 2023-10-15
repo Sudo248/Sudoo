@@ -9,7 +9,7 @@ import com.sudo248.sudoo.data.api.BaseResponse
 import com.sudo248.sudoo.data.dto.discovery.CategoryDto
 import com.sudo248.sudoo.data.dto.discovery.ProductDto
 import com.sudo248.sudoo.data.dto.discovery.ProductListDto
-import com.sudo248.sudoo.data.dto.user.AddressDto
+import com.sudo248.sudoo.data.dto.discovery.SupplierDto
 import com.sudo248.sudoo.domain.common.Constants
 import retrofit2.Response
 import retrofit2.http.GET
@@ -42,13 +42,13 @@ interface DiscoveryService {
         @Path("productId") productId: String
     ): Response<BaseResponse<ProductDto>>
 
-    @GET("supplier/{supplierId}/address")
-    suspend fun getSupplierAddress(
-        @Path("supplierId") supplierId: String
-    ): Response<BaseResponse<AddressDto>>
-
     @GET("products/search/{productName}")
     suspend fun searchProductByName(
         @Path("productName") productName: String
     ): Response<BaseResponse<ProductListDto>>
+
+    @GET("suppliers/{supplierId}")
+    suspend fun getSupplierDetail(
+        @Path("supplierId") supplierId: String
+    ): Response<BaseResponse<SupplierDto>>
 }

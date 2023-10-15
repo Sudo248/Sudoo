@@ -60,7 +60,7 @@ class DiscoveryViewModel @Inject constructor(
         discoveryRepository.getCategories()
             .onSuccess { categories ->
                 categoryAdapter.submitList(categories)
-                performProductListByCategoryId(categories.first().categoryId)
+                performProductListByCategoryId(categories.first())
             }
             .onError {
                 error = SingleEvent(it.message)
@@ -68,13 +68,14 @@ class DiscoveryViewModel @Inject constructor(
     }
 
 
-    private fun performProductListByCategoryId(categoryId: String, isLoadMore: Boolean = false) =
+    private fun performProductListByCategoryId(category: Category, isLoadMore: Boolean = false) =
         launch {
             setState(UiState.LOADING)
+            _categoryName.value = category.name
             if (!isLoadMore) {
                 nextOffset.reset()
             }
-            discoveryRepository.getProductListByCategoryId(categoryId, nextOffset)
+            discoveryRepository.getProductListByCategoryId(category.categoryId, nextOffset)
                 .onSuccess {
                     if (it.products.size < nextOffset.limit) {
                         productInfoAdapter.isLastPage(true)
@@ -89,7 +90,7 @@ class DiscoveryViewModel @Inject constructor(
         }
 
     private fun onCategoryItemClick(item: Category) =
-        performProductListByCategoryId(item.categoryId)
+        performProductListByCategoryId(item)
 
     private fun onProductItemClick(item: ProductInfo) {
         navigateToProductDetail(item.productId)
@@ -97,7 +98,7 @@ class DiscoveryViewModel @Inject constructor(
 
     private fun loadMoreProduct() {
         val currentCategory = categoryAdapter.getCurrentSelectedCategory()
-        performProductListByCategoryId(currentCategory.categoryId, isLoadMore = true)
+        performProductListByCategoryId(currentCategory, isLoadMore = true)
     }
 
     fun navigateToSearchView() {

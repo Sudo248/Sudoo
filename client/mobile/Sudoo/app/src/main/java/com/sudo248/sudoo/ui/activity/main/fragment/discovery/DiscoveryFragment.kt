@@ -27,8 +27,6 @@ class DiscoveryFragment : BaseFragment<FragmentDiscoveryBinding, DiscoveryViewMo
 
     private var isHandlerDeeplink = false
 
-    private var productRecyclerViewShouldHandleEvent = false;
-
     override fun initView() {
         Log.d("Sudoo", "initView: discover fragment")
         binding.viewModel = viewModel

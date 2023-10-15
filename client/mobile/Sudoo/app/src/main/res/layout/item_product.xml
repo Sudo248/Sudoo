@@ -28,7 +28,7 @@
                     android:id="@+id/imageProduct"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:scaleType="fitXY"
+                    android:scaleType="centerCrop"
                     tools:src="@drawable/zing_burger" />
             </com.google.android.material.card.MaterialCardView>
 

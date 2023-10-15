@@ -46,12 +46,12 @@ object Utils {
         }
     }
 
-    fun formatSold(value: Double): String {
+    fun formatSold(value: Int): String {
         return "Đã bán: ${
-            if (value >= 100) {
-                "100+"
+            if (value >= 1000) {
+                "${format(value / 1000.0, digit = 1)}k"
             } else {
-                "${value.toInt()}+"
+                "$value"
             }
         }"
     }
