@@ -1,4 +1,4 @@
-package com.sudoo.productservice.config
+package com.sudoo.cartservice.config
 
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
@@ -13,10 +13,10 @@ class InternalServiceConfig {
 
     @Bean
     @Primary
-    @Qualifier("cart-service")
+    @Qualifier("product-service")
     fun userWebClient(): WebClient {
         return WebClient.builder()
-            .baseUrl("http://cart-service/api/v1/cart/")
+            .baseUrl("http://product-service:8083/api/v1/discovery/products")
             .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
             .build()
     }

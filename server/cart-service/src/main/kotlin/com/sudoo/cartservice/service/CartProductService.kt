@@ -1,23 +1,23 @@
 package com.sudoo.cartservice.service
 
 import com.sudoo.cartservice.controller.dto.CartDto
-import com.sudoo.cartservice.repository.entity.CartProduct
+import com.sudoo.cartservice.controller.dto.UpsertCartProductDto
 
 
 interface CartProductService {
 
     suspend fun addProductToActiveCart(
-            userId: String,
-            cartProduct: CartProduct
+        userId: String,
+        upsertCartProductDto: UpsertCartProductDto
     ): CartDto
 
     suspend fun updateProductInCart(
-            userId: String,
-            cartProduct: CartProduct
+        cartId: String,
+        upsertCartProductDto: UpsertCartProductDto
     ): CartDto
 
     suspend fun deleteCartProduct(
-            userId: String?,
-            cartProduct: CartProduct
-    ): CartDto
+            cartId: String,
+            cartProductId: String,
+    ): Boolean
 }

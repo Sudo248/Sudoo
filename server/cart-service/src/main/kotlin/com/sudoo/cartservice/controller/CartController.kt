@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*
 class CartController(
         val cartService: CartService
 ) : BaseController() {
-    @PostMapping
+    @PostMapping("/")
     suspend fun createNewCart(@RequestHeader(Constants.HEADER_USER_ID) userId: String): ResponseEntity<BaseResponse<*>> = handle {
         cartService.createNewCart(userId)
     }

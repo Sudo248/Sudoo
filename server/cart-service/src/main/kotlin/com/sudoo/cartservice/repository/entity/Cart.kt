@@ -9,24 +9,23 @@ import org.springframework.data.relational.core.mapping.Table
 
 @Table(name = "cart")
 data class Cart(
-        @Id
-        @Column("cart_id")
-        var cartId: String = "",
+    @Id
+    @Column("cart_id")
+    var cartId: String = "",
 
-        @Column("total_price")
-        var totalPrice: Double = 0.0,
+    @Column("total_price")
+    var totalPrice: Double = 0.0,
 
-        @Column("total_amount")
-        var totalAmount: Int = 0,
+    @Column("total_amount")
+    var totalAmount: Int = 0,
 
-        @Column("user_id")
-        var userId: String = "",
+    @Column("user_id")
+    var userId: String = "",
 
-        @Column("status")
-        var status: String = "active",
+    @Column("status")
+    var status: String = "active",
+) : Persistable<String> {
 
-
-        ) : Persistable<String> {
     @Transient
     var cartProducts: List<CartProduct> = listOf()
 
@@ -38,9 +37,9 @@ data class Cart(
 
 fun Cart.toCartDto(): CartDto {
     return CartDto(
-            cartId = this.cartId,
-            totalPrice = this.totalPrice,
-            totalAmount = this.totalAmount,
-            status = this.status
+        cartId = this.cartId,
+        totalPrice = this.totalPrice,
+        totalAmount = this.totalAmount,
+        status = this.status
     )
 }
