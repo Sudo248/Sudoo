@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:sudoo/data/dto/discovery/image_dto.dart';
+import 'package:sudoo/data/dto/discovery/extras_dto.dart';
+import 'package:sudoo/data/dto/discovery/file_dto.dart';
 import 'package:sudoo/domain/model/discovery/upsert_product.dart';
 
 part 'upsert_product_dto.g.dart';
@@ -18,8 +19,9 @@ class UpsertProductDto {
   final DateTime? startDateDiscount;
   final DateTime? endDateDiscount;
   final bool saleable;
-  final List<ImageDto>? images;
+  final List<FileDto>? images;
   final List<String>? categoryIds;
+  final ExtrasDto? extras;
 
   const UpsertProductDto(
     this.productId,
@@ -36,6 +38,7 @@ class UpsertProductDto {
     this.saleable,
     this.images,
     this.categoryIds,
+    this.extras,
   );
 
   factory UpsertProductDto.fromJson(Map<String, dynamic> json) =>
@@ -59,7 +62,7 @@ extension Mapper on UpsertProductDto {
       startDateDiscount: startDateDiscount,
       endDateDiscount: endDateDiscount,
       saleable: saleable,
-      images: images?.map((e) => e.toUpsertImage()).toList(),
+      images: images?.map((e) => e.toUpsertFIle()).toList(),
       categoryIds: categoryIds,
     );
   }

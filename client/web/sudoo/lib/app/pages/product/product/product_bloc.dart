@@ -4,11 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:sudoo/app/base/base_bloc.dart';
 import 'package:sudoo/app/model/category_callback.dart';
 import 'package:sudoo/app/model/image_callback.dart';
+import 'package:sudoo/app/pages/product/product/viewer.dart';
 import 'package:sudoo/app/widgets/loading_view.dart';
 import 'package:sudoo/domain/model/discovery/category.dart';
 import 'package:sudoo/domain/model/discovery/category_product.dart';
-import 'package:sudoo/domain/model/discovery/image.dart' as domain;
-import 'package:sudoo/domain/model/discovery/upsert_image.dart';
+import 'package:sudoo/domain/model/discovery/extras.dart';
+import 'package:sudoo/domain/model/discovery/file.dart' as domain;
+import 'package:sudoo/domain/model/discovery/upsert_file.dart';
 import 'package:sudoo/domain/repository/product_repository.dart';
 import 'package:sudoo/domain/repository/storage_repository.dart';
 import 'package:sudoo/extensions/list_ext.dart';
@@ -23,13 +25,11 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
   final ProductRepository productRepository;
   final CategoryRepository categoryRepository;
   final StorageRepository storageRepository;
-  final ValueNotifier<List<domain.Image>?> images = ValueNotifier(null);
-  final ValueNotifier<List<Category>?> categories = ValueNotifier(null);
-  final ValueNotifier<DateTime> startDateDiscount =
-      ValueNotifier(DateTime.now());
-  final ValueNotifier<DateTime> endDateDiscount = ValueNotifier(DateTime.now());
-  final ValueNotifier<bool> saleable = ValueNotifier(true);
   final List<Category> allCategories = List.empty(growable: true);
+
+  final ValueNotifier<List<domain.File>?> images = ValueNotifier(null);
+  final ValueNotifier<List<Category>?> categories = ValueNotifier(null);
+
   final TextEditingController nameController = TextEditingController(),
       descriptionController = TextEditingController(),
       skuController = TextEditingController(),
@@ -37,6 +37,15 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
       listedPriceController = TextEditingController(),
       priceController = TextEditingController(),
       discountController = TextEditingController(text: "0");
+
+  final ValueNotifier<DateTime?> startDateDiscount = ValueNotifier(null);
+  final ValueNotifier<DateTime?> endDateDiscount = ValueNotifier(null);
+  final ValueNotifier<bool> saleable = ValueNotifier(true);
+
+  // extras
+  final ValueNotifier<bool> enable3DViewer = ValueNotifier(false);
+  final ValueNotifier<bool> enableARViewer = ValueNotifier(false);
+  final ValueNotifier<domain.File?> sourceViewer = ValueNotifier(null);
 
   Timer? debounce;
   String? productId;
@@ -48,7 +57,24 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
   );
 
   @override
-  void onDispose() {}
+  void onDispose() {
+    loadingController.dispose();
+    images.dispose();
+    categories.dispose();
+    startDateDiscount.dispose();
+    endDateDiscount.dispose();
+    saleable.dispose();
+    nameController.dispose();
+    descriptionController.dispose();
+    skuController.dispose();
+    amountController.dispose();
+    listedPriceController.dispose();
+    priceController.dispose();
+    discountController.dispose();
+    enable3DViewer.dispose();
+    enableARViewer.dispose();
+    sourceViewer.dispose();
+  }
 
   @override
   void onInit() {
@@ -68,6 +94,19 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
 
   void setProduct(Product product) {
     images.value = product.images;
+    categories.value = product.categories;
+    nameController.text = product.name;
+    skuController.text = product.sku;
+    descriptionController.text = product.description;
+    priceController.text = product.price.toStringAsFixed(1);
+    listedPriceController.text = product.listedPrice.toStringAsFixed(1);
+    discountController.text = product.discount.toString();
+    startDateDiscount.value = product.startDateDiscount;
+    endDateDiscount.value = product.endDateDiscount;
+    amountController.text = product.amount.toString();
+    enable3DViewer.value = product.extras?.enable3DViewer ?? false;
+    enableARViewer.value = product.extras?.enableARViewer ?? false;
+    sourceViewer.value = product.extras?.source;
   }
 
   @override
@@ -83,7 +122,7 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
   }
 
   @override
-  Future<domain.Image> upsertImage(UpsertImage image) async {
+  Future<domain.File> upsertImage(UpsertFile image) async {
     final result = await productRepository.upsertImage(image);
     if (result.isSuccess) {
       return Future.value(result.get());
@@ -94,13 +133,13 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
   }
 
   @override
-  Future<domain.Image> deleteImage(domain.Image image) async {
+  Future<domain.File> deleteImage(domain.File image) async {
     if (images.value != null && images.value!.length <= 1) {
       final error = Exception("Required at least a image for each product");
       showErrorMessage(error);
       return Future.error(error);
     }
-    final result = await productRepository.deleteImage(image.imageId);
+    final result = await productRepository.deleteImage(image.fileId);
     if (result.isSuccess) {
       final currentImages = images.value;
       currentImages?.remove(image);
@@ -227,19 +266,22 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
   Future<void> createProduct() async {
     final images = await uploadImages();
     final upsertProduct = UpsertProduct(
-      name: nameController.text,
-      sku: skuController.text.isNullOrEmpty ? null : skuController.text,
-      description: descriptionController.text,
-      listedPrice: double.parse(listedPriceController.text),
-      price: double.parse(priceController.text),
-      discount: int.parse(discountController.text),
-      startDateDiscount: startDateDiscount.value,
-      endDateDiscount: endDateDiscount.value,
-      amount: int.parse(amountController.text),
-      saleable: saleable.value,
-      images: images.map((e) => UpsertImage(url: e)).toList(),
-      categoryIds: categories.value!.map((e) => e.categoryId).toList(),
-    );
+        name: nameController.text,
+        sku: skuController.text.isNullOrEmpty ? null : skuController.text,
+        description: descriptionController.text,
+        listedPrice: double.parse(listedPriceController.text),
+        price: double.parse(priceController.text),
+        discount: int.parse(discountController.text),
+        startDateDiscount: startDateDiscount.value,
+        endDateDiscount: endDateDiscount.value,
+        amount: int.parse(amountController.text),
+        saleable: saleable.value,
+        images: images.map((e) => UpsertFile(url: e)).toList(),
+        categoryIds: categories.value!.map((e) => e.categoryId).toList(),
+        extras: Extras(
+            enable3DViewer: enable3DViewer.value,
+            enableARViewer: enableARViewer.value,
+            source: sourceViewer.value));
     final result = await productRepository.upsertProduct(upsertProduct);
     if (result.isSuccess) {
       return;
@@ -257,10 +299,13 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
     priceController.clear();
     discountController.text = "0";
     amountController.clear();
-    startDateDiscount.value = DateTime.now();
-    endDateDiscount.value = DateTime.now();
+    startDateDiscount.value = null;
+    endDateDiscount.value = null;
     images.value?.clear();
     categories.value?.clear();
+    enable3DViewer.value = false;
+    enableARViewer.value = false;
+    sourceViewer.value = null;
   }
 
   Future<List<String>> uploadImages() async {
@@ -270,15 +315,21 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
 
   Future<void> updateProduct() async {
     final upsertProduct = UpsertProduct(
-        name: nameController.text,
-        description: descriptionController.text,
-        listedPrice: double.parse(listedPriceController.text),
-        price: double.parse(priceController.text),
-        discount: int.parse(discountController.text),
-        startDateDiscount: startDateDiscount.value,
-        endDateDiscount: endDateDiscount.value,
-        amount: int.parse(amountController.text),
-        saleable: saleable.value);
+      name: nameController.text,
+      description: descriptionController.text,
+      listedPrice: double.parse(listedPriceController.text),
+      price: double.parse(priceController.text),
+      discount: int.parse(discountController.text),
+      startDateDiscount: startDateDiscount.value,
+      endDateDiscount: endDateDiscount.value,
+      amount: int.parse(amountController.text),
+      saleable: saleable.value,
+      extras: Extras(
+        enable3DViewer: enable3DViewer.value,
+        enableARViewer: enableARViewer.value,
+        source: sourceViewer.value,
+      ),
+    );
 
     final result = await productRepository.upsertProduct(upsertProduct);
     if (result.isSuccess) {
@@ -286,6 +337,14 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
     } else {
       showErrorMessage(result.requireError());
       return Future.error(result.requireError());
+    }
+  }
+
+  void onChangeEnableViewer(Viewer viewer, bool value) {
+    if (viewer == Viewer.viewer3D) {
+      enable3DViewer.value = value;
+    } else {
+      enableARViewer.value = value;
     }
   }
 }

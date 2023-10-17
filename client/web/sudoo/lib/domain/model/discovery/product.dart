@@ -1,6 +1,7 @@
-import 'package:sudoo/domain/model/discovery/image.dart';
+import 'package:sudoo/domain/model/discovery/file.dart';
 
 import 'category.dart';
+import 'extras.dart';
 import 'supplier.dart';
 
 class Product {
@@ -17,9 +18,10 @@ class Product {
   final DateTime? startDateDiscount;
   DateTime? endDateDiscount;
   bool saleable;
-  final List<Image> images;
+  final List<File> images;
   final Supplier supplier;
   final List<Category> categories;
+  final Extras? extras;
 
   Product(
     this.productId,
@@ -38,5 +40,6 @@ class Product {
     this.images,
     this.supplier,
     this.categories,
+    this.extras,
   );
 }

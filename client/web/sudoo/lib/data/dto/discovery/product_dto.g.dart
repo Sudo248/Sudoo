@@ -25,12 +25,13 @@ ProductDto _$ProductDtoFromJson(Map<String, dynamic> json) => ProductDto(
           : DateTime.parse(json['endDateDiscount'] as String),
       json['saleable'] as bool,
       (json['images'] as List<dynamic>)
-          .map((e) => ImageDto.fromJson(e as Map<String, dynamic>))
+          .map((e) => FileDto.fromJson(e as Map<String, dynamic>))
           .toList(),
       SupplierDto.fromJson(json['supplier'] as Map<String, dynamic>),
       (json['categories'] as List<dynamic>)
           .map((e) => CategoryDto.fromJson(e as Map<String, dynamic>))
           .toList(),
+      ExtrasDto.fromJson(json['extras'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ProductDtoToJson(ProductDto instance) =>
@@ -51,4 +52,5 @@ Map<String, dynamic> _$ProductDtoToJson(ProductDto instance) =>
       'images': instance.images,
       'supplier': instance.supplier,
       'categories': instance.categories,
+      'extras': instance.extras,
     };

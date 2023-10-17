@@ -26,7 +26,7 @@ UpsertProductRequest _$UpsertProductRequestFromJson(
           : DateTime.parse(json['endDateDiscount'] as String),
       json['saleable'] as bool?,
       (json['images'] as List<dynamic>?)
-          ?.map((e) => UpsertImageRequest.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => UpsertFileRequest.fromJson(e as Map<String, dynamic>))
           .toList(),
       (json['categoryIds'] as List<dynamic>?)?.map((e) => e as String).toList(),
     );

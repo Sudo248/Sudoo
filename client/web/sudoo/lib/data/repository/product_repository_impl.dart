@@ -1,17 +1,17 @@
 import 'package:sudoo/data/api/discovery/discovery_api_service.dart';
-import 'package:sudoo/data/api/discovery/request/upsert_image_request.dart';
+import 'package:sudoo/data/api/discovery/request/upsert_file_request.dart';
 import 'package:sudoo/data/api/discovery/request/upsert_product_request.dart';
 import 'package:sudoo/data/api/handle_response.dart';
 import 'package:sudoo/data/dto/discovery/category_dto.dart';
 import 'package:sudoo/data/dto/discovery/category_product_dto.dart';
-import 'package:sudoo/data/dto/discovery/image_dto.dart';
+import 'package:sudoo/data/dto/discovery/file_dto.dart';
 import 'package:sudoo/data/dto/discovery/product_pagination_dto.dart';
 import 'package:sudoo/data/dto/discovery/upsert_product_dto.dart';
 import 'package:sudoo/domain/model/discovery/category_product.dart';
-import 'package:sudoo/domain/model/discovery/image.dart';
+import 'package:sudoo/domain/model/discovery/file.dart';
 import 'package:sudoo/domain/model/discovery/product.dart';
 import 'package:sudoo/domain/model/discovery/product_info.dart';
-import 'package:sudoo/domain/model/discovery/upsert_image.dart';
+import 'package:sudoo/domain/model/discovery/upsert_file.dart';
 import 'package:sudoo/domain/model/discovery/upsert_product.dart';
 import 'package:sudoo/domain/repository/product_repository.dart';
 
@@ -164,29 +164,28 @@ class ProductRepositoryImpl with HandleResponse implements ProductRepository {
   }
 
   @override
-  Future<DataState<Image, Exception>> deleteImage(String imageId) async {
+  Future<DataState<File, Exception>> deleteImage(String imageId) async {
     final response = await handleResponse(
       () => discoveryService.deleteImage(imageId),
-      fromJson: (json) => ImageDto.fromJson(json as Map<String, dynamic>),
+      fromJson: (json) => FileDto.fromJson(json as Map<String, dynamic>),
     );
     if (response.isSuccess) {
-      return DataState.success((response.get() as ImageDto).toImage());
+      return DataState.success((response.get() as FileDto).toFile());
     } else {
       return DataState.error(response.getError());
     }
   }
 
   @override
-  Future<DataState<Image, Exception>> upsertImage(
-      UpsertImage upsertImage) async {
+  Future<DataState<File, Exception>> upsertImage(
+    UpsertFile upsertImage,
+  ) async {
     final response = await handleResponse(
-      () =>
-          discoveryService.upsertImage(upsertImage.toUpsertImageRequest()),
-      fromJson: (json) =>
-          ImageDto.fromJson(json as Map<String, dynamic>),
+      () => discoveryService.upsertImage(upsertImage.toUpsertImageRequest()),
+      fromJson: (json) => FileDto.fromJson(json as Map<String, dynamic>),
     );
     if (response.isSuccess) {
-      return DataState.success((response.get() as ImageDto).toImage());
+      return DataState.success((response.get() as FileDto).toFile());
     } else {
       return DataState.error(response.getError());
     }

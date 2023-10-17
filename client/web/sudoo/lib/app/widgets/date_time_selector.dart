@@ -32,7 +32,7 @@ class _DateTimeSelectorState extends State<DateTimeSelector> {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 5.0),
         child: Text(
-          (widget.value ?? DateTime.now()).formatDate(),
+          "${widget.value == null ? widget.hint : widget.value!.formatDate()}",
           style: style,
         ),
       );

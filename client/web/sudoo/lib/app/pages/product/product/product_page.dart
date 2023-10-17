@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sudoo/app/base/base_page.dart';
 import 'package:sudoo/app/pages/product/product/product_bloc.dart';
+import 'package:sudoo/app/pages/product/product/viewer.dart';
 import 'package:sudoo/app/widgets/blocks/category_block.dart';
 import 'package:sudoo/app/widgets/blocks/image_block.dart';
 import 'package:sudoo/app/widgets/loading_view.dart';
@@ -84,19 +85,16 @@ class ProductPage extends BasePage<ProductBloc> {
                     ),
                   ),
                 ]),
-                productId == null
-                    ? TableRow(children: [
+                TableRow(children: [
                   _buildTitle(R.string.sellerSKU, style),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 5.0),
-                    child: _buildTextFieldBlock(
-                      bloc.skuController,
-                      hintText: R.string.optional,
-                      maxLines: 1,
-                    ),
+                    child: _buildTextFieldBlock(bloc.skuController,
+                        hintText: R.string.optional,
+                        maxLines: 1,
+                        readOnly: productId != null),
                   ),
-                ])
-                    : const TableRow(),
+                ]),
                 TableRow(children: [
                   _buildTitle(R.string.description, style),
                   Padding(
@@ -148,6 +146,10 @@ class ProductPage extends BasePage<ProductBloc> {
                     ],
                   ),
                 ]),
+                TableRow(children: [
+                  _buildTitle(R.string.extras, style),
+                  _buildExtraBlock(context),
+                ])
               ],
             ),
           ),
@@ -182,20 +184,20 @@ class ProductPage extends BasePage<ProductBloc> {
     );
   }
 
-  Widget _buildTextFieldBlock(
-    TextEditingController controller, {
-    String? hintText,
-    int? maxLines,
-    int? maxLength,
-    TextInputType? keyboardType,
-    InputDecoration? decoration,
-  }) {
+  Widget _buildTextFieldBlock(TextEditingController controller,
+      {String? hintText,
+      int? maxLines,
+      int? maxLength,
+      TextInputType? keyboardType,
+      InputDecoration? decoration,
+      bool readOnly = false}) {
     return TextField(
       controller: controller,
       style: style,
       maxLines: maxLines,
       maxLength: maxLength,
       keyboardType: keyboardType,
+      readOnly: readOnly,
       decoration: decoration ??
           InputDecoration(
             hintText: hintText,
@@ -301,6 +303,53 @@ class ProductPage extends BasePage<ProductBloc> {
           },
         ),
       ],
+    );
+  }
+
+  Widget _buildExtraBlock(BuildContext context) {
+    return Row(
+      children: [
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              children: [
+                Text(R.string.enable3DViewer),
+                const SizedBox(
+                  width: 5,
+                ),
+                _buildSwitch(Viewer.viewer3D, bloc.enable3DViewer)
+              ],
+            ),
+            Row(
+              children: [
+                Text(R.string.enableARViewer),
+                const SizedBox(
+                  width: 5,
+                ),
+                _buildSwitch(Viewer.viewerAR, bloc.enableARViewer)
+              ],
+            )
+          ],
+        )
+      ],
+    );
+  }
+
+  Widget _buildSwitch(
+    Viewer viewer,
+    ValueNotifier<bool> value,
+  ) {
+    return ValueListenableBuilder(
+      valueListenable: value,
+      builder: (context, value, child) => Switch(
+        value: value,
+        onChanged: (value) => bloc.onChangeEnableViewer(viewer, value),
+        thumbColor: MaterialStateProperty.all(Colors.white),
+        activeTrackColor: Colors.red,
+        inactiveTrackColor: Colors.grey,
+      ),
     );
   }
 

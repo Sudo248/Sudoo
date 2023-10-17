@@ -5,8 +5,8 @@ import '../../../resources/R.dart';
 import '../date_time_selector.dart';
 
 class RangeTimeBlock extends StatelessWidget {
-  final ValueNotifier<DateTime> startDate;
-  final ValueNotifier<DateTime> endDate;
+  final ValueNotifier<DateTime?> startDate;
+  final ValueNotifier<DateTime?> endDate;
   final TextStyle? style;
   final AsyncValueSetter<DateTime>? onSelectedStartTime, onSelectedEndTime;
 

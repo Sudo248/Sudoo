@@ -1,9 +1,9 @@
-import 'package:sudoo/domain/model/discovery/upsert_image.dart';
+import 'package:sudoo/domain/model/discovery/upsert_file.dart';
 
-import '../../domain/model/discovery/image.dart';
+import '../../domain/model/discovery/file.dart';
 
 abstract class ImageCallback {
   Future<String> uploadImage(List<int> bytes);
-  Future<Image> upsertImage(UpsertImage image);
-  Future<Image> deleteImage(Image image);
+  Future<File> upsertImage(UpsertFile image);
+  Future<File> deleteImage(File image);
 }

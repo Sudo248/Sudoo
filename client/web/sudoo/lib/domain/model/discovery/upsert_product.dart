@@ -1,4 +1,6 @@
-import 'package:sudoo/domain/model/discovery/upsert_image.dart';
+import 'package:sudoo/domain/model/discovery/upsert_file.dart';
+
+import 'extras.dart';
 
 class UpsertProduct {
   final String? productId;
@@ -13,8 +15,9 @@ class UpsertProduct {
   final DateTime? startDateDiscount;
   final DateTime? endDateDiscount;
   final bool? saleable;
-  final List<UpsertImage>? images;
+  final List<UpsertFile>? images;
   final List<String>? categoryIds;
+  final Extras? extras;
 
   const UpsertProduct({
     this.productId,
@@ -31,5 +34,6 @@ class UpsertProduct {
     this.saleable,
     this.images,
     this.categoryIds,
+    this.extras,
   });
 }

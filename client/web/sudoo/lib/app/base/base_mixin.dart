@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:sudoo/app/services/scaffold_message_service.dart';
 import 'package:sudoo/domain/exceptions/base_exception.dart';
 import 'package:sudoo/utils/di.dart';

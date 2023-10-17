@@ -3,7 +3,7 @@ import 'package:sudoo/app/dialog/edit_price_dialog.dart';
 import 'package:sudoo/app/model/category_callback.dart';
 import 'package:sudoo/app/widgets/blocks/category_block.dart';
 import 'package:sudoo/app/widgets/blocks/range_time_block.dart';
-import 'package:sudoo/domain/model/discovery/Price.dart';
+import 'package:sudoo/domain/model/discovery/price.dart';
 import 'package:sudoo/domain/model/discovery/product_info.dart';
 import 'package:sudoo/extensions/double_ext.dart';
 import 'package:sudoo/extensions/int_extensions.dart';

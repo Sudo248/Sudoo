@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:sudoo/app/widgets/confirm_button.dart';
-import 'package:sudoo/domain/model/discovery/Price.dart';
+import 'package:sudoo/domain/model/discovery/price.dart';
 
 import '../../resources/R.dart';
 import '../../utils/logger.dart';

@@ -82,6 +82,12 @@ class AppString extends R {
   String get save => "Save";
 
   String get upload => "Upload";
+
+  String get extras => "Extras";
+
+  String get enable3DViewer => "Enable 3D viewer";
+
+  String get enableARViewer => "Enable AR viewer";
 }
 
 class AppColor extends R {

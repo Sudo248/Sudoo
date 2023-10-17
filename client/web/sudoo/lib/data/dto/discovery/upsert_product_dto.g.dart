@@ -25,9 +25,12 @@ UpsertProductDto _$UpsertProductDtoFromJson(Map<String, dynamic> json) =>
           : DateTime.parse(json['endDateDiscount'] as String),
       json['saleable'] as bool,
       (json['images'] as List<dynamic>?)
-          ?.map((e) => ImageDto.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => FileDto.fromJson(e as Map<String, dynamic>))
           .toList(),
       (json['categoryIds'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      json['extras'] == null
+          ? null
+          : ExtrasDto.fromJson(json['extras'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$UpsertProductDtoToJson(UpsertProductDto instance) =>
@@ -46,4 +49,5 @@ Map<String, dynamic> _$UpsertProductDtoToJson(UpsertProductDto instance) =>
       'saleable': instance.saleable,
       'images': instance.images,
       'categoryIds': instance.categoryIds,
+      'extras': instance.extras,
     };

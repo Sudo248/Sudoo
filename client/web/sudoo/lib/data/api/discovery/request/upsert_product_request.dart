@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sudoo/data/api/base_request.dart';
-import 'package:sudoo/data/api/discovery/request/upsert_image_request.dart';
+import 'package:sudoo/data/api/discovery/request/upsert_file_request.dart';
 import 'package:sudoo/domain/model/discovery/upsert_product.dart';
 
 part 'upsert_product_request.g.dart';
@@ -19,7 +19,7 @@ class UpsertProductRequest extends BaseRequest {
   final DateTime? startDateDiscount;
   final DateTime? endDateDiscount;
   final bool? saleable;
-  final List<UpsertImageRequest>? images;
+  final List<UpsertFileRequest>? images;
   final List<String>? categoryIds;
 
   UpsertProductRequest(

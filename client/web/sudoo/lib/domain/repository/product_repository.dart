@@ -1,8 +1,8 @@
 import 'package:sudoo/domain/model/discovery/category_product.dart';
-import 'package:sudoo/domain/model/discovery/image.dart';
+import 'package:sudoo/domain/model/discovery/file.dart';
 import 'package:sudoo/domain/model/discovery/product.dart';
 import 'package:sudoo/domain/model/discovery/product_info.dart';
-import 'package:sudoo/domain/model/discovery/upsert_image.dart';
+import 'package:sudoo/domain/model/discovery/upsert_file.dart';
 import 'package:sudoo/domain/model/discovery/upsert_product.dart';
 
 import '../core/data_state.dart';
@@ -31,7 +31,7 @@ abstract class ProductRepository {
 
   Future<DataState<CategoryProduct, Exception>> deleteCategoryOfProduct(CategoryProduct categoryProduct);
 
-  Future<DataState<Image, Exception>> upsertImage(UpsertImage upsertImage);
+  Future<DataState<File, Exception>> upsertImage(UpsertFile upsertImage);
 
-  Future<DataState<Image, Exception>> deleteImage(String imageId);
+  Future<DataState<File, Exception>> deleteImage(String imageId);
 }

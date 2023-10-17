@@ -1,4 +1,4 @@
-import 'package:sudoo/data/api/discovery/request/upsert_image_request.dart';
+import 'package:sudoo/data/api/discovery/request/upsert_file_request.dart';
 import 'package:sudoo/data/api/discovery/request/upsert_product_request.dart';
 
 import '../api_service.dart';
@@ -44,7 +44,7 @@ class DiscoveryService {
   Future deleteCategoryToProduct(String productId, String categoryId) =>
       api.delete("$products/$productId/categories/$categoryId");
 
-  Future upsertImage(UpsertImageRequest request) => api.post(images, request: request);
+  Future upsertImage(UpsertFileRequest request) => api.post(images, request: request);
 
   Future deleteImage(String imageId) => api.delete("$images/$imageId");
 }

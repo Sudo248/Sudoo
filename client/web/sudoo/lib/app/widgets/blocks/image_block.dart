@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:sudoo/app/model/image_callback.dart';
 import 'package:sudoo/app/widgets/online_image.dart';
 import 'package:sudoo/domain/common/Constants.dart';
-import 'package:sudoo/domain/model/discovery/image.dart' as domain;
-import 'package:sudoo/domain/model/discovery/upsert_image.dart';
+import 'package:sudoo/domain/model/discovery/file.dart' as domain;
+import 'package:sudoo/domain/model/discovery/upsert_file.dart';
 import 'package:sudoo/extensions/list_ext.dart';
 import 'package:sudoo/utils/logger.dart';
 
 class ImageBlock extends StatelessWidget {
   final String? productId;
-  final ValueNotifier<List<domain.Image>?> images;
+  final ValueNotifier<List<domain.File>?> images;
   final ImageCallback callback;
 
   const ImageBlock({
@@ -87,7 +87,7 @@ class ImageBlock extends StatelessWidget {
     );
   }
 
-  Widget _buildListImage(BuildContext context, List<domain.Image>? images) {
+  Widget _buildListImage(BuildContext context, List<domain.File>? images) {
     final List<Widget> imageWidgets =
         images.orEmpty.map<Widget>((image) => _buildImageItem(image)).toList();
     if (images == null || images.length < Constants.maxImageOfEachProduct) {
@@ -100,7 +100,7 @@ class ImageBlock extends StatelessWidget {
     );
   }
 
-  Widget _buildImageItem(domain.Image image) {
+  Widget _buildImageItem(domain.File image) {
     return Stack(
       children: [
         image.bytes != null
@@ -129,7 +129,7 @@ class ImageBlock extends StatelessWidget {
     );
   }
 
-  Future<void> deleteImage(domain.Image image) async {
+  Future<void> deleteImage(domain.File image) async {
     if (productId != null) {
       await callback.deleteImage(image).then((value) {
         final currentImages = images.value?.toList(growable: true);
@@ -149,7 +149,7 @@ class ImageBlock extends StatelessWidget {
     if (productId != null) {
       await callback.uploadImage(imageBytes).then((url) async {
         await callback
-            .upsertImage(UpsertImage(ownerId: productId!, url: url))
+            .upsertImage(UpsertFile(ownerId: productId!, url: url))
             .then((image) {
           final currentImages = images.value?.toList(growable: true);
           currentImages?.add(image);
@@ -157,13 +157,13 @@ class ImageBlock extends StatelessWidget {
         });
       });
     } else {
-      final List<domain.Image> currentImages;
+      final List<domain.File> currentImages;
       if (images.value != null) {
         currentImages = images.value!.toList(growable: true);
       } else {
         currentImages = [];
       }
-      currentImages.add(domain.Image.fromBytes(imageBytes));
+      currentImages.add(domain.File.fromBytes(imageBytes));
       images.value = currentImages;
     }
   }
