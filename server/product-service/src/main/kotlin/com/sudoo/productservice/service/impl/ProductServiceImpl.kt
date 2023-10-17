@@ -178,10 +178,16 @@ class ProductServiceImpl(
         product.toProductDto()
     }
 
-    override suspend fun getProductInfoById(productId: String): ProductInfoDto {
+    override suspend fun getProductInfoById(productId: String): ProductInfoDto = coroutineScope {
         val productInfo = productRepository.getProductInfoById(productId) ?: throw NotFoundException("Not found product $productId")
-        productInfo.brand = supplierRepository.getBrand(productInfo.supplierId)
-        productInfo.images = imageRepository.getAllByOwnerId(productInfo.productId).map { it.url }.toList()
+        joinAll(
+            launch {
+                productInfo.brand = supplierRepository.getBrand(productInfo.supplierId)
+            },
+            launch {
+                productInfo.images = imageRepository.getAllByOwnerId(productInfo.productId).map { it.url }.toList()
+            }
+        )
         productInfo.toProductInfoDto()
     }
 
