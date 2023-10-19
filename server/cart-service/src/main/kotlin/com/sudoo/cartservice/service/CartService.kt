@@ -5,6 +5,7 @@ import com.sudoo.cartservice.controller.dto.CartProductDto
 
 
 interface CartService {
+    suspend fun createCartByStatus(userId: String, status: String): CartDto
     suspend fun createNewCart(userId: String): CartDto
     suspend fun updateStatusCart(userId: String): CartDto
     suspend fun getCartById(userId: String, cartId: String, hasRoute: Boolean): CartDto
