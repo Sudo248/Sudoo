@@ -1,9 +1,6 @@
 package com.sudoo.cartservice.service.impl
 
-import com.sudoo.cartservice.controller.dto.CartDto
-import com.sudoo.cartservice.controller.dto.ProductInfoDto
-import com.sudoo.cartservice.controller.dto.UpsertCartProductDto
-import com.sudoo.cartservice.controller.dto.toCartProduct
+import com.sudoo.cartservice.controller.dto.*
 import com.sudoo.cartservice.repository.CartProductRepository
 import com.sudoo.cartservice.repository.CartRepository
 import com.sudoo.cartservice.repository.entity.Cart
@@ -70,24 +67,17 @@ class CartProductServiceImpl(
             }
 
             CartDto(
-                activeCart.cartId,
-                activeCart.totalPrice,
-                activeCart.totalAmount,
-                activeCart.status,
-                cartService.getCartProducts(activeCart.cartId)
+                cartId = activeCart.cartId,
+                totalPrice = activeCart.totalPrice,
+                totalAmount = activeCart.totalAmount,
+                status = activeCart.status,
+                cartProducts = cartService.getCartProducts(activeCart.cartId)
             )
         }
 
     private suspend fun createNewCart(userId: String): Cart {
-        val cart = Cart(
-            cartId = IdentifyCreator.create(),
-            userId = userId,
-            totalAmount = 0,
-            totalPrice = 0.0,
-            status = CartStatus.ACTIVE.value,
-        ).apply { isNewCart = true }
-        cartRepository.save(cart)
-        return cart
+        var  cart = cartService.createCartByStatus(userId,CartStatus.ACTIVE.value)
+        return cart.toCart()
     }
 
     override suspend fun updateProductInCart(cartId: String, upsertCartProductDto: UpsertCartProductDto): CartDto = coroutineScope {

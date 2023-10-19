@@ -34,6 +34,7 @@ fun CartProduct.toCartProductDto(): CartProductDto {
         cartProductId = this.cartProductId,
         cartId = this.cartId,
         productId = this.productId,
-        quantity = this.quantity
+        quantity = this.quantity,
+
     )
 }
