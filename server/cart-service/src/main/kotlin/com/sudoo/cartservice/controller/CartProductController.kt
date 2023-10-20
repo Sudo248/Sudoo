@@ -10,13 +10,14 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 class CartProductController(val cartProductService: CartProductService) : BaseController() {
-    @PostMapping("/items")
-    suspend fun addProductToCart(
+    @PostMapping("/product")
+    suspend fun addProductToActiveCart(
         @RequestHeader(Constants.HEADER_USER_ID) userId: String,
         @RequestBody upsertCartProductDto: UpsertCartProductDto
     ): ResponseEntity<BaseResponse<*>> = handle {
         cartProductService.addProductToActiveCart(userId, upsertCartProductDto)
     }
+
 
     @PutMapping("{cartId}/items/")
     suspend fun updateProductInCart(

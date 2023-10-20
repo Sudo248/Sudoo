@@ -1,6 +1,7 @@
 package com.sudoo.cartservice.repository.entity
 
 import com.sudoo.cartservice.controller.dto.CartProductDto
+import com.sudoo.cartservice.controller.dto.ProductInfoDto
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.Transient
 import org.springframework.data.domain.Persistable
@@ -29,12 +30,11 @@ data class CartProduct(
     override fun isNew(): Boolean = isNewCartProduct
 }
 
-fun CartProduct.toCartProductDto(): CartProductDto {
+fun CartProduct.toCartProductDto(product:ProductInfoDto): CartProductDto {
     return CartProductDto(
         cartProductId = this.cartProductId,
         cartId = this.cartId,
-        productId = this.productId,
         quantity = this.quantity,
-
+        product = product
     )
 }
