@@ -29,101 +29,56 @@ class CartProductServiceImpl(
         return if (carts.isEmpty()) null else carts.first()
     }
 
-    override suspend fun addProductToActiveCart(userId: String, upsertCartProductDto: UpsertCartProductDto): CartDto =
-        coroutineScope {
-            val activeCart = getActiveCart(userId) ?: createNewCart(userId)
-
-            val productInfo = productService.getProductInfo(upsertCartProductDto.productId)
-            val cartProduct = cartProductRepository.findCartProductByCartIdAndProductId(
-                activeCart.cartId,
-                upsertCartProductDto.productId
-            )
-
-            if (activeCart.isNewCart || cartProduct == null) {
-                val newCartProduct = upsertCartProductDto.toCartProduct(activeCart.cartId)
-                activeCart.totalPrice += (newCartProduct.quantity * productInfo.price)
-                activeCart.totalAmount += newCartProduct.quantity
-
-                joinAll(
-                    launch {
-                        cartProductRepository.save(newCartProduct)
-                    },
-                    launch {
-                        cartRepository.save(activeCart)
-                    }
-                )
-            } else {
-                cartProduct.quantity += 1
-                activeCart.totalPrice += productInfo.price
-                activeCart.totalAmount += 1
-                joinAll(
-                    launch {
-                        cartProductRepository.save(cartProduct)
-                    },
-                    launch {
-                        cartRepository.save(activeCart)
-                    }
-                )
-            }
-
-            CartDto(
-                cartId = activeCart.cartId,
-                totalPrice = activeCart.totalPrice,
-                totalAmount = activeCart.totalAmount,
-                status = activeCart.status,
-                cartProducts = cartService.getCartProducts(activeCart.cartId)
-            )
-        }
-
     private suspend fun createNewCart(userId: String): Cart {
-        var  cart = cartService.createCartByStatus(userId,CartStatus.ACTIVE.value)
+        var cart = cartService.createCartByStatus(userId, CartStatus.ACTIVE.value)
         return cart.toCart()
     }
 
-    override suspend fun updateProductInCart(cartId: String, upsertCartProductDto: UpsertCartProductDto): CartDto = coroutineScope {
-        if (upsertCartProductDto.cartProductId == null) throw BadRequestException("Require cart product id")
+    override suspend fun updateProductInCart(cartId: String, upsertCartProductDto: UpsertCartProductDto): CartDto =
+        coroutineScope {
+            if (upsertCartProductDto.cartProductId == null) throw BadRequestException("Require cart product id")
 
-        val deferreds = awaitAll(
-            async {
-                cartRepository.findById(cartId) ?: throw NotFoundException("Not found cart $cartId")
-            },
-            async {
-                cartProductRepository.findById(upsertCartProductDto.cartProductId) ?: throw NotFoundException(
-                    "Not found cart product ${upsertCartProductDto.cartProductId}"
-                )
-            },
-            async {
-                productService.getProductInfo(upsertCartProductDto.productId)
-            }
-        )
+            val deferreds = awaitAll(
+                async {
+                    cartRepository.findById(cartId) ?: throw NotFoundException("Not found cart $cartId")
+                },
+                async {
+                    cartProductRepository.findById(upsertCartProductDto.cartProductId) ?: throw NotFoundException(
+                        "Not found cart product ${upsertCartProductDto.cartProductId}"
+                    )
+                },
+                async {
+                    productService.getProductInfo(upsertCartProductDto.productId)
+                }
+            )
 
-        val cart = deferreds[0] as Cart
-        val cartProduct = deferreds[1] as CartProduct
-        val productInfo = deferreds[2] as ProductInfoDto
+            val cart = deferreds[0] as Cart
+            val cartProduct = deferreds[1] as CartProduct
+            val productInfo = deferreds[2] as ProductInfoDto
 
-        val updateQuantity = upsertCartProductDto.quantity - cartProduct.quantity
-        cartProduct.quantity += updateQuantity
+            val updateQuantity = upsertCartProductDto.quantity - cartProduct.quantity
+            cartProduct.quantity += updateQuantity
 
-        cart.totalAmount += updateQuantity
-        cart.totalPrice += (updateQuantity * productInfo.price)
+            cart.totalAmount += updateQuantity
+            cart.totalPrice += (updateQuantity * productInfo.price)
 
-        joinAll(
-            launch {
-                cartProductRepository.save(cartProduct)
-            },
-            launch {
-                cartRepository.save(cart)
-            }
-        )
+            joinAll(
+                launch {
+                    cartProductRepository.save(cartProduct)
+                },
+                launch {
+                    cartRepository.save(cart)
+                }
+            )
 
-        CartDto(
-            cartId = cart.cartId,
-            status = cart.status,
-            totalPrice = cart.totalPrice,
-            totalAmount = cart.totalAmount,
-            cartProducts = cartService.getCartProducts(cartId)
-        )
-    }
+            CartDto(
+                cartId = cart.cartId,
+                status = cart.status,
+                totalPrice = cart.totalPrice,
+                totalAmount = cart.totalAmount,
+                cartProducts = cartService.getCartProducts(cartId)
+            )
+        }
 
     override suspend fun deleteCartProduct(cartId: String, cartProductId: String): Boolean = coroutineScope {
         val deferreds = awaitAll(
@@ -148,4 +103,66 @@ class CartProductServiceImpl(
         cartRepository.save(cart)
         true
     }
+
+
+    /**
+     * Nếu chưa có active cart -> tạo active cart
+     * Nếu đã có active cart -> thêm vào active cart
+     */
+
+    override suspend fun addProductToActiveCart(userId: String, upsertCartProductDto: UpsertCartProductDto): CartDto =
+        coroutineScope {
+            val activeCart = getActiveCart(userId) ?: createNewCart(userId)
+
+            //thong tin product
+            val productInfo = productService.getProductInfo(upsertCartProductDto.productId)
+
+            //thong tin cart
+            val cartProduct = cartProductRepository.findCartProductByCartIdAndProductId(
+                activeCart.cartId,
+                upsertCartProductDto.productId
+            )
+
+            if (activeCart.isNewCart || cartProduct == null) {
+                val newCartProduct = upsertCartProductDto.toCartProduct(activeCart.cartId)
+                activeCart.totalPrice += (newCartProduct.quantity * productInfo.price)
+                activeCart.totalAmount += newCartProduct.quantity
+
+                joinAll(
+                    launch {
+                        cartProductRepository.save(newCartProduct)
+                    },
+                    launch {
+                        cartRepository.save(activeCart)
+                    }
+                )
+            } else {
+                cartProduct.quantity += upsertCartProductDto.quantity
+                activeCart.totalPrice += upsertCartProductDto.quantity * productInfo.price
+                activeCart.totalAmount += upsertCartProductDto.quantity
+
+                if (cartProduct.quantity >= 0) {
+                    joinAll(
+                        launch {
+                            cartProductRepository.save(cartProduct)
+                        },
+                        launch {
+                            cartRepository.save(activeCart)
+                        }
+                    )
+                }
+
+            }
+
+            CartDto(
+                cartId = activeCart.cartId,
+                totalPrice = activeCart.totalPrice,
+                totalAmount = activeCart.totalAmount,
+                status = activeCart.status,
+                cartProducts = cartService.getCartProducts(activeCart.cartId)
+            )
+        }
+
+
+
 }
