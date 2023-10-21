@@ -18,5 +18,9 @@ interface ProductService {
     suspend fun getProductInfoById(productId: String): ProductInfoDto
     suspend fun getProductDetailBySku(sku: String): ProductDto
 
-    suspend fun searchProductByName(userId: String, name: String, offsetRequest: OffsetRequest): ProductPagination<ProductInfoDto>
+    suspend fun getProductInfoByCategoryAndName(categoryId: String?, name: String, offsetRequest: OffsetRequest): ProductPagination<ProductInfoDto>
+
+    suspend fun getListProductInfoByIds(ids: List<String>): List<ProductInfoDto>
+
+    suspend fun getListOrderProductInfoByIds(ids: List<String>): List<OrderProductInfoDto>
 }

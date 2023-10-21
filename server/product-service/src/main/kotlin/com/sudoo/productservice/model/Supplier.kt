@@ -16,6 +16,9 @@ data class Supplier(
     @Column("user_id")
     val userId: String,
 
+    @Column("ghn_shop_id")
+    val ghnShopId: Int,
+
     @Column("name")
     val name: String,
 
@@ -25,14 +28,8 @@ data class Supplier(
     @Column("brand")
     val brand: String,
 
-    @Column("longitude")
-    val longitude: Double,
-
-    @Column("latitude")
-    val latitude: Double,
-
-    @Column("location_name")
-    val locationName: String,
+    @Column("address_id")
+    var addressId: String,
 
     @Column("contact_url")
     val contactUrl: String,

@@ -13,14 +13,14 @@ interface SupplierRepository : CoroutineCrudRepository<Supplier, String> {
      suspend fun getByUserId(userId: String): Supplier?
 
      @Query("""
-          SELECT suppliers.supplier_id FROM suppliers WHERE suppliers.user_id = :userId LIMIT 1
+          SELECT suppliers.supplier_id FROM suppliers WHERE suppliers.user_id = :addressId LIMIT 1
      """)
-     suspend fun getSupplierIdByUserId(@Param("userId") userId: String): String
+     suspend fun getSupplierIdByUserId(@Param("addressId") userId: String): String
 
      @Query("""
-          SELECT suppliers.brand FROM suppliers WHERE suppliers.user_id = :userId LIMIT 1
+          SELECT suppliers.brand FROM suppliers WHERE suppliers.user_id = :addressId LIMIT 1
      """)
-     suspend fun getBrandByUserId(@Param("userId") userId: String): String
+     suspend fun getBrandByUserId(@Param("addressId") userId: String): String
 
      @Query("""
           SELECT suppliers.brand FROM suppliers WHERE suppliers.supplier_id = :supplierId LIMIT 1     

@@ -8,7 +8,6 @@ import com.sudoo.domain.validator.ProductValidator
 import com.sudoo.productservice.dto.CategoryProductDto
 import com.sudoo.productservice.dto.UpsertProductDto
 import com.sudoo.productservice.dto.UserProductDto
-import com.sudoo.productservice.model.CategoryProduct
 import com.sudoo.productservice.service.CategoryService
 import com.sudoo.productservice.service.ImageService
 import com.sudoo.productservice.service.ProductService
@@ -49,11 +48,20 @@ class ProductController(
 
     @GetMapping
     suspend fun getListProductInfo(
+        @RequestParam("categoryId", required = false, defaultValue = "null") categoryId: String?,
+        @RequestParam("name", required = false, defaultValue = "") name: String,
         @RequestParam("offset", required = false, defaultValue = Constants.DEFAULT_OFFSET) offset: Int,
         @RequestParam("limit", required = false, defaultValue = Constants.DEFAULT_LIMIT) limit: Int,
     ): ResponseEntity<BaseResponse<*>> = handle {
         val offsetRequest = OffsetRequest(offset, limit)
-        productService.getListProductInfo(offsetRequest)
+        productService.getProductInfoByCategoryAndName(categoryId, name, offsetRequest)
+    }
+
+    @GetMapping("/info")
+    suspend fun getListProductInfoByIds(
+        @RequestBody ids: List<String>,
+    ): ResponseEntity<BaseResponse<*>> = handle {
+
     }
 
     @GetMapping("/{identify}")
@@ -151,6 +159,17 @@ class ProductController(
         @RequestParam("limit", required = false, defaultValue = Constants.DEFAULT_LIMIT) limit: Int,
     ): ResponseEntity<BaseResponse<*>> = handle {
         userProductService.getCommentsByProductId(productId, OffsetRequest(offset, limit))
+    }
+
+    @GetMapping("/search")
+    suspend fun searchProductByName(
+        @RequestParam("categoryId", required = false, defaultValue = "null") categoryId: String?,
+        @RequestParam("name", required = false, defaultValue = "") name: String,
+        @RequestParam("offset", required = false, defaultValue = Constants.DEFAULT_OFFSET) offset: Int,
+        @RequestParam("limit", required = false, defaultValue = Constants.DEFAULT_LIMIT) limit: Int,
+    ): ResponseEntity<BaseResponse<*>> = handle {
+        val offsetRequest = OffsetRequest(offset, limit)
+        productService.getProductInfoByCategoryAndName(categoryId, name, offsetRequest)
     }
 
     @GetMapping("/headers")

@@ -87,7 +87,7 @@
             <artifactId>domain</artifactId>
             <version>0.0.1</version>
             <scope>system</scope>
-            <systemPath>/Users/DATN/Sudoo/server/libs/domain-0.0.1.jar</systemPath>
+            <systemPath>/${project.basedir}/../libs/domain-0.0.1.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>jakarta.persistence</groupId>

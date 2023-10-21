@@ -5,6 +5,9 @@ import com.sudoo.userservice.repository.entitity.Address;
 import com.sudoo.userservice.repository.entitity.Location;
 
 public interface AddressService {
+
+    AddressDto postAddress(AddressDto addressDto);
+
     AddressDto getAddress(String userId);
     void deleteAddress(String userId);
     AddressDto putAddress(String userId, AddressDto addressDto);

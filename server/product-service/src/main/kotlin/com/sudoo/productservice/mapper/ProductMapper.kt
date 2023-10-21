@@ -2,6 +2,8 @@ package com.sudoo.productservice.mapper
 
 import com.sudoo.domain.utils.IdentifyCreator
 import com.sudoo.productservice.dto.*
+import com.sudoo.productservice.ktx.orZero
+import com.sudoo.productservice.model.OrderProductInfo
 import com.sudoo.productservice.model.Product
 import com.sudoo.productservice.model.ProductInfo
 
@@ -22,6 +24,10 @@ fun UpsertProductDto.toProduct(supplierId: String, brand: String): Product {
         startDateDiscount = startDateDiscount,
         endDateDiscount = endDateDiscount,
         saleable = saleable ?: true,
+        weight = weight.orZero(),
+        height = height.orZero(),
+        length = length.orZero(),
+        width = width.orZero(),
     ).also {
         it.isNewProduct = productId.isNullOrEmpty()
     }
@@ -44,12 +50,17 @@ fun UpsertProductDto.combineProduct(product: Product): Product {
         startDateDiscount = startDateDiscount ?: product.startDateDiscount,
         endDateDiscount = endDateDiscount ?: product.endDateDiscount,
         saleable = saleable ?: product.saleable,
+        weight = weight ?: product.weight,
+        height = height ?: product.height,
+        length = length ?: product.length,
+        width = width ?: product.width,
     )
 }
 
-fun Product.toProductDto(): ProductDto {
+fun Product.toProductDto(supplierInfo: SupplierInfoDto): ProductDto {
     return ProductDto(
         productId = productId,
+        supplierId = supplierId,
         sku = sku,
         name = name,
         description = description,
@@ -62,7 +73,11 @@ fun Product.toProductDto(): ProductDto {
         startDateDiscount = startDateDiscount,
         endDateDiscount = endDateDiscount,
         saleable = saleable,
-        supplier = supplier?.toSupplierInfoDto(),
+        weight = weight,
+        height = height,
+        length = length,
+        width = width,
+        supplier = supplierInfo,
         categories = categories?.map { it.toCategoryInfoDto() },
         images = images?.map { it.toImageDto() },
     )
@@ -90,6 +105,7 @@ fun Product.toProductDto(): ProductDto {
 fun ProductInfo.toProductInfoDto(): ProductInfoDto {
     return ProductInfoDto(
         productId = productId,
+        supplierId = supplierId,
         sku = sku,
         name = name,
         price = price,
@@ -101,6 +117,22 @@ fun ProductInfo.toProductInfoDto(): ProductInfoDto {
         brand = brand,
         rate = rate,
         saleable = saleable,
+        images = images,
+    )
+}
+
+fun OrderProductInfo.toOrderProductDto(): OrderProductInfoDto {
+    return OrderProductInfoDto(
+        productId = productId,
+        supplierId = supplierId,
+        sku = sku,
+        name = name,
+        price = price,
+        weight = weight,
+        height = height,
+        length = length,
+        width = width,
+        brand = brand,
         images = images,
     )
 }

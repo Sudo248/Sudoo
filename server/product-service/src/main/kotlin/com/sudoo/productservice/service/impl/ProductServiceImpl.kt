@@ -8,16 +8,13 @@ import com.sudoo.domain.validator.ProductValidator
 import com.sudoo.productservice.dto.*
 import com.sudoo.productservice.mapper.*
 import com.sudoo.productservice.model.CategoryProduct
-import com.sudoo.productservice.model.Image
 import com.sudoo.productservice.repository.*
 import com.sudoo.productservice.service.ProductService
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
+import com.sudoo.productservice.service.SupplierService
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.joinAll
-import kotlinx.coroutines.launch
 import org.springframework.stereotype.Service
 
 @Service
@@ -27,6 +24,7 @@ class ProductServiceImpl(
     private val categoryRepository: CategoryRepository,
     private val imageRepository: ImageRepository,
     private val categoryProductRepository: CategoryProductRepository,
+    private val supplierService: SupplierService,
 ) : ProductService {
     override suspend fun addProductToCategory(categoryProductDto: CategoryProductDto): CategoryProductDto {
         val categoryProduct = categoryProductDto.toCategoryProduct()
@@ -103,7 +101,7 @@ class ProductServiceImpl(
                     }
                 }
         ProductPagination(
-            products = products.map { it.await() }.toList(),
+            products = products.toList().awaitAll(),
             pagination = Pagination(
                 offset = offsetRequest.offset + products.count() + 1,
                 total = count.await()
@@ -112,21 +110,23 @@ class ProductServiceImpl(
     }
 
     override suspend fun getListProductInfoByCategory(
-        categoryId: String, offsetRequest: OffsetRequest
+        categoryId: String,
+        offsetRequest: OffsetRequest
     ): ProductPagination<ProductInfoDto> = coroutineScope {
         val count = async { categoryProductRepository.countProductOfCategory(categoryId) }
         val products = productRepository.getProductIdByCategoryIdWithOffset(
             categoryId = categoryId, offset = offsetRequest.offset, limit = offsetRequest.limit
         ).map { productId ->
             async {
-                val productInfo = productRepository.getProductInfoById(productId) ?: throw NotFoundException("Not found product $productId")
+                val productInfo = productRepository.getProductInfoById(productId)
+                    ?: throw NotFoundException("Not found product $productId")
                 productInfo.brand = supplierRepository.getBrand(productInfo.supplierId)
                 productInfo.images = imageRepository.getAllByOwnerId(productInfo.productId).map { it.url }.toList()
                 productInfo.toProductInfoDto()
             }
         }
         ProductPagination(
-            products = products.map { it.await() }.toList(),
+            products = products.toList().awaitAll(),
             pagination = Pagination(
                 offset = offsetRequest.offset + products.count() + 1,
                 total = count.await()
@@ -150,7 +150,7 @@ class ProductServiceImpl(
         }
 
         ProductPagination(
-            products = products.map { it.await() }.toList(),
+            products = products.toList().awaitAll(),
             pagination = Pagination(
                 offset = offsetRequest.offset + products.count() + 1,
                 total = count.await(),
@@ -160,11 +160,8 @@ class ProductServiceImpl(
 
     override suspend fun getProductDetailById(productId: String): ProductDto = coroutineScope {
         val product = productRepository.findById(productId) ?: throw NotFoundException("Not found product $productId")
+        val supplierInfo = async { supplierService.getSupplierInfoById(product.supplierId) }
         joinAll(
-            launch {
-                product.supplier = supplierRepository.findById(product.supplierId)
-                    ?: throw NotFoundException("Not found supplier of user ${product.supplierId}")
-            },
             launch {
                 product.images = imageRepository.getAllByOwnerId(productId).toList()
             },
@@ -175,11 +172,12 @@ class ProductServiceImpl(
             }
         )
 
-        product.toProductDto()
+        product.toProductDto(supplierInfo.await())
     }
 
     override suspend fun getProductInfoById(productId: String): ProductInfoDto = coroutineScope {
-        val productInfo = productRepository.getProductInfoById(productId) ?: throw NotFoundException("Not found product $productId")
+        val productInfo =
+            productRepository.getProductInfoById(productId) ?: throw NotFoundException("Not found product $productId")
         joinAll(
             launch {
                 productInfo.brand = supplierRepository.getBrand(productInfo.supplierId)
@@ -193,6 +191,7 @@ class ProductServiceImpl(
 
     override suspend fun getProductDetailBySku(sku: String): ProductDto = coroutineScope {
         val product = productRepository.getProductBySku(sku) ?: throw NotFoundException("Not found product sku $sku")
+        val supplierInfo = async { supplierService.getSupplierInfoById(product.supplierId) }
         joinAll(
             launch {
                 product.supplier = supplierRepository.findById(product.supplierId)
@@ -208,13 +207,105 @@ class ProductServiceImpl(
             }
         )
 
-        product.toProductDto()
+        product.toProductDto(supplierInfo.await())
     }
 
-    override suspend fun searchProductByName(
-        userId: String, name: String, offsetRequest: OffsetRequest
+    override suspend fun getProductInfoByCategoryAndName(
+        categoryId: String?,
+        name: String,
+        offsetRequest: OffsetRequest,
     ): ProductPagination<ProductInfoDto> {
-        TODO("Not yet implemented")
+         return when {
+            categoryId.isNullOrBlank() && name.isBlank() -> {
+                getListProductInfo(offsetRequest)
+            }
+
+            categoryId.isNullOrBlank() && name.isNotBlank() -> {
+                getProductInfoByName(name, offsetRequest)
+            }
+
+            !categoryId.isNullOrBlank() && name.isBlank() -> {
+                getListProductInfoByCategory(categoryId, offsetRequest)
+            }
+
+            else -> {
+                getProductInfoByCategoryAndName(categoryId!!, name, offsetRequest)
+            }
+        }
+    }
+
+    override suspend fun getListProductInfoByIds(ids: List<String>): List<ProductInfoDto> = coroutineScope{
+        productRepository.getListProductInfoByIds(ids).map { product ->
+            async {
+                product.brand = supplierRepository.getBrand(product.supplierId)
+                product.images = imageRepository.getAllByOwnerId(product.productId).map { it.url }.toList()
+                product.toProductInfoDto()
+            }
+        }.toList().awaitAll()
+    }
+
+    override suspend fun getListOrderProductInfoByIds(ids: List<String>): List<OrderProductInfoDto> = coroutineScope {
+        productRepository.getListOrderProductInfoByIds(ids).map { product ->
+            async {
+                product.brand = supplierRepository.getBrand(product.supplierId)
+                product.images = imageRepository.getAllByOwnerId(product.productId).map { it.url }.toList()
+                product.toOrderProductDto()
+            }
+        }.toList().awaitAll()
+    }
+
+    suspend fun getProductInfoByName(name: String, offsetRequest: OffsetRequest): ProductPagination<ProductInfoDto> =
+        coroutineScope {
+            val count = async { productRepository.countProductByNameContainsIgnoreCase(name) }
+            val products =
+                productRepository.getProductInfoByNameWithOffset(
+                    name = name,
+                    offset = offsetRequest.offset,
+                    limit = offsetRequest.limit
+                )
+                    .map { product ->
+                        async {
+                            product.brand = supplierRepository.getBrand(product.supplierId)
+                            product.images = imageRepository.getAllByOwnerId(product.productId).map { it.url }.toList()
+                            product.toProductInfoDto()
+                        }
+                    }
+            ProductPagination(
+                products = products.toList().awaitAll(),
+                pagination = Pagination(
+                    offset = offsetRequest.offset + products.count() + 1,
+                    total = count.await()
+                )
+            )
+        }
+
+    suspend fun getProductInfoByCategoryAndName(
+        categoryId: String,
+        name: String,
+        offsetRequest: OffsetRequest
+    ): ProductPagination<ProductInfoDto> = coroutineScope {
+        val count = async { productRepository.countProductByCategoryIdAndName(categoryId, name) }
+        val products =
+            productRepository.getProductInfoByCategoryIdAndName(
+                categoryId = categoryId,
+                name = name,
+                offset = offsetRequest.offset,
+                limit = offsetRequest.limit
+            )
+                .map { product ->
+                    async {
+                        product.brand = supplierRepository.getBrand(product.supplierId)
+                        product.images = imageRepository.getAllByOwnerId(product.productId).map { it.url }.toList()
+                        product.toProductInfoDto()
+                    }
+                }
+        ProductPagination(
+            products = products.toList().awaitAll(),
+            pagination = Pagination(
+                offset = offsetRequest.offset + products.count() + 1,
+                total = count.await()
+            )
+        )
     }
 
     private fun validateUpsertProduct(productDto: UpsertProductDto) {

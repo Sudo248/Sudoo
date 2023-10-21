@@ -56,6 +56,18 @@ data class Product(
     @Column("saleable")
     val saleable: Boolean,
 
+    @Column("weight")
+    val weight: Int,
+
+    @Column("height")
+    val height: Int,
+
+    @Column("length")
+    val length: Int,
+
+    @Column("width")
+    val width: Int,
+
 ) : Persistable<String> {
 
     @Transient
