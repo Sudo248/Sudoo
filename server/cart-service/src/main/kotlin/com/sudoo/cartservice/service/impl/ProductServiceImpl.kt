@@ -14,11 +14,16 @@ class ProductServiceImpl(
     @Qualifier("product-service") private val client: WebClient
 ) : ProductService {
     override suspend fun getProductInfo(productId: String): ProductInfoDto {
-        val response = client.get()
-            .uri("/$productId/info")
-            .retrieve()
-            .awaitBodyOrNull<BaseResponse<ProductInfoDto>>() ?: throw NotFoundException("Not found product $productId")
-
+        val response = try{
+            client.get()
+                .uri("/$productId/info")
+                .retrieve()
+                .awaitBodyOrNull<BaseResponse<ProductInfoDto>>()
+                ?: throw NotFoundException("Not found product $productId")
+        }catch (e:Exception){
+            e.printStackTrace()
+            throw e
+        }
         return response.data ?: throw NotFoundException("Not found product $productId")
     }
 

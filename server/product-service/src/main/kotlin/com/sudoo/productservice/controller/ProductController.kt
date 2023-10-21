@@ -71,6 +71,7 @@ class ProductController(
     suspend fun getProductInfo(
         @PathVariable("productId") productId: String
     ): ResponseEntity<BaseResponse<*>> = handle {
+        println("productId: $productId")
         productService.getProductInfoById(productId)
     }
 
