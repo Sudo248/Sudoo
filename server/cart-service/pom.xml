@@ -87,7 +87,7 @@
             <artifactId>domain</artifactId>
             <version>0.0.1</version>
             <scope>system</scope>
-            <systemPath>/Users/leduong/Sudo248/Sudoo/server/domain/target/domain-0.0.1.jar</systemPath>
+            <systemPath>/Users/DATN/Sudoo/server/libs/domain-0.0.1.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>jakarta.persistence</groupId>

@@ -10,6 +10,8 @@ data class BaseResponse<out D>(
     val message: String?,
     val data: D?
 ) {
+
+    constructor() : this(statusCode = 0, success = true, message = null, data = null)
     companion object {
         fun <Data> ok(body: Data, message: String? = null): ResponseEntity<BaseResponse<*>> = ResponseEntity.ok(
             BaseResponse(

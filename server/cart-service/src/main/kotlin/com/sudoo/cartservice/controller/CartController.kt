@@ -1,6 +1,8 @@
 package com.sudoo.cartservice.controller
 
 import com.sudoo.cartservice.controller.dto.CartDto
+import com.sudoo.cartservice.controller.dto.CartProductDto
+import com.sudoo.cartservice.controller.dto.CartProductsDto
 import com.sudoo.cartservice.service.CartService
 import com.sudoo.domain.base.BaseController
 import com.sudoo.domain.base.BaseResponse
@@ -12,10 +14,44 @@ import org.springframework.web.bind.annotation.*
 class CartController(
     val cartService: CartService
 ) : BaseController() {
+
+    @GetMapping("/active")
+    suspend fun getActiveCart(
+        @RequestHeader(Constants.HEADER_USER_ID) userId: String
+    ): ResponseEntity<BaseResponse<*>> = handle {
+        cartService.getActiveCart(userId)
+    }
+
+    @GetMapping("/{cartId}")
+    suspend fun getCartById(
+        @RequestHeader(Constants.HEADER_USER_ID) userId: String,
+        @PathVariable cartId: String,
+        @RequestParam(value = "hasRoute", required = false, defaultValue = "false") hasRoute: Boolean
+    ): ResponseEntity<BaseResponse<*>> = handle {
+        cartService.getCartById(userId, cartId, hasRoute)
+    }
+
+    @PostMapping("/processing")
+    suspend fun createProcessingCart(
+        @RequestHeader(Constants.HEADER_USER_ID) userId: String,
+        @RequestBody cartProductsDto: CartProductsDto
+    ): ResponseEntity<BaseResponse<*>> = handle {
+        cartService.createProcessingCart(userId, cartProductsDto.cartProducts)
+    }
+
+    @DeleteMapping("/processing")
+    suspend fun deleteProcessingCart(
+        @RequestHeader(Constants.HEADER_USER_ID) userId: String,
+    ): ResponseEntity<BaseResponse<*>> = handle {
+        cartService.deleteProcessingCart(userId)
+    }
+
+
+    //------------------------------------------------------------------------------------------------------------------
     @PostMapping("/create")
     suspend fun createCartByStatus(
         @RequestHeader(Constants.HEADER_USER_ID) userId: String,
-        @PathVariable ("status") status: String,
+        @PathVariable("status") status: String,
     ): ResponseEntity<BaseResponse<*>> = handle {
         cartService.createCartByStatus(userId, status)
     }
@@ -33,21 +69,6 @@ class CartController(
         cartService.updateStatusCart(userId)
     }
 
-    @GetMapping("/{cartId}")
-    suspend fun getCartById(
-        @RequestHeader(Constants.HEADER_USER_ID) userId: String,
-        @PathVariable cartId: String,
-        @RequestParam(value = "hasRoute", required = false, defaultValue = "false") hasRoute: Boolean
-    ): ResponseEntity<BaseResponse<*>> = handle {
-        cartService.getCartById(userId, cartId, hasRoute)
-    }
-
-    @GetMapping("/active")
-    suspend fun getActiveCartByUserId(
-        @RequestHeader(Constants.HEADER_USER_ID) userId: String
-    ): ResponseEntity<BaseResponse<*>> = handle {
-        cartService.getActiveCartByUserId(userId)
-    }
 
     @GetMapping("/active/count-item")
     suspend fun getCountItemActiveCartByUserId(

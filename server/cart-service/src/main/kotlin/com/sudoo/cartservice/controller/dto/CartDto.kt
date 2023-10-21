@@ -5,10 +5,10 @@ import com.sudoo.cartservice.repository.entity.Cart
 data class CartDto(
     val userId: String = "",
     val cartId: String = "",
-    val totalPrice: Double = 0.0,
-    val totalAmount: Int = 0,
+    var totalPrice: Double = 0.0,
+    var totalAmount: Int = 0,
     val status: String = "",
-    val cartProducts: List<CartProductDto> = listOf()
+    var cartProducts: List<CartProductDto> = listOf()
 )
 
 fun CartDto.toCart(): Cart {

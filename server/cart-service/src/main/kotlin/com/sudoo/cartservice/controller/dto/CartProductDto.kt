@@ -11,5 +11,10 @@ data class CartProductDto(
 )
 
 fun CartProductDto.toCartProduct(): CartProduct {
-    return CartProduct(cartProductId = this.cartProductId, cartId = this.cartId, quantity = this.quantity)
+    return CartProduct(
+        cartProductId = this.cartProductId,
+        cartId = this.cartId,
+        quantity = this.quantity,
+        productId = product?.productId ?: ""
+    )
 }
