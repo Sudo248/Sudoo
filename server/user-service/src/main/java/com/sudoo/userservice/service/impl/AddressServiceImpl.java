@@ -1,5 +1,6 @@
 package com.sudoo.userservice.service.impl;
 
+import com.sudo248.domain.util.Utils;
 import com.sudoo.userservice.controller.dto.AddressDto;
 import com.sudoo.userservice.repository.AddressRepository;
 import com.sudoo.userservice.repository.entitity.Address;
@@ -15,6 +16,13 @@ public class AddressServiceImpl implements AddressService {
 
     public AddressServiceImpl(AddressRepository addressRepository) {
         this.addressRepository = addressRepository;
+    }
+
+    @Override
+    public AddressDto postAddress(AddressDto addressDto) {
+        Address address = toEntity(addressDto);
+        var savedAddress = addressRepository.save(address);
+        return toDto(savedAddress);
     }
 
     @Override
@@ -71,7 +79,7 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public Address toEntity(AddressDto addressDto) {
         return new Address(
-                addressDto.getAddressId(),
+                Utils.createIdOrElse(addressDto.getAddressId()),
                 addressDto.getProvinceID(),
                 addressDto.getDistrictID(),
                 addressDto.getWardCode(),

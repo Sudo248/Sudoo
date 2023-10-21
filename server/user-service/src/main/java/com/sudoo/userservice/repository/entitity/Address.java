@@ -14,8 +14,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class Address {
     @Id
-    @Column(name = "user_id")
-    private String userId;
+    @Column(name = "address_id")
+    private String addressId;
 
     @Column(name = "province_id")
     private int provinceID;
@@ -49,8 +49,8 @@ public class Address {
     @Transient
     private String fullAddress;
 
-    public Address(String userId, int provinceID, int districtID, String wardCode, String provinceName, String districtName, String wardName, String address, Location location, User user) {
-        this.userId = userId;
+    public Address(String addressId, int provinceID, int districtID, String wardCode, String provinceName, String districtName, String wardName, String address, Location location, User user) {
+        this.addressId = addressId;
         this.provinceID = provinceID;
         this.districtID = districtID;
         this.wardCode = wardCode;
@@ -62,8 +62,8 @@ public class Address {
         this.user = user;
     }
 
-    public Address(String userId, int provinceID, int districtID, String wardCode, String provinceName, String districtName, String wardName, String address, Location location) {
-        this.userId = userId;
+    public Address(String addressId, int provinceID, int districtID, String wardCode, String provinceName, String districtName, String wardName, String address, Location location) {
+        this.addressId = addressId;
         this.provinceID = provinceID;
         this.districtID = districtID;
         this.wardCode = wardCode;
@@ -97,9 +97,5 @@ public class Address {
         } else {
             fullAddress = "";
         }
-    }
-
-    public String getAddressId() {
-        return userId;
     }
 }

@@ -21,7 +21,6 @@ interface CategoryProductRepository : CoroutineCrudRepository<CategoryProduct, S
     )
     suspend fun deleteProductOfCategory(@Param("productId") productId: String, @Param("categoryId") categoryId: String)
 
-    @Transactional
     @Query("""
         SELECT COUNT(categories_products.product_id) FROM categories_products 
         WHERE categories_products.category_id = :categoryId;

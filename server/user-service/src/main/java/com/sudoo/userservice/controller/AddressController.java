@@ -4,19 +4,31 @@ import com.sudo248.domain.base.BaseResponse;
 import com.sudo248.domain.common.Constants;
 import com.sudo248.domain.util.Utils;
 import com.sudoo.userservice.controller.dto.AddressDto;
+import com.sudoo.userservice.repository.entitity.Address;
 import com.sudoo.userservice.repository.entitity.Location;
 import com.sudoo.userservice.service.AddressService;
+import feign.Body;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/address")
+@RequestMapping("/addresses")
 public class AddressController {
 
     private final AddressService addressService;
 
     public AddressController(AddressService addressService) {
         this.addressService = addressService;
+    }
+
+    @PostMapping
+    public ResponseEntity<BaseResponse<?>> postAddress(
+            @RequestBody AddressDto addressDto
+    ) {
+        return Utils.handleException(() -> {
+            AddressDto savedAddressDto = addressService.postAddress(addressDto);
+            return BaseResponse.ok(savedAddressDto);
+        });
     }
 
     @GetMapping
@@ -29,13 +41,12 @@ public class AddressController {
         });
     }
 
-    @GetMapping("/{otherId}")
-    public ResponseEntity<BaseResponse<?>> getOtherAddress(
-            @RequestHeader(Constants.HEADER_USER_ID) String userId,
-            @RequestParam("otherId") String otherId
+    @GetMapping("/{addressId}")
+    public ResponseEntity<BaseResponse<?>> getAddressById(
+            @PathVariable("addressId") String addressId
     ) {
         return Utils.handleException(() -> {
-            AddressDto addressDto = addressService.getAddress(otherId);
+            AddressDto addressDto = addressService.getAddress(addressId);
             return BaseResponse.ok(addressDto);
         });
     }

@@ -1,10 +1,13 @@
-USE `product-db`;
+USE
+`product-db`;
 
 DROP TABLE IF EXISTS `suppliers`;
 CREATE TABLE `suppliers`
 (
     `supplier_id`   CHAR(32)     NOT NULL PRIMARY KEY,
     `user_id`       CHAR(32)     NOT NULL,
+    `ghn_shop_id`   INT          NOT NULL,
+    `address_id`    CHAR(32)     NOT NULL,
     `name`          VARCHAR(255) NOT NULL,
     `avatar`        VARCHAR(255),
     `brand`         VARCHAR(255),
@@ -35,9 +38,13 @@ CREATE TABLE `products`
     `saleable`            BOOLEAN               DEFAULT TRUE,
     `start_date_discount` DATETIME              DEFAULT CURRENT_TIMESTAMP,
     `end_date_discount`   DATETIME              DEFAULT CURRENT_TIMESTAMP,
+    `weight`              INT4,
+    `height`              INT4,
+    `length`              INT4,
+    `width`               INT4,
 
-    INDEX id_index (product_id),
-    INDEX sku_index (sku),
+    INDEX                 id_index (product_id),
+    INDEX                 sku_index (sku),
 
     FOREIGN KEY (supplier_id) REFERENCES suppliers (supplier_id) ON DELETE CASCADE
 
@@ -70,13 +77,13 @@ CREATE TABLE `users_products`
 (
     `user_product_id` CHAR(32) NOT NULL PRIMARY KEY,
     `product_id`      CHAR(32) NOT NULL,
-    `user_id`          CHAR(32) NOT NULL,
+    `user_id`         CHAR(32) NOT NULL,
     `rate`            FLOAT4   DEFAULT 0.0,
     `is_like`         BOOLEAN  DEFAULT FALSE,
     `comment`         TEXT,
     `create_at`       DATETIME DEFAULT CURRENT_TIMESTAMP,
 
-    INDEX product_id_index (product_id),
+    INDEX             product_id_index (product_id),
 
     FOREIGN KEY (product_id) REFERENCES products (product_id) ON DELETE CASCADE
 
@@ -87,7 +94,7 @@ DROP TABLE IF EXISTS `images`;
 CREATE TABLE `images`
 (
     `image_id` CHAR(32)     NOT NULL PRIMARY KEY,
-    `owner_id`  CHAR(32)     NOT NULL,
+    `owner_id` CHAR(32)     NOT NULL,
     `url`      VARCHAR(255) NOT NULL
 ) CHARACTER SET = utf8mb4
     COMMENT = 'Store all images';

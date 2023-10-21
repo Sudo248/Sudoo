@@ -1,20 +1,18 @@
 package com.sudoo.productservice.mapper
 
 import com.sudoo.domain.utils.IdentifyCreator
-import com.sudoo.productservice.dto.Location
-import com.sudoo.productservice.dto.SupplierDto
-import com.sudoo.productservice.dto.SupplierInfoDto
+import com.sudoo.productservice.dto.*
 import com.sudoo.productservice.model.Supplier
 import java.time.LocalDateTime
 
-fun Supplier.toSupplierDto(totalProducts: Int): SupplierDto {
+fun Supplier.toSupplierDto(totalProducts: Int, address: AddressDto): SupplierDto {
     return SupplierDto(
         supplierId = supplierId,
+        ghnShopId = ghnShopId,
         name = name,
         avatar = avatar,
         brand = brand,
-        location = Location(longitude = longitude, latitude = latitude),
-        locationName = locationName,
+        address = address,
         contactUrl = contactUrl,
         totalProducts = totalProducts,
         rate = rate,
@@ -22,31 +20,31 @@ fun Supplier.toSupplierDto(totalProducts: Int): SupplierDto {
     )
 }
 
-fun Supplier.toSupplierInfoDto(): SupplierInfoDto {
+fun Supplier.toSupplierInfoDto(address: AddressDto): SupplierInfoDto {
     return SupplierInfoDto(
         supplierId = supplierId,
         userId = userId,
+        ghnShopId = ghnShopId,
         name = name,
         avatar = avatar,
         brand = brand,
-        locationName = locationName,
+        address = address,
         contactUrl = contactUrl,
         rate = rate,
     )
 }
 
-fun SupplierDto.toSupplier(userId: String): Supplier {
+fun UpsertSupplierDto.toSupplier(userId: String, ghnShopId: Int): Supplier {
     return Supplier(
         supplierId = IdentifyCreator.createOrElse(supplierId),
+        ghnShopId = ghnShopId,
         userId = userId,
         name = name,
         avatar = avatar,
         brand = brand,
-        longitude = location.longitude,
-        latitude = location.latitude,
-        locationName = locationName,
         contactUrl = contactUrl,
         rate = rate ?: 5.0f,
+        addressId = address?.addressId.orEmpty(),
         createAt = createAt ?: LocalDateTime.now()
     ).also {
         it.isNewSupplier = supplierId.isNullOrEmpty()

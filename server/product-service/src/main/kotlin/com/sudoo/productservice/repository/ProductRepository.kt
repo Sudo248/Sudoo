@@ -1,5 +1,6 @@
 package com.sudoo.productservice.repository
 
+import com.sudoo.productservice.model.OrderProductInfo
 import com.sudoo.productservice.model.Product
 import com.sudoo.productservice.model.ProductInfo
 import kotlinx.coroutines.flow.Flow
@@ -55,7 +56,13 @@ interface ProductRepository : CoroutineCrudRepository<Product, String> {
         OFFSET :_offset
     """
     )
-    fun searchProductInfoByName(@Param("_name") name: String): Flow<ProductInfo>
+    fun getProductInfoByNameWithOffset(
+        @Param("_name") name: String,
+        @Param("_offset") offset: Int = 0,
+        @Param("_limit") limit: Int = 0
+    ): Flow<ProductInfo>
+
+    suspend fun countProductByNameContainsIgnoreCase(name: String): Long
 
     @Query(
         """
@@ -123,4 +130,86 @@ interface ProductRepository : CoroutineCrudRepository<Product, String> {
         @Param("_limit") limit: Int = 0
     ): Flow<ProductInfo>
 
+    @Query(
+        """
+        COUNT (products.product_id)
+        FROM products
+        INNER JOIN categories_products
+        WHERE categories_products.category_id = :categoryId
+        AND products.name LIKE %:_name%
+    """
+    )
+    suspend fun countProductByCategoryIdAndName(
+        @Param("categoryId") categoryId: String,
+        @Param("_name") name: String
+    ): Long
+
+    @Query(
+        """
+        SELECT 
+        products.product_id, 
+        products.supplier_id,
+        products.sku, 
+        products.name, 
+        products.price,
+        products.listed_price,
+        products.amount,
+        products.saleable,
+        products.rate,
+        products.discount,
+        products.start_date_discount,
+        products.end_date_discount
+        FROM products
+        INNER JOIN categories_products
+        WHERE categories_products.category_id = :categoryId
+        AND products.name LIKE %:_name%
+        LIMIT :_limit
+        OFFSET :_offset
+    """
+    )
+    fun getProductInfoByCategoryIdAndName(
+        @Param("categoryId") categoryId: String,
+        @Param("_name") name: String,
+        @Param("_offset") offset: Int = 0,
+        @Param("_limit") limit: Int = 0
+    ): Flow<ProductInfo>
+
+    @Query(
+        """
+        SELECT 
+        products.product_id, 
+        products.supplier_id,
+        products.sku, 
+        products.name, 
+        products.price,
+        products.listed_price,
+        products.amount,
+        products.saleable,
+        products.rate,
+        products.discount,
+        products.start_date_discount,
+        products.end_date_discount
+        FROM products 
+        WHERE products.product_id IN :ids
+    """
+    )
+    fun getListProductInfoByIds(@Param("ids") ids: Collection<String>): Flow<ProductInfo>
+
+    @Query(
+        """
+        SELECT 
+        products.product_id, 
+        products.supplier_id,
+        products.sku, 
+        products.name, 
+        products.price,
+        products.weight,
+        products.height,
+        products.length,
+        products.width
+        FROM products 
+        WHERE products.product_id IN :ids
+    """
+    )
+    fun getListOrderProductInfoByIds(@Param("ids") ids: Collection<String>): Flow<OrderProductInfo>
 }

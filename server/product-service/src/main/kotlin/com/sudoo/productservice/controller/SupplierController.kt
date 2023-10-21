@@ -4,7 +4,7 @@ import com.sudoo.domain.base.BaseController
 import com.sudoo.domain.base.BaseResponse
 import com.sudoo.domain.base.OffsetRequest
 import com.sudoo.domain.common.Constants
-import com.sudoo.productservice.dto.SupplierDto
+import com.sudoo.productservice.dto.UpsertSupplierDto
 import com.sudoo.productservice.service.ProductService
 import com.sudoo.productservice.service.SupplierService
 import org.springframework.http.ResponseEntity
@@ -53,7 +53,7 @@ class SupplierController(
     @PostMapping
     suspend fun upsertSupplier(
         @RequestHeader(Constants.HEADER_USER_ID) userId: String,
-        @RequestBody supplierDto: SupplierDto
+        @RequestBody supplierDto: UpsertSupplierDto
     ): ResponseEntity<BaseResponse<*>> = handle {
         supplierService.upsertSupplier(userId, supplierDto)
     }
