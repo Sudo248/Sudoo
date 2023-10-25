@@ -6,10 +6,9 @@ import com.sudo248.base_android_annotation.apiservice.logging_level.Level
 import com.sudo248.base_android_annotation.apiservice.logging_level.LoggingLever
 import com.sudo248.sudoo.BuildConfig
 import com.sudo248.sudoo.data.api.BaseResponse
-import com.sudo248.sudoo.data.dto.cart.AddSupplierProductDto
+import com.sudo248.sudoo.data.dto.cart.AddCartProductDto
 import com.sudo248.sudoo.data.dto.cart.CartDto
 import com.sudo248.sudoo.data.dto.cart.CartProductsDto
-import com.sudo248.sudoo.data.dto.cart.UpsertCartProductDto
 import com.sudo248.sudoo.domain.common.Constants
 import retrofit2.Response
 import retrofit2.http.*
@@ -19,12 +18,12 @@ import retrofit2.http.*
 @LoggingLever(level = Level.BODY)
 interface CartService {
     @POST("/api/v1/cart/item")
-    suspend fun addSupplierProduct(@Body addSupplierProductDto: AddSupplierProductDto): Response<BaseResponse<CartDto>>
+    suspend fun addSupplierProduct(@Body addCartProductDto: AddCartProductDto): Response<BaseResponse<CartDto>>
 
     @PUT("/api/v1/cart/{cartId}/item")
     suspend fun updateSupplierProduct(
         @Path("cartId") cartId: String,
-        @Body addSupplierProductDto: List<AddSupplierProductDto>
+        @Body addCartProductDto: List<AddCartProductDto>
     ): Response<BaseResponse<CartDto>>
 
     @DELETE("/api/v1/cart/{cartId}/item")
@@ -48,7 +47,7 @@ interface CartService {
     suspend fun getCartByStatus():Response<BaseResponse<CartDto>>
 
     @POST("/api/v1/carts/product")
-    suspend fun updateProductToActiveCart(@Body upsertCartProductDto: AddSupplierProductDto):Response<BaseResponse<CartDto>>
+    suspend fun updateProductToActiveCart(@Body upsertCartProductDto: AddCartProductDto):Response<BaseResponse<CartDto>>
 
     @POST("/api/v1/carts/processing/")
     suspend fun createProcessingCartWithProduct(@Body cartProductsDto: CartProductsDto):Response<BaseResponse<CartDto>>

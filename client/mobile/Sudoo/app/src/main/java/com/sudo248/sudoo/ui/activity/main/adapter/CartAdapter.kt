@@ -6,14 +6,14 @@ import com.apachat.swipereveallayout.core.ViewBinder
 import com.sudo248.base_android.base.BaseListAdapter
 import com.sudo248.base_android.base.BaseViewHolder
 import com.sudo248.sudoo.databinding.ItemCartBinding
-import com.sudo248.sudoo.domain.entity.cart.AddSupplierProduct
+import com.sudo248.sudoo.domain.entity.cart.AddCartProduct
 import com.sudo248.sudoo.domain.entity.cart.CartProduct
 import com.sudo248.sudoo.ui.uimodel.adapter.loadImage
 import com.sudo248.sudoo.ui.util.Utils
 
 class CartAdapter(
-    private val onUpdateItemAmount: (AddSupplierProduct) -> Unit,
-    private val onDeleteItem: (AddSupplierProduct) -> Unit
+    private val onUpdateItemAmount: (AddCartProduct) -> Unit,
+    private val onDeleteItem: (AddCartProduct) -> Unit
 ) : BaseListAdapter<CartProduct, CartAdapter.ViewHolder>() {
 
     private val viewBinder: ViewBinder = ViewBinder()
@@ -35,7 +35,7 @@ class CartAdapter(
                     if (item.quantity > 1) {
                         item.quantity -= 1
                         onUpdateItemAmount.invoke(
-                            AddSupplierProduct(
+                            AddCartProduct(
                                 supplierId = "",
                                 productId = item.product!!.productId,
                                 amount = item.quantity
@@ -44,38 +44,39 @@ class CartAdapter(
                         txtCountItem.text = item.quantity.toString()
                     } else {
                         onDeleteItem.invoke(
-                            AddSupplierProduct(
+                            AddCartProduct(
                                 supplierId = "",
                                 productId = item.product!!.productId,
                                 amount = item.quantity
                             )
                         )
+                        txtCountItem.text = item.quantity.toString()
                     }
 
                 }
 
-//                addOrder.setOnClickListener {
+                addOrder.setOnClickListener {
 //                    if (item.quantity >= item.supplierProduct.amountLeft) return@setOnClickListener
-//                    item.quantity += 1
-//                    onUpdateItemAmount.invoke(
-//                        AddSupplierProduct(
-//                            supplierId = item.supplierProduct.supplier.supplierId,
-//                            productId = item.supplierProduct.product.productId,
-//                            amount = item.amount
-//                        )
-//                    )
-//                    txtCountItem.text = item.amount.toString()
-//                }
+                    item.quantity += 1
+                    onUpdateItemAmount.invoke(
+                        AddCartProduct(
+                            supplierId = "",
+                            productId = item.product?.productId ?: "",
+                            amount = item.quantity
+                        )
+                    )
+                    txtCountItem.text = item.quantity.toString()
+                }
 //
-//                btnDeleteItem.setOnClickListener {
-//                    onDeleteItem.invoke(
-//                        AddSupplierProduct(
-//                            supplierId = item.supplierProduct.supplier.supplierId,
-//                            productId = item.supplierProduct.product.productId,
-//                            amount = item.amount
-//                        )
-//                    )
-//                }
+                btnDeleteItem.setOnClickListener {
+                    onDeleteItem.invoke(
+                        AddCartProduct(
+                            supplierId = "",
+                            productId = item.product?.productId?:"",
+                            amount = item.quantity
+                        )
+                    )
+                }
             }
         }
     }

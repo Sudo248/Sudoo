@@ -23,7 +23,7 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>(), ViewCon
     private val adapter: CartAdapter by lazy {
         CartAdapter(
             onUpdateItemAmount = {
-                viewModel.updateSupplierProduct(it)
+                viewModel.updateProduct(it)
             },
             onDeleteItem = { addSupplierProduct ->
                 DialogUtils.showConfirmDialog(

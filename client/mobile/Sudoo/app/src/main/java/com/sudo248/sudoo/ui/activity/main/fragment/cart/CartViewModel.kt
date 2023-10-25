@@ -1,5 +1,7 @@
 package com.sudo248.sudoo.ui.activity.main.fragment.cart
 
+import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavDirections
@@ -9,7 +11,8 @@ import com.sudo248.base_android.event.SingleEvent
 import com.sudo248.base_android.ktx.bindUiState
 import com.sudo248.base_android.ktx.onError
 import com.sudo248.base_android.ktx.onSuccess
-import com.sudo248.sudoo.domain.entity.cart.AddSupplierProduct
+import com.sudo248.sudoo.domain.entity.cart.AddCartProduct
+import com.sudo248.sudoo.domain.entity.cart.AddCartProducts
 import com.sudo248.sudoo.domain.entity.cart.Cart
 import com.sudo248.sudoo.domain.repository.CartRepository
 import com.sudo248.sudoo.domain.repository.InvoiceRepository
@@ -38,7 +41,7 @@ class CartViewModel @Inject constructor(
         cartRepository.getActiveCart()
             .onSuccess {
                 _cart.postValue(it)
-                _totalPrice.postValue(it.totalPrice)
+                updateTotalPrice(it)
             }
             .onError {
                 it.printStackTrace()
@@ -46,25 +49,20 @@ class CartViewModel @Inject constructor(
             }.bindUiState(_uiState)
     }
 
-    fun updateSupplierProduct(addSupplierProduct: AddSupplierProduct) = launch {
+    fun updateProduct(addCartProduct: AddCartProduct) = launch {
         setState(UiState.LOADING)
-        cartRepository.updateSupplierProduct(
-            _cart.value!!.cartId,
-            addSupplierProduct
-        )
-            .onSuccess {
-                _totalPrice.postValue(it.totalPrice)
-            }
-            .onError {
-                error = SingleEvent(it.message)
-            }.bindUiState(_uiState)
+        cartRepository.addProductToActiveCart(addCartProduct).onSuccess {
+            updateTotalPrice(it)
+        }.onError {
+            error = SingleEvent(it.message)
+        }.bindUiState(_uiState)
     }
 
-    fun deleteItemFromCart(addSupplierProduct: AddSupplierProduct) = launch {
+    fun deleteItemFromCart(addCartProduct: AddCartProduct) = launch {
         setState(UiState.LOADING)
         cartRepository.deleteSupplierProduct(
             _cart.value!!.cartId,
-            addSupplierProduct
+            addCartProduct
         )
             .onSuccess {
                 _cart.postValue(it)
@@ -77,13 +75,24 @@ class CartViewModel @Inject constructor(
 
     fun buy() = launch {
         emitState(UiState.LOADING)
-        invoiceRepository.createInvoice(_cart.value!!.cartId)
+        cartRepository.createProcessingCart(AddCartProducts(_cart.value?.cartProducts?: listOf()))
             .onSuccess {
-                viewController?.navigateToPayment(it)
+                Log.i("CART_ID", it.cartId)
+                viewController?.navigateToPayment(it.cartId)
             }
             .onError {
                 error = SingleEvent(it.message)
             }.bindUiState(_uiState)
+//        invoiceRepository.createInvoice(_cart.value!!.cartId)
+
+    }
+
+    private fun updateTotalPrice(cart: Cart) {
+        var totalPrice = 0.0f
+        for (cartProduct in cart.cartProducts) {
+            totalPrice += (cartProduct.product?.price ?: 0.0f) * (cartProduct.quantity)
+        }
+        _totalPrice.postValue(totalPrice * 1.0)
     }
 
 }
