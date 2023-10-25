@@ -88,4 +88,15 @@ class CartRepositoryImpl @Inject constructor(
             throw response.error().errorBody()
         }
     }
+
+    override suspend fun addProductToActiveCart(upsertCartProduct: AddSupplierProduct): DataState<Cart, Exception> =
+        stateOn(ioDispatcher) {
+            val response =
+                handleResponse(cartService.updateProductToActiveCart(upsertCartProduct.toAddSupplierProductDto()))
+            if (response.isSuccess) {
+                response.data().toCart()
+            } else {
+                throw response.error().errorBody()
+            }
+        }
 }

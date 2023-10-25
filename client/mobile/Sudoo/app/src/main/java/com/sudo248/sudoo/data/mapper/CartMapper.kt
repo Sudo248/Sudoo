@@ -3,6 +3,7 @@ package com.sudo248.sudoo.data.mapper
 import com.sudo248.sudoo.data.dto.cart.AddSupplierProductDto
 import com.sudo248.sudoo.data.dto.cart.CartDto
 import com.sudo248.sudoo.data.dto.cart.CartSupplierProductDto
+import com.sudo248.sudoo.data.dto.cart.ProductInfoDto
 import com.sudo248.sudoo.data.dto.cart.SupplierProductDetailDto
 import com.sudo248.sudoo.domain.entity.cart.AddSupplierProduct
 import com.sudo248.sudoo.domain.entity.cart.Cart
@@ -18,9 +19,13 @@ fun SupplierProductDetailDto.toSupplierProductDetail(): SupplierProductDetail {
 }
 
 fun CartSupplierProductDto.toCartSupplierProduct(): CartSupplierProduct {
+    //TODO: Ghép model
     return CartSupplierProduct(
-        supplierProduct = supplierProduct.toSupplierProductDetail(),
-        amount, totalPrice, cartId
+        cartProductId = "",
+        cartId = "",
+        quantity = 0,
+        totalPrice = 0.0,
+        product = null
     )
 }
 

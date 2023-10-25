@@ -8,6 +8,8 @@ import com.sudo248.sudoo.BuildConfig
 import com.sudo248.sudoo.data.api.BaseResponse
 import com.sudo248.sudoo.data.dto.cart.AddSupplierProductDto
 import com.sudo248.sudoo.data.dto.cart.CartDto
+import com.sudo248.sudoo.data.dto.cart.CartProductsDto
+import com.sudo248.sudoo.data.dto.cart.UpsertCartProductDto
 import com.sudo248.sudoo.domain.common.Constants
 import retrofit2.Response
 import retrofit2.http.*
@@ -37,4 +39,17 @@ interface CartService {
 
     @GET("/api/v1/cart/active/count-item")
     suspend fun getItemInCart(): Response<BaseResponse<Int>>
+
+    //------------------------------------
+    @GET("/api/v1/carts/active")
+    suspend fun getActiveCart():Response<BaseResponse<CartDto>>
+
+    @GET("/api/v1/carts/")
+    suspend fun getCartByStatus():Response<BaseResponse<CartDto>>
+
+    @POST("/api/v1/carts/product")
+    suspend fun updateProductToActiveCart(@Body upsertCartProductDto: AddSupplierProductDto):Response<BaseResponse<CartDto>>
+
+    @POST("/api/v1/carts/processing/")
+    suspend fun createProcessingCartWithProduct(@Body cartProductsDto: CartProductsDto):Response<BaseResponse<CartDto>>
 }

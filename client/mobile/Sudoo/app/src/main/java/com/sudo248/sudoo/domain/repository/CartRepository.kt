@@ -10,4 +10,8 @@ interface CartRepository {
     suspend fun deleteSupplierProduct(cartId: String, addSupplierProduct: AddSupplierProduct): DataState<Cart, Exception>
     suspend fun getCart(): DataState<Cart, Exception>
     suspend fun getItemInCart(): DataState<Int, Exception>
+
+
+    //--------
+    suspend fun addProductToActiveCart(upsertCartProduct: AddSupplierProduct): DataState<Cart,Exception>
 }

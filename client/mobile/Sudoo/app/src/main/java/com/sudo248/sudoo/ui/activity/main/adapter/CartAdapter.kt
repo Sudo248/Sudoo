@@ -21,69 +21,65 @@ class CartAdapter(
     inner class ViewHolder(binding: ItemCartBinding) :
         BaseViewHolder<CartSupplierProduct, ItemCartBinding>(binding) {
         override fun onBind(item: CartSupplierProduct) {
-            viewBinder.bind(
-                binding.swipeRevealLayout,
-                "${item.supplierProduct.supplier.supplierId}-${item.supplierProduct.product.productId}"
-            )
-            binding.apply {
-                loadImage(imgItem, item.supplierProduct.product.images[0])
-                txtNameItem.text = item.supplierProduct.product.name
-                txtCountItem.text = item.amount.toString()
-                txtPriceItem.text = Utils.formatVnCurrency(item.supplierProduct.price)
-
-                minusOrder.setOnClickListener {
-                    if (item.amount > 1) {
-                        item.amount -= 1
-                        onUpdateItemAmount.invoke(
-                            AddSupplierProduct(
-                                supplierId = item.supplierProduct.supplier.supplierId,
-                                productId = item.supplierProduct.product.productId,
-                                amount = item.amount
-                            )
-                        )
-                        txtCountItem.text = item.amount.toString()
-                    } else {
-                        onDeleteItem.invoke(
-                            AddSupplierProduct(
-                                supplierId = item.supplierProduct.supplier.supplierId,
-                                productId = item.supplierProduct.product.productId,
-                                amount = item.amount
-                            )
-                        )
-                    }
-
-                }
-
-                addOrder.setOnClickListener {
-                    if (item.amount >= item.supplierProduct.amountLeft) return@setOnClickListener
-                    item.amount += 1
-                    onUpdateItemAmount.invoke(
-                        AddSupplierProduct(
-                            supplierId = item.supplierProduct.supplier.supplierId,
-                            productId = item.supplierProduct.product.productId,
-                            amount = item.amount
-                        )
-                    )
-                    txtCountItem.text = item.amount.toString()
-                }
-
-                btnDeleteItem.setOnClickListener {
-                    onDeleteItem.invoke(
-                        AddSupplierProduct(
-                            supplierId = item.supplierProduct.supplier.supplierId,
-                            productId = item.supplierProduct.product.productId,
-                            amount = item.amount
-                        )
-                    )
-                }
+//            viewBinder.bind(
+//                binding.swipeRevealLayout,
+//                "${item.supplierProduct.supplier.supplierId}-${item.supplierProduct.product.productId}"
+//            )
+//            binding.apply {
+//                loadImage(imgItem, item.supplierProduct.product.images[0])
+//                txtNameItem.text = item.supplierProduct.product.name
+//                txtCountItem.text = item.amount.toString()
+//                txtPriceItem.text = Utils.formatVnCurrency(item.supplierProduct.price)
+//
+//                minusOrder.setOnClickListener {
+//                    if (item.amount > 1) {
+//                        item.amount -= 1
+//                        onUpdateItemAmount.invoke(
+//                            AddSupplierProduct(
+//                                supplierId = item.supplierProduct.supplier.supplierId,
+//                                productId = item.supplierProduct.product.productId,
+//                                amount = item.amount
+//                            )
+//                        )
+//                        txtCountItem.text = item.amount.toString()
+//                    } else {
+//                        onDeleteItem.invoke(
+//                            AddSupplierProduct(
+//                                supplierId = item.supplierProduct.supplier.supplierId,
+//                                productId = item.supplierProduct.product.productId,
+//                                amount = item.amount
+//                            )
+//                        )
+//                    }
+//
+//                }
+//
+//                addOrder.setOnClickListener {
+//                    if (item.amount >= item.supplierProduct.amountLeft) return@setOnClickListener
+//                    item.amount += 1
+//                    onUpdateItemAmount.invoke(
+//                        AddSupplierProduct(
+//                            supplierId = item.supplierProduct.supplier.supplierId,
+//                            productId = item.supplierProduct.product.productId,
+//                            amount = item.amount
+//                        )
+//                    )
+//                    txtCountItem.text = item.amount.toString()
+//                }
+//
+//                btnDeleteItem.setOnClickListener {
+//                    onDeleteItem.invoke(
+//                        AddSupplierProduct(
+//                            supplierId = item.supplierProduct.supplier.supplierId,
+//                            productId = item.supplierProduct.product.productId,
+//                            amount = item.amount
+//                        )
+//                    )
+//                }
             }
         }
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(
-            ItemCartBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        )
+        TODO("Not yet implemented")
     }
-
 }

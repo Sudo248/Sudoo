@@ -1,6 +1,6 @@
 package com.sudo248.sudoo.data.dto.cart
 
-data class CartSupplierProductDto(
+data class CartProductDto(
     val cartProductId: String = "",
     val cartId: String = "",
     val quantity: Int = 0,

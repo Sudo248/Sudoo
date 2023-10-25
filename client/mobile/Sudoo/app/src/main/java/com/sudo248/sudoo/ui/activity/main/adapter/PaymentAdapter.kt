@@ -17,12 +17,12 @@ class PaymentAdapter : BaseListAdapter<CartSupplierProduct, PaymentAdapter.ViewH
     inner class ViewHolder(binding: ItemPaymentBinding) :
         BaseViewHolder<CartSupplierProduct, ItemPaymentBinding>(binding) {
         override fun onBind(item: CartSupplierProduct) {
-            binding.apply {
-                loadImage(imageProductPayment, item.supplierProduct.product.images[0])
-                txtNameProduct.text = item.supplierProduct.product.name
-                txtCountProduct.text = "X${item.amount}"
-                txtPricesProduct.text = Utils.formatVnCurrency(item.supplierProduct.price)
-            }
+//            binding.apply {
+//                loadImage(imageProductPayment, item.supplierProduct.product.images[0])
+//                txtNameProduct.text = item.supplierProduct.product.name
+//                txtCountProduct.text = "X${item.amount}"
+//                txtPricesProduct.text = Utils.formatVnCurrency(item.supplierProduct.price)
+//            }
         }
     }
 
