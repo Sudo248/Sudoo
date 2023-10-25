@@ -99,4 +99,13 @@ class CartRepositoryImpl @Inject constructor(
                 throw response.error().errorBody()
             }
         }
+
+    override suspend fun getActiveCart(): DataState<Cart, Exception> = stateOn(ioDispatcher) {
+        val response = handleResponse(cartService.getActiveCart())
+        if (response.isSuccess) {
+            response.data().toCart()
+        } else {
+            throw response.error().errorBody()
+        }
+    }
 }

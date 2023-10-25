@@ -35,7 +35,7 @@ class CartViewModel @Inject constructor(
 
     fun getActiveCart() = launch {
         setState(UiState.LOADING)
-        cartRepository.getCart()
+        cartRepository.getActiveCart()
             .onSuccess {
                 _cart.postValue(it)
                 _totalPrice.postValue(it.totalPrice)

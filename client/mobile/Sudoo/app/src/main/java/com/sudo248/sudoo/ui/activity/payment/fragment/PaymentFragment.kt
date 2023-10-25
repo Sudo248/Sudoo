@@ -8,9 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.sudo248.base_android.base.BaseFragment
 import com.sudo248.base_android.ktx.showWithTransparentBackground
 import com.sudo248.base_android.navigation.ResultCallback
@@ -95,7 +93,7 @@ class PaymentFragment : BaseFragment<FragmentPaymentBinding, PaymentViewModel>()
     }
 
     private fun setupInvoice(invoice: Invoice) {
-        adapter.submitList(invoice.cart.cartSupplierProducts)
+        adapter.submitList(invoice.cart.cartProducts)
         binding.apply {
 
             // shipment
@@ -107,7 +105,7 @@ class PaymentFragment : BaseFragment<FragmentPaymentBinding, PaymentViewModel>()
             // payment
             textSumProductPayment.text = getString(
                 R.string.total_money_format,
-                invoice.cart.cartSupplierProducts.size.toString()
+                invoice.cart.cartProducts.size.toString()
             )
 
             sumProductPayment.text = Utils.formatVnCurrency(invoice.totalPrice)

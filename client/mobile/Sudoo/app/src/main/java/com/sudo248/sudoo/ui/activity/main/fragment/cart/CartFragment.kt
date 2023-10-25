@@ -1,6 +1,5 @@
 package com.sudo248.sudoo.ui.activity.main.fragment.cart
 
-import android.os.Bundle
 import androidx.fragment.app.viewModels
 import com.sudo248.base_android.base.BaseFragment
 import com.sudo248.base_android.ktx.createActionIntentDirections
@@ -56,8 +55,8 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>(), ViewCon
         super.observer()
         viewModel.cart.observe(viewLifecycleOwner) {
             binding.refresh.isRefreshing = false
-            adapter.submitList(it.cartSupplierProducts)
-            setBadgeCart(it.cartSupplierProducts.size)
+            adapter.submitList(it.cartProducts)
+            setBadgeCart(it.cartProducts.size)
         }
 
         viewModel.totalPrice.observe(viewLifecycleOwner) {

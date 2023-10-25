@@ -10,8 +10,6 @@ data class ProductInfoDto(
     val listedPrice: Float = 0.0f,
     val amount: Int = 0,
     val discount: Int = 0,
-    val startDateDiscount: LocalDateTime? = null,
-    val endDateDiscount: LocalDateTime? = null,
     val brand: String = "",
     val rate: Float = 0.0f,
     val saleable: Boolean = true,

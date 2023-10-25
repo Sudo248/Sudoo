@@ -2,12 +2,11 @@ package com.sudo248.sudoo.data.mapper
 
 import com.sudo248.sudoo.data.dto.cart.AddSupplierProductDto
 import com.sudo248.sudoo.data.dto.cart.CartDto
-import com.sudo248.sudoo.data.dto.cart.CartSupplierProductDto
-import com.sudo248.sudoo.data.dto.cart.ProductInfoDto
+import com.sudo248.sudoo.data.dto.cart.CartProductDto
 import com.sudo248.sudoo.data.dto.cart.SupplierProductDetailDto
 import com.sudo248.sudoo.domain.entity.cart.AddSupplierProduct
 import com.sudo248.sudoo.domain.entity.cart.Cart
-import com.sudo248.sudoo.domain.entity.cart.CartSupplierProduct
+import com.sudo248.sudoo.domain.entity.cart.CartProduct
 import com.sudo248.sudoo.domain.entity.cart.SupplierProductDetail
 
 fun SupplierProductDetailDto.toSupplierProductDetail(): SupplierProductDetail {
@@ -18,14 +17,13 @@ fun SupplierProductDetailDto.toSupplierProductDetail(): SupplierProductDetail {
     )
 }
 
-fun CartSupplierProductDto.toCartSupplierProduct(): CartSupplierProduct {
-    //TODO: Ghép model
-    return CartSupplierProduct(
+fun CartProductDto.toCartSupplierProduct(): CartProduct {
+    return CartProduct(
         cartProductId = "",
         cartId = "",
         quantity = 0,
         totalPrice = 0.0,
-        product = null
+        product = this.product
     )
 }
 
@@ -35,7 +33,7 @@ fun CartDto.toCart(): Cart {
         totalPrice = totalPrice,
         totalAmount = totalAmount,
         status = status,
-        cartSupplierProducts = cartSupplierProducts.map { it.toCartSupplierProduct() }
+        cartProducts = cartProducts.map { it.toCartSupplierProduct() }
     )
 }
 

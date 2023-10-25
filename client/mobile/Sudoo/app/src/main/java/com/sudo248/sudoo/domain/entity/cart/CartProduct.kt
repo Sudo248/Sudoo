@@ -3,10 +3,10 @@ package com.sudo248.sudoo.domain.entity.cart
 import com.sudo248.base_android.base.ItemDiff
 import com.sudo248.sudoo.data.dto.cart.ProductInfoDto
 
-data class CartSupplierProduct(
+data class CartProduct(
     val cartProductId: String = "",
     val cartId: String = "",
-    val quantity: Int = 0,
+    var quantity: Int = 0,
     val totalPrice: Double = 0.0,
     val product: ProductInfoDto? = null
 ) : ItemDiff {
@@ -15,9 +15,9 @@ data class CartSupplierProduct(
     }
 
     override fun isItemTheSame(other: ItemDiff): Boolean {
-        val cartSupplierProduct = other as CartSupplierProduct
-        return cartSupplierProduct.product?.productId == product?.productId &&
-                cartSupplierProduct.quantity == quantity
+        val cartProduct = other as CartProduct
+        return cartProduct.product?.productId == product?.productId &&
+                cartProduct.quantity == quantity
     }
 
 }

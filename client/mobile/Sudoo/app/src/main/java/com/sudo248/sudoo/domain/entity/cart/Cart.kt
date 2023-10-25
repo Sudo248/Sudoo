@@ -6,5 +6,5 @@ data class Cart(
     val totalPrice: Double,
     val totalAmount: Int,
     val status: String,
-    val cartSupplierProducts: List<CartSupplierProduct>
+    val cartProducts: List<CartProduct>
 )

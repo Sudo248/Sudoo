@@ -14,4 +14,6 @@ interface CartRepository {
 
     //--------
     suspend fun addProductToActiveCart(upsertCartProduct: AddSupplierProduct): DataState<Cart,Exception>
+
+    suspend fun getActiveCart(): DataState<Cart,Exception>
 }
