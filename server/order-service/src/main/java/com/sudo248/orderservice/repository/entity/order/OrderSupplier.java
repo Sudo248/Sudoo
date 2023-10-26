@@ -1,7 +1,7 @@
 package com.sudo248.orderservice.repository.entity.order;
 
-import com.sudo248.orderservice.controller.order.dto.CartProductDto;
-import com.sudo248.orderservice.controller.order.dto.OrderProductInfoDto;
+import com.sudo248.orderservice.controller.order.dto.OrderCartProductDto;
+import com.sudo248.orderservice.controller.order.dto.SupplierInfoDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -30,11 +30,18 @@ public class OrderSupplier {
     @Column(name = "promotion_id")
     private String promotionId;
 
+    @Column(name = "promotion_value")
     private double promotionValue;
+
+    @Column(name = "total_price")
+    private double totalPrice;
 
     @Embedded
     private Shipment shipment;
 
     @Transient
-    private List<CartProductDto> cartProducts;
+    private List<OrderCartProductDto> cartProducts;
+
+    @Transient
+    private SupplierInfoDto supplier;
 }

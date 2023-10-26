@@ -14,5 +14,5 @@ public class CartDto {
     private Double totalPrice;
     private int totalAmount;
     private String status;
-    private List<CartProductDto> cartProducts;
+    private List<OrderCartProductDto> cartProducts;
 }

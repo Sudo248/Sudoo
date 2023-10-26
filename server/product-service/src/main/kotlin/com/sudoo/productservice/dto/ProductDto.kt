@@ -21,6 +21,7 @@ data class ProductDto(
     val height: Int,
     val length: Int,
     val width: Int,
+    val extras: ProductExtrasDto,
     var images: List<ImageDto>? = null,
     var supplier: SupplierInfoDto? = null,
     var categories: List<CategoryInfoDto>? = null,

@@ -18,7 +18,6 @@ import com.sudo248.orderservice.repository.entity.payment.Payment;
 import com.sudo248.orderservice.service.order.OrderService;
 import com.sudo248.orderservice.service.payment.PaymentService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.NotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -150,11 +149,15 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderSupplierDto toOrderSupplierDto(OrderSupplier orderSupplier) {
+        if (orderSupplier.getSupplier() == null) {
+            orderSupplier.setSupplier(productService.getSupplierById(orderSupplier.getSupplierId()).getData());
+        }
         return new OrderSupplierDto(
                 orderSupplier.getOrderSupplierId(),
-                orderSupplier.getSupplierId(),
+                orderSupplier.getSupplier(),
                 orderSupplier.getPromotionId(),
                 orderSupplier.getPromotionValue(),
+                orderSupplier.getTotalPrice(),
                 orderSupplier.getShipment(),
                 orderSupplier.getCartProducts()
         );
@@ -229,28 +232,32 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private List<OrderSupplier> createOrderSuppliersByCart(CartDto cart, UserDto user) throws ApiException {
-        final Map<String, List<CartProductDto>> groupBySupplier = cart.getCartProducts().stream().collect(Collectors.groupingBy(cartProductDto ->
-                cartProductDto.getProduct().getSupplierId()
+        final Map<String, List<OrderCartProductDto>> groupBySupplier = cart.getCartProducts().stream().collect(Collectors.groupingBy(orderCartProductDto ->
+                orderCartProductDto.getProduct().getSupplierId()
         ));
         final ArrayList<OrderSupplier> listOrderSupplier = new ArrayList<>();
 
         // should use stream parallel
-        for (Map.Entry<String, List<CartProductDto>> entry : groupBySupplier.entrySet()) {
+        for (Map.Entry<String, List<OrderCartProductDto>> entry : groupBySupplier.entrySet()) {
             String supplierId = entry.getKey();
-            List<CartProductDto> cartProducts = entry.getValue();
+            List<OrderCartProductDto> cartProducts = entry.getValue();
+
+            final SupplierInfoDto supplier = productService.getSupplierById(supplierId).getData();
 
             final var orderSupplierBuilder = OrderSupplier.builder()
                     .orderSupplierId(Utils.createId())
                     .supplierId(supplierId)
+                    .supplier(supplier)
                     .promotionId(null)
                     .promotionValue(0.0)
                     .cartProducts(cartProducts);
 
-            final SupplierInfoDto supplier = productService.getSupplierById(supplierId).getData();
             // Length is same for an product
             int totalLength = cartProducts.get(0).getProduct().getLength();
             int totalWeight = 0, totalWidth = 0, totalHeight = 0;
-            for (CartProductDto cartProduct : cartProducts) {
+            double totalPrice = 0.0;
+            for (OrderCartProductDto cartProduct : cartProducts) {
+                totalPrice += cartProduct.getTotalPrice();
                 totalWeight += cartProduct.getProduct().getWeight() * cartProduct.getQuantity();
                 totalWidth += cartProduct.getProduct().getWidth() * cartProduct.getQuantity();
                 totalHeight += cartProduct.getProduct().getHeight() * cartProduct.getQuantity();
@@ -275,7 +282,10 @@ public class OrderServiceImpl implements OrderService {
                     .toWardCode(user.getAddress().getWardCode())
                     .build();
 
-            orderSupplierBuilder.shipment(calculateShipment(supplier.getGhnShopId(), calculateFeeRequest, calculateExpectedTimeRequest));
+            orderSupplierBuilder
+                    .totalPrice(totalPrice)
+                    .shipment(calculateShipment(supplier.getGhnShopId(), calculateFeeRequest, calculateExpectedTimeRequest));
+            
             listOrderSupplier.add(orderSupplierBuilder.build());
         }
         return listOrderSupplier;
@@ -283,8 +293,8 @@ public class OrderServiceImpl implements OrderService {
 
     private List<OrderSupplier> getCartProductForOrderSupplier(List<OrderSupplier> orderSuppliers, String cartId) throws ApiException {
         CartDto cart = getCartById(cartId);
-        final Map<String, List<CartProductDto>> groupBySupplier = cart.getCartProducts().stream().collect(Collectors.groupingBy(cartProductDto ->
-                cartProductDto.getProduct().getSupplierId()
+        final Map<String, List<OrderCartProductDto>> groupBySupplier = cart.getCartProducts().stream().collect(Collectors.groupingBy(orderCartProductDto ->
+                orderCartProductDto.getProduct().getSupplierId()
         ));
         for (OrderSupplier orderSupplier : orderSuppliers) {
             orderSupplier.setCartProducts(groupBySupplier.get(orderSupplier.getSupplierId()));

@@ -51,6 +51,20 @@ CREATE TABLE `products`
 ) CHARACTER SET = utf8mb4
     COMMENT = 'Store all product';
 
+DROP TABLE IF EXISTS `product_extras`;
+CREATE TABLE `product_extras`
+(
+    `product_id`       CHAR(32) NOT NULL PRIMARY KEY,
+    `enable_3D_viewer` BOOLEAN DEFAULT FALSE,
+    `enable_ar_viewer` BOOLEAN DEFAULT FALSE,
+    `source`           VARCHAR(255),
+
+    INDEX              id_index (product_id),
+
+    FOREIGN KEY (product_id) REFERENCES products (product_id) ON DELETE CASCADE
+)CHARACTER SET = utf8mb4
+    COMMENT = 'Store all product extra';
+
 DROP TABLE IF EXISTS `categories`;
 CREATE TABLE `categories`
 (

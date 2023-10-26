@@ -25,6 +25,7 @@ class ProductServiceImpl(
     private val imageRepository: ImageRepository,
     private val categoryProductRepository: CategoryProductRepository,
     private val supplierService: SupplierService,
+    private val productExtrasRepository: ProductExtrasRepository,
 ) : ProductService {
     override suspend fun addProductToCategory(categoryProductDto: CategoryProductDto): CategoryProductDto {
         val categoryProduct = categoryProductDto.toCategoryProduct()
@@ -53,6 +54,11 @@ class ProductServiceImpl(
                     ?: throw NotFoundException("Not found supplier of user $userId")
             val product = productDto.toProduct(supplierId = supplier.supplierId, brand = supplier.brand)
             productRepository.save(product)
+            launch {
+                productExtrasRepository.save(
+                    productDto.extras.toProductExtras(product.productId, product.isNew)
+                )
+            }
             if (product.isNew) {
                 productDto.categoryIds?.map { categoryId ->
                     launch {
@@ -71,15 +77,21 @@ class ProductServiceImpl(
             productDto.copy(productId = product.productId, sku = product.sku)
         }
 
-    override suspend fun patchProduct(productDto: UpsertProductDto): UpsertProductDto {
+    override suspend fun patchProduct(productDto: UpsertProductDto): UpsertProductDto = coroutineScope {
         val oldProduct = productRepository.findById(
             productDto.productId ?: throw BadRequestException("require product id")
-        )
-        val product = productDto.combineProduct(
-            oldProduct ?: throw NotFoundException("Not found product id=${productDto.productId}")
-        )
+        ) ?: throw NotFoundException("Not found product id=${productDto.productId}")
+        productDto.extras?.let {
+            launch {
+                val oldProductExtras = productExtrasRepository.findById(productDto.productId)
+                    ?: throw NotFoundException("Not found product extra id=${productDto.productId}")
+                val productExtra = it.combineProductExtra(oldProductExtras)
+                productExtrasRepository.save(productExtra)
+            }
+        }
+        val product = productDto.combineProduct(oldProduct)
         productRepository.save(product)
-        return productDto
+        productDto
     }
 
     override suspend fun deleteProduct(productId: String): String {
@@ -108,6 +120,28 @@ class ProductServiceImpl(
             )
         )
     }
+
+    override suspend fun getRecommendListProductInfo(offsetRequest: OffsetRequest): ProductPagination<ProductInfoDto> =
+        coroutineScope {
+            // TODO: Implement get recommend by AI model here
+            val count = async { productRepository.count() }
+            val products =
+                productRepository.getProductInfoWithOffset(offset = offsetRequest.offset, limit = offsetRequest.limit)
+                    .map { product ->
+                        async {
+                            product.brand = supplierRepository.getBrand(product.supplierId)
+                            product.images = imageRepository.getAllByOwnerId(product.productId).map { it.url }.toList()
+                            product.toProductInfoDto()
+                        }
+                    }
+            ProductPagination(
+                products = products.toList().awaitAll(),
+                pagination = Pagination(
+                    offset = offsetRequest.offset + products.count() + 1,
+                    total = count.await()
+                )
+            )
+        }
 
     override suspend fun getListProductInfoByCategory(
         categoryId: String,
@@ -215,7 +249,7 @@ class ProductServiceImpl(
         name: String,
         offsetRequest: OffsetRequest,
     ): ProductPagination<ProductInfoDto> {
-         return when {
+        return when {
             categoryId.isNullOrBlank() && name.isBlank() -> {
                 getListProductInfo(offsetRequest)
             }
@@ -229,12 +263,12 @@ class ProductServiceImpl(
             }
 
             else -> {
-                getProductInfoByCategoryAndName(categoryId!!, name, offsetRequest)
+                getProductInfoByCategoryIdAndName(categoryId!!, name, offsetRequest)
             }
         }
     }
 
-    override suspend fun getListProductInfoByIds(ids: List<String>): List<ProductInfoDto> = coroutineScope{
+    override suspend fun getListProductInfoByIds(ids: List<String>): List<ProductInfoDto> = coroutineScope {
         productRepository.getListProductInfoByIds(ids).map { product ->
             async {
                 product.brand = supplierRepository.getBrand(product.supplierId)
@@ -279,7 +313,7 @@ class ProductServiceImpl(
             )
         }
 
-    suspend fun getProductInfoByCategoryAndName(
+    suspend fun getProductInfoByCategoryIdAndName(
         categoryId: String,
         name: String,
         offsetRequest: OffsetRequest
