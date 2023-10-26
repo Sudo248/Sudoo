@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Sudoo</string>
 
+    <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
+
     <string name="facebook_app_id">6161985857254099</string>
     <string name="facebook_client_token">10e127048d1937c440d0a55941d08f28</string>
 
@@ -59,8 +61,7 @@
     <string name="payment">Thanh toán</string>
     <string name="order_now">Đặt hàng</string>
     <string name="sum_payment">Tổng thanh toán</string>
-    <string name="informationUser">Nguyễn Văn A | (+84) 12 345 678\nSố nhà xx ngõ xx\nQuận Hà Đông, Phường Mộ Lao, Hà Nội
-    </string>
+    <string name="informationUser">Nguyễn Văn A | (+84) 12 345 678\nSố nhà xx ngõ xx\nQuận Hà Đông, Phường Mộ Lao, Hà Nội</string>
     <string name="title_receive_item">Địa chỉ nhận hàng</string>
     <string name="delivery_form">Hình Thức Giao Hàng</string>
     <string name="voucher">Voucher</string>
@@ -78,10 +79,33 @@
     <string name="choose_province">Chọn Thành phố/ Tỉnh</string>
     <string name="choose_district">Chọn Quận/ Huyện</string>
     <string name="choose_ward">Chọn Phường/ Xã</string>
-    <string name="not_found_product">Not found product</string>
+    <string name="not_found_product">Không tìm thấy sản phẩm</string>
     <string name="cart">Giỏ hàng</string>
     <string name="buy_now">Mua hàng</string>
     <string name="total_price">Tổng tiền: %s</string>
     <string name="delete">Xóa</string>
+    <string name="recommend_for_you">Gợi ý cho bạn</string>
+    <string name="search_in">Tìm kiếm trong %s</string>
+    <string name="received_date">Dự kiến nhận vào ngày %s</string>
     <string name="default_notification_channel_id">PROMOTION-NOTIFICATION-CHANNEL-ID</string>
+    <string name="discount">Giảm giá</string>
+    <string name="order_detail">Chi tiết đơn hàng</string>
+    <string name="rate">Đánh giá</string>
+    <string name="product_description">Mô tả sản phẩm</string>
+    <string name="product_reviews">Đánh giá sản phẩm</string>
+    <string name="total_comment">(%s Đánh giá)</string>
+    <string name="not_yet_review">(Chưa có đánh giá)</string>
+    <string name="load_more_comment">Xem thêm %s đánh giá</string>
+    <string name="send">Gửi</string>
+    <string name="review_product">Đánh giá sản phẩm</string>
+    <string name="product_brand">Thương hiệu: %s</string>
+    <string name="product_quality">Chất lượng\nsản phẩm</string>
+    <string name="bad">Tệ</string>
+    <string name="unsatisfied">Không hài lòng</string>
+    <string name="normal">Bình thường</string>
+    <string name="satisfied">Hài lòng</string>
+    <string name="great">Tuyệt vời</string>
+    <string name="take_image">Chụp ảnh</string>
+    <string name="pick_image">Chọn ảnh</string>
+    <string name="comment_product">Nhận xét sản phẩm</string>
 </resources>

@@ -10,6 +10,7 @@ import com.sudo248.sudoo.R
 import com.sudo248.sudoo.databinding.FragmentDiscoveryBinding
 import com.sudo248.sudoo.ui.activity.main.DeepLinkHandler
 import com.sudo248.sudoo.ui.activity.main.MainActivity
+import com.sudo248.sudoo.ui.base.EndlessNestedScrollListener
 import com.sudo248.sudoo.ui.ktx.showErrorDialog
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,17 +29,31 @@ class DiscoveryFragment : BaseFragment<FragmentDiscoveryBinding, DiscoveryViewMo
     private var isHandlerDeeplink = false
 
     override fun initView() {
-        Log.d("Sudoo", "initView: discover fragment")
         binding.viewModel = viewModel
 
 //        handleDeeplink()
 
         binding.rcvCategories.setHasFixedSize(true)
-//        binding.rcvCategories.setHorizontalViewPort(3.5f)
         binding.rcvCategories.adapter = viewModel.categoryAdapter
 
         binding.rcvProducts.setHasFixedSize(true)
         binding.rcvProducts.adapter = viewModel.productInfoAdapter
+
+        binding.parentScrollView.setOnScrollChangeListener(viewModel.endlessNestedScrollListener)
+
+        binding.header.search.setOnClickListener {
+            viewModel.navigateToSearchView()
+        }
+
+        binding.refresh.setOnRefreshListener {
+            viewModel.refresh()
+        }
+    }
+
+    override fun observer() {
+        viewModel.isRefresh.observe(viewLifecycleOwner) {
+            binding.refresh.isRefreshing = it
+        }
     }
 
     override fun onStateError() {

@@ -11,6 +11,7 @@ import com.sudo248.sudoo.data.dto.discovery.ProductInfoDto
 import com.sudo248.sudoo.data.dto.discovery.ProductListDto
 import com.sudo248.sudoo.data.dto.discovery.SupplierDto
 import com.sudo248.sudoo.data.dto.discovery.SupplierInfoDto
+import com.sudo248.sudoo.data.dto.discovery.UpsertCommentDto
 import com.sudo248.sudoo.data.dto.discovery.UserInfoDto
 import com.sudo248.sudoo.domain.entity.discovery.Category
 import com.sudo248.sudoo.domain.entity.discovery.CategoryInfo
@@ -23,6 +24,7 @@ import com.sudo248.sudoo.domain.entity.discovery.ProductInfo
 import com.sudo248.sudoo.domain.entity.discovery.ProductList
 import com.sudo248.sudoo.domain.entity.discovery.Supplier
 import com.sudo248.sudoo.domain.entity.discovery.SupplierInfo
+import com.sudo248.sudoo.domain.entity.discovery.UpsertComment
 import com.sudo248.sudoo.domain.entity.discovery.UserInfo
 
 fun ProductDto.toProduct(): Product {
@@ -40,6 +42,10 @@ fun ProductDto.toProduct(): Product {
         startDateDiscount = startDateDiscount,
         endDateDiscount = endDateDiscount,
         saleable = saleable,
+        weight = weight,
+        height = height,
+        length = length,
+        width = width,
         images = images.map { it.url },
         supplier = supplier?.toSupplierInfo(),
         categories = categories?.map { it.toCategoryInfo() },
@@ -92,11 +98,10 @@ fun SupplierDto.toSupplier(): Supplier {
         avatar = avatar,
         brand = brand,
         contactUrl = contactUrl,
-        location = location.toLocation(),
-        locationName = locationName,
         totalProducts = totalProducts,
         rate = rate,
         createAt = createAt,
+        address = address.toAddress()
     )
 }
 
@@ -148,5 +153,11 @@ fun PaginationDto.toPagination(): Pagination {
     return Pagination(
         offset = offset,
         total = total
+    )
+}
+
+fun UpsertComment.toUpsertCommentDto(): UpsertCommentDto {
+    return UpsertCommentDto(
+        productId, rate, isLike, comment, images
     )
 }

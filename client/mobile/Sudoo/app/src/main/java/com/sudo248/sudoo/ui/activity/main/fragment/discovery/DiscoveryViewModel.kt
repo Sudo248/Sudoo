@@ -15,7 +15,7 @@ import com.sudo248.sudoo.domain.entity.discovery.ProductInfo
 import com.sudo248.sudoo.domain.repository.DiscoveryRepository
 import com.sudo248.sudoo.ui.activity.main.adapter.CategoryAdapter
 import com.sudo248.sudoo.ui.activity.main.adapter.ProductInfoAdapter
-import com.sudo248.sudoo.ui.base.LoadMoreRecyclerViewListener
+import com.sudo248.sudoo.ui.base.EndlessNestedScrollListener
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -33,76 +33,84 @@ class DiscoveryViewModel @Inject constructor(
 ) : BaseViewModel<NavDirections>() {
     private var nextOffset: Offset = Offset()
 
-    private val _userImage = MutableLiveData<String>()
-    val userImage: LiveData<String> = _userImage
-
-    private val _categoryName = MutableLiveData("")
-    val categoryName: LiveData<String> = _categoryName
+    private val _isRefresh = MutableLiveData(false)
+    val isRefresh: LiveData<Boolean> = _isRefresh
 
     var error: SingleEvent<String?> = SingleEvent(null)
 
     val categoryAdapter = CategoryAdapter(::onCategoryItemClick)
 
-    private val productLoadMore = object : LoadMoreRecyclerViewListener {
-        override fun onLoadMore(page: Int, itemCount: Int) {
+    val productInfoAdapter = ProductInfoAdapter(::onProductItemClick)
+
+    val endlessNestedScrollListener = object : EndlessNestedScrollListener() {
+        override fun onLoadMore() {
             loadMoreProduct()
         }
     }
 
-    val productInfoAdapter = ProductInfoAdapter(::onProductItemClick, productLoadMore)
-
     init {
+        refresh()
+    }
+
+    fun refresh() {
+        _isRefresh.value = true
         getCategories()
+        getRecommendProductList()
     }
 
     private fun getCategories() = launch {
-        emitState(UiState.LOADING)
         discoveryRepository.getCategories()
             .onSuccess { categories ->
                 categoryAdapter.submitList(categories)
-                performProductListByCategoryId(categories.first())
+                _isRefresh.value = false
             }
             .onError {
                 error = SingleEvent(it.message)
-            }.bindUiState(_uiState)
+                _isRefresh.value = false
+            }
     }
 
 
-    private fun performProductListByCategoryId(category: Category, isLoadMore: Boolean = false) =
-        launch {
-            setState(UiState.LOADING)
-            _categoryName.value = category.name
-            if (!isLoadMore) {
-                nextOffset.reset()
-            }
-            discoveryRepository.getProductListByCategoryId(category.categoryId, nextOffset)
-                .onSuccess {
-                    if (it.products.size < nextOffset.limit) {
-                        productInfoAdapter.isLastPage(true)
-                    } else {
-                        nextOffset.offset = it.pagination.offset
-                    }
-                    productInfoAdapter.submitData(it.products, extend = isLoadMore)
-                }
-                .onError {
-                    error = SingleEvent(it.message)
-                }.bindUiState(_uiState)
+    private fun getRecommendProductList(isLoadMore: Boolean = false) = launch {
+        if (!isLoadMore) {
+            nextOffset.reset()
         }
+        discoveryRepository.getRecommendProductList(nextOffset)
+            .onSuccess {
+                if (it.products.size < nextOffset.limit) {
+                    productInfoAdapter.isLastPage(true)
+                    endlessNestedScrollListener.isLastPage(true)
+                } else {
+                    nextOffset.offset = it.pagination.offset
+                }
+                productInfoAdapter.submitData(it.products, extend = isLoadMore)
+            }
+            .onError {
+                error = SingleEvent(it.message)
+            }
+    }
 
-    private fun onCategoryItemClick(item: Category) =
-        performProductListByCategoryId(item)
+    private fun onCategoryItemClick(item: Category) {
+        navigator.navigateTo(
+            DiscoveryFragmentDirections.actionDiscoveryFragmentToSearchFragment(
+                categoryId = item.categoryId,
+                categoryName = item.name
+            )
+        )
+    }
 
     private fun onProductItemClick(item: ProductInfo) {
         navigateToProductDetail(item.productId)
     }
 
-    private fun loadMoreProduct() {
-        val currentCategory = categoryAdapter.getCurrentSelectedCategory()
-        performProductListByCategoryId(currentCategory, isLoadMore = true)
+    fun loadMoreProduct() {
+        getRecommendProductList(isLoadMore = true)
     }
 
     fun navigateToSearchView() {
-        navigator.navigateTo(DiscoveryFragmentDirections.actionDiscoveryFragmentToSearchFragment())
+        navigator.navigateTo(
+            DiscoveryFragmentDirections.actionDiscoveryFragmentToSearchFragment()
+        )
     }
 
     fun navigateToProductDetail(productId: String) {

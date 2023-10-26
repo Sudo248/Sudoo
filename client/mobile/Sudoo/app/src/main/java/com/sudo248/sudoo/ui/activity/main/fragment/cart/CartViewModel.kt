@@ -12,7 +12,7 @@ import com.sudo248.base_android.ktx.onSuccess
 import com.sudo248.sudoo.domain.entity.cart.AddSupplierProduct
 import com.sudo248.sudoo.domain.entity.cart.Cart
 import com.sudo248.sudoo.domain.repository.CartRepository
-import com.sudo248.sudoo.domain.repository.InvoiceRepository
+import com.sudo248.sudoo.domain.repository.OrderRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CartViewModel @Inject constructor(
     private val cartRepository: CartRepository,
-    private val invoiceRepository: InvoiceRepository
+    private val orderRepository: OrderRepository
 ) : BaseViewModel<NavDirections>() {
 
     private val _cart = MutableLiveData<Cart>()
@@ -77,7 +77,7 @@ class CartViewModel @Inject constructor(
 
     fun buy() = launch {
         emitState(UiState.LOADING)
-        invoiceRepository.createInvoice(_cart.value!!.cartId)
+        orderRepository.createOrder(_cart.value!!.cartId)
             .onSuccess {
                 viewController?.navigateToPayment(it)
             }
@@ -85,5 +85,11 @@ class CartViewModel @Inject constructor(
                 error = SingleEvent(it.message)
             }.bindUiState(_uiState)
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewController = null
+    }
+
 
 }

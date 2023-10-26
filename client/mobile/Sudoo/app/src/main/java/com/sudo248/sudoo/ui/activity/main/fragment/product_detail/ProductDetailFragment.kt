@@ -1,6 +1,7 @@
 package com.sudo248.sudoo.ui.activity.main.fragment.product_detail
 
 import android.content.Intent
+import android.graphics.Paint
 import android.net.Uri
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -10,9 +11,12 @@ import com.facebook.FacebookException
 import com.facebook.share.Sharer
 import com.facebook.share.model.ShareLinkContent
 import com.sudo248.base_android.base.BaseFragment
+import com.sudo248.base_android.ktx.invisible
+import com.sudo248.base_android.ktx.visible
 import com.sudo248.base_android.utils.DialogUtils
 import com.sudo248.sudoo.databinding.FragmentProductDetailBinding
 import com.sudo248.sudoo.domain.entity.discovery.Product
+import com.sudo248.sudoo.domain.entity.discovery.SupplierInfo
 import com.sudo248.sudoo.ui.activity.main.MainActivity
 import com.sudo248.sudoo.ui.ktx.showErrorDialog
 import com.sudo248.sudoo.ui.uimodel.adapter.loadImage
@@ -40,7 +44,7 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
         viewModel.viewController = this
         viewModel.getProduct(args.productId)
         binding.refreshProductDetail.setOnRefreshListener {
-            viewModel.getProduct(args.productId)
+            viewModel.refresh()
         }
         try {
             setupSendMessage()
@@ -50,13 +54,16 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
     }
 
     override fun observer() {
+        viewModel.isRefresh.observe(viewLifecycleOwner) {
+            binding.refreshProductDetail.isRefreshing = it
+        }
+
         viewModel.product.observe(viewLifecycleOwner) {
-            binding.refreshProductDetail.isRefreshing = false
             performProduct(it)
         }
 
         viewModel.supplier.observe(viewLifecycleOwner) {
-            binding.txtLocation.text = it.locationName
+            performSupplier(it)
         }
     }
 
@@ -64,9 +71,31 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
         binding.apply {
             loadImage(imgProductDetail, product.images.first())
             txtNameProduct.text = product.name
-            txtPriceProduct.text = Utils.formatVnCurrency(product.price)
+            txtPrice.text = Utils.formatVnCurrency(product.price)
+            if (product.price < product.listedPrice) {
+                txtListedPrice.visible()
+                txtListedPrice.text = Utils.formatVnCurrency(product.listedPrice)
+                txtListedPrice.paintFlags = txtListedPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            } else {
+                txtListedPrice.invisible()
+            }
+
+            if (product.discount > 0) {
+                txtDiscountPercent.visible()
+                txtDiscountPercent.text = Utils.formatDiscountPercent(product.discount)
+            } else {
+                txtDiscountPercent.invisible()
+            }
             setRating(product.rate)
             txtNumberSold.text = Utils.formatSold(product.soldAmount)
+            txtDescription.text = product.description
+        }
+    }
+
+    private fun performSupplier(supplier: SupplierInfo) {
+        binding.apply {
+            loadImage(imgAvatarSupplier, supplier.avatar)
+            txtSupplierRate.text = Utils.format(supplier.rate.toDouble(), digit = 1)
         }
     }
 

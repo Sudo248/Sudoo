@@ -18,7 +18,7 @@ class PaymentRepositoryImpl @Inject constructor(
     private val paymentService: PaymentService,
     private val ioDispatcher: CoroutineDispatcher,
 ) : PaymentRepository {
-    override suspend fun getPaymentUrl(payment: Payment): DataState<Payment, Exception> = stateOn(ioDispatcher) {
+    override suspend fun payWithVnPay(payment: Payment): DataState<Payment, Exception> = stateOn(ioDispatcher) {
         val request = PaymentRequest(
             paymentType = payment.paymentType.value,
             bankCode = payment.bankCode,

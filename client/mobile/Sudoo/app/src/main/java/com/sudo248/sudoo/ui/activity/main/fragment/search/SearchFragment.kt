@@ -1,58 +1,49 @@
 package com.sudo248.sudoo.ui.activity.main.fragment.search
 
-import androidx.appcompat.widget.SearchView
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.sudo248.base_android.base.BaseFragment
 import com.sudo248.base_android.ktx.gone
 import com.sudo248.base_android.ktx.visible
+import com.sudo248.base_android.utils.KeyBoardUtils
+import com.sudo248.sudoo.R
 import com.sudo248.sudoo.databinding.FragmentSearchBinding
-import com.sudo248.sudoo.domain.entity.discovery.ProductInfo
-import com.sudo248.sudoo.ui.activity.main.adapter.ProductInfoAdapter
-import com.sudo248.sudoo.ui.base.LoadMoreRecyclerViewListener
+import com.sudo248.sudoo.ui.ktx.requestFocusAndKeyBoard
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
     override val viewModel: SearchViewModel by viewModels()
-    override val enableStateScreen: Boolean
-        get() = true
-
-    private val productLoadMore = object : LoadMoreRecyclerViewListener {
-        override fun onLoadMore(page: Int, itemCount: Int) {
-
-        }
-    }
-
-    val productInfoAdapter = ProductInfoAdapter(::onProductItemClick, productLoadMore)
+    override val enableStateScreen: Boolean = true
+    private val args: SearchFragmentArgs by navArgs()
 
     override fun initView() {
-        binding.rcvProduct.adapter = productInfoAdapter
-        binding.imgBack.setOnClickListener {
-            back()
-        }
-        binding.search.apply {
-            isIconified = false
-            requestFocusFromTouch()
-        }
+        viewModel.setCategoryId(args.categoryId)
+        binding.rcvProduct.adapter = viewModel.productInfoAdapter
+        binding.imgBack.setOnClickListener { back() }
+        binding.refresh.setOnRefreshListener { viewModel.refresh() }
         setupSearch()
     }
 
     private fun setupSearch() {
-        binding.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                viewModel.search(name = query.orEmpty())
-                return true
-            }
+        if (args.categoryId == null) {
+            binding.tvSearch.requestFocusAndKeyBoard()
+        }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                return true
-            }
+        binding.tvSearch.hint =
+            if (args.categoryName == null) getString(R.string.search) else getString(
+                R.string.search_in,
+                args.categoryName
+            )
+        binding.tvSearch.addTextChangedListener(onTextChanged = { text, _, _, _ ->
+            viewModel.search(name = text.toString())
         })
     }
 
     override fun observer() {
-        viewModel.products.observe(viewLifecycleOwner) {
-            if (it.isEmpty()) {
+        viewModel.isEmptyProduct.observe(viewLifecycleOwner) {
+            if (it) {
                 binding.apply {
                     imgNotFound.visible()
                     rcvProduct.gone()
@@ -60,12 +51,11 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
             } else {
                 binding.rcvProduct.visible()
                 binding.imgNotFound.gone()
-                productInfoAdapter.submitList(it)
             }
         }
-    }
 
-    private fun onProductItemClick(item: ProductInfo) {
-//        navigateTo(SearchFragmentDirections.actionSearchFragmentToProductDetailFragment(item))
+        viewModel.isRefresh.observe(viewLifecycleOwner) {
+            binding.refresh.isRefreshing = it
+        }
     }
 }

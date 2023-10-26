@@ -1,6 +1,5 @@
 package com.sudo248.sudoo.data.di
 
-import android.content.Context
 import com.google.gson.GsonBuilder
 import com.sudo248.base_android.data.api.ApiService
 import com.sudo248.base_android.data.api.api
@@ -8,21 +7,15 @@ import com.sudo248.sudoo.data.api.auth.AuthService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.Dispatchers
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
-import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
-import com.sudo248.sudoo.BuildConfig
 import com.sudo248.sudoo.data.api.cart.CartService
 import com.sudo248.sudoo.data.api.chat.ChatService
 import com.sudo248.sudoo.data.api.discovery.DiscoveryService
 import com.sudo248.sudoo.data.api.image.ImageService
-import com.sudo248.sudoo.data.api.invoice.InvoiceService
+import com.sudo248.sudoo.data.api.order.OrderService
 import com.sudo248.sudoo.data.api.notification.NotificationService
 import com.sudo248.sudoo.data.api.payment.PaymentService
 import com.sudo248.sudoo.data.api.promotion.PromotionService
@@ -80,7 +73,7 @@ object DataModule {
 
     @Singleton
     @Provides
-    fun provideInvoiceService(): InvoiceService = ApiService()
+    fun provideOrderService(): OrderService = ApiService()
 
     @Singleton
     @Provides

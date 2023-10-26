@@ -1,10 +1,10 @@
 package com.sudo248.sudoo.ui.activity.main
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Bundle
-import android.util.Log
+import android.net.Uri
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -14,7 +14,6 @@ import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.setupWithNavController
 import com.sudo248.base_android.base.BaseActivity
 import com.sudo248.base_android.ktx.gone
 import com.sudo248.base_android.ktx.visible
@@ -22,11 +21,12 @@ import com.sudo248.base_android.utils.DialogUtils
 import com.sudo248.sudoo.R
 import com.sudo248.sudoo.databinding.ActivityMainBinding
 import com.sudo248.sudoo.domain.common.Constants
+import com.sudo248.sudoo.ui.ktx.createTempPictureUri
 import com.sudo248.sudoo.ui.ktx.showErrorDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), PickImageController {
+class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), ViewController {
     override val layoutId: Int = R.layout.activity_main
     override val viewModel: MainViewModel by viewModels()
 
@@ -43,6 +43,18 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), PickIma
                 )
             }
         }
+
+    private val takeImage = registerForActivityResult(ActivityResultContracts.TakePicture()) {
+        if (it) {
+            viewModel.getTakeImageUri()
+        } else {
+            viewModel.setImageUri(null)
+            DialogUtils.showErrorDialog(
+                this,
+                "Take image error"
+            )
+        }
+    }
 
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
         if (isGranted) {
@@ -68,7 +80,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), PickIma
 
     override fun initView() {
         requestPermission()
-        viewModel.pickImageController = this
+        viewModel.viewController = this
         val navHost = supportFragmentManager.findFragmentById(R.id.fcvMain) as NavHostFragment
         navController = navHost.navController
         navController.setGraph(R.navigation.main_nav)
@@ -115,7 +127,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), PickIma
 
     override fun observer() {
         super.observer()
-        viewModel.itemInCart.observe(this) {
+        viewModel.countCartItem.observe(this) {
             setBadgeCart(it)
         }
     }
@@ -134,6 +146,14 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), PickIma
 
     override fun pickImage() {
         pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+    }
+
+    override fun takeImage(uri: Uri) {
+        takeImage.launch(uri)
+    }
+
+    override fun createTempPictureUri(): Uri {
+        return (this as Context).createTempPictureUri()
     }
 
     private fun requestPermission() {

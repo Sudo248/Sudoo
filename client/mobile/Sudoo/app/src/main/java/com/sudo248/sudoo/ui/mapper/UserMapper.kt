@@ -13,6 +13,7 @@ import com.sudo248.sudoo.ui.util.Utils
 
 fun Address.toAddressUi(): AddressUiModel {
     return AddressUiModel(
+        addressId,
         provinceID,
         districtID,
         wardCode,
@@ -27,6 +28,7 @@ fun Address.toAddressUi(): AddressUiModel {
 
 fun AddressUiModel.toAddress(location: Location): Address {
     return Address(
+        addressId = addressId,
         provinceID = provinceID,
         districtID = districtID,
         wardCode = wardCode,

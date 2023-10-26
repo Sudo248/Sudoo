@@ -24,6 +24,10 @@ data class Product(
     val startDateDiscount: LocalDateTime,
     val endDateDiscount: LocalDateTime,
     val saleable: Boolean,
+    val weight: Int,
+    val height: Int,
+    val length: Int,
+    val width: Int,
     val supplier: SupplierInfo? = null,
     val categories: List<CategoryInfo>? = null,
 ) :  java.io.Serializable

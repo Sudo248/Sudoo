@@ -7,13 +7,12 @@ import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.Priority
 import com.sudo248.base_android.base.BaseViewModel
-import com.sudo248.base_android.ktx.onError
-import com.sudo248.base_android.ktx.onSuccess
 import com.sudo248.base_android.navigation.IntentDirections
 import com.sudo248.sudoo.domain.common.Constants
 import com.sudo248.sudoo.domain.repository.CartRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.lang.NullPointerException
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -40,17 +39,31 @@ class MainViewModel @Inject constructor(
     private val _imageUri = MutableLiveData<Uri?>()
     val imageUri: LiveData<Uri?> = _imageUri
 
-    private val _itemInCart = MutableLiveData(0)
-    val itemInCart: LiveData<Int> = _itemInCart
+    private var tmpImageUri: Uri? = null
 
-    var pickImageController: PickImageController? = null
+    private val _countCartItem = MutableLiveData(0)
+    val countCartItem: LiveData<Int> = _countCartItem
+
+    var viewController: ViewController? = null
 
     fun setImageUri(uri: Uri?) {
         _imageUri.postValue(uri)
     }
 
     fun pickImage() {
-        pickImageController?.pickImage()
+        viewController?.pickImage()
+    }
+
+    fun takeImage() {
+        viewController?.createTempPictureUri()?.let {
+            tmpImageUri = it
+            viewController?.takeImage(it)
+        } ?: throw NullPointerException("Can't create temp picture uri")
+    }
+
+    fun getTakeImageUri(): Uri? {
+        _imageUri.value = tmpImageUri
+        return tmpImageUri
     }
 
     fun getCurrentLocation() = launch {
@@ -74,13 +87,18 @@ class MainViewModel @Inject constructor(
     }
 
     fun getItemInCart() = launch {
-//        cartRepository.getItemInCart()
+//        cartRepository.getCountCartItem()
 //            .onSuccess {
-//                _itemInCart.postValue(it)
+//                _countCartItem.postValue(it)
 //            }
 //            .onError {
-//                _itemInCart.postValue(0)
+//                _countCartItem.postValue(0)
 //            }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewController = null
     }
 
 }

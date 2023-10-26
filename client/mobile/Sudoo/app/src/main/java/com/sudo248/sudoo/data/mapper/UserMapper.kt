@@ -18,6 +18,7 @@ fun AddressSuggestionDto.toAddressSuggestion(): AddressSuggestion {
 
 fun AddressDto.toAddress(): Address {
     return Address(
+        addressId,
         provinceID,
         districtID,
         wardCode,
@@ -32,6 +33,7 @@ fun AddressDto.toAddress(): Address {
 
 fun Address.toAddressDto(location: Location? = null): AddressDto {
     return AddressDto(
+        addressId,
         provinceID,
         districtID,
         wardCode,
