@@ -57,11 +57,25 @@ class ProductController(
         productService.getProductInfoByCategoryAndName(categoryId, name, offsetRequest)
     }
 
-    @GetMapping("/info")
+    @GetMapping("/recommend")
+    suspend fun getRecommendListProductInfo(
+        @RequestParam("offset", required = false, defaultValue = Constants.DEFAULT_OFFSET) offset: Int,
+        @RequestParam("limit", required = false, defaultValue = Constants.DEFAULT_LIMIT) limit: Int,
+    ): ResponseEntity<BaseResponse<*>> = handle {
+        val offsetRequest = OffsetRequest(offset, limit)
+        productService.getRecommendListProductInfo(offsetRequest)
+    }
+
+    @PostMapping("/list")
     suspend fun getListProductInfoByIds(
+        @RequestParam("orderInfo", required = false, defaultValue = "false") orderInfo: Boolean,
         @RequestBody ids: List<String>,
     ): ResponseEntity<BaseResponse<*>> = handle {
-
+        if (orderInfo) {
+            productService.getListOrderProductInfoByIds(ids)
+        } else {
+            productService.getListProductInfoByIds(ids)
+        }
     }
 
     @GetMapping("/{identify}")

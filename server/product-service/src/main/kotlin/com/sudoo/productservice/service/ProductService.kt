@@ -12,6 +12,8 @@ interface ProductService {
     suspend fun deleteProduct(productId: String): String
 
     suspend fun getListProductInfo(offsetRequest: OffsetRequest): ProductPagination<ProductInfoDto>
+
+    suspend fun getRecommendListProductInfo(offsetRequest: OffsetRequest): ProductPagination<ProductInfoDto>
     suspend fun getListProductInfoByCategory(categoryId: String, offsetRequest: OffsetRequest): ProductPagination<ProductInfoDto>
     suspend fun getListProductInfoBySupplier(supplierId: String, offsetRequest: OffsetRequest): ProductPagination<ProductInfoDto>
     suspend fun getProductDetailById(productId: String): ProductDto
@@ -23,4 +25,6 @@ interface ProductService {
     suspend fun getListProductInfoByIds(ids: List<String>): List<ProductInfoDto>
 
     suspend fun getListOrderProductInfoByIds(ids: List<String>): List<OrderProductInfoDto>
+
+
 }

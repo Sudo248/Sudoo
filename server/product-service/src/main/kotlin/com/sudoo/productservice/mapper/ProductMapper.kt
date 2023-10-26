@@ -5,6 +5,7 @@ import com.sudoo.productservice.dto.*
 import com.sudoo.productservice.ktx.orZero
 import com.sudoo.productservice.model.OrderProductInfo
 import com.sudoo.productservice.model.Product
+import com.sudoo.productservice.model.ProductExtras
 import com.sudoo.productservice.model.ProductInfo
 
 fun UpsertProductDto.toProduct(supplierId: String, brand: String): Product {
@@ -57,7 +58,16 @@ fun UpsertProductDto.combineProduct(product: Product): Product {
     )
 }
 
-fun Product.toProductDto(supplierInfo: SupplierInfoDto): ProductDto {
+fun UpsertProductExtrasDto.combineProductExtra(extras: ProductExtras): ProductExtras {
+    return ProductExtras(
+        productId = extras.productId,
+        enable3DViewer = enable3DViewer ?: extras.enable3DViewer,
+        enableArViewer = enableArViewer ?: extras.enableArViewer,
+        source = source
+    )
+}
+
+fun Product.toProductDto(supplierInfo: SupplierInfoDto, extras: ProductExtrasDto = ProductExtrasDto()): ProductDto {
     return ProductDto(
         productId = productId,
         supplierId = supplierId,
@@ -78,6 +88,7 @@ fun Product.toProductDto(supplierInfo: SupplierInfoDto): ProductDto {
         length = length,
         width = width,
         supplier = supplierInfo,
+        extras = extras,
         categories = categories?.map { it.toCategoryInfoDto() },
         images = images?.map { it.toImageDto() },
     )
@@ -134,5 +145,33 @@ fun OrderProductInfo.toOrderProductDto(): OrderProductInfoDto {
         width = width,
         brand = brand,
         images = images,
+    )
+}
+
+fun UpsertProductExtrasDto?.toProductExtras(productId: String, isNew: Boolean): ProductExtras {
+    return if (this == null) {
+        ProductExtras(
+            productId = productId,
+            enable3DViewer = false,
+            enableArViewer = false,
+            source = null,
+        )
+    } else {
+        ProductExtras(
+            productId = productId,
+            enable3DViewer = enable3DViewer ?: false,
+            enableArViewer = enableArViewer ?: false,
+            source = source,
+        )
+    }.also {
+        it.isNewExtras = isNew
+    }
+}
+
+fun ProductExtras.toProductExtrasDto(): ProductExtrasDto {
+    return ProductExtrasDto(
+        enable3DViewer = enable3DViewer,
+        enableArViewer = enableArViewer,
+        source = source,
     )
 }

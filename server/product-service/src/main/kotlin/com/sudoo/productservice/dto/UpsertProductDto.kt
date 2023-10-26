@@ -19,6 +19,7 @@ data class UpsertProductDto(
     val height: Int? = null,
     val length: Int? = null,
     val width: Int? = null,
+    var extras: UpsertProductExtrasDto? = null,
     val categoryIds: List<String>? = null,
     val images: List<UpsertImageDto>? = null,
 )

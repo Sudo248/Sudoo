@@ -15,7 +15,7 @@ class ExternalServiceConfig {
     @Bean
     @Primary
     @Qualifier("ghn-service")
-    fun userWebClient(): WebClient {
+    fun ghnWebClient(): WebClient {
         return WebClient.builder()
             .baseUrl("https://dev-online-gateway.ghn.vn/shiip/public-api/v2")
             .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
