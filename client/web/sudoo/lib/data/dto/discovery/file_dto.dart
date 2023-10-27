@@ -7,11 +7,11 @@ part 'file_dto.g.dart';
 
 @JsonSerializable()
 class FileDto {
-  final String imageId;
+  final String fileId;
   final String ownerId;
   final String url;
 
-  FileDto(this.imageId, this.ownerId, this.url);
+  FileDto(this.fileId, this.ownerId, this.url);
 
   factory FileDto.fromJson(Map<String, dynamic> json) =>
       _$FileDtoFromJson(json);
@@ -21,12 +21,12 @@ class FileDto {
 
 extension Mapper on FileDto {
   File toFile() {
-    return File(imageId, ownerId, url);
+    return File(fileId, ownerId, url);
   }
 
   UpsertFile toUpsertFIle() {
     return UpsertFile(
-        imageId: imageId,
+        fileId: fileId,
         ownerId: ownerId,
         url: url,
     );
