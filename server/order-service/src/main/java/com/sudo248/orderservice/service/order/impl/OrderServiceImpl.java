@@ -9,7 +9,6 @@ import com.sudo248.orderservice.controller.payment.dto.PaymentInfoDto;
 import com.sudo248.orderservice.external.GHNService;
 import com.sudo248.orderservice.internal.CartService;
 import com.sudo248.orderservice.internal.ProductService;
-import com.sudo248.orderservice.internal.PromotionService;
 import com.sudo248.orderservice.internal.UserService;
 import com.sudo248.orderservice.repository.OrderRepository;
 import com.sudo248.orderservice.repository.OrderSupplierRepository;
@@ -40,20 +39,25 @@ public class OrderServiceImpl implements OrderService {
 
     private final PaymentService paymentService;
 
-    private final PromotionService promotionService;
-
     private final OrderSupplierRepository orderSupplierRepository;
 
     private final GHNService ghnService;
 
     private final ProductService productService;
 
-    public OrderServiceImpl(OrderRepository orderRepository, UserService userService, CartService cartService, PaymentService paymentService, PromotionService promotionService, OrderSupplierRepository orderSupplierRepository, GHNService ghnService, ProductService productService) {
+    public OrderServiceImpl(
+            OrderRepository orderRepository,
+            UserService userService,
+            CartService cartService,
+            PaymentService paymentService,
+            OrderSupplierRepository orderSupplierRepository,
+            GHNService ghnService,
+            ProductService productService
+    ) {
         this.orderRepository = orderRepository;
         this.userService = userService;
         this.cartService = cartService;
         this.paymentService = paymentService;
-        this.promotionService = promotionService;
         this.orderSupplierRepository = orderSupplierRepository;
         this.ghnService = ghnService;
         this.productService = productService;
@@ -188,7 +192,7 @@ public class OrderServiceImpl implements OrderService {
     //Request Detail
     private PromotionDto getPromotionById(String promotionId) throws ApiException {
         if (promotionId == null) return new PromotionDto();
-        var response = promotionService.getPromotionById(promotionId);
+        var response = productService.getPromotionById(promotionId);
         if (response.getStatusCode() != HttpStatus.OK || !response.hasBody())
             throw new ApiException(HttpStatus.NOT_FOUND, "Not found promotion " + promotionId);
         return Objects.requireNonNull(response.getBody()).getData();
@@ -285,7 +289,7 @@ public class OrderServiceImpl implements OrderService {
             orderSupplierBuilder
                     .totalPrice(totalPrice)
                     .shipment(calculateShipment(supplier.getGhnShopId(), calculateFeeRequest, calculateExpectedTimeRequest));
-            
+
             listOrderSupplier.add(orderSupplierBuilder.build());
         }
         return listOrderSupplier;

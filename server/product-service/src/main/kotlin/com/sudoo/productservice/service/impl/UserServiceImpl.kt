@@ -39,7 +39,7 @@ class UserServiceImpl(
 
     override suspend fun getAddressById(addressId: String): AddressDto {
         val response = client.get()
-            .uri("/addresses")
+            .uri("/addresses/$addressId")
             .retrieve()
             .awaitBodyOrNull<BaseResponse<AddressDto>>() ?: throw AddressException()
         return response.data ?: throw AddressException()

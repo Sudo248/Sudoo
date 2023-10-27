@@ -34,7 +34,6 @@ public class User {
 
     private Gender gender;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @PrimaryKeyJoinColumn
-    private Address address;
+    @Column(name = "address_id")
+    private String addressId;
 }

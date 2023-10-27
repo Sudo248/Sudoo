@@ -34,18 +34,20 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
 
     private final OrderRepository orderRepository;
 
-    private final OrderService orderService;
-
     private final CartService cartService;
 
     private final NotificationService notificationService;
 
     private final Locale locale = new Locale("vi", "VN");
 
-    public VnPayServiceImpl(PaymentRepository paymentRepository, OrderRepository orderRepository, OrderService orderService, CartService cartService, NotificationService notificationService) {
+    public VnPayServiceImpl(
+            PaymentRepository paymentRepository,
+            OrderRepository orderRepository,
+            CartService cartService,
+            NotificationService notificationService
+    ) {
         this.paymentRepository = paymentRepository;
         this.orderRepository = orderRepository;
-        this.orderService = orderService;
         this.cartService = cartService;
         this.notificationService = notificationService;
     }

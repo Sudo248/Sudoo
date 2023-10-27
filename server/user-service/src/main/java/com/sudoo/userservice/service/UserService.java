@@ -9,7 +9,7 @@ public interface UserService {
     UserDto getUser(String userId);
     UserInfoDto getUserInfo(String userId) throws ApiException;
     UserDto postUser(UserDto userDto);
-    UserDto putUser(String userId, UserDto userDto);
+    UserDto putUser(String userId, UserDto userDto) throws ApiException;
     UserDto toDto(User user);
     User toEntity(UserDto userDto);
 }

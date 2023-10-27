@@ -4,10 +4,8 @@ import com.sudo248.domain.base.BaseResponse;
 import com.sudo248.domain.common.Constants;
 import com.sudo248.domain.util.Utils;
 import com.sudoo.userservice.controller.dto.AddressDto;
-import com.sudoo.userservice.repository.entitity.Address;
 import com.sudoo.userservice.repository.entitity.Location;
 import com.sudoo.userservice.service.AddressService;
-import feign.Body;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,16 +29,6 @@ public class AddressController {
         });
     }
 
-    @GetMapping
-    public ResponseEntity<BaseResponse<?>> getAddress(
-            @RequestHeader(Constants.HEADER_USER_ID) String userId
-    ) {
-        return Utils.handleException(() -> {
-            AddressDto addressDto = addressService.getAddress(userId);
-            return BaseResponse.ok(addressDto);
-        });
-    }
-
     @GetMapping("/{addressId}")
     public ResponseEntity<BaseResponse<?>> getAddressById(
             @PathVariable("addressId") String addressId
@@ -53,22 +41,21 @@ public class AddressController {
 
     @PutMapping
     public ResponseEntity<BaseResponse<?>> putAddress(
-            @RequestHeader(Constants.HEADER_USER_ID) String userId,
             @RequestBody AddressDto addressDto
     ) {
         return Utils.handleException(()->{
-            AddressDto _addressDto = addressService.putAddress(userId, addressDto);
+            AddressDto _addressDto = addressService.putAddress(addressDto);
             return BaseResponse.ok(_addressDto);
         });
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{addressId}")
     public ResponseEntity<BaseResponse<?>> deleteAddress(
-            @RequestHeader(Constants.HEADER_USER_ID) String userId
+            @PathVariable("addressId") String addressId
     ) {
         return Utils.handleException(()->{
-            addressService.deleteAddress(userId);
-            return BaseResponse.ok("Deleted address of user " + userId);
+            addressService.deleteAddress(addressId);
+            return BaseResponse.ok("Deleted address " + addressId);
         });
     }
 

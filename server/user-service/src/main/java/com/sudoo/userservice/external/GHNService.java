@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(name = "GHN", url = "https://dev-online-gateway.ghn.vn/shiip/public-api/v2")
+@FeignClient(name = "GHN", url = "https://dev-online-gateway.ghn.vn/shiip/public-api")
 @Service
 public interface GHNService {
     @GetMapping(value = "/master-data/province", headers = "token="+ Constants.GHN_TOKEN)

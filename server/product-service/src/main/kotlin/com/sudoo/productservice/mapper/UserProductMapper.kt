@@ -12,9 +12,8 @@ fun UserProductDto.toUserProduct(userId: String): UserProduct {
         productId = productId,
         userId = userId,
         rate = rate,
-        isLike = isLike,
+        isReviewed = isReviewed,
         comment = comment,
-        createAt = createAt ?: LocalDateTime.now(),
     ).also {
         it.isNewUserProduct = userProductId.isNullOrEmpty()
     }
@@ -25,9 +24,10 @@ fun UserProduct.toUserProductDto(userInfo: UserInfoDto? = null): UserProductDto 
         userProductId = userProductId,
         productId = productId,
         rate = rate,
-        isLike = isLike,
+        isReviewed = isReviewed,
         comment = comment,
-        createAt = createAt,
+        updatedAt = updatedAt,
+        createdAt = createdAt,
         userInfo = userInfo,
         images = images?.map { it.url }
     )
