@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.List;
 
-@FeignClient(name = "GHN", url = "https://dev-online-gateway.ghn.vn/shiip/public-api")
+@FeignClient(name = "GHN", url = "https://dev-online-gateway.ghn.vn/shiip/public-api/v2")
 @Service
 public interface GHNService {
     ShipmentType DEFAULT_SHIPMENT_TYPE = ShipmentType.STANDARD;
@@ -23,7 +23,7 @@ public interface GHNService {
             @RequestBody CalculateFeeRequest request
     );
 
-    @PostMapping(value = "/shipping-order/fee", headers = "token=" + Constants.GHN_TOKEN)
+    @PostMapping(value = "/shipping-order/leadtime", headers = "token=" + Constants.GHN_TOKEN)
     GHNResponse<CalculateExpectedTimeDto> calculateExpectedTime(
             @RequestHeader("ShopId") int shopId,
             @RequestBody CalculateExpectedTimeRequest request

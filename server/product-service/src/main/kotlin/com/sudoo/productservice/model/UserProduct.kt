@@ -22,16 +22,19 @@ data class UserProduct(
     @Column("rate")
     val rate: Float,
 
-    @Column("is_like")
-    val isLike: Boolean,
+    @Column("is_reviewed")
+    val isReviewed: Boolean,
 
     @Column("comment")
     val comment: String,
 
-    @Column("create_at")
-    val createAt: LocalDateTime = LocalDateTime.now(),
+    @Column("updated_at")
+    val updatedAt: LocalDateTime = LocalDateTime.now(),
 
-) : Persistable<String> {
+    @Column("created_at")
+    var createdAt: LocalDateTime = LocalDateTime.now(),
+
+    ) : Persistable<String> {
 
     @Transient
     var images: List<Image>? = null

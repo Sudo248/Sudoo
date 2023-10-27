@@ -21,7 +21,6 @@ class ProductController(
     private val productService: ProductService,
     private val imageService: ImageService,
     private val categoryService: CategoryService,
-    private val userProductService: UserProductService
 ) : BaseController() {
 
     @PostMapping
@@ -149,30 +148,6 @@ class ProductController(
             productId = productId
         )
         productService.deleteProductOfCategory(categoryProduct)
-    }
-
-    @PostMapping("/comments")
-    suspend fun upsertComment(
-        @RequestHeader(Constants.HEADER_USER_ID) userId: String,
-        @RequestBody comment: UserProductDto
-    ): ResponseEntity<BaseResponse<*>> = handle {
-        userProductService.upsertComment(userId, comment)
-    }
-
-    @DeleteMapping("/comments/{commentId}")
-    suspend fun deleteComment(
-        @PathVariable("commentId") commentId: String
-    ): ResponseEntity<BaseResponse<*>> = handle {
-        userProductService.deleteComment(commentId)
-    }
-
-    @GetMapping("/{productId}/comments")
-    suspend fun getCommentsByProductId(
-        @PathVariable("productId") productId: String,
-        @RequestParam("offset", required = false, defaultValue = Constants.DEFAULT_OFFSET) offset: Int,
-        @RequestParam("limit", required = false, defaultValue = Constants.DEFAULT_LIMIT) limit: Int,
-    ): ResponseEntity<BaseResponse<*>> = handle {
-        userProductService.getCommentsByProductId(productId, OffsetRequest(offset, limit))
     }
 
     @GetMapping("/search")

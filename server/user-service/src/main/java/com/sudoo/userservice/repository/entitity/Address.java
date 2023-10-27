@@ -41,26 +41,8 @@ public class Address {
     @Embedded
     private Location location;
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "user_id")
-    private User user;
-
     @Transient
     private String fullAddress;
-
-    public Address(String addressId, int provinceID, int districtID, String wardCode, String provinceName, String districtName, String wardName, String address, Location location, User user) {
-        this.addressId = addressId;
-        this.provinceID = provinceID;
-        this.districtID = districtID;
-        this.wardCode = wardCode;
-        this.provinceName = provinceName;
-        this.districtName = districtName;
-        this.wardName = wardName;
-        this.address = address;
-        this.location = location;
-        this.user = user;
-    }
 
     public Address(String addressId, int provinceID, int districtID, String wardCode, String provinceName, String districtName, String wardName, String address, Location location) {
         this.addressId = addressId;
@@ -80,9 +62,9 @@ public class Address {
     private void setFullAddress() {
         StringBuilder builder = new StringBuilder();
         if (!address.isBlank()) builder.append(address);
-        if (!wardCode.isBlank()) {
+        if (!wardName.isBlank()) {
             if (builder.length() > 0) builder.append(", ");
-            builder.append(wardCode);
+            builder.append(wardName);
         }
         if (!districtName.isBlank()) {
             if (builder.length() > 0) builder.append(", ");

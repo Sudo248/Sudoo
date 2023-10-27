@@ -17,6 +17,8 @@ class GHNServiceImpl (
 ) : GHNService {
     override suspend fun createStore(request: CreateStoreRequest): GHNStoreDto {
         val response = client.post()
+            .uri("/shop/register")
+            .header("")
             .bodyValue(request)
             .retrieve()
             .awaitBodyOrNull<GHNResponse<GHNStoreDto>>() ?: throw ApiException(HttpStatus.INTERNAL_SERVER_ERROR, "Create GHN store error")
