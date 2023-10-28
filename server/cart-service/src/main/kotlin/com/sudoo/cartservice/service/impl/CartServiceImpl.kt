@@ -30,14 +30,22 @@ class CartServiceImpl(
             val cart: Cart =
                 if (activeCarts.isNotEmpty()) activeCarts[0] else createCartByStatus(userId, "active").toCart()
 
-            CartDto(
+            val cartProducts = getCartProducts(cart.cartId)
+            val cartDto = CartDto(
                 userId = cart.userId,
                 cartId = cart.cartId,
-                totalPrice = cart.totalPrice,
-                totalAmount = cart.totalAmount,
+                totalPrice = 0.0,
+                totalAmount = 0,
                 status = cart.status,
                 cartProducts = getCartProducts(cart.cartId)
             )
+
+            for (cartProduct in cartProducts) {
+                cartDto.totalAmount += cartProduct.quantity
+                cartDto.totalPrice += (cartProduct.product?.price ?: 0.0f) * (cartProduct.quantity)
+            }
+
+            cartDto
         } catch (e: Exception) {
             e.printStackTrace()
             createNewCart(userId)
@@ -203,7 +211,7 @@ class CartServiceImpl(
 
             if (cartProduct == null) {
                 val newCartProduct = upsertCartProductDto.toCartProduct(activeCart.cartId)
-                activeCart.totalPrice += (newCartProduct.quantity * productInfo.price)
+                activeCart.totalPrice += newCartProduct.quantity * productInfo.price
                 activeCart.totalAmount += newCartProduct.quantity
 
                 joinAll(
@@ -229,7 +237,6 @@ class CartServiceImpl(
                         }
                     )
                 }
-
             }
 
             CartDto(
