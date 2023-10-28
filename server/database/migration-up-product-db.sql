@@ -1,4 +1,5 @@
-USE `product-db`;
+USE
+`product-db`;
 
 DROP TABLE IF EXISTS `suppliers`;
 CREATE TABLE `suppliers`
@@ -92,9 +93,10 @@ CREATE TABLE `users_products`
     `product_id`      CHAR(32) NOT NULL,
     `user_id`         CHAR(32) NOT NULL,
     `rate`            FLOAT4   DEFAULT 0.0,
-    `is_like`         BOOLEAN  DEFAULT FALSE,
+    `is_reviewed`     BOOLEAN  DEFAULT FALSE,
     `comment`         TEXT,
-    `create_at`       DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `updated_at`      DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `created_at`      DATETIME DEFAULT CURRENT_TIMESTAMP,
 
     INDEX             product_id_index (product_id),
 

@@ -46,7 +46,7 @@ class AccountServiceImpl(
         }
         val token = tokenUtils.generateToken(account.userId)
         val refreshToken = tokenUtils.generateRefreshToken(account.userId)
-        return TokenDto(token, refreshToken)
+        return TokenDto(token = token, refreshToken = refreshToken, role = account.role)
     }
 
     override suspend fun signUp(signUpDto: SignUpDto) {

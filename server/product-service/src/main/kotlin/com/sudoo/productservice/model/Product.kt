@@ -56,15 +56,19 @@ data class Product(
     @Column("saleable")
     val saleable: Boolean,
 
+    // gram
     @Column("weight")
     val weight: Int,
 
+    // cm
     @Column("height")
     val height: Int,
 
+    // cm
     @Column("length")
     val length: Int,
 
+    // cm
     @Column("width")
     val width: Int,
 

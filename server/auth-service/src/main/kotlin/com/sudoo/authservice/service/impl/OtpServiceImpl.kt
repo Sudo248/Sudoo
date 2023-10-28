@@ -37,7 +37,7 @@ class OtpServiceImpl(
                 accountRepository.validate(account.userId)
                 val token = tokenUtils.generateToken(account.userId)
                 val refreshToken = tokenUtils.generateRefreshToken(account.userId)
-                TokenDto(token, refreshToken)
+                TokenDto(token = token, refreshToken = refreshToken, role = account.role)
             }
         } else {
             throw BadRequestException("Verify failed")

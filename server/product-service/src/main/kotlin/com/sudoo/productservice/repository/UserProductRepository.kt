@@ -76,7 +76,25 @@ interface UserProductRepository : CoroutineCrudRepository<UserProduct, String> {
 
     suspend fun countByUserId(userId: String): Long
 
-    suspend fun countByProductIdAndReviewed(productId: String, isReviewed: Boolean): Long
+    @Query("""
+        SELECT COUNT(users_products.user_product_id) 
+        FROM users_products 
+        WHERE users_products.product_id = :productId  
+        AND users_products.is_reviewed = :isReviewed
+    """)
+    suspend fun countByProductIdAndReviewed(
+        @Param("productId") productId: String,
+        @Param("isReviewed") isReviewed: Boolean,
+    ): Long
 
-    suspend fun countByUserIdAndReviewed(userId: String, isReviewed: Boolean): Long
+    @Query("""
+        SELECT COUNT(users_products.user_product_id) 
+        FROM users_products 
+        WHERE users_products.user_id = :userId   
+        AND users_products.is_reviewed = :isReviewed
+    """)
+    suspend fun countByUserIdAndReviewed(
+        @Param("userId") userId: String,
+        @Param("isReviewed") isReviewed: Boolean,
+    ): Long
 }

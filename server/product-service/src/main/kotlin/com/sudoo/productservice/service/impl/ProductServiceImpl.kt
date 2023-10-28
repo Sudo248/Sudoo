@@ -4,6 +4,7 @@ import com.sudoo.domain.base.OffsetRequest
 import com.sudoo.domain.base.Pagination
 import com.sudoo.domain.exception.BadRequestException
 import com.sudoo.domain.exception.NotFoundException
+import com.sudoo.domain.utils.Utils
 import com.sudoo.domain.validator.ProductValidator
 import com.sudoo.productservice.dto.*
 import com.sudoo.productservice.mapper.*
@@ -67,11 +68,15 @@ class ProductServiceImpl(
                         categoryProductRepository.save(categoryProduct)
                     }
                 }
-                productDto.images?.map { image ->
+
+                productDto.images?.map { imageDto ->
                     launch {
-                        imageRepository.save(image.toImage(ownerId = product.productId))
+                        val image = imageDto.toImage(ownerId = product.productId)
+                        imageRepository.save(image)
+                        imageDto.imageId = image.imageId
+                        imageDto.ownerId = image.ownerId
                     }
-                }
+                }?.joinAll()
             }
 
             productDto.copy(productId = product.productId, sku = product.sku)
@@ -115,7 +120,7 @@ class ProductServiceImpl(
         ProductPagination(
             products = products.toList().awaitAll(),
             pagination = Pagination(
-                offset = offsetRequest.offset + products.count() + 1,
+                offset = Utils.getNexOffset(offsetRequest.offset + products.count()),
                 total = count.await()
             )
         )
@@ -137,7 +142,7 @@ class ProductServiceImpl(
             ProductPagination(
                 products = products.toList().awaitAll(),
                 pagination = Pagination(
-                    offset = offsetRequest.offset + products.count() + 1,
+                    offset = Utils.getNexOffset(offsetRequest.offset + products.count()),
                     total = count.await()
                 )
             )
@@ -162,7 +167,7 @@ class ProductServiceImpl(
         ProductPagination(
             products = products.toList().awaitAll(),
             pagination = Pagination(
-                offset = offsetRequest.offset + products.count() + 1,
+                offset = Utils.getNexOffset(offsetRequest.offset + products.count()),
                 total = count.await()
             )
         )
@@ -186,7 +191,7 @@ class ProductServiceImpl(
         ProductPagination(
             products = products.toList().awaitAll(),
             pagination = Pagination(
-                offset = offsetRequest.offset + products.count() + 1,
+                offset = Utils.getNexOffset(offsetRequest.offset + products.count()),
                 total = count.await(),
             )
         )
@@ -307,7 +312,7 @@ class ProductServiceImpl(
             ProductPagination(
                 products = products.toList().awaitAll(),
                 pagination = Pagination(
-                    offset = offsetRequest.offset + products.count() + 1,
+                    offset = Utils.getNexOffset(offsetRequest.offset + products.count()),
                     total = count.await()
                 )
             )
@@ -336,7 +341,7 @@ class ProductServiceImpl(
         ProductPagination(
             products = products.toList().awaitAll(),
             pagination = Pagination(
-                offset = offsetRequest.offset + products.count() + 1,
+                offset = Utils.getNexOffset(offsetRequest.offset + products.count()),
                 total = count.await()
             )
         )
