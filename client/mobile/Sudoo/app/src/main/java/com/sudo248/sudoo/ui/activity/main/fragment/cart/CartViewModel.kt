@@ -77,8 +77,8 @@ class CartViewModel @Inject constructor(
         emitState(UiState.LOADING)
         orderRepository.createOrder(_cart.value!!.cartId)
             .onSuccess {
-                Log.i("CART_ID", it.cartId)
-                viewController?.navigateToPayment(it.cartId)
+                Log.i("CART_ID", it)
+                viewController?.navigateToPayment(it)
             }
             .onError {
                 error = SingleEvent(it.message)
