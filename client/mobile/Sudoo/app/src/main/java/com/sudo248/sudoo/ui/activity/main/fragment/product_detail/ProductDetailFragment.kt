@@ -42,6 +42,7 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
     override fun initView() {
         binding.viewModel = viewModel
         viewModel.viewController = this
+        binding.rcvComment.adapter = viewModel.commentAdapter
         viewModel.getProduct(args.productId)
         binding.refreshProductDetail.setOnRefreshListener {
             viewModel.refresh()

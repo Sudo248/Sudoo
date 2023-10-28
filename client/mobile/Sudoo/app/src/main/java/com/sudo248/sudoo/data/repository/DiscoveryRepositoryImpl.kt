@@ -12,18 +12,21 @@ import com.sudo248.sudoo.data.mapper.toCommentList
 import com.sudo248.sudoo.data.mapper.toProduct
 import com.sudo248.sudoo.data.mapper.toProductInfo
 import com.sudo248.sudoo.data.mapper.toProductList
+import com.sudo248.sudoo.data.mapper.toReview
+import com.sudo248.sudoo.data.mapper.toReviewList
 import com.sudo248.sudoo.data.mapper.toSupplier
 import com.sudo248.sudoo.data.mapper.toUpsertCommentDto
 import com.sudo248.sudoo.domain.entity.discovery.Category
-import com.sudo248.sudoo.domain.entity.discovery.Comment
 import com.sudo248.sudoo.domain.entity.discovery.CommentList
 import com.sudo248.sudoo.domain.entity.discovery.Offset
 import com.sudo248.sudoo.domain.entity.discovery.Pagination
 import com.sudo248.sudoo.domain.entity.discovery.Product
 import com.sudo248.sudoo.domain.entity.discovery.ProductInfo
 import com.sudo248.sudoo.domain.entity.discovery.ProductList
+import com.sudo248.sudoo.domain.entity.discovery.Review
+import com.sudo248.sudoo.domain.entity.discovery.ReviewList
 import com.sudo248.sudoo.domain.entity.discovery.Supplier
-import com.sudo248.sudoo.domain.entity.discovery.UpsertComment
+import com.sudo248.sudoo.domain.entity.discovery.UpsertReview
 import com.sudo248.sudoo.domain.repository.DiscoveryRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
@@ -168,15 +171,33 @@ class DiscoveryRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun upsertComment(upsertComment: UpsertComment): DataState<Comment, Exception> =
+    override suspend fun getReviews(
+        isReviewed: Boolean,
+        offset: Offset
+    ): DataState<ReviewList, Exception> = stateOn(ioDispatcher) {
+        val response = handleResponse(
+            discoveryService.getReviews(
+                isReviewed = isReviewed,
+                offset = offset.offset,
+                limit = offset.limit,
+            )
+        )
+        if (response.isSuccess) {
+            response.data().toReviewList()
+        } else {
+            throw response.error().errorBody()
+        }
+    }
+
+    override suspend fun upsertReview(upsertReview: UpsertReview): DataState<Review, Exception> =
         stateOn(ioDispatcher) {
             val response = handleResponse(
-                discoveryService.upsertComment(
-                    upsertComment.toUpsertCommentDto()
+                discoveryService.upsertReview(
+                    upsertReview.toUpsertCommentDto()
                 )
             )
             if (response.isSuccess) {
-                response.data().toComment()
+                response.data().toReview()
             } else {
                 throw response.error().errorBody()
             }

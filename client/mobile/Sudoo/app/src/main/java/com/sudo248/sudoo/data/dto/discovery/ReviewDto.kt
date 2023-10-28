@@ -3,15 +3,14 @@ package com.sudo248.sudoo.data.dto.discovery
 import com.google.gson.annotations.SerializedName
 import java.time.LocalDateTime
 
-data class CommentDto(
+data class ReviewDto(
     @SerializedName("userProductId")
-    val commentId: String,
-    val productId: String,
+    val reviewId: String,
     val rate: Float,
     val isReviewed: Boolean,
     val comment: String,
     val updatedAt: LocalDateTime,
     val createdAt: LocalDateTime,
     val userInfo: UserInfoDto,
-    val images: List<String>? = null,
+    val productInfo: ProductInfoDto,
 )

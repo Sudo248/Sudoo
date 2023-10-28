@@ -331,7 +331,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
-                        android:text="@{viewModel.totalComment == 0 ? @string/not_yet_review : String.format(@string/total_comment, viewModel.totalComment)}"
+                        android:text="@{viewModel.totalComment == 0 ? @string/have_not_yet_review : String.format(@string/total_comment, viewModel.totalComment)}"
                         android:textColor="@color/gray_88"
                         android:textSize="18sp"
                         app:layout_constraintBottom_toBottomOf="@id/txtCommentLabel"

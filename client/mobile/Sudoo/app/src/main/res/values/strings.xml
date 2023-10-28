@@ -94,10 +94,14 @@
     <string name="product_description">Mô tả sản phẩm</string>
     <string name="product_reviews">Đánh giá sản phẩm</string>
     <string name="total_comment">(%s Đánh giá)</string>
-    <string name="not_yet_review">(Chưa có đánh giá)</string>
+    <string name="have_not_yet_review">(Chưa có đánh giá)</string>
     <string name="load_more_comment">Xem thêm %s đánh giá</string>
     <string name="send">Gửi</string>
     <string name="review_product">Đánh giá sản phẩm</string>
+    <string name="my_review">Đánh giá của tôi</string>
+    <string name="not_yet_review">Chưa đánh giá</string>
+    <string name="reviewed">Đã đánh giá</string>
+    <string name="review">Đánh giá</string>
     <string name="product_brand">Thương hiệu: %s</string>
     <string name="product_quality">Chất lượng\nsản phẩm</string>
     <string name="bad">Tệ</string>

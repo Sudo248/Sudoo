@@ -7,13 +7,13 @@
 
         <variable
             name="viewModel"
-            type="com.sudo248.sudoo.ui.activity.main.fragment.comment.CommentViewModel" />
+            type="com.sudo248.sudoo.ui.activity.main.fragment.review.ReviewViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.activity.main.fragment.comment.CommentFragment">
+        tools:context=".ui.activity.main.fragment.review.ReviewFragment">
 
         <ImageView
             android:id="@+id/imgBack"
@@ -44,7 +44,7 @@
             android:id="@+id/txtSendReview"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:onClick="@{(v) -> viewModel.upsertComment()}"
+            android:onClick="@{(v) -> viewModel.upsertReview()}"
             android:padding="10dp"
             android:text="@string/send"
             android:textColor="@color/primaryColor"

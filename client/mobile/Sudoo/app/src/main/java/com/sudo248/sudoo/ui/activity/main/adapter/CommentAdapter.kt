@@ -22,7 +22,7 @@ class CommentAdapter : BaseListAdapter<Comment, CommentAdapter.CommentViewHolder
                 txtNameUser.text = item.userInfo.fullName
                 rating.rating = item.rate
                 txtComment.text = item.comment
-                txtCommentTime.text = Utils.formatDateTime(item.createAt)
+                txtCommentTime.text = Utils.formatDateTime(item.createdAt)
             }
         }
 

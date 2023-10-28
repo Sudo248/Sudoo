@@ -9,9 +9,11 @@ import com.sudo248.sudoo.data.dto.discovery.PaginationDto
 import com.sudo248.sudoo.data.dto.discovery.ProductDto
 import com.sudo248.sudoo.data.dto.discovery.ProductInfoDto
 import com.sudo248.sudoo.data.dto.discovery.ProductListDto
+import com.sudo248.sudoo.data.dto.discovery.ReviewDto
+import com.sudo248.sudoo.data.dto.discovery.ReviewListDto
 import com.sudo248.sudoo.data.dto.discovery.SupplierDto
 import com.sudo248.sudoo.data.dto.discovery.SupplierInfoDto
-import com.sudo248.sudoo.data.dto.discovery.UpsertCommentDto
+import com.sudo248.sudoo.data.dto.discovery.UpsertReviewDto
 import com.sudo248.sudoo.data.dto.discovery.UserInfoDto
 import com.sudo248.sudoo.domain.entity.discovery.Category
 import com.sudo248.sudoo.domain.entity.discovery.CategoryInfo
@@ -22,9 +24,11 @@ import com.sudo248.sudoo.domain.entity.discovery.Pagination
 import com.sudo248.sudoo.domain.entity.discovery.Product
 import com.sudo248.sudoo.domain.entity.discovery.ProductInfo
 import com.sudo248.sudoo.domain.entity.discovery.ProductList
+import com.sudo248.sudoo.domain.entity.discovery.Review
+import com.sudo248.sudoo.domain.entity.discovery.ReviewList
 import com.sudo248.sudoo.domain.entity.discovery.Supplier
 import com.sudo248.sudoo.domain.entity.discovery.SupplierInfo
-import com.sudo248.sudoo.domain.entity.discovery.UpsertComment
+import com.sudo248.sudoo.domain.entity.discovery.UpsertReview
 import com.sudo248.sudoo.domain.entity.discovery.UserInfo
 
 fun ProductDto.toProduct(): Product {
@@ -126,9 +130,10 @@ fun CommentDto.toComment(): Comment {
         commentId = commentId,
         productId = productId,
         rate = rate,
-        isLike = isLike,
+        isReviewed = isReviewed,
         comment = comment,
-        createAt = createAt,
+        updatedAt = updatedAt,
+        createdAt = createdAt,
         userInfo = userInfo.toUserInfo(),
         images = images,
     )
@@ -156,8 +161,31 @@ fun PaginationDto.toPagination(): Pagination {
     )
 }
 
-fun UpsertComment.toUpsertCommentDto(): UpsertCommentDto {
-    return UpsertCommentDto(
-        productId, rate, isLike, comment, images
+fun ReviewListDto.toReviewList(): ReviewList {
+    return ReviewList(
+        reviews = reviews.map { it.toReview() },
+        pagination = pagination.toPagination(),
+    )
+}
+
+fun UpsertReview.toUpsertCommentDto(): UpsertReviewDto {
+    return UpsertReviewDto(
+        reviewId = reviewId,
+        rate = rate,
+        comment = comment,
+        images = images
+    )
+}
+
+fun ReviewDto.toReview(): Review {
+    return Review(
+        reviewId = reviewId,
+        rate = rate,
+        isReviewed = isReviewed,
+        comment = comment,
+        updatedAt = updatedAt,
+        createdAt = createdAt,
+        userInfo = userInfo.toUserInfo(),
+        productInfo = productInfo.toProductInfo()
     )
 }

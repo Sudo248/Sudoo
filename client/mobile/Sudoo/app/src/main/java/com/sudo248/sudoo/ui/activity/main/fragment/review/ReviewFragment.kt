@@ -1,6 +1,5 @@
-package com.sudo248.sudoo.ui.activity.main.fragment.comment
+package com.sudo248.sudoo.ui.activity.main.fragment.review
 
-import android.content.res.ColorStateList
 import android.net.Uri
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -10,11 +9,11 @@ import androidx.navigation.fragment.navArgs
 import com.sudo248.base_android.base.BaseFragment
 import com.sudo248.base_android.ktx.gone
 import com.sudo248.base_android.ktx.visible
-import com.sudo248.base_android.utils.ColorUtils
 import com.sudo248.base_android.utils.DialogUtils
 import com.sudo248.sudoo.R
-import com.sudo248.sudoo.databinding.FragmentCommentBinding
-import com.sudo248.sudoo.domain.entity.discovery.UpsertComment
+import com.sudo248.sudoo.databinding.FragmentReviewBinding
+import com.sudo248.sudoo.domain.entity.discovery.ProductInfo
+import com.sudo248.sudoo.domain.entity.discovery.UpsertReview
 import com.sudo248.sudoo.ui.activity.main.MainViewModel
 import com.sudo248.sudoo.ui.ktx.showErrorDialog
 import com.sudo248.sudoo.ui.models.comment.RatingDescription
@@ -23,13 +22,13 @@ import com.sudo248.sudoo.ui.util.FileUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CommentFragment : BaseFragment<FragmentCommentBinding, CommentViewModel>(), ViewController {
-    override val viewModel: CommentViewModel by viewModels()
+class ReviewFragment : BaseFragment<FragmentReviewBinding, ReviewViewModel>(), ViewController {
+    override val viewModel: ReviewViewModel by viewModels()
     private val mainViewModel: MainViewModel by activityViewModels()
-    private val args: CommentFragmentArgs by navArgs()
+    private val args: ReviewFragmentArgs by navArgs()
     override fun initView() {
         viewModel.setViewController(this)
-        viewModel.getProduct(args.productId)
+        setProduct(args.review.productInfo)
         setupRating()
     }
 
@@ -44,14 +43,6 @@ class CommentFragment : BaseFragment<FragmentCommentBinding, CommentViewModel>()
     }
 
     override fun observer() {
-        viewModel.productInfo.observe(viewLifecycleOwner) {
-            binding.apply {
-                loadImage(imgProduct, it.images.first())
-                txtNameProduct.text = it.name
-                txtProductBrand.text = getString(R.string.product_brand, it.brand)
-            }
-        }
-
         mainViewModel.imageUri.observe(viewLifecycleOwner) {
             if (it != null) {
                 binding.groupImageCommentProduct.visible()
@@ -59,6 +50,14 @@ class CommentFragment : BaseFragment<FragmentCommentBinding, CommentViewModel>()
             } else {
                 binding.groupImageCommentProduct.gone()
             }
+        }
+    }
+
+    private fun setProduct(productInfo: ProductInfo) {
+        binding.apply {
+            loadImage(imgProduct, productInfo.images.first())
+            txtNameProduct.text = productInfo.name
+            txtProductBrand.text = getString(R.string.product_brand, productInfo.brand)
         }
     }
 
@@ -83,11 +82,10 @@ class CommentFragment : BaseFragment<FragmentCommentBinding, CommentViewModel>()
         return FileUtils.getPathFromUri(requireContext(), uri)
     }
 
-    override fun getUpsertComment(): UpsertComment {
-        return UpsertComment(
-            productId = args.productId,
+    override fun getUpsertReview(): UpsertReview {
+        return UpsertReview(
+            reviewId = args.review.reviewId,
             rate = binding.rating.rating,
-            isLike = false,
             comment = binding.txtComment.text.toString()
         )
     }

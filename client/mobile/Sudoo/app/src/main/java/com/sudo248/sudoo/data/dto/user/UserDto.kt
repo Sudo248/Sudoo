@@ -7,7 +7,7 @@ import java.util.Date
 data class UserDto(
     val userId: String,
     val fullName: String,
-    val phone: String,
+    val emailOrPhoneNumber: String,
     val dob: Date,
     val bio: String = "",
     val avatar: String,

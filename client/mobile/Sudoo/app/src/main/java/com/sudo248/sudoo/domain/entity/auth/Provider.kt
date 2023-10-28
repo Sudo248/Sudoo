@@ -11,5 +11,5 @@ enum class Provider(val value: String) {
     AUTH_SERVICE("Auth-service"),
     GOOGLE("Google"),
     FACEBOOK("Facebook"),
-    PHONE("phone"),
+    PHONE("emailOrPhoneNumber"),
 }

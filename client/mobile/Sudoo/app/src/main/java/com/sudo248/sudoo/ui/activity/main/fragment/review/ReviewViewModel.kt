@@ -1,4 +1,4 @@
-package com.sudo248.sudoo.ui.activity.main.fragment.comment
+package com.sudo248.sudoo.ui.activity.main.fragment.review
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +10,6 @@ import com.sudo248.base_android.ktx.bindUiState
 import com.sudo248.base_android.ktx.onError
 import com.sudo248.base_android.ktx.onSuccess
 import com.sudo248.sudoo.domain.entity.discovery.ProductInfo
-import com.sudo248.sudoo.domain.entity.discovery.UpsertComment
 import com.sudo248.sudoo.domain.repository.DiscoveryRepository
 import com.sudo248.sudoo.domain.repository.ImageRepository
 import com.sudo248.sudoo.ui.activity.main.MainViewModel
@@ -19,7 +18,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CommentViewModel @Inject constructor(
+class ReviewViewModel @Inject constructor(
     private val discoveryRepository: DiscoveryRepository,
     private val imageRepository: ImageRepository
 ) : BaseViewModel<NavDirections>() {
@@ -28,28 +27,14 @@ class CommentViewModel @Inject constructor(
 
     private lateinit var parentViewModel: MainViewModel
 
-    private val _productInfo = MutableLiveData<ProductInfo>()
-    val productInfo: LiveData<ProductInfo> = _productInfo
-
     var error: SingleEvent<String?> = SingleEvent(null)
 
     fun setViewController(viewController: ViewController) {
         this.viewController = viewController
     }
 
-    fun getProduct(productId: String) = launch {
-        emitState(UiState.LOADING)
-        discoveryRepository.getProductInfo(productId)
-            .onSuccess {
-                _productInfo.value = it
-            }
-            .onError {
-                error = SingleEvent(it.message)
-            }.bindUiState(_uiState)
-    }
-
-    fun upsertComment() = launch {
-        viewController?.getUpsertComment()?.let { upsertComment ->
+    fun upsertReview() = launch {
+        viewController?.getUpsertReview()?.let { upsertComment ->
             emitState(UiState.LOADING)
             parentViewModel.imageUri.value?.let {
                 viewController?.run {
@@ -58,7 +43,7 @@ class CommentViewModel @Inject constructor(
                 }
             }
 
-            discoveryRepository.upsertComment(upsertComment)
+            discoveryRepository.upsertReview(upsertComment)
                 .onSuccess {
                     parentViewModel.setImageUri(null)
                     navigator.back()

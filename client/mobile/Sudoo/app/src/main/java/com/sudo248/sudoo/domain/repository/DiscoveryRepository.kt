@@ -1,15 +1,17 @@
 package com.sudo248.sudoo.domain.repository
 
+import android.provider.ContactsContract.Data
 import com.sudo248.base_android.core.DataState
 import com.sudo248.sudoo.domain.entity.discovery.Category
-import com.sudo248.sudoo.domain.entity.discovery.Comment
 import com.sudo248.sudoo.domain.entity.discovery.CommentList
 import com.sudo248.sudoo.domain.entity.discovery.Offset
 import com.sudo248.sudoo.domain.entity.discovery.Product
 import com.sudo248.sudoo.domain.entity.discovery.ProductInfo
 import com.sudo248.sudoo.domain.entity.discovery.ProductList
+import com.sudo248.sudoo.domain.entity.discovery.Review
+import com.sudo248.sudoo.domain.entity.discovery.ReviewList
 import com.sudo248.sudoo.domain.entity.discovery.Supplier
-import com.sudo248.sudoo.domain.entity.discovery.UpsertComment
+import com.sudo248.sudoo.domain.entity.discovery.UpsertReview
 
 interface DiscoveryRepository {
     suspend fun getCategories(): DataState<List<Category>, Exception>
@@ -42,7 +44,12 @@ interface DiscoveryRepository {
         offset: Offset
     ): DataState<CommentList, Exception>
 
-    suspend fun upsertComment(upsertComment: UpsertComment): DataState<Comment, Exception>
+    suspend fun getReviews(
+        isReviewed: Boolean,
+        offset: Offset
+    ): DataState<ReviewList, Exception>
+
+    suspend fun upsertReview(upsertReview: UpsertReview): DataState<Review, Exception>
 
     suspend fun deleteComment(commentId: String): DataState<Unit, Exception>
 }

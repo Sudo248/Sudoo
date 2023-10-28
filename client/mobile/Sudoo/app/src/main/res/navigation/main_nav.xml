@@ -38,7 +38,7 @@
             app:destination="@id/discoveryFragment" />
         <action
             android:id="@+id/action_productDetailFragment_to_commentFragment"
-            app:destination="@id/commentFragment" />
+            app:destination="@id/reviewFragment" />
     </fragment>
     <fragment
         android:id="@+id/userFragment"
@@ -100,13 +100,12 @@
             app:nullable="false" />
     </fragment>
     <fragment
-        android:id="@+id/commentFragment"
-        android:name="com.sudo248.sudoo.ui.activity.main.fragment.comment.CommentFragment"
+        android:id="@+id/reviewFragment"
+        android:name="com.sudo248.sudoo.ui.activity.main.fragment.review.ReviewFragment"
         android:label="fragment_comment"
-        tools:layout="@layout/fragment_comment" >
+        tools:layout="@layout/fragment_review" >
         <argument
-            android:name="productId"
-            app:argType="string"
-            app:nullable="false" />
+            android:name="review"
+            app:argType="com.sudo248.sudoo.domain.entity.discovery.Review"/>
     </fragment>
 </navigation>
