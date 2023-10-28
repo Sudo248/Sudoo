@@ -23,7 +23,7 @@ fun Supplier.toSupplierDto(totalProducts: Int, address: AddressDto): SupplierDto
 fun Supplier.toSupplierInfoDto(address: AddressDto): SupplierInfoDto {
     return SupplierInfoDto(
         supplierId = supplierId,
-        userId = userId,
+//        userId = userId,
         ghnShopId = ghnShopId,
         name = name,
         avatar = avatar,

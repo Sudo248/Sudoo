@@ -3,14 +3,19 @@ package com.sudoo.productservice.service.impl
 import com.sudoo.domain.base.OffsetRequest
 import com.sudoo.domain.base.Pagination
 import com.sudoo.domain.exception.BadRequestException
-import com.sudoo.productservice.dto.CommentPagination
-import com.sudoo.productservice.dto.UserProductDto
+import com.sudoo.domain.exception.NotFoundException
+import com.sudoo.domain.utils.Utils
+import com.sudoo.productservice.dto.*
+import com.sudoo.productservice.mapper.combine
+import com.sudoo.productservice.mapper.toReviewDto
 import com.sudoo.productservice.mapper.toUserProduct
 import com.sudoo.productservice.mapper.toUserProductDto
 import com.sudoo.productservice.model.Image
 import com.sudoo.productservice.repository.ImageRepository
+import com.sudoo.productservice.repository.ProductRepository
 import com.sudoo.productservice.repository.UserProductRepository
 import com.sudoo.productservice.service.CoreService
+import com.sudoo.productservice.service.ProductService
 import com.sudoo.productservice.service.UserProductService
 import com.sudoo.productservice.service.UserService
 import kotlinx.coroutines.async
@@ -26,30 +31,39 @@ class UserProductServiceImpl(
     private val coreService: CoreService,
     private val userProductRepository: UserProductRepository,
     private val imageRepository: ImageRepository,
+    private val productService: ProductService,
     private val userService: UserService,
 ) : UserProductService {
-    override suspend fun upsertComment(userId: String, userProductDto: UserProductDto): UserProductDto =
+    override suspend fun postUserProduct(
+        userId: String,
+        upsertUserProductDto: UpsertUserProductDto
+    ): UpsertUserProductDto {
+        if (upsertUserProductDto.productId.isNullOrEmpty()) throw BadRequestException("Required product id")
+        val upsertUserProduct = upsertUserProductDto.toUserProduct(userId, isReviewed = false)
+        userProductRepository.save(upsertUserProduct)
+        return upsertUserProductDto
+    }
+
+    override suspend fun upsertReview(userId: String, upsertUserProductDto: UpsertUserProductDto): UserProductDto =
         coroutineScope {
-            val userProduct = userProductDto.toUserProduct(userId)
-            userProductRepository.save(userProduct)
-            if (userProduct.isNew) {
-                coreService.upsertComment(userProduct)
-                userProduct.images = userProductDto.images?.map {
-                    async {
-                        imageRepository.save(Image.from(userProduct.userProductId, it))
-                    }
-                }?.awaitAll()
-            } else {
-                userProductRepository.findById(userProduct.userProductId)?.let {
-                    userProduct.createdAt = it.createdAt
+            if (upsertUserProductDto.userProductId == null) throw BadRequestException("Required review id")
+            val userProduct = userProductRepository.findById(upsertUserProductDto.userProductId)
+                ?: throw BadRequestException("Not found review ${upsertUserProductDto.userProductId}")
+            val updateUserProduct = upsertUserProductDto.combine(userProduct)
+
+            coreService.upsertComment(updateUserProduct)
+            updateUserProduct.images = upsertUserProductDto.images?.map {
+                async {
+                    imageRepository.save(Image.from(updateUserProduct.userProductId, it))
                 }
-            }
-            userProductRepository.save(userProduct)
-            userProduct.toUserProductDto(userInfo = userService.getUserInfo(userId))
+            }?.awaitAll()
+            userProductRepository.save(updateUserProduct)
+            updateUserProduct.toUserProductDto(userInfo = userService.getUserInfo(userId))
         }
 
     override suspend fun deleteComment(userProductId: String): String = coroutineScope {
-        userProductRepository.findById(userProductId) ?: throw BadRequestException("Not found comment or review $userProductId")
+        userProductRepository.findById(userProductId)
+            ?: throw BadRequestException("Not found comment or review $userProductId")
         userProductRepository.deleteById(userProductId)
         userProductId
     }
@@ -67,7 +81,7 @@ class UserProductServiceImpl(
         CommentPagination(
             comments = comments.toList(),
             pagination = Pagination(
-                offset = offsetRequest.offset + comments.count() + 1,
+                offset = Utils.getNexOffset(offsetRequest.offset + comments.count()),
                 total = totalCount.await(),
             )
         )
@@ -90,30 +104,30 @@ class UserProductServiceImpl(
         CommentPagination(
             comments = comments.toList(),
             pagination = Pagination(
-                offset = offsetRequest.offset + comments.count() + 1,
+                offset = Utils.getNexOffset(offsetRequest.offset + comments.count()),
                 total = totalCount.await(),
             )
         )
     }
 
-    override suspend fun getCommentsByUserId(
+    override suspend fun getReviewsByUserId(
         userId: String,
         offsetRequest: OffsetRequest
-    ): CommentPagination<UserProductDto> = coroutineScope {
+    ): ReviewPagination<ReviewDto> = coroutineScope {
         val totalCount = async { userProductRepository.countByUserId(userId) }
-        val comments = userProductRepository.getAllByUserIdWithOffset(
+        val reviews = userProductRepository.getAllByUserIdWithOffset(
             userId = userId,
             offset = offsetRequest.offset,
             limit = offsetRequest.limit
         ).map { userProduct ->
             val userInfo = async { userService.getUserInfo(userProduct.userId) }
-            userProduct.images = imageRepository.getAllByOwnerId(userProduct.userProductId).toList()
-            userProduct.toUserProductDto(userInfo = userInfo.await())
+            val productInfo = async { productService.getProductInfoById(userProduct.productId) }
+            userProduct.toReviewDto(productInfo = productInfo.await(), userInfo = userInfo.await())
         }
-        CommentPagination(
-            comments = comments.toList(),
+        ReviewPagination(
+            reviews = reviews.toList(),
             pagination = Pagination(
-                offset = offsetRequest.offset + comments.count() + 1,
+                offset = Utils.getNexOffset(offsetRequest.offset + reviews.count()),
                 total = totalCount.await(),
             )
         )
@@ -138,32 +152,32 @@ class UserProductServiceImpl(
         CommentPagination(
             comments = comments.toList(),
             pagination = Pagination(
-                offset = offsetRequest.offset + comments.count() + 1,
+                offset = Utils.getNexOffset(offsetRequest.offset + comments.count()),
                 total = totalCount.await(),
             )
         )
     }
 
-    override suspend fun getCommentsByUserIdAndReviewed(
+    override suspend fun getReviewsByUserIdAndReviewed(
         userId: String,
         isReviewed: Boolean,
         offsetRequest: OffsetRequest
-    ): CommentPagination<UserProductDto> = coroutineScope {
+    ): ReviewPagination<ReviewDto> = coroutineScope {
         val totalCount = async { userProductRepository.countByUserIdAndReviewed(userId, isReviewed) }
-        val comments = userProductRepository.getByUserIdAndReviewedWithOffset(
+        val reviews = userProductRepository.getByUserIdAndReviewedWithOffset(
             userId = userId,
             isReviewed = isReviewed,
             offset = offsetRequest.offset,
             limit = offsetRequest.limit
         ).map { userProduct ->
             val userInfo = async { userService.getUserInfo(userProduct.userId) }
-            userProduct.images = imageRepository.getAllByOwnerId(userProduct.userProductId).toList()
-            userProduct.toUserProductDto(userInfo = userInfo.await())
+            val productInfo = async { productService.getProductInfoById(userProduct.productId) }
+            userProduct.toReviewDto(productInfo = productInfo.await(), userInfo = userInfo.await())
         }
-        CommentPagination(
-            comments = comments.toList(),
+        ReviewPagination(
+            reviews = reviews.toList(),
             pagination = Pagination(
-                offset = offsetRequest.offset + comments.count() + 1,
+                offset = Utils.getNexOffset(offsetRequest.offset + reviews.count()),
                 total = totalCount.await(),
             )
         )

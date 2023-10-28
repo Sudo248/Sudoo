@@ -33,7 +33,7 @@ class CoreServiceImpl(
         scope.launch {
             while (true) {
                 val comment = channel.receive()
-                Logger.info("Receive comment with rate ${comment.rate} at ${comment.createAt}")
+                Logger.info("Receive comment with rate ${comment.rate} at ${comment.updatedAt}")
                 val product = productRepository.findById(comment.productId)
                     ?: throw Exception("Not found product ${comment.productId}")
                 val currentProductRate = product.rate

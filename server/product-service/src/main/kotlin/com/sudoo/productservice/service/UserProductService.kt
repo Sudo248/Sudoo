@@ -1,11 +1,13 @@
 package com.sudoo.productservice.service
 
 import com.sudoo.domain.base.OffsetRequest
-import com.sudoo.productservice.dto.CommentPagination
-import com.sudoo.productservice.dto.UserProductDto
+import com.sudoo.productservice.dto.*
 
 interface UserProductService {
-    suspend fun upsertComment(userId: String, userProductDto: UserProductDto): UserProductDto
+
+    suspend fun postUserProduct(userId: String, upsertUserProductDto: UpsertUserProductDto): UpsertUserProductDto
+
+    suspend fun upsertReview(userId: String, upsertUserProductDto: UpsertUserProductDto): UserProductDto
 
     suspend fun deleteComment(userProductId: String): String
 
@@ -16,10 +18,10 @@ interface UserProductService {
         offsetRequest: OffsetRequest
     ): CommentPagination<UserProductDto>
 
-    suspend fun getCommentsByUserId(
+    suspend fun getReviewsByUserId(
         userId: String,
         offsetRequest: OffsetRequest
-    ): CommentPagination<UserProductDto>
+    ): ReviewPagination<ReviewDto>
 
     suspend fun getCommentsByProductIdAndReviewed(
         productId: String,
@@ -27,9 +29,9 @@ interface UserProductService {
         offsetRequest: OffsetRequest
     ): CommentPagination<UserProductDto>
 
-    suspend fun getCommentsByUserIdAndReviewed(
+    suspend fun getReviewsByUserIdAndReviewed(
         userId: String,
         isReviewed: Boolean,
         offsetRequest: OffsetRequest
-    ): CommentPagination<UserProductDto>
+    ): ReviewPagination<ReviewDto>
 }

@@ -47,7 +47,7 @@ class ProductController(
 
     @GetMapping
     suspend fun getListProductInfo(
-        @RequestParam("categoryId", required = false, defaultValue = "null") categoryId: String?,
+        @RequestParam("categoryId", required = false, defaultValue = "") categoryId: String?,
         @RequestParam("name", required = false, defaultValue = "") name: String,
         @RequestParam("offset", required = false, defaultValue = Constants.DEFAULT_OFFSET) offset: Int,
         @RequestParam("limit", required = false, defaultValue = Constants.DEFAULT_LIMIT) limit: Int,

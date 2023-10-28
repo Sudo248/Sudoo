@@ -4,9 +4,8 @@ import com.sudoo.domain.base.BaseController
 import com.sudoo.domain.base.BaseResponse
 import com.sudoo.domain.base.OffsetRequest
 import com.sudoo.domain.common.Constants
-import com.sudoo.productservice.dto.UserProductDto
+import com.sudoo.productservice.dto.UpsertUserProductDto
 import com.sudoo.productservice.service.UserProductService
-import io.lettuce.core.BitFieldArgs.Offset
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -15,20 +14,23 @@ import org.springframework.web.bind.annotation.*
 class CommentController(
     private val userProductService: UserProductService,
 ) : BaseController() {
-    @PostMapping("/comments")
-    suspend fun upsertComment(
+
+    // only order service call this api whenever user payment success for product
+    @PostMapping("/internal/user-product")
+    suspend fun postUserProduct(
         @RequestHeader(Constants.HEADER_USER_ID) userId: String,
-        @RequestBody comment: UserProductDto
+        @RequestBody upsertUserProductDto: UpsertUserProductDto
     ): ResponseEntity<BaseResponse<*>> = handle {
-        userProductService.upsertComment(userId, comment)
+        userProductService.postUserProduct(userId, upsertUserProductDto)
     }
 
+    // user call this api whenever review product
     @PostMapping("/reviews")
     suspend fun upsertReviewed(
         @RequestHeader(Constants.HEADER_USER_ID) userId: String,
-        @RequestBody comment: UserProductDto
+        @RequestBody upsertUserProductDto: UpsertUserProductDto
     ): ResponseEntity<BaseResponse<*>> = handle {
-        userProductService.upsertComment(userId, comment)
+        userProductService.upsertReview(userId, upsertUserProductDto)
     }
 
     @DeleteMapping("comments/{commentId}")
@@ -47,7 +49,7 @@ class CommentController(
 
     @GetMapping("/comments")
     suspend fun getComments(
-        @RequestParam("productId") productId: String?,
+        @RequestParam("productId", required = false) productId: String?,
         @RequestParam("isReviewed", required = false) isReViewed: Boolean?,
         @RequestParam("offset", required = false, defaultValue = Constants.DEFAULT_OFFSET) offset: Int,
         @RequestParam("limit", required = false, defaultValue = Constants.DEFAULT_LIMIT) limit: Int,
@@ -69,7 +71,7 @@ class CommentController(
     ): ResponseEntity<BaseResponse<*>> = handle {
         val offsetRequest = OffsetRequest(offset, limit)
         isReViewed?.let {
-            userProductService.getCommentsByUserIdAndReviewed(userId, it,  offsetRequest)
-        } ?: userProductService.getCommentsByUserId(userId, offsetRequest)
+            userProductService.getReviewsByUserIdAndReviewed(userId, it,  offsetRequest)
+        } ?: userProductService.getReviewsByUserId(userId, offsetRequest)
     }
 }
