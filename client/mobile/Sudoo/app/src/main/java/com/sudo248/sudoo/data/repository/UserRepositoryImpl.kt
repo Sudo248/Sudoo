@@ -30,7 +30,7 @@ class UserRepositoryImpl @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher,
 ) : UserRepository {
     override suspend fun getUserInfo(): DataState<User, Exception> = stateOn(ioDispatcher) {
-        val response = handleResponse(userService.getUserInfo())
+        val response = handleResponse(userService.getUser())
         response.data().toUser()
     }
 

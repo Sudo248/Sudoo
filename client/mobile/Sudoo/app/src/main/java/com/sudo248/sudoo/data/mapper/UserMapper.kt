@@ -18,6 +18,7 @@ fun AddressSuggestionDto.toAddressSuggestion(): AddressSuggestion {
 
 fun AddressDto.toAddress(): Address {
     return Address(
+        addressId,
         provinceID,
         districtID,
         wardCode,
@@ -32,6 +33,7 @@ fun AddressDto.toAddress(): Address {
 
 fun Address.toAddressDto(location: Location? = null): AddressDto {
     return AddressDto(
+        addressId,
         provinceID,
         districtID,
         wardCode,
@@ -51,7 +53,7 @@ fun UserDto.toUser(): User {
         cover = cover,
         fullName = fullName,
         gender = gender,
-        phone = phone,
+        phone = emailOrPhoneNumber,
         address = address.toAddress(),
         dob = dob
     )
@@ -64,7 +66,7 @@ fun User.toUserDto(location: Location? = null): UserDto {
         cover = cover,
         fullName = fullName,
         gender = gender,
-        phone = phone,
+        emailOrPhoneNumber = phone,
         address = address.toAddressDto(location),
         dob = dob,
         bio = ""

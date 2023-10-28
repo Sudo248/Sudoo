@@ -19,21 +19,21 @@ import retrofit2.http.Path
 @EnableAuthentication(Constants.Key.TOKEN)
 @LoggingLever(level = Level.BODY)
 interface UserService {
-    @GET("user/")
-    suspend fun getUserInfo(): Response<BaseResponse<UserDto>>
+    @GET("users/")
+    suspend fun getUser(): Response<BaseResponse<UserDto>>
 
-    @PUT("user/")
+    @PUT("users/")
     suspend fun updateUser(@Body userDto: UserDto): Response<BaseResponse<UserDto>>
 
-    @GET("user/address/suggestion/province")
+    @GET("addresses/suggestion/province")
     suspend fun getAddressSuggestionProvince(): Response<BaseResponse<List<AddressSuggestionDto>>>
 
-    @GET("user/address/suggestion/district/{provinceId}")
+    @GET("addresses/suggestion/district/{provinceId}")
     suspend fun getAddressSuggestionDistrict(
         @Path("provinceId") provinceId: Int
     ): Response<BaseResponse<List<AddressSuggestionDto>>>
 
-    @GET("user/address/suggestion/ward/{districtId}")
+    @GET("addresses/suggestion/ward/{districtId}")
     suspend fun getAddressSuggestionWard(
         @Path("districtId") districtId: Int
     ): Response<BaseResponse<List<AddressSuggestionDto>>>

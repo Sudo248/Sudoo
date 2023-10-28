@@ -4,6 +4,7 @@ import androidx.databinding.ObservableField
 import com.sudo248.sudoo.domain.entity.user.Location
 
 data class AddressUiModel(
+    val addressId: String = "",
     var provinceID: Int = 0,
     var districtID: Int = 0,
     var wardCode: String = "",

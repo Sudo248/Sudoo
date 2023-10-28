@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 abstract class LoadMoreRecyclerViewScrollListener(
     private val layoutManager: RecyclerView.LayoutManager,
     private var thresholdInvisibleItem: Int = 0
-) : RecyclerView.OnScrollListener(), LoadMoreRecyclerViewListener {
+) : RecyclerView.OnScrollListener(), LoadMoreListener {
 
     init {
         thresholdInvisibleItem = when (layoutManager) {
@@ -44,7 +44,7 @@ abstract class LoadMoreRecyclerViewScrollListener(
         if (!isLastPage && !isLoading && getLastVisibleItemPosition() + thresholdInvisibleItem >= currentTotalItemCount) {
             currentPage++
             isLoading = true
-            onLoadMore(currentPage, currentTotalItemCount)
+            onLoadMore()
         }
     }
 
@@ -53,15 +53,12 @@ abstract class LoadMoreRecyclerViewScrollListener(
             is GridLayoutManager -> {
                 layoutManager.findLastVisibleItemPosition()
             }
-
             is LinearLayoutManager -> {
                 layoutManager.findLastVisibleItemPosition()
             }
-
             is StaggeredGridLayoutManager -> {
                 layoutManager.findLastVisibleItemPositions(null).max()
             }
-
             else -> {
                 0
             }

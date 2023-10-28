@@ -6,7 +6,7 @@ import com.sudo248.sudoo.databinding.ItemProductBinding
 import com.sudo248.sudoo.domain.entity.discovery.ProductInfo
 import com.sudo248.sudoo.ui.base.BasePageListAdapter
 import com.sudo248.sudoo.ui.base.BasePageViewHolder
-import com.sudo248.sudoo.ui.base.LoadMoreRecyclerViewListener
+import com.sudo248.sudoo.ui.base.LoadMoreListener
 import com.sudo248.sudoo.ui.uimodel.adapter.loadImage
 import com.sudo248.sudoo.ui.util.Utils
 
@@ -19,12 +19,12 @@ import com.sudo248.sudoo.ui.util.Utils
  */
 class ProductInfoAdapter(
     private val onItemClick: (ProductInfo) -> Unit,
-    onLoadMore: LoadMoreRecyclerViewListener
+    onLoadMore: LoadMoreListener? = null,
 ) : BasePageListAdapter<ProductInfo, ProductInfoAdapter.ProductInfoViewHolder>() {
     override val enableLoadMore: Boolean = true
 
     init {
-        setLoadMoreListener(onLoadMore)
+        onLoadMore?.let { setLoadMoreListener(it) }
     }
     override fun getViewHolder(
         layoutInflater: LayoutInflater,

@@ -1,5 +1,6 @@
 package com.sudo248.sudoo.data.dto.discovery
 
+import com.sudo248.sudoo.data.dto.user.AddressDto
 import java.time.LocalDateTime
 
 data class SupplierDto(
@@ -7,10 +8,9 @@ data class SupplierDto(
     val name: String,
     val avatar: String,
     val brand: String,
-    val location: LocationDto,
     val contactUrl: String,
-    val locationName: String,
     val totalProducts: Int,
     val rate: Float,
     val createAt: LocalDateTime,
+    val address: AddressDto,
 )

@@ -6,6 +6,8 @@ import com.sudo248.sudoo.domain.entity.user.Gender
 import com.sudo248.sudoo.domain.ktx.format
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.Locale
 
@@ -13,6 +15,7 @@ import java.util.Locale
 object Utils {
     private val locale = Locale("vi", "VN")
     private const val dateFormat = "dd/MM/yyyy"
+    private val dateTimeFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:MM")
 
     fun format(value: Double, digit: Int = 2): String {
         return value.format(digit)
@@ -20,6 +23,10 @@ object Utils {
 
     fun formatVnCurrency(value: Double): String {
         return NumberFormat.getCurrencyInstance(locale).format(value)
+    }
+
+    fun formatDiscountPercent(value: Int): String {
+        return "-$value%"
     }
 
     fun formatDistance(distance: Double, unit: String): String {
@@ -72,8 +79,16 @@ object Utils {
         return DateUtils.format(date.time, dateFormat, locale)
     }
 
+    fun formatDateTime(value: LocalDateTime): String {
+        return value.format(dateTimeFormat)
+    }
+
     fun parseDob(date: String): Date {
         if (date.isEmpty()) return Date()
         return DateUtils.parse(date, dateFormat) ?: Date()
+    }
+
+    fun formatReceivedDate(time: Long): String {
+        return DateUtils.format(time, dateFormat, locale)
     }
 }

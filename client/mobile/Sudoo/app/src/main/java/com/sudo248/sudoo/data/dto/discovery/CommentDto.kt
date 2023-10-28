@@ -8,9 +8,10 @@ data class CommentDto(
     val commentId: String,
     val productId: String,
     val rate: Float,
-    val isLike: Boolean,
+    val isReviewed: Boolean,
     val comment: String,
-    val createAt: LocalDateTime,
+    val updatedAt: LocalDateTime,
+    val createdAt: LocalDateTime,
     val userInfo: UserInfoDto,
     val images: List<String>? = null,
 )

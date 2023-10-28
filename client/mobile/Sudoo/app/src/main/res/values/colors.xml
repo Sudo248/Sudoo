@@ -18,6 +18,8 @@
     <color name="yellow_dark_20">#FFC107</color>
     <color name="light_green">#00F1A9</color>
     <color name="green">#20F100</color>
+    <color name="color_shipment_stroke">#00836C</color>
+    <color name="color_shipment">#80D1FBF4</color>
     <color name="background">#EAEAF5</color>
     <color name="black_47">#474646</color>
     <color name="purple_B4">#B4B5E5</color>
@@ -26,5 +28,7 @@
     <color name="transparent">#00FFFFFF</color>
     <color name="white_F7">#F7F7F7</color>
     <color name="white_B3">#B3F7F7F7</color>
+    <color name="gray_B3">#B3DFDFDF</color>
     <color name="bg_search">#26333333</color>
+    <color name="bg_search_2">#4DBFBFBF</color>
 </resources>

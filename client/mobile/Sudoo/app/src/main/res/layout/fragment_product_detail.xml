@@ -6,6 +6,7 @@
     <data>
 
         <import type="com.sudo248.sudoo.ui.util.Utils" />
+        <import type="android.view.View" />
 
         <variable
             name="viewModel"
@@ -16,204 +17,359 @@
         android:id="@+id/refreshProductDetail"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/background">
+            android:background="@color/white">
+
+            <LinearLayout
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/btnBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{(v) -> viewModel.onBack()}"
+                    android:padding="15dp"
+                    android:src="@drawable/ic_back"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{(v) -> viewModel.navigateToHome()}"
+                    android:padding="15dp"
+                    android:src="@drawable/ic_home" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{(v) -> viewModel.navigateToCart()}"
+                    android:padding="15dp"
+                    android:src="@drawable/ic_shopping_cart" />
+            </LinearLayout>
 
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/contentDetail"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:clipToPadding="true"
                 app:layout_constraintBottom_toTopOf="@+id/bottomDetail"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:fillViewport="true"
+                app:layout_constraintTop_toBottomOf="@id/header">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/cardHeader"
+                    <ImageView
+                        android:id="@+id/imgProductDetail"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_marginTop="-25dp"
-                        app:cardCornerRadius="25dp"
-                        app:layout_constraintDimensionRatio="H,3:2.8"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintDimensionRatio="H,3:2"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        tools:src="@drawable/zing_burger" />
+
+                    <TextView
+                        android:id="@+id/txtPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginTop="15dp"
+                        android:maxLines="2"
+                        android:textColor="@color/black"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toBottomOf="@id/imgProductDetail"
+                        tools:text="100.000d" />
+
+                    <TextView
+                        android:id="@+id/txtListedPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/gray_88"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toStartOf="@id/txtPrice"
+                        app:layout_constraintTop_toBottomOf="@id/txtPrice"
+                        tools:text="200.000d" />
+
+                    <TextView
+                        android:id="@+id/txtDiscountPercent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:textColor="@color/red"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toEndOf="@id/txtListedPrice"
+                        app:layout_constraintTop_toTopOf="@id/txtListedPrice"
+                        tools:text="-50%" />
+
+                    <TextView
+                        android:id="@+id/txtNameProduct"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginTop="10dp"
+                        android:ellipsize="end"
+                        android:maxLines="3"
+                        android:textColor="@color/black"
+                        android:textFontWeight="600"
+                        android:textSize="20sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txtListedPrice"
+                        tools:text="Hamberger" />
+
+                    <TextView
+                        android:id="@+id/txtBrand"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toStartOf="@id/txtNameProduct"
+                        app:layout_constraintTop_toBottomOf="@id/txtNameProduct"
+                        tools:text="Brand: Sudoo" />
+
+                    <TextView
+                        android:id="@+id/txtSku"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toStartOf="@id/txtBrand"
+                        app:layout_constraintTop_toBottomOf="@id/txtBrand"
+                        tools:text="SKU: 12345678" />
+
+                    <RatingBar
+                        android:id="@+id/rating"
+                        style="@style/Widget.AppCompat.RatingBar.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:isIndicator="true"
+                        android:numStars="5"
+                        android:progressTint="@color/yellow_dark_20"
+                        android:stepSize="0.1"
+                        app:layout_constraintStart_toStartOf="@id/txtSku"
+                        app:layout_constraintTop_toBottomOf="@id/txtSku"
+                        tools:rating="3" />
+
+                    <TextView
+                        android:id="@+id/txtNumberStart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="@id/rating"
+                        app:layout_constraintStart_toEndOf="@+id/rating"
+                        app:layout_constraintTop_toTopOf="@+id/rating"
+                        tools:text="3.0" />
+
+                    <TextView
+                        android:id="@+id/txtNumberSold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="@id/txtNumberStart"
+                        app:layout_constraintEnd_toStartOf="@+id/btnSendMessage"
+                        app:layout_constraintHorizontal_bias="0"
+                        app:layout_constraintStart_toEndOf="@+id/txtNumberStart"
+                        app:layout_constraintTop_toTopOf="@id/txtNumberStart"
+                        tools:text="Đã bán: 5,2k" />
+
+                    <com.facebook.share.widget.SendButton
+                        android:id="@+id/btnSendMessage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:background="@color/white"
+                        android:drawableTint="@color/light_blue_A400"
+                        android:text="@null"
+                        app:layout_constraintBottom_toBottomOf="@id/txtNumberSold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/txtNumberSold" />
+
+                    <View
+                        android:id="@+id/vSeparateSupplier"
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"
+                        android:layout_marginTop="15dp"
+                        android:background="@color/background"
+                        app:layout_constraintTop_toBottomOf="@id/rating" />
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardAvatarSupplier"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="15dp"
+                        app:cardCornerRadius="50dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/vSeparateSupplier">
 
                         <ImageView
-                            android:id="@+id/imgProductDetail"
+                            android:id="@+id/imgAvatarSupplier"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="centerCrop"
-                            tools:src="@drawable/zing_burger" />
-
-                        <ImageView
-                            android:id="@+id/btnBack"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="bottom"
-                            android:layout_marginBottom="10dp"
-                            android:onClick="@{(v) -> viewModel.onBack()}"
-                            android:padding="10dp"
-                            android:src="@drawable/ic_left_arrow"
-                            app:tint="@color/white" />
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/cardInfo"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_marginHorizontal="30dp"
-                        android:layout_marginTop="30dp"
-                        app:cardCornerRadius="25dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/cardHeader">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:paddingBottom="10dp">
-
-                            <TextView
-                                android:id="@+id/txtNameProduct"
-                                style="@style/textTitleLarge"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginHorizontal="15dp"
-                                android:layout_marginTop="15dp"
-                                android:ellipsize="end"
-                                android:maxLines="2"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintHorizontal_bias="0.0"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                tools:text="Zing Burger" />
-
-                            <TextView
-                                android:id="@+id/txtPriceProduct"
-                                style="@style/textTitleMedium"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="15dp"
-                                android:textColor="@color/primaryColor"
-                                app:layout_constraintEnd_toEndOf="@id/txtNameProduct"
-                                app:layout_constraintStart_toStartOf="@id/txtNameProduct"
-                                app:layout_constraintTop_toBottomOf="@id/txtNameProduct"
-                                tools:text="30.000đ" />
-
-                            <RatingBar
-                                android:id="@+id/rating"
-                                style="@style/Widget.AppCompat.RatingBar.Small"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginBottom="15dp"
-                                android:numStars="5"
-                                android:progressTint="@color/yellow_dark_20"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="@id/txtPriceProduct"
-                                app:layout_constraintTop_toBottomOf="@id/txtPriceProduct"
-                                tools:rating="3" />
-
-                            <TextView
-                                android:id="@+id/txtNumberStart"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
-                                android:textColor="@color/black"
-                                android:textSize="12sp"
-                                app:layout_constraintBottom_toBottomOf="@id/rating"
-                                app:layout_constraintStart_toEndOf="@+id/rating"
-                                app:layout_constraintTop_toTopOf="@+id/rating"
-                                tools:text="3.0" />
-
-                            <TextView
-                                android:id="@+id/txtNumberSold"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="15dp"
-                                android:textColor="@color/black"
-                                app:layout_constraintBottom_toBottomOf="@id/txtNumberStart"
-                                app:layout_constraintEnd_toStartOf="@+id/btnSendMessage"
-                                app:layout_constraintHorizontal_bias="0.9"
-                                app:layout_constraintStart_toEndOf="@+id/txtNumberStart"
-                                app:layout_constraintTop_toTopOf="@id/txtNumberStart"
-                                tools:text="Đã bán: 5,2k" />
-
-                            <com.facebook.share.widget.SendButton
-                                android:id="@+id/btnSendMessage"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="20dp"
-                                android:background="@color/white"
-                                android:drawableTint="@color/light_blue_A400"
-                                android:text="@null"
-                                app:layout_constraintBottom_toBottomOf="@id/txtNumberSold"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="@id/txtNumberSold" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <ImageView
-                        android:id="@+id/imgLocation"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:background="@drawable/rectangle_conner_10"
-                        android:padding="10dp"
-                        android:src="@drawable/ic_pin"
-                        app:layout_constraintBottom_toTopOf="@+id/imgClock"
-                        app:layout_constraintStart_toStartOf="@+id/cardInfo"
-                        app:layout_constraintTop_toBottomOf="@+id/cardInfo" />
+                            tools:src="@tools:sample/avatars" />
+                    </androidx.cardview.widget.CardView>
 
                     <TextView
-                        android:id="@+id/txtLocation"
+                        android:id="@+id/txtNameSupplier"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="30dp"
+                        android:layout_marginHorizontal="15dp"
                         android:ellipsize="end"
-                        android:maxLines="2"
+                        android:gravity="start"
+                        android:maxLines="1"
                         android:textColor="@color/black"
-                        android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/imgLocation"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toTopOf="@id/txtSupplierRate"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/imgLocation"
-                        app:layout_constraintTop_toTopOf="@+id/imgLocation"
-                        tools:text="Ngõ 54 Ao sen" />
-
-                    <ImageView
-                        android:id="@+id/imgClock"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginBottom="50dp"
-                        android:background="@drawable/rectangle_conner_10"
-                        android:padding="10dp"
-                        android:src="@drawable/ic_clock"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/imgLocation"
-                        app:layout_constraintTop_toBottomOf="@+id/imgLocation" />
+                        app:layout_constraintStart_toEndOf="@id/cardAvatarSupplier"
+                        app:layout_constraintTop_toTopOf="@id/cardAvatarSupplier"
+                        tools:text="Sudoo" />
 
                     <TextView
-                        android:id="@+id/txtTimeOrder"
-                        android:layout_width="0dp"
+                        android:id="@+id/txtSupplierRate"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:singleLine="true"
+                        android:textColor="@color/primaryColor"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="@id/cardAvatarSupplier"
+                        app:layout_constraintStart_toStartOf="@+id/txtNameSupplier"
+                        app:layout_constraintTop_toBottomOf="@+id/txtNameSupplier"
+                        tools:text="4.6" />
+
+                    <TextView
+                        android:id="@+id/txtSupplierRateLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="@string/rate"
                         android:textColor="@color/black"
                         android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/imgClock"
-                        app:layout_constraintEnd_toEndOf="@+id/txtLocation"
-                        app:layout_constraintStart_toStartOf="@+id/txtLocation"
-                        app:layout_constraintTop_toTopOf="@+id/imgClock"
-                        tools:text="30 phút" />
+                        app:layout_constraintBottom_toBottomOf="@+id/txtSupplierRate"
+                        app:layout_constraintStart_toEndOf="@id/txtSupplierRate"
+                        app:layout_constraintTop_toTopOf="@id/txtSupplierRate" />
+
+                    <View
+                        android:id="@+id/vSeparateDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"
+                        android:layout_marginTop="15dp"
+                        android:background="@color/background"
+                        app:layout_constraintTop_toBottomOf="@id/cardAvatarSupplier" />
+
+                    <TextView
+                        android:id="@+id/txtDescriptionLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginTop="15dp"
+                        android:text="@string/product_description"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toBottomOf="@id/vSeparateDescription" />
+
+                    <TextView
+                        android:id="@+id/txtDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginTop="5dp"
+                        android:ellipsize="end"
+                        android:maxLines="50"
+                        android:textColor="@color/gray_88"
+                        android:textSize="18sp"
+                        app:layout_constraintTop_toBottomOf="@id/txtDescriptionLabel"
+                        tools:text="After the Dialog was displayed, the initial EditText would always be in autofocus. Even after editing the text on the keyboard, the EditText would still retain focus and the keyboard would remain visible. Despite attempting various solutions from this thread, none of them proved effective for me." />
+
+                    <View
+                        android:id="@+id/vSeparateReview"
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"
+                        android:layout_marginTop="15dp"
+                        android:background="@color/background"
+                        app:layout_constraintTop_toBottomOf="@id/txtDescription" />
+
+                    <TextView
+                        android:id="@+id/txtCommentLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginTop="15dp"
+                        android:text="@string/product_reviews"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/vSeparateReview" />
+
+                    <TextView
+                        android:id="@+id/txtTotalComment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="@{viewModel.totalComment == 0 ? @string/have_not_yet_review : String.format(@string/total_comment, viewModel.totalComment)}"
+                        android:textColor="@color/gray_88"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="@id/txtCommentLabel"
+                        app:layout_constraintStart_toEndOf="@id/txtCommentLabel"
+                        app:layout_constraintTop_toTopOf="@id/txtCommentLabel"
+                        tools:text="(19 Đánh giá)" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rcvComment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:nestedScrollingEnabled="false"
+                        android:orientation="vertical"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintTop_toBottomOf="@id/txtCommentLabel"
+                        tools:itemCount="5"
+                        tools:listitem="@layout/item_comment">
+
+                    </androidx.recyclerview.widget.RecyclerView>
+
+                    <TextView
+                        android:id="@+id/txtLoadMoreComment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@color/background"
+                        android:gravity="center"
+                        android:paddingVertical="10dp"
+                        android:textSize="16sp"
+                        android:text="@{String.format(@string/load_more_comment, viewModel.remainComment)}"
+                        android:textColor="@color/black"
+                        android:visibility="@{viewModel.remainComment == 0 ? View.GONE : View.VISIBLE}"
+                        app:drawableBottomCompat="@drawable/ic_arrow_down"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/rcvComment"
+                        tools:text="Xem thêm 10 đánh giá" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.core.widget.NestedScrollView>
@@ -233,7 +389,7 @@
                     android:id="@+id/imgChat"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:onClick="@{(v) -> viewModel.openChat()}"
+                    android:onClick="@{(v) -> viewModel.navigateToChat()}"
                     android:paddingVertical="10dp"
                     android:src="@drawable/ic_chat"
                     app:layout_constraintBottom_toBottomOf="parent"

@@ -1,4 +1,4 @@
-package com.sudo248.sudoo.domain.entity.invoice
+package com.sudo248.sudoo.domain.entity.order
 
 enum class OrderStatus {
     PREPARE,

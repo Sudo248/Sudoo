@@ -3,6 +3,7 @@ package com.sudo248.sudoo.ui.base
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import androidx.core.view.isGone
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +23,7 @@ abstract class BasePageListAdapter<T : Any, VH : BasePageViewHolder<T, *>> :
     }
 
     open val enableLoadMore: Boolean = false
+    open val showLoadingFirstPage: Boolean = false
 
     @LayoutRes
     protected open val layoutLoading: Int = R.layout.item_loading
@@ -30,30 +32,31 @@ abstract class BasePageListAdapter<T : Any, VH : BasePageViewHolder<T, *>> :
 
     private var inflaterViewBinding: Method? = null
 
-    private var loadMoreRecyclerViewListener: LoadMoreRecyclerViewListener? = null
+    private var loadMoreListener: LoadMoreListener? = null
+
+    private var loadMoreRecyclerViewScrollListener: LoadMoreRecyclerViewScrollListener? = null
 
     protected val thresholdInvisibleItem: Int? = null
 
-    private var loadMoreScrollListener: LoadMoreRecyclerViewScrollListener? = null
+    private var isLastPage = false
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
-        if (enableLoadMore && loadMoreScrollListener == null) {
-            loadMoreScrollListener = object : LoadMoreRecyclerViewScrollListener(
-                recyclerView.layoutManager!!,
-                thresholdInvisibleItem ?: 0
+        if (enableLoadMore && loadMoreListener != null && loadMoreRecyclerViewScrollListener == null) {
+            loadMoreRecyclerViewScrollListener = object : LoadMoreRecyclerViewScrollListener(
+                recyclerView.layoutManager!!, thresholdInvisibleItem ?: 0
             ) {
-                override fun onLoadMore(page: Int, itemCount: Int) {
-                    loadMoreRecyclerViewListener?.onLoadMore(page, itemCount)
+                override fun onLoadMore() {
+                    loadMoreListener?.onLoadMore()
                 }
             }
-            recyclerView.addOnScrollListener(loadMoreScrollListener!!)
+            recyclerView.addOnScrollListener(loadMoreRecyclerViewScrollListener!!)
         }
     }
 
     override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
         super.onDetachedFromRecyclerView(recyclerView)
-        loadMoreScrollListener?.let { recyclerView.removeOnScrollListener(it) }
+        loadMoreRecyclerViewScrollListener?.let { recyclerView.removeOnScrollListener(it) }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BasePageViewHolder<T, *> {
@@ -71,29 +74,10 @@ abstract class BasePageListAdapter<T : Any, VH : BasePageViewHolder<T, *>> :
     override fun onBindViewHolder(holder: BasePageViewHolder<T, *>, position: Int) {
         if (holder.itemViewType != TYPE_VIEW_LOADING) {
             holder.onBind(getItem(position))
-        }
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return if (
-            enableLoadMore &&
-            loadMoreScrollListener?.isLastPage == false &&
-            isLastPosition(position)
-        ) {
-            TYPE_VIEW_LOADING
         } else {
-            getViewType(position)
+            holder.itemView.isGone = isLastPage
         }
     }
-
-    override fun getItemCount(): Int =
-        if (enableLoadMore && currentList.isNotEmpty() && loadMoreScrollListener?.isLastPage == false)
-            currentList.size + 1
-        else
-            currentList.size
-
-    private fun isLastPosition(position: Int): Boolean = position >= itemCount - 1
-
 
     open fun submitData(list: List<T>?, extend: Boolean = false) {
         if (extend) {
@@ -105,31 +89,25 @@ abstract class BasePageListAdapter<T : Any, VH : BasePageViewHolder<T, *>> :
         }
     }
 
-    open fun appendData(list: List<T>?) {
-        val newList = currentList.toMutableList()
-        newList.addAll(list ?: emptyList())
-        super.submitList(newList)
+    override fun getItemViewType(position: Int): Int {
+        return if (enableLoadMore && isLastPosition(position)) {
+            TYPE_VIEW_LOADING
+        } else {
+            getViewType(position)
+        }
     }
 
-    open fun appendLastPage(list: List<T>?) {
-        loadMoreScrollListener?.isLastPage = true
-        val newList = currentList.toMutableList()
-        newList.addAll(list ?: emptyList())
-        super.submitList(newList)
-    }
+    override fun getItemCount(): Int =
+        if (enableLoadMore && (showLoadingFirstPage || currentList.isNotEmpty())) currentList.size + 1 else currentList.size
 
-    fun isLastPage(isLastPage: Boolean) {
-        loadMoreScrollListener?.isLastPage = isLastPage
-    }
+
+    private fun isLastPosition(position: Int): Boolean = position >= itemCount - 1
 
     private fun getMethodInflateViewBinding(vhClass: Class<BasePageViewHolder<T, *>>): Method {
         val viewBindingClass =
             (vhClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<ViewBinding>
         return viewBindingClass.getMethod(
-            "inflate",
-            LayoutInflater::class.java,
-            ViewGroup::class.java,
-            Boolean::class.java
+            "inflate", LayoutInflater::class.java, ViewGroup::class.java, Boolean::class.java
         )
     }
 
@@ -170,16 +148,19 @@ abstract class BasePageListAdapter<T : Any, VH : BasePageViewHolder<T, *>> :
         }
     }
 
-    fun setLoadMoreListener(loadMoreRecyclerViewListener: LoadMoreRecyclerViewListener) {
-        this.loadMoreRecyclerViewListener = loadMoreRecyclerViewListener
+    fun setLoadMoreListener(loadMoreListener: LoadMoreListener) {
+        this.loadMoreListener = loadMoreListener
+    }
+
+    fun isLastPage(isLastPage: Boolean) {
+        this.isLastPage = isLastPage
+        loadMoreRecyclerViewScrollListener?.isLastPage = isLastPage
     }
 
     open fun getViewType(position: Int): Int = 0
 
     open fun getViewHolder(
-        layoutInflater: LayoutInflater,
-        parent: ViewGroup,
-        viewType: Int
+        layoutInflater: LayoutInflater, parent: ViewGroup, viewType: Int
     ): BasePageViewHolder<T, *> {
         val vhClass = getDefaultViewHolder()
         val defaultItemBinding = getDefaultViewBinding(vhClass, layoutInflater, parent, false)

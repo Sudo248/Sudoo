@@ -37,7 +37,7 @@ abstract class RepositoryModule {
     abstract fun bindCartRepository(cartRepository: CartRepositoryImpl): CartRepository
 
     @Binds
-    abstract fun bindInvoiceRepository(invoiceRepository: InvoiceRepositoryImpl): InvoiceRepository
+    abstract fun bindOrderRepository(orderRepository: OrderRepositoryImpl): OrderRepository
 
     @Binds
     abstract fun bindPromotionRepository(promotionRepository: PromotionRepositoryImpl): PromotionRepository

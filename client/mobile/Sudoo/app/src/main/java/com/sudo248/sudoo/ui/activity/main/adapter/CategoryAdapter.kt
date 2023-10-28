@@ -19,14 +19,7 @@ import com.sudo248.sudoo.ui.uimodel.adapter.loadImage
  */
 class CategoryAdapter(
     private val onItemClick: (Category) -> Unit,
-    private val showCategoryImage: Boolean = false,
 ) : BaseListAdapter<Category, CategoryAdapter.ViewHolder>() {
-    private lateinit var lastSelectedItemBinding: ItemCategoryBinding
-    private var currentSelectedPosition = 0
-
-    fun getCurrentSelectedCategory(): Category {
-        return currentList[currentSelectedPosition]
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -44,58 +37,8 @@ class CategoryAdapter(
         override fun onBind(item: Category) {
             loadImage(binding.imgCategory, item.image)
             binding.txtNameCategory.text = item.name
-            if (bindingAdapterPosition == currentSelectedPosition) {
-                lastSelectedItemBinding = binding
-                selectedItem(binding)
-            }
             itemView.setOnClickListener {
-                if (!it.isSelected) {
-                    setSelectedItem()
-                    onItemClick.invoke(item)
-                }
-                currentSelectedPosition = bindingAdapterPosition
-            }
-        }
-
-        private fun setSelectedItem() {
-            notSelectedItem(lastSelectedItemBinding)
-            selectedItem(binding)
-            lastSelectedItemBinding = binding
-        }
-
-        private fun selectedItem(itemBinding: ItemCategoryBinding) {
-            itemBinding.apply {
-                root.isSelected = true
-                cardContainer.setCardBackgroundColor(
-                    ContextCompat.getColor(
-                        itemView.context,
-                        R.color.primaryColor
-                    )
-                )
-                txtNameCategory.setTextColor(
-                    ContextCompat.getColor(
-                        itemView.context,
-                        R.color.white
-                    )
-                )
-            }
-        }
-
-        private fun notSelectedItem(itemBinding: ItemCategoryBinding) {
-            itemBinding.apply {
-                root.isSelected = false
-                cardContainer.setCardBackgroundColor(
-                    ContextCompat.getColor(
-                        itemView.context,
-                        R.color.white
-                    )
-                )
-                txtNameCategory.setTextColor(
-                    ContextCompat.getColor(
-                        itemView.context,
-                        R.color.gray_88
-                    )
-                )
+                onItemClick(item)
             }
         }
     }

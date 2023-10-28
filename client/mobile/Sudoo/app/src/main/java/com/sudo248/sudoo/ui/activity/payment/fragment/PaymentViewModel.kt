@@ -10,12 +10,12 @@ import com.sudo248.base_android.event.SingleEvent
 import com.sudo248.base_android.ktx.bindUiState
 import com.sudo248.base_android.ktx.onError
 import com.sudo248.base_android.ktx.onSuccess
-import com.sudo248.sudoo.domain.entity.invoice.Invoice
+import com.sudo248.sudoo.domain.entity.order.Order
 import com.sudo248.sudoo.domain.entity.payment.Payment
 import com.sudo248.sudoo.domain.entity.payment.PaymentStatus
 import com.sudo248.sudoo.domain.entity.payment.PaymentType
 import com.sudo248.sudoo.domain.entity.promotion.Promotion
-import com.sudo248.sudoo.domain.repository.InvoiceRepository
+import com.sudo248.sudoo.domain.repository.OrderRepository
 import com.sudo248.sudoo.domain.repository.PaymentRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Deferred
@@ -26,7 +26,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PaymentViewModel @Inject constructor(
     private val paymentRepository: PaymentRepository,
-    private val invoiceRepository: InvoiceRepository
+    private val orderRepository: OrderRepository
 ) : BaseViewModel<NavDirections>() {
     var viewController: ViewController? = null
 
@@ -36,8 +36,8 @@ class PaymentViewModel @Inject constructor(
     private val _currentPaymentType = MutableLiveData<PaymentType>()
     val currentPaymentType: LiveData<PaymentType> = _currentPaymentType
 
-    private val _invoice = MutableLiveData<Invoice>()
-    val invoice: LiveData<Invoice> = _invoice
+    private val _order = MutableLiveData<Order>()
+    val order: LiveData<Order> = _order
 
     private val _promotion = MutableLiveData<Promotion?>()
     val promotion: LiveData<Promotion?> = _promotion
@@ -72,9 +72,9 @@ class PaymentViewModel @Inject constructor(
 
     fun getInvoice(invoiceId: String) = launch {
         emitState(UiState.LOADING)
-        invoiceRepository.getInvoiceById(invoiceId).onSuccess {
+        orderRepository.getOrderById(invoiceId).onSuccess {
                 _userInfo.postValue("${it.user.fullName} | ${it.user.phone}\n${it.user.address.fullAddress}")
-                _invoice.postValue(it)
+                _order.postValue(it)
                 _promotion.postValue(it.promotion)
                 _finalPrice.postValue(it.finalPrice)
             }.onError {
@@ -84,9 +84,9 @@ class PaymentViewModel @Inject constructor(
     }
 
     fun applyPromotion(promotion: Promotion) = launch {
-        invoice.value?.let {
+        order.value?.let {
             emitState(UiState.LOADING)
-            invoiceRepository.updatePromotion(it.invoiceId, promotion.promotionId)
+            orderRepository.updatePromotion(it.orderId, promotion.promotionId)
                 .onSuccess { newInvoice ->
                     _promotion.postValue(promotion)
                     _finalPrice.postValue(newInvoice.finalPrice)
@@ -98,12 +98,12 @@ class PaymentViewModel @Inject constructor(
 
     suspend fun getVnPayPaymentUrl(): Deferred<String?> = async {
         emitState(UiState.LOADING)
-        val response = paymentRepository.getPaymentUrl(
+        val response = paymentRepository.payWithVnPay(
             Payment(
                 paymentType = PaymentType.VN_PAY,
-                orderId = _invoice.value!!.invoiceId,
+                orderId = _order.value!!.orderId,
                 paymentStatus = PaymentStatus.INIT,
-                amount = _invoice.value!!.finalPrice
+                amount = _order.value!!.finalPrice
             )
         )
         when (response) {
@@ -121,12 +121,12 @@ class PaymentViewModel @Inject constructor(
 
     private fun payWithCOD() = launch {
         setState(UiState.LOADING)
-        paymentRepository.getPaymentUrl(
+        paymentRepository.payWithVnPay(
             Payment(
                 paymentType = PaymentType.CASH,
-                orderId = _invoice.value!!.invoiceId,
+                orderId = _order.value!!.orderId,
                 paymentStatus = PaymentStatus.INIT,
-                amount = _invoice.value!!.finalPrice
+                amount = _order.value!!.finalPrice
             )
         ).onSuccess {
                 setState(UiState.SUCCESS)

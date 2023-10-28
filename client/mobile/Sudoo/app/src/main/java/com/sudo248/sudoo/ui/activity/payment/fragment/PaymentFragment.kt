@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.sudo248.base_android.base.BaseFragment
 import com.sudo248.base_android.ktx.showWithTransparentBackground
 import com.sudo248.base_android.navigation.ResultCallback
@@ -17,10 +19,10 @@ import com.sudo248.sudoo.R
 import com.sudo248.sudoo.databinding.DialogChoosePaymentMethodBinding
 import com.sudo248.sudoo.databinding.FragmentPaymentBinding
 import com.sudo248.sudoo.domain.common.Constants
-import com.sudo248.sudoo.domain.entity.invoice.Invoice
+import com.sudo248.sudoo.domain.entity.order.Order
 import com.sudo248.sudoo.domain.entity.promotion.Promotion
 import com.sudo248.sudoo.ui.activity.main.MainActivity
-import com.sudo248.sudoo.ui.activity.main.adapter.PaymentAdapter
+import com.sudo248.sudoo.ui.activity.main.adapter.OrderAdapter
 import com.sudo248.sudoo.ui.ktx.showErrorDialog
 import com.sudo248.sudoo.ui.util.Utils
 import com.vnpay.authentication.VNP_AuthenticationActivity
@@ -35,12 +37,12 @@ class PaymentFragment : BaseFragment<FragmentPaymentBinding, PaymentViewModel>()
 
     override val enableStateScreen: Boolean = true
 
-    private val adapter: PaymentAdapter by lazy { PaymentAdapter() }
+    private val adapter: OrderAdapter by lazy { OrderAdapter() }
 
     override fun initView() {
         binding.viewModel = viewModel
         viewModel.viewController = this
-        binding.rcvPayment.adapter = adapter
+        binding.rcvOrderSupplier.adapter = adapter
         activity?.intent?.getStringExtra(Constants.Key.INVOICE_ID)?.let {
             viewModel.getInvoice(it)
         }
@@ -71,13 +73,13 @@ class PaymentFragment : BaseFragment<FragmentPaymentBinding, PaymentViewModel>()
     }
 
     override fun observer() {
-        viewModel.invoice.observe(viewLifecycleOwner) {
-            setupInvoice(invoice = it)
+        viewModel.order.observe(viewLifecycleOwner) {
+            setupOrder(order = it)
         }
 
         viewModel.promotion.observe(viewLifecycleOwner) {
             it?.let {
-                binding.priceVoucherPayment.text = "-${Utils.formatVnCurrency(it.value)}"
+                binding.txtDiscount.text = "-${Utils.formatVnCurrency(it.value)}"
                 if (it.name.isNotEmpty()) {
                     binding.voucherPayment.text = it.name
                 }
@@ -86,31 +88,17 @@ class PaymentFragment : BaseFragment<FragmentPaymentBinding, PaymentViewModel>()
 
         viewModel.finalPrice.observe(viewLifecycleOwner) { finalPrice ->
             binding.apply {
-                finalSumProductPayment1.text = Utils.formatVnCurrency(finalPrice)
+                finalSumProductPayment.text = Utils.formatVnCurrency(finalPrice)
                 txtSum.text = Utils.formatVnCurrency(finalPrice)
             }
         }
     }
 
-    private fun setupInvoice(invoice: Invoice) {
-        adapter.submitList(invoice.cart.cartProducts)
+    private fun setupOrder(order: Order) {
+        adapter.submitList(order.orderSuppliers)
         binding.apply {
-
-            // shipment
-            shipper.text = invoice.shipment.nameShipment
-            txtTimeShipment.text =
-                "Nhận sau ${invoice.shipment.timeShipment} ${invoice.shipment.timeUnit}"
-            txtPriceShipper.text = Utils.formatVnCurrency(invoice.shipment.priceShipment)
-
-            // payment
-            textSumProductPayment.text = getString(
-                R.string.total_money_format,
-                invoice.cart.cartProducts.size.toString()
-            )
-
-            sumProductPayment.text = Utils.formatVnCurrency(invoice.totalPrice)
-            finalSumProductPayment.text = Utils.formatVnCurrency(invoice.totalPrice)
-            sumShipperPayment.text = Utils.formatVnCurrency(invoice.shipment.priceShipment)
+            sumProductPayment.text = Utils.formatVnCurrency(order.totalPrice)
+            sumShipperPayment.text = Utils.formatVnCurrency(order.totalShipmentPrice)
         }
     }
 

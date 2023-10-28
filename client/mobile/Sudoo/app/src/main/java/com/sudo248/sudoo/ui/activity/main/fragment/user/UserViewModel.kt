@@ -196,4 +196,10 @@ class UserViewModel @Inject constructor(
     fun back() {
         navigator.back()
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewController = null
+        parentViewModel.setImageUri(null)
+    }
 }
