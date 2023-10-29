@@ -66,7 +66,7 @@ class ProductDetailViewModel @Inject constructor(
         if (_isRefresh.value == false) emitState(UiState.LOADING)
         discoveryRepository.getProductDetail(productId)
             .onSuccess {
-                _product.value = it
+                _product.postValue(it)
                 it.supplier?.let { supplierInfo ->
                     _supplier.value = supplierInfo
                 }
@@ -101,6 +101,17 @@ class ProductDetailViewModel @Inject constructor(
             }
     }
 
+    fun countItemInCart() = launch {
+        cartRepository.getItemInCart()
+            .onSuccess {
+                viewController?.setBadgeCart(it)
+            }
+            .onError {
+                error = SingleEvent(it.message)
+            }.bindUiState(_uiState)
+
+    }
+
     fun addProductToCart() = launch {
 //        val addProductToCart = AddSupplierProduct(
 //            product.supplierId,
@@ -115,11 +126,6 @@ class ProductDetailViewModel @Inject constructor(
 //            .onError {
 //                error = SingleEvent(it.message)
 //            }.bindUiState(_uiState)
-    }
-
-    fun onClickLike() {
-//        product.isLike.set(!product.isLike.get()!!)
-//        product.isLike.notifyChange()
     }
 
     fun onBack() {

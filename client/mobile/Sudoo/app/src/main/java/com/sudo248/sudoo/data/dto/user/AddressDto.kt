@@ -11,6 +11,6 @@ data class AddressDto(
     val districtName: String,
     val wardName: String,
     val address: String,
-    val location: Location,
+    val location: Location? = null,
     val fullAddress: String,
 )

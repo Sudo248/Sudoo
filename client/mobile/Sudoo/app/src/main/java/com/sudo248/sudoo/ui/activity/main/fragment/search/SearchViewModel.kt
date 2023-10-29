@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavDirections
 import com.sudo248.base_android.base.BaseViewModel
 import com.sudo248.base_android.event.SingleEvent
+import com.sudo248.base_android.ktx.bindUiState
 import com.sudo248.base_android.ktx.onError
 import com.sudo248.base_android.ktx.onSuccess
 import com.sudo248.sudoo.domain.entity.discovery.Offset
@@ -57,6 +58,16 @@ class SearchViewModel @Inject constructor(
         }
     }
 
+    fun actionSearch(name: String) {
+        jobSearch?.cancel()
+        currentSearchName = name
+        performProductListByCategoryIdAndName(
+            categoryId = categoryId,
+            name = currentSearchName,
+            isLoadMore = false,
+        )
+    }
+
     fun refresh() {
         _isRefresh.value = true
         performProductListByCategoryIdAndName(
@@ -95,7 +106,7 @@ class SearchViewModel @Inject constructor(
             }
             .onError {
                 error = SingleEvent(it.message)
-            }
+            }.bindUiState(_uiState)
         if (_isRefresh.value == true) _isRefresh.value = false
     }
 

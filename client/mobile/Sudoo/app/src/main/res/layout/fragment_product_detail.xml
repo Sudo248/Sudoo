@@ -52,12 +52,20 @@
                     android:padding="15dp"
                     android:src="@drawable/ic_home" />
 
-                <ImageView
+                <FrameLayout
+                    android:id="@+id/frameCart"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="@{(v) -> viewModel.navigateToCart()}"
-                    android:padding="15dp"
-                    android:src="@drawable/ic_shopping_cart" />
+                    android:padding="15dp">
+
+                    <ImageView
+                        android:id="@+id/imgCart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{(v) -> viewModel.navigateToCart()}"
+                        android:src="@drawable/ic_shopping_cart"
+                        android:layout_gravity="center"/>
+                </FrameLayout>
             </LinearLayout>
 
             <androidx.core.widget.NestedScrollView
@@ -73,16 +81,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <ImageView
-                        android:id="@+id/imgProductDetail"
+                    <com.denzcoskun.imageslider.ImageSlider
+                        android:id="@+id/slideshowImageProduct"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:scaleType="centerCrop"
+                        app:iss_auto_cycle="true"
+                        app:iss_period="5000"
+                        app:iss_error_image="@drawable/ic_image"
                         app:layout_constraintDimensionRatio="H,3:2"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        tools:src="@drawable/zing_burger" />
+                        app:layout_constraintStart_toStartOf="parent"/>
 
                     <TextView
                         android:id="@+id/txtPrice"
@@ -94,7 +103,7 @@
                         android:textColor="@color/black"
                         android:textSize="24sp"
                         android:textStyle="bold"
-                        app:layout_constraintTop_toBottomOf="@id/imgProductDetail"
+                        app:layout_constraintTop_toBottomOf="@id/slideshowImageProduct"
                         tools:text="100.000d" />
 
                     <TextView
@@ -127,7 +136,6 @@
                         android:ellipsize="end"
                         android:maxLines="3"
                         android:textColor="@color/black"
-                        android:textFontWeight="600"
                         android:textSize="20sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/txtListedPrice"
@@ -139,7 +147,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:textColor="@color/black"
-                        android:textSize="18sp"
+                        android:textSize="12sp"
                         app:layout_constraintStart_toStartOf="@id/txtNameProduct"
                         app:layout_constraintTop_toBottomOf="@id/txtNameProduct"
                         tools:text="Brand: Sudoo" />
@@ -150,7 +158,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:textColor="@color/black"
-                        android:textSize="18sp"
+                        android:textSize="12sp"
                         app:layout_constraintStart_toStartOf="@id/txtBrand"
                         app:layout_constraintTop_toBottomOf="@id/txtBrand"
                         tools:text="SKU: 12345678" />
@@ -246,18 +254,40 @@
                         app:layout_constraintBottom_toTopOf="@id/txtSupplierRate"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/cardAvatarSupplier"
-                        app:layout_constraintTop_toTopOf="@id/cardAvatarSupplier"
+                        app:layout_constraintTop_toBottomOf="@+id/vSeparateSupplier"
                         tools:text="Sudoo" />
+
+                    <ImageView
+                        android:id="@+id/imgSupplierLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_location"
+                        app:layout_constraintBottom_toBottomOf="@+id/txtSupplierLocation"
+                        app:layout_constraintStart_toStartOf="@+id/txtNameSupplier"
+                        app:layout_constraintTop_toTopOf="@+id/txtSupplierLocation" />
+
+                    <TextView
+                        android:id="@+id/txtSupplierLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toEndOf="@id/imgSupplierLocation"
+                        app:layout_constraintTop_toBottomOf="@id/txtNameSupplier"
+                        tools:text="@string/rate" />
 
                     <TextView
                         android:id="@+id/txtSupplierRate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
                         android:textColor="@color/primaryColor"
                         android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="@id/cardAvatarSupplier"
-                        app:layout_constraintStart_toStartOf="@+id/txtNameSupplier"
-                        app:layout_constraintTop_toBottomOf="@+id/txtNameSupplier"
+                        app:layout_constraintBottom_toBottomOf="@id/txtSupplierLocation"
+                        app:layout_constraintStart_toEndOf="@+id/txtSupplierLocation"
+                        app:layout_constraintTop_toTopOf="@+id/txtSupplierLocation"
                         tools:text="4.6" />
 
                     <TextView
@@ -278,7 +308,7 @@
                         android:layout_height="10dp"
                         android:layout_marginTop="15dp"
                         android:background="@color/background"
-                        app:layout_constraintTop_toBottomOf="@id/cardAvatarSupplier" />
+                        app:layout_constraintTop_toBottomOf="@+id/txtSupplierLocation" />
 
                     <TextView
                         android:id="@+id/txtDescriptionLabel"
@@ -365,6 +395,7 @@
                         android:text="@{String.format(@string/load_more_comment, viewModel.remainComment)}"
                         android:textColor="@color/black"
                         android:visibility="@{viewModel.remainComment == 0 ? View.GONE : View.VISIBLE}"
+                        android:onClick="@{(v) -> viewModel.loadMoreComment()}"
                         app:drawableBottomCompat="@drawable/ic_arrow_down"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/rcvComment"
@@ -393,7 +424,7 @@
                     android:paddingVertical="10dp"
                     android:src="@drawable/ic_chat"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/imgAddToCard"
+                    app:layout_constraintEnd_toStartOf="@+id/imgAddToCart"
                     app:layout_constraintHorizontal_chainStyle="spread"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -404,12 +435,12 @@
                     android:layout_height="20dp"
                     android:background="@color/gray_91"
                     app:layout_constraintBottom_toBottomOf="@id/imgChat"
-                    app:layout_constraintEnd_toStartOf="@id/imgAddToCard"
+                    app:layout_constraintEnd_toStartOf="@id/imgAddToCart"
                     app:layout_constraintStart_toEndOf="@id/imgChat"
                     app:layout_constraintTop_toTopOf="@id/imgChat" />
 
                 <ImageView
-                    android:id="@+id/imgAddToCard"
+                    android:id="@+id/imgAddToCart"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:onClick="@{(v) -> viewModel.addProductToCart()}"

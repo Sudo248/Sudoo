@@ -1,5 +1,6 @@
 package com.sudo248.sudoo.ui.activity.main.fragment.search
 
+import android.view.inputmethod.EditorInfo
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -39,6 +40,16 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
         binding.tvSearch.addTextChangedListener(onTextChanged = { text, _, _, _ ->
             viewModel.search(name = text.toString())
         })
+
+        binding.tvSearch.setOnKeyListener { _, keyCode, _ ->
+            if (keyCode == EditorInfo.IME_ACTION_SEARCH) {
+                viewModel.actionSearch(name = binding.tvSearch.text.toString())
+                KeyBoardUtils.hide(requireActivity())
+                true
+            } else {
+                false
+            }
+        }
     }
 
     override fun observer() {

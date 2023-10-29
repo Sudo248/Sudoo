@@ -9,6 +9,6 @@ data class Address(
     val districtName: String = "",
     val wardName: String = "",
     val address: String = "",
-    val location: Location = Location(),
+    val location: Location? = null,
     val fullAddress: String = "",
 )

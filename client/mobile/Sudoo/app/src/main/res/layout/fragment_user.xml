@@ -6,6 +6,7 @@
     <data>
 
         <import type="com.sudo248.sudoo.ui.util.Utils" />
+        <import type="android.view.View" />
 
         <import type="com.sudo248.sudoo.domain.entity.auth.Role" />
 
@@ -279,6 +280,7 @@
                             android:layout_marginEnd="15dp"
                             android:layout_marginBottom="15dp"
                             android:singleLine="true"
+                            android:visibility="@{viewModel.user.address.fullAddress.empty ? View.GONE : View.VISIBLE}"
                             android:text="@{viewModel.user.address.fullAddress}"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -293,6 +295,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="15dp"
                             android:text="@string/label_address"
+                            android:visibility="@{viewModel.user.address.fullAddress.empty ? View.GONE : View.VISIBLE}"
                             app:layout_constraintBottom_toBottomOf="@+id/txtAddress"
                             app:layout_constraintEnd_toStartOf="@+id/txtAddress"
                             app:layout_constraintHorizontal_bias="0"
@@ -328,6 +331,39 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </com.google.android.material.card.MaterialCardView>
 
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardAction"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginTop="24dp"
+                    app:cardCornerRadius="25dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cardInfo"
+                    android:onClick="@{(v) -> viewModel.navigateToReviewList()}">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="15dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_circle_start"
+                            app:tint="@color/gray_88" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:text="@string/review"
+                            android:textColor="@color/black"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
                 <Button
                     android:id="@+id/logOut"
                     android:layout_width="0dp"
@@ -344,7 +380,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cardInfo" />
+                    app:layout_constraintTop_toBottomOf="@+id/cardAction" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -7,6 +7,7 @@ import com.sudo248.sudoo.data.dto.discovery.CommentListDto
 import com.sudo248.sudoo.data.dto.discovery.LocationDto
 import com.sudo248.sudoo.data.dto.discovery.PaginationDto
 import com.sudo248.sudoo.data.dto.discovery.ProductDto
+import com.sudo248.sudoo.data.dto.discovery.ProductExtrasDto
 import com.sudo248.sudoo.data.dto.discovery.ProductInfoDto
 import com.sudo248.sudoo.data.dto.discovery.ProductListDto
 import com.sudo248.sudoo.data.dto.discovery.ReviewDto
@@ -22,6 +23,7 @@ import com.sudo248.sudoo.domain.entity.discovery.CommentList
 import com.sudo248.sudoo.domain.entity.discovery.Location
 import com.sudo248.sudoo.domain.entity.discovery.Pagination
 import com.sudo248.sudoo.domain.entity.discovery.Product
+import com.sudo248.sudoo.domain.entity.discovery.ProductExtras
 import com.sudo248.sudoo.domain.entity.discovery.ProductInfo
 import com.sudo248.sudoo.domain.entity.discovery.ProductList
 import com.sudo248.sudoo.domain.entity.discovery.Review
@@ -50,6 +52,7 @@ fun ProductDto.toProduct(): Product {
         height = height,
         length = length,
         width = width,
+        extras = extras.toProductExtras(),
         images = images.map { it.url },
         supplier = supplier?.toSupplierInfo(),
         categories = categories?.map { it.toCategoryInfo() },
@@ -112,12 +115,12 @@ fun SupplierDto.toSupplier(): Supplier {
 fun SupplierInfoDto.toSupplierInfo(): SupplierInfo {
     return SupplierInfo(
         supplierId = supplierId,
-        userId = userId,
         name = name,
         avatar = avatar,
         brand = brand,
         contactUrl = contactUrl,
         rate = rate,
+        address = address.toAddress()
     )
 }
 
@@ -187,5 +190,13 @@ fun ReviewDto.toReview(): Review {
         createdAt = createdAt,
         userInfo = userInfo.toUserInfo(),
         productInfo = productInfo.toProductInfo()
+    )
+}
+
+fun ProductExtrasDto.toProductExtras(): ProductExtras {
+    return ProductExtras(
+        enable3DViewer = enable3DViewer,
+        enableArViewer = enableArViewer,
+        source = source
     )
 }

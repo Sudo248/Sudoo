@@ -28,6 +28,7 @@ data class Product(
     val height: Int,
     val length: Int,
     val width: Int,
+    val extras: ProductExtras,
     val supplier: SupplierInfo? = null,
     val categories: List<CategoryInfo>? = null,
 ) :  java.io.Serializable

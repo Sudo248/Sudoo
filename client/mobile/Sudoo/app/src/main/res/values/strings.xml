@@ -103,6 +103,7 @@
     <string name="reviewed">Đã đánh giá</string>
     <string name="review">Đánh giá</string>
     <string name="product_brand">Thương hiệu: %s</string>
+    <string name="sku_label">SKU: %s</string>
     <string name="product_quality">Chất lượng\nsản phẩm</string>
     <string name="bad">Tệ</string>
     <string name="unsatisfied">Không hài lòng</string>

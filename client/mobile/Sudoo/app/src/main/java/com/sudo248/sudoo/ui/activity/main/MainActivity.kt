@@ -65,7 +65,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), ViewCon
     private val listFragmentHideBottomNav = listOf(
         R.id.productDetailFragment,
         R.id.searchFragment,
-        R.id.chatFragment
+        R.id.chatFragment,
+        R.id.reviewListFragment,
+        R.id.reviewFragment
     )
 
     private val listener = NavController.OnDestinationChangedListener { _, destination, _ ->
