@@ -39,6 +39,10 @@
             android:gravity="center_vertical"
             android:textColor="@color/black"
             android:textSize="16sp"
+            android:imeOptions="actionSearch"
+            android:maxLines="1"
+            android:scrollHorizontally="true"
+            android:inputType="textAutoComplete"
             app:drawableLeftCompat="@drawable/ic_search"
             tools:hint="@string/search" />
     </FrameLayout>

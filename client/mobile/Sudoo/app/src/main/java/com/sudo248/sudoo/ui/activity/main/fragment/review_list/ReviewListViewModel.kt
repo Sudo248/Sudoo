@@ -1,5 +1,6 @@
 package com.sudo248.sudoo.ui.activity.main.fragment.review_list
 
+import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavDirections
@@ -8,12 +9,14 @@ import com.sudo248.base_android.event.SingleEvent
 import com.sudo248.base_android.ktx.bindUiState
 import com.sudo248.base_android.ktx.onError
 import com.sudo248.base_android.ktx.onSuccess
+import com.sudo248.base_android.navigation.ResultCallback
 import com.sudo248.sudoo.domain.entity.discovery.Offset
 import com.sudo248.sudoo.domain.entity.discovery.Review
 import com.sudo248.sudoo.domain.repository.DiscoveryRepository
 import com.sudo248.sudoo.ui.activity.main.adapter.ReviewAdapter
 import com.sudo248.sudoo.ui.base.LoadMoreListener
 import com.sudo248.sudoo.ui.models.review.ReviewListTab
+import com.sudo248.sudoo.ui.util.BundleKeys
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -68,6 +71,12 @@ class ReviewListViewModel @Inject constructor(
         getReviewList(currentTab)
     }
 
+    fun refreshAll() {
+        _isRefresh.value = true
+        getReviewList(ReviewListTab.REVIEWED)
+        getReviewList(ReviewListTab.NOT_YET_REVIEW)
+    }
+
     fun getReviewList(tab: ReviewListTab, isLoadMore: Boolean = false) = launch {
         if (!isLoadMore) {
             if (tab.isReviewed) {
@@ -103,8 +112,21 @@ class ReviewListViewModel @Inject constructor(
         _isRefresh.value = false
     }
 
-    fun onClickReview(review: Review) {
-
+    private fun onClickReview(review: Review) {
+        navigator.navigateForResult(
+            ReviewListFragmentDirections.actionReviewListFragmentToReviewFragment(
+                review
+            ),
+            BundleKeys.REVIEW_FRAGMENT_KEY,
+            object : ResultCallback {
+                override fun onResult(key: String, data: Bundle?) {
+                    if (key == BundleKeys.REVIEW_FRAGMENT_KEY) {
+                        if (data?.getBoolean(BundleKeys.NEED_RELOAD) == true){
+                            refreshAll()
+                        }
+                    }
+                }
+            })
     }
 
     fun back() {

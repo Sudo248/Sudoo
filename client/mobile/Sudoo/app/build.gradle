@@ -99,6 +99,9 @@ dependencies {
 
     // swipe layout
     implementation("com.apachat:swipereveallayout-android:1.1.2")
+
+    // slide image
+    implementation 'com.github.denzcoskun:ImageSlideshow:0.1.2'
 }
 
 kapt {

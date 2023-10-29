@@ -20,7 +20,9 @@ import com.sudo248.sudoo.data.api.notification.NotificationService
 import com.sudo248.sudoo.data.api.payment.PaymentService
 import com.sudo248.sudoo.data.api.promotion.PromotionService
 import com.sudo248.sudoo.data.api.user.UserService
+import com.sudo248.sudoo.data.converter.LocalDateConverter
 import com.sudo248.sudoo.data.converter.LocalDateTimeConverter
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 
@@ -51,7 +53,7 @@ object DataModule {
     @Provides
     fun provideUserService(): UserService = api {
         converterFactory = GsonConverterFactory.create(
-            GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX").create()
+            GsonBuilder().registerTypeAdapter(LocalDate::class.java, LocalDateConverter()).create()
         )
     }
 

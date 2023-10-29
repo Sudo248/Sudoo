@@ -65,6 +65,7 @@ class UserViewModel @Inject constructor(
     }
 
     private fun getUserInfo() = launch {
+        emitState(UiState.LOADING)
         userRepository.getUserInfo()
             .onSuccess {
                 _user.postValue(it.toUserUi())
@@ -95,7 +96,7 @@ class UserViewModel @Inject constructor(
     }
 
     fun selectDate(selection: Long?) {
-        _user.value?.dob?.set(Utils.formatDob(Date(selection ?: 0L)))
+        _user.value?.dob?.set(Utils.formatDob(Utils.localDateFrom(selection ?: 0L)))
     }
 
     fun updateUser() = launch {
@@ -195,6 +196,10 @@ class UserViewModel @Inject constructor(
 
     fun back() {
         navigator.back()
+    }
+
+    fun navigateToReviewList() {
+        navigator.navigateTo(UserFragmentDirections.actionUserFragmentToReviewListFragment())
     }
 
     override fun onCleared() {

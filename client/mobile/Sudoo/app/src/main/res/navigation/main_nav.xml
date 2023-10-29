@@ -36,9 +36,7 @@
         <action
             android:id="@+id/action_productDetailFragment_to_discoveryFragment"
             app:destination="@id/discoveryFragment" />
-        <action
-            android:id="@+id/action_productDetailFragment_to_commentFragment"
-            app:destination="@id/reviewFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/userFragment"
@@ -48,6 +46,9 @@
         <action
             android:id="@+id/action_userFragment_to_userEditFragment"
             app:destination="@id/userEditFragment" />
+        <action
+            android:id="@+id/action_userFragment_to_reviewListFragment"
+            app:destination="@id/reviewListFragment" />
     </fragment>
     <fragment
         android:id="@+id/userEditFragment"
@@ -107,5 +108,14 @@
         <argument
             android:name="review"
             app:argType="com.sudo248.sudoo.domain.entity.discovery.Review"/>
+    </fragment>
+    <fragment
+        android:id="@+id/reviewListFragment"
+        android:name="com.sudo248.sudoo.ui.activity.main.fragment.review_list.ReviewListFragment"
+        android:label="ReviewListFragment"
+        tools:layout="@layout/fragment_review_list">
+        <action
+            android:id="@+id/action_reviewListFragment_to_reviewFragment"
+            app:destination="@id/reviewFragment" />
     </fragment>
 </navigation>

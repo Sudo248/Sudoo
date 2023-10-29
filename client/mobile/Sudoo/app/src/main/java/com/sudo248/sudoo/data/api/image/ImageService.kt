@@ -12,7 +12,7 @@ import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
 
-@ApiService(baseUrl = BuildConfig.BASE_URL + "images/")
+@ApiService(baseUrl = BuildConfig.BASE_URL + "storage/images/")
 @LoggingLever(level = Level.BODY)
 interface ImageService {
     @Multipart

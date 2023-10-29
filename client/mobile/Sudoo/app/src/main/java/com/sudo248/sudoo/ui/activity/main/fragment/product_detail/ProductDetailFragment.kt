@@ -3,22 +3,29 @@ package com.sudo248.sudoo.ui.activity.main.fragment.product_detail
 import android.content.Intent
 import android.graphics.Paint
 import android.net.Uri
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.share.Sharer
 import com.facebook.share.model.ShareLinkContent
+import com.google.android.material.badge.BadgeDrawable
+import com.google.android.material.badge.BadgeDrawable.BadgeGravity
+import com.google.android.material.badge.BadgeUtils
 import com.sudo248.base_android.base.BaseFragment
 import com.sudo248.base_android.ktx.invisible
 import com.sudo248.base_android.ktx.visible
 import com.sudo248.base_android.utils.DialogUtils
+import com.sudo248.sudoo.R
 import com.sudo248.sudoo.databinding.FragmentProductDetailBinding
 import com.sudo248.sudoo.domain.entity.discovery.Product
 import com.sudo248.sudoo.domain.entity.discovery.SupplierInfo
 import com.sudo248.sudoo.ui.activity.main.MainActivity
 import com.sudo248.sudoo.ui.ktx.showErrorDialog
+import com.sudo248.sudoo.ui.ktx.toSlideModel
 import com.sudo248.sudoo.ui.uimodel.adapter.loadImage
 import com.sudo248.sudoo.ui.util.Utils
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,6 +46,8 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
 
     private val callbackManager = CallbackManager.Factory.create()
 
+    private var badge: BadgeDrawable? = null
+
     override fun initView() {
         binding.viewModel = viewModel
         viewModel.viewController = this
@@ -47,6 +56,8 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
         binding.refreshProductDetail.setOnRefreshListener {
             viewModel.refresh()
         }
+        createBadgeCart()
+//        viewModel.countItemInCart()
         try {
             setupSendMessage()
         } catch (e: Exception) {
@@ -70,7 +81,7 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
 
     private fun performProduct(product: Product) {
         binding.apply {
-            loadImage(imgProductDetail, product.images.first())
+            setImageSlideshow(product.images)
             txtNameProduct.text = product.name
             txtPrice.text = Utils.formatVnCurrency(product.price)
             if (product.price < product.listedPrice) {
@@ -87,6 +98,7 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
             } else {
                 txtDiscountPercent.invisible()
             }
+            txtSku.text = getString(R.string.sku_label, product.sku)
             setRating(product.rate)
             txtNumberSold.text = Utils.formatSold(product.soldAmount)
             txtDescription.text = product.description
@@ -96,13 +108,34 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
     private fun performSupplier(supplier: SupplierInfo) {
         binding.apply {
             loadImage(imgAvatarSupplier, supplier.avatar)
+            txtNameSupplier.text = supplier.name
+            txtSupplierLocation.text = supplier.address.provinceName
             txtSupplierRate.text = Utils.format(supplier.rate.toDouble(), digit = 1)
+            txtBrand.text = getString(R.string.product_brand, supplier.brand)
         }
     }
 
     private fun setRating(rating: Float) {
         binding.rating.rating = rating
         binding.txtNumberStart.text = Utils.format(rating.toDouble(), digit = 1)
+    }
+
+    private fun setImageSlideshow(images: List<String>) {
+        binding.slideshowImageProduct.apply {
+            setImageList(images.map { it.toSlideModel() }, ScaleTypes.CENTER_INSIDE)
+
+//            when (images.size) {
+//                1 -> {
+//                    this.auto
+//                }
+//                in 2..3 -> {
+//
+//                }
+//                else -> {
+//
+//                }
+//            }
+        }
     }
 
     private fun setupSendMessage() {
@@ -126,6 +159,18 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
             }
         })
     }
+    @androidx.annotation.OptIn(com.google.android.material.badge.ExperimentalBadgeUtils::class)
+    private fun createBadgeCart() {
+        badge = BadgeDrawable.create(requireContext()).apply {
+            isVisible = false
+            BadgeUtils.attachBadgeDrawable(this, binding.imgCart, binding.frameCart)
+            badgeGravity = BadgeDrawable.TOP_START
+            verticalOffset = 35
+            horizontalOffset = 40
+            backgroundColor = ContextCompat.getColor(requireContext(), R.color.primaryColor)
+            badgeTextColor = ContextCompat.getColor(requireContext(), R.color.white)
+        }
+    }
 
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -148,5 +193,11 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
 
     override fun setBadgeCart(amount: Int) {
         (requireActivity() as MainActivity).setBadgeCart(amount)
+        if (amount > 0) {
+            badge?.isVisible = true
+            badge?.number = amount
+        } else {
+            badge?.isVisible = false
+        }
     }
 }

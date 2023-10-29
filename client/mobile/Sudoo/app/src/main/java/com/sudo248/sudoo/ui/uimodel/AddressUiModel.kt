@@ -12,6 +12,6 @@ data class AddressUiModel(
     val districtName: ObservableField<String> = ObservableField(""),
     val wardName: ObservableField<String> = ObservableField(""),
     val address: ObservableField<String> = ObservableField(""),
-    val location: Location = Location(),
+    val location: Location? = null,
     val fullAddress: ObservableField<String> = ObservableField(""),
 )
