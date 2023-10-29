@@ -1,5 +1,6 @@
 package com.sudo248.sudoo.ui.activity.main.fragment.review
 
+import android.Manifest
 import android.os.Bundle
 import androidx.navigation.NavDirections
 import com.sudo248.base_android.base.BaseViewModel
@@ -9,7 +10,7 @@ import com.sudo248.base_android.ktx.bindUiState
 import com.sudo248.base_android.ktx.onError
 import com.sudo248.base_android.ktx.onSuccess
 import com.sudo248.sudoo.domain.repository.DiscoveryRepository
-import com.sudo248.sudoo.domain.repository.ImageRepository
+import com.sudo248.sudoo.domain.repository.FileRepository
 import com.sudo248.sudoo.ui.activity.main.MainViewModel
 import com.sudo248.sudoo.ui.util.BundleKeys
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ReviewViewModel @Inject constructor(
     private val discoveryRepository: DiscoveryRepository,
-    private val imageRepository: ImageRepository
+    private val fileRepository: FileRepository
 ) : BaseViewModel<NavDirections>() {
 
     private var viewController: ViewController? = null
@@ -32,12 +33,16 @@ class ReviewViewModel @Inject constructor(
         this.viewController = viewController
     }
 
+    fun setMainViewModel(parentViewModel: MainViewModel) {
+        this.parentViewModel = parentViewModel
+    }
+
     fun upsertReview() = launch {
         viewController?.getUpsertReview()?.let { upserReview ->
             emitState(UiState.LOADING)
             parentViewModel.imageUri.value?.let {
                 viewController?.run {
-                    val imageUrl = imageRepository.uploadImage(getPathImageFromUri(it)).get()
+                    val imageUrl = fileRepository.uploadImage(getPathImageFromUri(it)).get()
                     upserReview.images = listOf(imageUrl)
                 }
             }
@@ -63,7 +68,11 @@ class ReviewViewModel @Inject constructor(
     }
 
     fun takeImage() {
-        parentViewModel.takeImage()
+        parentViewModel.requestPermission(Manifest.permission.CAMERA) {
+            if (it) {
+                parentViewModel.takeImage()
+            }
+        }
     }
 
     fun deleteImage() {

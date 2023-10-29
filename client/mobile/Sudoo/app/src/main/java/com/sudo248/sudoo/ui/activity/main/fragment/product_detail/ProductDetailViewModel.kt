@@ -1,5 +1,6 @@
 package com.sudo248.sudoo.ui.activity.main.fragment.product_detail
 
+import android.Manifest
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavDirections
@@ -7,14 +8,19 @@ import com.sudo248.base_android.base.BaseViewModel
 import com.sudo248.base_android.core.UiState
 import com.sudo248.base_android.event.SingleEvent
 import com.sudo248.base_android.ktx.bindUiState
+import com.sudo248.base_android.ktx.createActionIntentDirections
 import com.sudo248.base_android.ktx.onError
 import com.sudo248.base_android.ktx.onSuccess
+import com.sudo248.sudoo.domain.entity.cart.AddCartProduct
 import com.sudo248.sudoo.domain.entity.discovery.Offset
 import com.sudo248.sudoo.domain.entity.discovery.Product
 import com.sudo248.sudoo.domain.entity.discovery.SupplierInfo
 import com.sudo248.sudoo.domain.repository.CartRepository
 import com.sudo248.sudoo.domain.repository.DiscoveryRepository
+import com.sudo248.sudoo.ui.activity.ar.ArActivity
+import com.sudo248.sudoo.ui.activity.main.MainViewModel
 import com.sudo248.sudoo.ui.activity.main.adapter.CommentAdapter
+import com.sudo248.sudoo.ui.util.BundleKeys
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -34,6 +40,8 @@ class ProductDetailViewModel @Inject constructor(
 
     var viewController: ViewController? = null
 
+    lateinit var parentViewModel: MainViewModel
+
     var error: SingleEvent<String?> = SingleEvent(null)
 
     private val _isRefresh: MutableLiveData<Boolean> = MutableLiveData(false)
@@ -50,6 +58,9 @@ class ProductDetailViewModel @Inject constructor(
 
     private val _remainComment: MutableLiveData<Int> = MutableLiveData(0)
     val remainComment: LiveData<Int> = _remainComment
+
+    private val _enableArViewer: MutableLiveData<Boolean> = MutableLiveData(false)
+    val enableArViewer: LiveData<Boolean> = _enableArViewer
 
     val commentAdapter: CommentAdapter by lazy { CommentAdapter() }
 
@@ -70,6 +81,7 @@ class ProductDetailViewModel @Inject constructor(
                 it.supplier?.let { supplierInfo ->
                     _supplier.value = supplierInfo
                 }
+                _enableArViewer.postValue(it.extras.enableArViewer)
                 getComments(it.productId)
             }
             .onError {
@@ -113,19 +125,30 @@ class ProductDetailViewModel @Inject constructor(
     }
 
     fun addProductToCart() = launch {
-//        val addProductToCart = AddSupplierProduct(
-//            product.supplierId,
-//            product.productId,
-//            1
-//        )
-//        setState(UiState.LOADING)
-//        cartRepository.addProductToCart(addProductToCart)
-//            .onSuccess {
-//                viewController?.setBadgeCart(it.cartSupplierProducts.size)
-//            }
-//            .onError {
-//                error = SingleEvent(it.message)
-//            }.bindUiState(_uiState)
+        getCartProduct()?.let { carProduct ->
+            setState(UiState.LOADING)
+            cartRepository.addProductToActiveCart(carProduct)
+                .onSuccess { cart ->
+                    viewController?.setBadgeCart(cart.totalAmount)
+                }
+                .onError {
+                    error = SingleEvent(it.message)
+                }.bindUiState(_uiState)
+        }
+    }
+
+    private fun getCartProduct(): AddCartProduct? {
+        return try {
+            AddCartProduct(
+                supplierId = _product.value!!.supplier!!.supplierId,
+                productId = _product.value!!.productId,
+                amount = 1
+            )
+        } catch (e: NullPointerException) {
+            error = SingleEvent("Some thing wet wrong")
+            setState(UiState.ERROR)
+            null
+        }
     }
 
     fun onBack() {
@@ -138,10 +161,6 @@ class ProductDetailViewModel @Inject constructor(
 
     fun navigateToHome() {
         navigator.navigateOffAll(ProductDetailFragmentDirections.actionProductDetailFragmentToDiscoveryFragment())
-    }
-
-    fun navigateToChat() {
-//        navigator.navigateTo(ProductDetailFragmentDirections.actionProductDetailFragmentToChatFragment(product.supplierId))
     }
 
     fun buyNow() = launch {
@@ -157,6 +176,19 @@ class ProductDetailViewModel @Inject constructor(
     fun loadMoreComment() {
         _product.value?.let {
             getComments(it.productId, isLoadMore = true)
+        }
+    }
+
+    fun navigateToArView() {
+        parentViewModel.requestPermission(Manifest.permission.CAMERA) {
+            if (it) {
+                _product.value?.extras?.source?.let { source ->
+                    parentViewModel.navigator()
+                        .navigateTo(ArActivity::class.createActionIntentDirections {
+                            putExtra(BundleKeys.SOURCE_AR, source)
+                        })
+                }
+            }
         }
     }
 

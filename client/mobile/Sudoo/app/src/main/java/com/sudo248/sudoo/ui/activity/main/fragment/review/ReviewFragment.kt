@@ -28,6 +28,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding, ReviewViewModel>(), V
     private val args: ReviewFragmentArgs by navArgs()
     override fun initView() {
         viewModel.setViewController(this)
+        viewModel.setMainViewModel(mainViewModel)
         setProduct(args.review.productInfo)
         setupRating()
     }

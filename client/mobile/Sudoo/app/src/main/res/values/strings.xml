@@ -113,4 +113,7 @@
     <string name="take_image">Chụp ảnh</string>
     <string name="pick_image">Chọn ảnh</string>
     <string name="comment_product">Nhận xét sản phẩm</string>
+    <string name="require_device">Sceneform yêu cầu OpenGL ES %s hoặc cao hơn</string>
+    <string name="device_not_supported">Thiết bị không hỗ trợ</string>
+    <string name="initializing">Đang khởi tạo…</string>
 </resources>

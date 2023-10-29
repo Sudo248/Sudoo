@@ -7,6 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.Priority
 import com.sudo248.base_android.base.BaseViewModel
+import com.sudo248.base_android.ktx.onError
+import com.sudo248.base_android.ktx.onSuccess
 import com.sudo248.base_android.navigation.IntentDirections
 import com.sudo248.sudoo.domain.common.Constants
 import com.sudo248.sudoo.domain.repository.CartRepository
@@ -87,13 +89,17 @@ class MainViewModel @Inject constructor(
     }
 
     fun getItemInCart() = launch {
-//        cartRepository.getCountCartItem()
-//            .onSuccess {
-//                _countCartItem.postValue(it)
-//            }
-//            .onError {
-//                _countCartItem.postValue(0)
-//            }
+        cartRepository.getItemInCart()
+            .onSuccess {
+                _countCartItem.postValue(it)
+            }
+            .onError {
+                _countCartItem.postValue(0)
+            }
+    }
+
+    fun requestPermission(permission: String, callback: (Boolean) -> Unit) {
+        viewController?.requestPermission(permission, callback)
     }
 
     override fun onCleared() {

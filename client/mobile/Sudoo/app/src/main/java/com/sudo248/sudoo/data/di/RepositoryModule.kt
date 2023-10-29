@@ -31,7 +31,7 @@ abstract class RepositoryModule {
     abstract fun bindPaymentRepository(paymentRepository: PaymentRepositoryImpl): PaymentRepository
 
     @Binds
-    abstract fun bindImageRepository(imageRepository: ImageRepositoryImpl): ImageRepository
+    abstract fun bindImageRepository(imageRepository: FileRepositoryImpl): FileRepository
 
     @Binds
     abstract fun bindCartRepository(cartRepository: CartRepositoryImpl): CartRepository
