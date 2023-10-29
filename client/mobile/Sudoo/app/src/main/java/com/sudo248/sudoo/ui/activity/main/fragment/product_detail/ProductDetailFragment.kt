@@ -126,18 +126,6 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
     private fun setImageSlideshow(images: List<String>) {
         binding.slideshowImageProduct.apply {
             setImageList(images.map { it.toSlideModel() }, ScaleTypes.CENTER_INSIDE)
-
-//            when (images.size) {
-//                1 -> {
-//                    this.auto
-//                }
-//                in 2..3 -> {
-//
-//                }
-//                else -> {
-//
-//                }
-//            }
         }
     }
 
