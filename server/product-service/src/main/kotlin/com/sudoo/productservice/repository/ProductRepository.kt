@@ -49,9 +49,9 @@ interface ProductRepository : CoroutineCrudRepository<Product, String> {
         products.rate,
         products.discount,
         products.start_date_discount,
-        product.end_date_discount
+        products.end_date_discount
         FROM products 
-        WHERE products.name LIKE %:_name%
+        WHERE products.name LIKE :_name
         LIMIT :_limit
         OFFSET :_offset
     """
@@ -132,11 +132,11 @@ interface ProductRepository : CoroutineCrudRepository<Product, String> {
 
     @Query(
         """
-        COUNT (products.product_id)
+        SELECT COUNT(products.product_id)
         FROM products
         INNER JOIN categories_products
         WHERE categories_products.category_id = :categoryId
-        AND products.name LIKE %:_name%
+        AND products.name LIKE :_name
     """
     )
     suspend fun countProductByCategoryIdAndName(
@@ -162,7 +162,7 @@ interface ProductRepository : CoroutineCrudRepository<Product, String> {
         FROM products
         INNER JOIN categories_products
         WHERE categories_products.category_id = :categoryId
-        AND products.name LIKE %:_name%
+        AND products.name LIKE :_name
         LIMIT :_limit
         OFFSET :_offset
     """

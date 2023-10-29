@@ -298,7 +298,7 @@ class ProductServiceImpl(
             val count = async { productRepository.countProductByNameContainsIgnoreCase(name) }
             val products =
                 productRepository.getProductInfoByNameWithOffset(
-                    name = name,
+                    name = "%$name%",
                     offset = offsetRequest.offset,
                     limit = offsetRequest.limit
                 )
@@ -323,11 +323,11 @@ class ProductServiceImpl(
         name: String,
         offsetRequest: OffsetRequest
     ): ProductPagination<ProductInfoDto> = coroutineScope {
-        val count = async { productRepository.countProductByCategoryIdAndName(categoryId, name) }
+        val count = async { productRepository.countProductByCategoryIdAndName(categoryId, "%$name%") }
         val products =
             productRepository.getProductInfoByCategoryIdAndName(
                 categoryId = categoryId,
-                name = name,
+                name = "%$name%",
                 offset = offsetRequest.offset,
                 limit = offsetRequest.limit
             )

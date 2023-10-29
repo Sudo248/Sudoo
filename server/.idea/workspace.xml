@@ -5,43 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="72cbe6d0-83b5-4e93-ba3c-2789b9cf0780" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/domain/src/main/kotlin/com/sudoo/domain/utils/Utils.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/dto/ReviewDto.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/dto/ReviewPagination.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/dto/UpsertUserProductDto.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../client/web/sudoo/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/sudoo/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/b2935c3e-9e31-4340-81f1-f3c046144ec2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/b2935c3e-9e31-4340-81f1-f3c046144ec2.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api-gateway/src/main/kotlin/com/sudoo/apigateway/filter/ApiFilter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/api-gateway/src/main/kotlin/com/sudoo/apigateway/filter/ApiFilter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/kotlin/com/sudoo/authservice/controller/dto/AddressDto.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/kotlin/com/sudoo/authservice/controller/dto/ChangePasswordDto.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/kotlin/com/sudoo/authservice/controller/dto/LocationDto.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/kotlin/com/sudoo/authservice/controller/dto/SignInDto.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/kotlin/com/sudoo/authservice/controller/dto/SignUpDto.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/kotlin/com/sudoo/authservice/controller/dto/TokenDto.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/kotlin/com/sudoo/authservice/controller/dto/UserDto.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/kotlin/com/sudoo/authservice/controller/dto/VerifyDto.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/kotlin/com/sudoo/authservice/dto/TokenDto.kt" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/kotlin/com/sudoo/authservice/dto/TokenDto.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/kotlin/com/sudoo/authservice/service/impl/AccountServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/kotlin/com/sudoo/authservice/service/impl/AccountServiceImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/kotlin/com/sudoo/authservice/service/impl/OtpServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/kotlin/com/sudoo/authservice/service/impl/OtpServiceImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/kotlin/com/sudoo/authservice/service/impl/TokenServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/kotlin/com/sudoo/authservice/service/impl/TokenServiceImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migration-up-product-db.sql" beforeDir="false" afterPath="$PROJECT_DIR$/database/migration-up-product-db.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/controller/order/dto/SupplierInfoDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/controller/order/dto/SupplierInfoDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/controller/CommentController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/controller/CommentController.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/controller/ProductController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/controller/ProductController.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/dto/SupplierInfoDto.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/dto/SupplierInfoDto.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/dto/UpsertImageDto.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/dto/UpsertImageDto.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/mapper/SupplierMapper.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/mapper/SupplierMapper.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/mapper/UserProductMapper.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/mapper/UserProductMapper.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/model/Product.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/model/Product.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/repository/UserProductRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/repository/UserProductRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/UserProductService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/UserProductService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/impl/CoreServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/impl/CoreServiceImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/repository/ProductRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/repository/ProductRepository.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/impl/ProductServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/impl/ProductServiceImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/impl/UserProductServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/impl/UserProductServiceImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/sudoo/userservice/controller/AddressController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/sudoo/userservice/controller/AddressController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/sudoo/userservice/controller/dto/AddressDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/sudoo/userservice/controller/dto/AddressDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/sudoo/userservice/repository/entitity/Address.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/sudoo/userservice/repository/entitity/Address.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/sudoo/userservice/repository/entitity/Location.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/sudoo/userservice/service/AddressService.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/sudoo/userservice/service/AddressService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/sudoo/userservice/service/impl/AddressServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/sudoo/userservice/service/impl/AddressServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/sudoo/userservice/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/sudoo/userservice/service/impl/UserServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,7 +68,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.ProductServiceApplication">
+  <component name="RunManager" selected="Spring Boot.UserServiceApplication">
     <configuration name="ApiGatewayApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="api-gateway" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.sudoo.apigateway.ApiGatewayApplication" />
@@ -174,22 +148,11 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1698456753998</updated>
-      <workItem from="1698456755318" duration="13317000" />
+      <workItem from="1698456755318" duration="23057000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/controller/ProductController.kt</url>
-          <line>54</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
