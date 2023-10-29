@@ -9,6 +9,7 @@ import com.sudo248.base_android.event.SingleEvent
 import com.sudo248.base_android.ktx.bindUiState
 import com.sudo248.base_android.ktx.onError
 import com.sudo248.base_android.ktx.onSuccess
+import com.sudo248.sudoo.domain.entity.cart.AddCartProduct
 import com.sudo248.sudoo.domain.entity.discovery.Offset
 import com.sudo248.sudoo.domain.entity.discovery.Product
 import com.sudo248.sudoo.domain.entity.discovery.SupplierInfo
@@ -113,19 +114,30 @@ class ProductDetailViewModel @Inject constructor(
     }
 
     fun addProductToCart() = launch {
-//        val addProductToCart = AddSupplierProduct(
-//            product.supplierId,
-//            product.productId,
-//            1
-//        )
-//        setState(UiState.LOADING)
-//        cartRepository.addProductToCart(addProductToCart)
-//            .onSuccess {
-//                viewController?.setBadgeCart(it.cartSupplierProducts.size)
-//            }
-//            .onError {
-//                error = SingleEvent(it.message)
-//            }.bindUiState(_uiState)
+        getCartProduct()?.let { carProduct ->
+            setState(UiState.LOADING)
+            cartRepository.addProductToActiveCart(carProduct)
+                .onSuccess { cart ->
+                    viewController?.setBadgeCart(cart.totalAmount)
+                }
+                .onError {
+                    error = SingleEvent(it.message)
+                }.bindUiState(_uiState)
+        }
+    }
+
+    private fun getCartProduct(): AddCartProduct? {
+        return try {
+            AddCartProduct(
+                supplierId = _product.value!!.supplier!!.supplierId,
+                productId = _product.value!!.productId,
+                amount = 1
+            )
+        } catch (e: NullPointerException) {
+            error = SingleEvent("Some thing wet wrong")
+            setState(UiState.ERROR)
+            null
+        }
     }
 
     fun onBack() {

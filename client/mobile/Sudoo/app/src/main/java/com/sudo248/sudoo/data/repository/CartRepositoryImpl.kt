@@ -22,11 +22,11 @@ class CartRepositoryImpl @Inject constructor(
     private val cartService: CartService,
     private val ioDispatcher: CoroutineDispatcher
 ) : CartRepository {
-    override suspend fun addSupplierProduct(
+    override suspend fun addProductToCart(
         addCartProduct: AddCartProduct
     ): DataState<Cart, Exception> = stateOn(ioDispatcher) {
         val response = handleResponse(
-            cartService.addSupplierProduct(
+            cartService.addProductToCart(
                 addCartProduct.toAddSupplierProductDto()
             )
         )
@@ -74,7 +74,7 @@ class CartRepositoryImpl @Inject constructor(
 
 
     override suspend fun getCart(): DataState<Cart, Exception> = stateOn(ioDispatcher) {
-        val response = handleResponse(cartService.getCart())
+        val response = handleResponse(cartService.getActiveCart())
         if (response.isSuccess) {
             response.data().toCart()
         } else {
