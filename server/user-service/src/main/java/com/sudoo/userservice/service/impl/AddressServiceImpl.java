@@ -5,7 +5,6 @@ import com.sudo248.domain.util.Utils;
 import com.sudoo.userservice.controller.dto.AddressDto;
 import com.sudoo.userservice.repository.AddressRepository;
 import com.sudoo.userservice.repository.entitity.Address;
-import com.sudoo.userservice.repository.entitity.Location;
 import com.sudoo.userservice.service.AddressService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -51,15 +50,8 @@ public class AddressServiceImpl implements AddressService {
         oldAddress.setDistrictName(addressDto.getDistrictName());
         oldAddress.setWardName(addressDto.getWardName());
         oldAddress.setAddress(addressDto.getAddress());
-        oldAddress.setLocation(addressDto.getLocation());
         addressRepository.save(oldAddress);
         return toDto(oldAddress);
-    }
-
-    @Override
-    public Location getLocation(String addressId) {
-        Address address = addressRepository.getReferenceById(addressId);
-        return address.getLocation();
     }
 
     @Override
@@ -73,7 +65,6 @@ public class AddressServiceImpl implements AddressService {
                 address.getDistrictName(),
                 address.getWardName(),
                 address.getAddress(),
-                address.getLocation(),
                 address.getFullAddress()
         );
     }
@@ -88,8 +79,7 @@ public class AddressServiceImpl implements AddressService {
                 addressDto.getProvinceName(),
                 addressDto.getDistrictName(),
                 addressDto.getWardName(),
-                addressDto.getAddress(),
-                addressDto.getLocation()
+                addressDto.getAddress()
         );
     }
 }

@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
         }
         addressService.putAddress(addressDto);
         userRepository.save(user);
-        firebaseService.upsertFirebaseUser(createUserFirebaseFromUser(user));
+//        firebaseService.upsertFirebaseUser(createUserFirebaseFromUser(user));
         return toDto(user);
     }
 

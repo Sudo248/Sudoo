@@ -38,13 +38,10 @@ public class Address {
     @Column(name = "address")
     private String address;
 
-    @Embedded
-    private Location location;
-
     @Transient
     private String fullAddress;
 
-    public Address(String addressId, int provinceID, int districtID, String wardCode, String provinceName, String districtName, String wardName, String address, Location location) {
+    public Address(String addressId, int provinceID, int districtID, String wardCode, String provinceName, String districtName, String wardName, String address) {
         this.addressId = addressId;
         this.provinceID = provinceID;
         this.districtID = districtID;
@@ -53,7 +50,6 @@ public class Address {
         this.districtName = districtName;
         this.wardName = wardName;
         this.address = address;
-        this.location = location;
     }
 
     @PostLoad

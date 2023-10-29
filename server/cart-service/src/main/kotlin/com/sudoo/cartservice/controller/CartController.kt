@@ -48,7 +48,7 @@ class CartController(
 
 
     //------------------------------------------------------------------------------------------------------------------
-    @PostMapping("/create")
+    @PostMapping("/create/{status}")
     suspend fun createCartByStatus(
         @RequestHeader(Constants.HEADER_USER_ID) userId: String,
         @PathVariable("status") status: String,
