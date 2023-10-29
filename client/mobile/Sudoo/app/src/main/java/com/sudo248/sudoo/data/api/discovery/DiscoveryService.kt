@@ -79,7 +79,7 @@ interface DiscoveryService {
         @Path("supplierId") supplierId: String
     ): Response<BaseResponse<SupplierDto>>
 
-    @GET("/comments")
+    @GET("comments")
     suspend fun getCommentsOfProduct(
         @Query("productId") productId: String,
         @Query("isReviewed") isReviewed: Boolean = true,
@@ -87,19 +87,19 @@ interface DiscoveryService {
         @Query("limit") limit: Int = Constants.DEFAULT_LIMIT,
     ): Response<BaseResponse<CommentListDto>>
 
-    @GET("/reviews")
+    @GET("reviews")
     suspend fun getReviews(
         @Query("isReviewed") isReviewed: Boolean,
         @Query("offset") offset: Int = 0,
         @Query("limit") limit: Int = Constants.DEFAULT_LIMIT,
     ): Response<BaseResponse<ReviewListDto>>
 
-    @POST("/reviews")
+    @POST("reviews")
     suspend fun upsertReview(
         @Body upsertReview: UpsertReviewDto
     ): Response<BaseResponse<ReviewDto>>
 
-    @DELETE("/comments/{commentId}")
+    @DELETE("comments/{commentId}")
     suspend fun deleteComment(
         @Path("commentId") commentId: String
     ): Response<BaseResponse<Any>>

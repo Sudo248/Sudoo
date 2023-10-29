@@ -1,6 +1,7 @@
 package com.sudo248.sudoo.domain.entity.user
 
 import com.sudo248.sudoo.domain.entity.auth.Role
+import java.time.LocalDate
 import java.util.Date
 
 data class User(
@@ -11,6 +12,6 @@ data class User(
     val gender: Gender = Gender.OTHER,
     val phone: String = "",
     val address: Address = Address(),
-    val dob: Date = Date(),
+    val dob: LocalDate = LocalDate.now(),
     val role: Role = Role.CONSUMER
 )

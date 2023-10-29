@@ -7,7 +7,6 @@ import com.sudo248.sudoo.data.api.discovery.DiscoveryService
 import com.sudo248.sudoo.data.ktx.data
 import com.sudo248.sudoo.data.ktx.errorBody
 import com.sudo248.sudoo.data.mapper.toCategory
-import com.sudo248.sudoo.data.mapper.toComment
 import com.sudo248.sudoo.data.mapper.toCommentList
 import com.sudo248.sudoo.data.mapper.toProduct
 import com.sudo248.sudoo.data.mapper.toProductInfo
@@ -19,7 +18,6 @@ import com.sudo248.sudoo.data.mapper.toUpsertCommentDto
 import com.sudo248.sudoo.domain.entity.discovery.Category
 import com.sudo248.sudoo.domain.entity.discovery.CommentList
 import com.sudo248.sudoo.domain.entity.discovery.Offset
-import com.sudo248.sudoo.domain.entity.discovery.Pagination
 import com.sudo248.sudoo.domain.entity.discovery.Product
 import com.sudo248.sudoo.domain.entity.discovery.ProductInfo
 import com.sudo248.sudoo.domain.entity.discovery.ProductList
@@ -120,8 +118,7 @@ class DiscoveryRepositoryImpl @Inject constructor(
             )
         )
         if (response.isSuccess) {
-//            response.data().toProductList()
-            mockProductList(response.data().toProductList())
+            response.data().toProductList()
         } else {
             throw response.error().errorBody()
         }
@@ -216,34 +213,4 @@ class DiscoveryRepositoryImpl @Inject constructor(
                 throw response.error().errorBody()
             }
         }
-
-    private fun mockProductList(raw: ProductList): ProductList {
-        val products = raw.products.toMutableList()
-        products.addAll(mockProductInfo(9))
-        return ProductList(
-            products = products,
-            pagination = Pagination(
-                offset = raw.pagination.offset + 9,
-                total = raw.pagination.total + 9
-            )
-        )
-    }
-
-    private fun mockProductInfo(size: Int) = List(size) {
-        ProductInfo(
-            productId = "product $it",
-            name = "Product $it",
-            sku = "$it",
-            images = listOf("product_default.png"),
-            price = 10000.0,
-            listedPrice = 10000.0,
-            amount = 10,
-            rate = 5.0f,
-            discount = 0,
-            startDateDiscount = null,
-            endDateDiscount = null,
-            saleable = true,
-            brand = "brand $it"
-        )
-    }
 }

@@ -17,6 +17,9 @@ class ReviewListFragment : BaseFragment<FragmentReviewListBinding, ReviewListVie
         binding.viewModel = viewModel
         binding.rcvReviewed.adapter = viewModel.reviewedAdapter
         binding.rcvNotYetReview.adapter = viewModel.notYetReviewedAdapter
+        binding.refresh.setOnRefreshListener {
+            viewModel.refresh()
+        }
         setupTabLayout()
     }
 

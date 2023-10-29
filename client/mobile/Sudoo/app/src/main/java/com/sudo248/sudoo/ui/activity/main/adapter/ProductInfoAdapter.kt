@@ -1,7 +1,10 @@
 package com.sudo248.sudoo.ui.activity.main.adapter
 
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.sudo248.base_android.ktx.invisible
+import com.sudo248.base_android.ktx.visible
 import com.sudo248.sudoo.databinding.ItemProductBinding
 import com.sudo248.sudoo.domain.entity.discovery.ProductInfo
 import com.sudo248.sudoo.ui.base.BasePageListAdapter
@@ -37,10 +40,23 @@ class ProductInfoAdapter(
     inner class ProductInfoViewHolder(binding: ItemProductBinding) : BasePageViewHolder<ProductInfo, ItemProductBinding>(binding) {
         override fun onBind(item: ProductInfo) {
             binding.apply {
-                loadImage(imageProduct, item.images.first())
+                loadImage(imgProduct, item.images.first())
                 nameProduct.text = item.name
-                priceProduct.text = Utils.formatVnCurrency(item.price)
-                txtStarts.text = Utils.format(item.rate.toDouble(), digit = 1)
+                txtPrice.text = Utils.formatVnCurrency(item.price)
+                if (item.price < item.listedPrice) {
+                    txtListedPrice.visible()
+                    txtListedPrice.text = Utils.formatVnCurrency(item.listedPrice)
+                    txtListedPrice.paintFlags = txtListedPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                } else {
+                    txtListedPrice.invisible()
+                }
+
+                if (item.discount > 0) {
+                    txtDiscountPercent.visible()
+                    txtDiscountPercent.text = Utils.formatDiscountPercent(item.discount)
+                } else {
+                    txtDiscountPercent.invisible()
+                }
             }
             itemView.setOnClickListener {
                 onItemClick(item)

@@ -1,15 +1,10 @@
 package com.sudo248.sudoo.ui.activity.main.fragment.user
 
-import android.Manifest
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.sudo248.base_android.base.BaseFragment
 import com.sudo248.sudoo.R
@@ -19,14 +14,13 @@ import com.sudo248.sudoo.ui.activity.main.MainViewModel
 import com.sudo248.sudoo.ui.uimodel.adapter.loadImage
 import com.sudo248.sudoo.ui.util.FileUtils
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
+import java.util.Date
 
 @AndroidEntryPoint
 class UserEditFragment : BaseFragment<FragmentEditUserBinding, UserViewModel>(), ViewController {
     override val viewModel: UserViewModel by activityViewModels()
     private val mainViewModel: MainViewModel by activityViewModels()
-    override val enableStateScreen: Boolean
-        get() = true
+    override val enableStateScreen: Boolean = true
 
     override fun initView() {
         binding.viewModel = viewModel
