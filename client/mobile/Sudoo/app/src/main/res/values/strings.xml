@@ -151,4 +151,7 @@
     <string name="payment_time">Thời gian thanh toán</string>
     <string name="received_time">Thời gian nhận hàng</string>
     <string name="have_not_yet_payment">Chưa thanh toán</string>
+    <string name="require_device">Sceneform yêu cầu OpenGL ES %s hoặc cao hơn</string>
+    <string name="device_not_supported">Thiết bị không hỗ trợ</string>
+    <string name="initializing">Đang khởi tạo…</string>
 </resources>

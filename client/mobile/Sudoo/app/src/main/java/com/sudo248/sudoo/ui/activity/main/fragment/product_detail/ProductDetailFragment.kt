@@ -5,6 +5,7 @@ import android.graphics.Paint
 import android.net.Uri
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.denzcoskun.imageslider.constants.ScaleTypes
@@ -24,6 +25,7 @@ import com.sudo248.sudoo.databinding.FragmentProductDetailBinding
 import com.sudo248.sudoo.domain.entity.discovery.Product
 import com.sudo248.sudoo.domain.entity.discovery.SupplierInfo
 import com.sudo248.sudoo.ui.activity.main.MainActivity
+import com.sudo248.sudoo.ui.activity.main.MainViewModel
 import com.sudo248.sudoo.ui.ktx.showErrorDialog
 import com.sudo248.sudoo.ui.ktx.toSlideModel
 import com.sudo248.sudoo.ui.uimodel.adapter.loadImage
@@ -40,6 +42,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, ProductDetailViewModel>(), ViewController {
     override val viewModel: ProductDetailViewModel by viewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
     private val args: ProductDetailFragmentArgs by navArgs()
 
     override val enableStateScreen: Boolean = true
@@ -51,6 +54,7 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
     override fun initView() {
         binding.viewModel = viewModel
         viewModel.viewController = this
+        viewModel.parentViewModel = mainViewModel
         binding.rcvComment.adapter = viewModel.commentAdapter
         viewModel.getProduct(args.productId)
         binding.refreshProductDetail.setOnRefreshListener {

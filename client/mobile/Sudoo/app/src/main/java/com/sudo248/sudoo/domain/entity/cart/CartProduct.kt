@@ -11,13 +11,12 @@ data class CartProduct(
     val product: ProductInfoDto? = null
 ) : ItemDiff {
     override fun isContentTheSame(other: ItemDiff): Boolean {
-        return this == other
+        return other is CartProduct && this == other
     }
 
     override fun isItemTheSame(other: ItemDiff): Boolean {
-        val cartProduct = other as CartProduct
-        return cartProductId == other.cartProductId && cartProduct.product?.productId == product?.productId &&
-                cartProduct.quantity == quantity
+        return other is CartProduct && cartProductId == other.cartProductId && other.product?.productId == product?.productId &&
+                other.quantity == quantity
     }
 
 }

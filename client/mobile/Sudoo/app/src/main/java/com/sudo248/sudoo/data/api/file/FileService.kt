@@ -1,4 +1,4 @@
-package com.sudo248.sudoo.data.api.image
+package com.sudo248.sudoo.data.api.file
 
 import com.sudo248.base_android_annotation.apiservice.ApiService
 import com.sudo248.base_android_annotation.apiservice.logging_level.Level
@@ -12,11 +12,11 @@ import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
 
-@ApiService(baseUrl = BuildConfig.BASE_URL + "storage/images/")
+@ApiService(baseUrl = BuildConfig.BASE_URL + "storage/")
 @LoggingLever(level = Level.BODY)
-interface ImageService {
+interface FileService {
     @Multipart
-    @POST("upload")
+    @POST("images/upload")
     suspend fun uploadImage(@Part image: MultipartBody.Part): Response<BaseResponse<ImageDto>>
 
 }

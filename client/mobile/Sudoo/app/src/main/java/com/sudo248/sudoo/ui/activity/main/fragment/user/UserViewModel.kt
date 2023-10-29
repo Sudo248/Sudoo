@@ -14,7 +14,7 @@ import com.sudo248.base_android.utils.SharedPreferenceUtils
 import com.sudo248.sudoo.domain.common.Constants
 import com.sudo248.sudoo.domain.entity.user.AddressSuggestion
 import com.sudo248.sudoo.domain.repository.AuthRepository
-import com.sudo248.sudoo.domain.repository.ImageRepository
+import com.sudo248.sudoo.domain.repository.FileRepository
 import com.sudo248.sudoo.domain.repository.UserRepository
 import com.sudo248.sudoo.ui.activity.auth.AuthActivity
 import com.sudo248.sudoo.ui.activity.main.MainViewModel
@@ -25,14 +25,13 @@ import com.sudo248.sudoo.ui.uimodel.UserUiModel
 import com.sudo248.sudoo.ui.util.Utils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
 class UserViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val authRepository: AuthRepository,
-    private val imageRepository: ImageRepository
+    private val fileRepository: FileRepository
 ) : BaseViewModel<NavDirections>() {
 
     private var viewController: ViewController? = null
@@ -103,7 +102,7 @@ class UserViewModel @Inject constructor(
         setState(UiState.LOADING)
         parentViewModel.imageUri.value?.let {
             viewController?.run {
-                val imageUrl = imageRepository.uploadImage(getPathImageFromUri(it)).get()
+                val imageUrl = fileRepository.uploadImage(getPathImageFromUri(it)).get()
                 _user.value?.avatar?.set(imageUrl)
             }
         }

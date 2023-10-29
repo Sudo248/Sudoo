@@ -1,6 +1,5 @@
 package com.sudo248.sudoo.ui.activity.main
 
-import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -56,10 +55,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), ViewCon
         }
     }
 
+    private var callbackRequestPermission: ((Boolean) -> Unit)? = null
+
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-        if (isGranted) {
-            viewModel.getCurrentLocation()
-        }
+        callbackRequestPermission?.invoke(isGranted)
+        callbackRequestPermission = null
     }
 
     private val listFragmentHideBottomNav = listOf(
@@ -83,7 +83,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), ViewCon
     private lateinit var navController: NavController
 
     override fun initView() {
-        requestPermission()
         viewModel.viewController = this
         val navHost = supportFragmentManager.findFragmentById(R.id.fcvMain) as NavHostFragment
         navController = navHost.navController
@@ -160,9 +159,12 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), ViewCon
         return (this as Context).createTempPictureUri()
     }
 
-    private fun requestPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+    override fun requestPermission(permission: String, callback: (Boolean) -> Unit) {
+        if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+            callbackRequestPermission = callback
+            requestPermissionLauncher.launch(permission)
+        } else {
+            callback.invoke(true)
         }
     }
 

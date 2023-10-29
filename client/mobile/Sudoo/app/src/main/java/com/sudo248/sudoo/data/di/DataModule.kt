@@ -14,7 +14,7 @@ import javax.inject.Singleton
 import com.sudo248.sudoo.data.api.cart.CartService
 import com.sudo248.sudoo.data.api.chat.ChatService
 import com.sudo248.sudoo.data.api.discovery.DiscoveryService
-import com.sudo248.sudoo.data.api.image.ImageService
+import com.sudo248.sudoo.data.api.file.FileService
 import com.sudo248.sudoo.data.api.order.OrderService
 import com.sudo248.sudoo.data.api.notification.NotificationService
 import com.sudo248.sudoo.data.api.payment.PaymentService
@@ -59,7 +59,7 @@ object DataModule {
 
     @Singleton
     @Provides
-    fun provideImageService(): ImageService = ApiService()
+    fun provideImageService(): FileService = ApiService()
 
     @Singleton
     @Provides
