@@ -6,7 +6,7 @@ import com.sudo248.sudoo.domain.entity.cart.AddCartProducts
 import com.sudo248.sudoo.domain.entity.cart.Cart
 
 interface CartRepository {
-    suspend fun addSupplierProduct(addCartProduct: AddCartProduct): DataState<Cart, Exception>
+    suspend fun addProductToCart(addCartProduct: AddCartProduct): DataState<Cart, Exception>
     suspend fun updateSupplierProduct(cartId: String, addCartProduct: AddCartProduct): DataState<Cart, Exception>
     suspend fun deleteSupplierProduct(cartId: String, addCartProduct: AddCartProduct): DataState<Cart, Exception>
     suspend fun getCart(): DataState<Cart, Exception>

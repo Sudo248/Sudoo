@@ -57,7 +57,7 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
             viewModel.refresh()
         }
         createBadgeCart()
-//        viewModel.countItemInCart()
+        viewModel.countItemInCart()
         try {
             setupSendMessage()
         } catch (e: Exception) {

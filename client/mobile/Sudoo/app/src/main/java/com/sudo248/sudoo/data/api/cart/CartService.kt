@@ -13,42 +13,39 @@ import com.sudo248.sudoo.domain.common.Constants
 import retrofit2.Response
 import retrofit2.http.*
 
-@ApiService(baseUrl = BuildConfig.BASE_URL + "cart/")
+@ApiService(baseUrl = BuildConfig.BASE_URL + "carts/")
 @EnableAuthentication(Constants.Key.TOKEN)
 @LoggingLever(level = Level.BODY)
 interface CartService {
-    @POST("/api/v1/cart/item")
-    suspend fun addSupplierProduct(@Body addCartProductDto: AddCartProductDto): Response<BaseResponse<CartDto>>
+    @POST("product")
+    suspend fun addProductToCart(@Body addCartProductDto: AddCartProductDto): Response<BaseResponse<CartDto>>
 
-    @PUT("/api/v1/cart/{cartId}/item")
+    @PUT("{cartId}/item")
     suspend fun updateSupplierProduct(
         @Path("cartId") cartId: String,
         @Body addCartProductDto: List<AddCartProductDto>
     ): Response<BaseResponse<CartDto>>
 
-    @DELETE("/api/v1/cart/{cartId}/item")
+    @DELETE("{cartId}/item")
     suspend fun deleteSupplierProduct(
         @Path("cartId") cartId: String,
         @Query("supplierId") supplierId: String,
         @Query("productId") productId: String
     ): Response<BaseResponse<CartDto>>
 
-    @GET("/api/v1/cart/active")
-    suspend fun getCart(): Response<BaseResponse<CartDto>>
-
-    @GET("/api/v1/cart/active/count-item")
+    @GET("active/count-item")
     suspend fun getItemInCart(): Response<BaseResponse<Int>>
 
     //------------------------------------
-    @GET("/api/v1/carts/active")
+    @GET("active")
     suspend fun getActiveCart():Response<BaseResponse<CartDto>>
 
     @GET("/api/v1/carts/")
     suspend fun getCartByStatus():Response<BaseResponse<CartDto>>
 
-    @POST("/api/v1/carts/product")
+    @POST("product")
     suspend fun updateProductToActiveCart(@Body upsertCartProductDto: AddCartProductDto):Response<BaseResponse<CartDto>>
 
-    @POST("/api/v1/carts/processing/")
+    @POST("processing")
     suspend fun createProcessingCartWithProduct(@Body cartProductsDto: CartProductsDto):Response<BaseResponse<CartDto>>
 }
