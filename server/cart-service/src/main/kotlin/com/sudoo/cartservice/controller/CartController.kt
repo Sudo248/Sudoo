@@ -22,6 +22,13 @@ class CartController(
         cartService.getActiveCart(userId)
     }
 
+    @GetMapping("/active/count-item")
+    suspend fun getCountItemActiveCartByUserId(
+        @RequestHeader(Constants.HEADER_USER_ID) userId: String
+    ): ResponseEntity<BaseResponse<*>> = handle {
+        cartService.getCountItemActiveCart(userId)
+    }
+
     @GetMapping("/{cartId}")
     suspend fun getCartById(
         @RequestHeader(Constants.HEADER_USER_ID) userId: String,
@@ -30,6 +37,7 @@ class CartController(
     ): ResponseEntity<BaseResponse<*>> = handle {
         cartService.getCartById(userId, cartId, hasRoute)
     }
+
 
     @PostMapping("/processing")
     suspend fun createProcessingCart(
@@ -44,37 +52,6 @@ class CartController(
         @RequestHeader(Constants.HEADER_USER_ID) userId: String,
     ): ResponseEntity<BaseResponse<*>> = handle {
         cartService.deleteProcessingCart(userId)
-    }
-
-
-    //------------------------------------------------------------------------------------------------------------------
-    @PostMapping("/create/{status}")
-    suspend fun createCartByStatus(
-        @RequestHeader(Constants.HEADER_USER_ID) userId: String,
-        @PathVariable("status") status: String,
-    ): ResponseEntity<BaseResponse<*>> = handle {
-        cartService.createCartByStatus(userId, status)
-    }
-
-    @PostMapping("/")
-    suspend fun createNewCart(@RequestHeader(Constants.HEADER_USER_ID) userId: String): ResponseEntity<BaseResponse<*>> =
-        handle {
-            cartService.createNewCart(userId)
-        }
-
-    @PutMapping("/active/completed")
-    suspend fun updateStatusCart(
-        @RequestHeader(Constants.HEADER_USER_ID) userId: String
-    ): ResponseEntity<BaseResponse<*>> = handle {
-        cartService.updateStatusCart(userId)
-    }
-
-
-    @GetMapping("/active/count-item")
-    suspend fun getCountItemActiveCartByUserId(
-        @RequestHeader(Constants.HEADER_USER_ID) userId: String
-    ): ResponseEntity<BaseResponse<*>> = handle {
-        cartService.getCountItemActiveCart(userId)
     }
 
     //Call from other service

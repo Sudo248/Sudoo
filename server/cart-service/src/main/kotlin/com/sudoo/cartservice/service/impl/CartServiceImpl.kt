@@ -20,9 +20,6 @@ class CartServiceImpl(
     val productService: ProductService
 ) : CartService {
 
-    /**
-     * Lấy active cart, mỗi user chỉ có 1 active cart
-     */
     override suspend fun getActiveCart(userId: String): CartDto {
         return try {
             val activeCarts = cartRepository.findCartByUserIdAndStatus(userId, "active").toList()
@@ -52,6 +49,28 @@ class CartServiceImpl(
         }
     }
 
+    override suspend fun createNewCart(userId: String): CartDto {
+        val cart = Cart(
+            cartId = IdentifyCreator.create(),
+            userId = userId,
+            totalAmount = 0,
+            totalPrice = 0.0,
+            status = CartStatus.ACTIVE.value,
+        ).apply { isNewCart = true }
+        val savedCart = cartRepository.save(cart)
+        val cartDto = getCartById(userId = userId, cartId = savedCart.cartId, false)
+        return cartDto
+    }
+
+    override suspend fun getCountItemActiveCart(userId: String): Int {
+        return try {
+            cartRepository.countByUserIdAndStatus(userId, "active")
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+            0
+        }
+    }
+
     override suspend fun createCartByStatus(userId: String, status: String): CartDto {
         val cart = Cart(
             cartId = IdentifyCreator.create(),
@@ -68,21 +87,6 @@ class CartServiceImpl(
         return getCartById(userId = userId, cartId = cart.cartId, false)
     }
 
-    /**
-     * Lấy danh sách product trong 1 cart
-     */
-    override suspend fun getCartProducts(cartId: String): List<CartProductDto> {
-        val cartProducts: MutableList<CartProductDto> = mutableListOf()
-        val cartProductsOfCart = cartProductRepository.findCartProductByCartId(cartId).toList()
-        for (cartProduct in cartProductsOfCart) {
-            cartProducts.add(cartProduct.toCartProductDto(productService.getProductInfo(cartProduct.productId)))
-        }
-        return cartProducts.toList()
-    }
-
-    /**
-     * Lấy chính xác 1 cart của user
-     */
     override suspend fun getCartById(userId: String, cartId: String, hasRoute: Boolean): CartDto {
         val cart = cartRepository.findById(cartId) ?: throw NotFoundException("Not found cart $cartId")
         val totalPrice = 0.0
@@ -104,89 +108,16 @@ class CartServiceImpl(
         )
     }
 
-    /**
-     * Tạo cart processing phục vụ order
-     */
-    override suspend fun createProcessingCart(userId: String, cartProducts: List<CartProductDto>): CartDto {
-        val processingCart = createCartByStatus(userId, CartStatus.PROCESSING.value)
-        val cartProductsOfProcessingCart = mutableListOf<CartProductDto>()
-        for (cartProduct in cartProducts) {
-            val cartProductOfProcessingCart = CartProductDto(
-                cartProductId = IdentifyCreator.create(),
-                cartId = processingCart.cartId,
-                totalPrice = cartProduct.totalPrice,
-                quantity = cartProduct.quantity,
-                product = cartProduct.product
-            )
-            cartProductRepository.save(cartProductOfProcessingCart.toCartProduct().apply { isNewCartProduct = true })
-            cartProductsOfProcessingCart.add(
-                cartProductOfProcessingCart
-            )
-            processingCart.totalPrice += (cartProduct.product?.price ?: 0.0f) * cartProduct.quantity
+    override suspend fun getCartProducts(cartId: String): List<CartProductDto> {
+        val cartProducts: MutableList<CartProductDto> = mutableListOf()
+        val cartProductsOfCart = cartProductRepository.findCartProductByCartId(cartId).toList()
+        for (cartProduct in cartProductsOfCart) {
+            cartProducts.add(cartProduct.toCartProductDto(productService.getProductInfo(cartProduct.productId)))
         }
-
-        processingCart.totalAmount = cartProducts.size
-        processingCart.cartProducts = cartProductsOfProcessingCart
-        cartRepository.save(processingCart.toCart())
-
-        return processingCart
+        return cartProducts.toList()
     }
 
-    override suspend fun deleteProcessingCart(userId: String): Boolean {
-        val processingCart = try {
-            cartRepository.findCartByUserIdAndStatus(userId, CartStatus.PROCESSING.value).toList()[0]
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
-        }
-
-        return if (processingCart != null) {
-            cartRepository.deleteById(processingCart.cartId)
-            true
-        } else {
-            true
-        }
-    }
-
-    override suspend fun checkoutProcessingCart(userId: String) {
-        val processingCart = try {
-            cartRepository.findCartByUserIdAndStatus(userId, CartStatus.ACTIVE.value).toList()[0]
-        } catch (e: Exception) {
-            e.printStackTrace()
-            throw e
-        }
-
-        val productIdsInProcessingCart =
-            cartProductRepository.findCartProductByCartId(processingCart.cartId).toList().map { it.productId }
-
-
-        val activeCart = try {
-            cartRepository.findCartByUserIdAndStatus(userId, CartStatus.ACTIVE.value).toList()[0]
-        } catch (e: Exception) {
-            e.printStackTrace()
-            throw e
-        }
-
-        for (productId in productIdsInProcessingCart) {
-            val cartProductInActiveCart =
-                cartProductRepository.findCartProductByCartIdAndProductId(activeCart.cartId, productId)
-
-            cartProductInActiveCart?.cartProductId?.let { cartProductRepository.deleteById(it) }
-        }
-
-
-    }
-
-
-    //------------------------------------------------------------------------------------------------------------------
-
-    /**
-     * Thêm, bớt mặt hàng vào active cart
-     */
-    override suspend fun updateProductInActiveCart(
-        userId: String,
-        upsertCartProductDto: UpsertCartProductDto
-    ): CartDto =
+    override suspend fun updateProductInActiveCart(userId: String, upsertCartProductDto: UpsertCartProductDto): CartDto =
         coroutineScope {
 //            if (upsertCartProductDto.cartProductId == null) throw BadRequestException("Require cart product id")
             val activeCart = getActiveCart(userId)
@@ -272,37 +203,74 @@ class CartServiceImpl(
         true
     }
 
-    //------------------------------------------------------------------------------------------------------------------
+    override suspend fun createProcessingCart(userId: String, cartProducts: List<CartProductDto>): CartDto {
+        val processingCart = createCartByStatus(userId, CartStatus.PROCESSING.value)
+        val cartProductsOfProcessingCart = mutableListOf<CartProductDto>()
+        for (cartProduct in cartProducts) {
+            val cartProductOfProcessingCart = CartProductDto(
+                cartProductId = IdentifyCreator.create(),
+                cartId = processingCart.cartId,
+                totalPrice = cartProduct.totalPrice,
+                quantity = cartProduct.quantity,
+                product = cartProduct.product
+            )
+            cartProductRepository.save(cartProductOfProcessingCart.toCartProduct().apply { isNewCartProduct = true })
+            cartProductsOfProcessingCart.add(
+                cartProductOfProcessingCart
+            )
+            processingCart.totalPrice += (cartProduct.product?.price ?: 0.0f) * cartProduct.quantity
+        }
 
+        processingCart.totalAmount = cartProducts.size
+        processingCart.cartProducts = cartProductsOfProcessingCart
+        cartRepository.save(processingCart.toCart())
 
-    override suspend fun createNewCart(userId: String): CartDto {
-        val cart = Cart(
-            cartId = IdentifyCreator.create(),
-            userId = userId,
-            totalAmount = 0,
-            totalPrice = 0.0,
-            status = CartStatus.ACTIVE.value,
-        ).apply { isNewCart = true }
-        val savedCart = cartRepository.save(cart)
-        val cartDto = getCartById(userId = userId, cartId = savedCart.cartId, false)
-        return cartDto
+        return processingCart
     }
 
-    override suspend fun updateStatusCart(userId: String): CartDto {
-        val cart = cartRepository.findCartByUserIdAndStatus(userId, CartStatus.ACTIVE.value).toList()[0]
-        cart.status = CartStatus.COMPLETED.value
-        val savedCart = cartRepository.save(cart)
-        return getCartById(userId, savedCart.cartId, false)
-    }
-
-    override suspend fun getCountItemActiveCart(userId: String): Int {
-        return try {
-            cartRepository.countByUserIdAndStatus(userId, "active")
-        } catch (e: java.lang.Exception) {
+    override suspend fun deleteProcessingCart(userId: String): Boolean {
+        val processingCart = try {
+            cartRepository.findCartByUserIdAndStatus(userId, CartStatus.PROCESSING.value).toList()[0]
+        } catch (e: Exception) {
             e.printStackTrace()
-            0
+            null
+        }
+
+        return if (processingCart != null) {
+            cartRepository.deleteById(processingCart.cartId)
+            true
+        } else {
+            true
         }
     }
 
+    override suspend fun checkoutProcessingCart(userId: String) {
+        val processingCart = try {
+            cartRepository.findCartByUserIdAndStatus(userId, CartStatus.ACTIVE.value).toList()[0]
+        } catch (e: Exception) {
+            e.printStackTrace()
+            throw e
+        }
+
+        val productIdsInProcessingCart =
+            cartProductRepository.findCartProductByCartId(processingCart.cartId).toList().map { it.productId }
+
+
+        val activeCart = try {
+            cartRepository.findCartByUserIdAndStatus(userId, CartStatus.ACTIVE.value).toList()[0]
+        } catch (e: Exception) {
+            e.printStackTrace()
+            throw e
+        }
+
+        for (productId in productIdsInProcessingCart) {
+            val cartProductInActiveCart =
+                cartProductRepository.findCartProductByCartIdAndProductId(activeCart.cartId, productId)
+
+            cartProductInActiveCart?.cartProductId?.let { cartProductRepository.deleteById(it) }
+        }
+
+
+    }
 
 }
