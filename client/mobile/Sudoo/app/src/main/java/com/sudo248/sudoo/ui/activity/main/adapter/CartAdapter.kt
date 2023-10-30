@@ -36,18 +36,16 @@ class CartAdapter(
                         item.quantity -= 1
                         onUpdateItemAmount.invoke(
                             AddCartProduct(
-                                supplierId = "",
                                 productId = item.product!!.productId,
-                                amount = item.quantity
+                                amount = -1
                             )
                         )
                         txtCountItem.text = item.quantity.toString()
                     } else {
                         onDeleteItem.invoke(
                             AddCartProduct(
-                                supplierId = "",
                                 productId = item.product!!.productId,
-                                amount = item.quantity
+                                amount = -item.quantity
                             )
                         )
                         txtCountItem.text = item.quantity.toString()
@@ -60,9 +58,8 @@ class CartAdapter(
                     item.quantity += 1
                     onUpdateItemAmount.invoke(
                         AddCartProduct(
-                            supplierId = "",
                             productId = item.product?.productId ?: "",
-                            amount = item.quantity
+                            amount = 1
                         )
                     )
                     txtCountItem.text = item.quantity.toString()
@@ -71,7 +68,6 @@ class CartAdapter(
                 btnDeleteItem.setOnClickListener {
                     onDeleteItem.invoke(
                         AddCartProduct(
-                            supplierId = "",
                             productId = item.product?.productId?:"",
                             amount = item.quantity
                         )

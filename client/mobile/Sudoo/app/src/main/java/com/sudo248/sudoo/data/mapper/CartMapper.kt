@@ -49,7 +49,7 @@ fun CartDto.toCart(): Cart {
 }
 
 fun AddCartProduct.toAddSupplierProductDto(): AddCartProductDto {
-    return AddCartProductDto(
-        supplierId, productId, amount
+    return AddCartProductDto("",
+        productId, amount
     )
 }

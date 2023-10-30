@@ -59,18 +59,18 @@ class CartViewModel @Inject constructor(
     }
 
     fun deleteItemFromCart(addCartProduct: AddCartProduct) = launch {
-        setState(UiState.LOADING)
-        cartRepository.deleteSupplierProduct(
-            _cart.value!!.cartId,
-            addCartProduct
-        )
-            .onSuccess {
-                _cart.postValue(it)
-                _totalPrice.postValue(it.totalPrice)
-            }
-            .onError {
-                error = SingleEvent(it.message)
-            }.bindUiState(_uiState)
+//        setState(UiState.LOADING)
+//        cartRepository.deleteSupplierProduct(
+//            _cart.value!!.cartId,
+//            addCartProduct
+//        )
+//            .onSuccess {
+//                _cart.postValue(it)
+//                _totalPrice.postValue(it.totalPrice)
+//            }
+//            .onError {
+//                error = SingleEvent(it.message)
+//            }.bindUiState(_uiState)
     }
 
     fun buy() = launch {
