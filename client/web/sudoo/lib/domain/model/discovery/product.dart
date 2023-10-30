@@ -18,6 +18,10 @@ class Product {
   final DateTime? startDateDiscount;
   DateTime? endDateDiscount;
   bool saleable;
+  final int weight;
+  final int height;
+  final int width;
+  final int length;
   final List<File> images;
   final Supplier supplier;
   final List<Category> categories;
@@ -37,6 +41,10 @@ class Product {
     this.startDateDiscount,
     this.endDateDiscount,
     this.saleable,
+    this.weight,
+    this.height,
+    this.width,
+    this.length,
     this.images,
     this.supplier,
     this.categories,

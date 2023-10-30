@@ -36,7 +36,11 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
       amountController = TextEditingController(),
       listedPriceController = TextEditingController(),
       priceController = TextEditingController(),
-      discountController = TextEditingController(text: "0");
+      discountController = TextEditingController(text: "0"),
+      weightController = TextEditingController(),
+      heightController = TextEditingController(),
+      widthController = TextEditingController(),
+      lengthController = TextEditingController();
 
   final ValueNotifier<DateTime?> startDateDiscount = ValueNotifier(null);
   final ValueNotifier<DateTime?> endDateDiscount = ValueNotifier(null);
@@ -74,6 +78,10 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
     enable3DViewer.dispose();
     enableARViewer.dispose();
     sourceViewer.dispose();
+    weightController.dispose();
+    heightController.dispose();
+    widthController.dispose();
+    lengthController.dispose();
   }
 
   @override
@@ -104,9 +112,14 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
     startDateDiscount.value = product.startDateDiscount;
     endDateDiscount.value = product.endDateDiscount;
     amountController.text = product.amount.toString();
+    weightController.text = product.weight.toString();
+    heightController.text = product.height.toString();
+    widthController.text = product.width.toString();
+    lengthController.text = product.length.toString();
     enable3DViewer.value = product.extras?.enable3DViewer ?? false;
     enableARViewer.value = product.extras?.enableARViewer ?? false;
     sourceViewer.value = product.extras?.source;
+    saleable.value = product.saleable;
   }
 
   @override
@@ -276,6 +289,10 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
         endDateDiscount: endDateDiscount.value,
         amount: int.parse(amountController.text),
         saleable: saleable.value,
+        weight: int.parse(weightController.text),
+        height: int.parse(heightController.text),
+        width: int.parse(widthController.text),
+        length: int.parse(lengthController.text),
         images: images.map((e) => UpsertFile(url: e)).toList(),
         categoryIds: categories.value!.map((e) => e.categoryId).toList(),
         extras: Extras(
@@ -306,6 +323,10 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
     enable3DViewer.value = false;
     enableARViewer.value = false;
     sourceViewer.value = null;
+    weightController.clear();
+    heightController.clear();
+    widthController.clear();
+    lengthController.clear();
   }
 
   Future<List<String>> uploadImages() async {
@@ -324,6 +345,10 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
       endDateDiscount: endDateDiscount.value,
       amount: int.parse(amountController.text),
       saleable: saleable.value,
+      weight: int.parse(weightController.text),
+      height: int.parse(heightController.text),
+      width: int.parse(widthController.text),
+      length: int.parse(lengthController.text),
       extras: Extras(
         enable3DViewer: enable3DViewer.value,
         enableARViewer: enableARViewer.value,
@@ -346,5 +371,9 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
     } else {
       enableARViewer.value = value;
     }
+  }
+
+  void onChangeSaleStatus(bool saleable) {
+    this.saleable.value = saleable;
   }
 }

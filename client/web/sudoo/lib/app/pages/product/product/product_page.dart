@@ -3,9 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sudoo/app/base/base_page.dart';
 import 'package:sudoo/app/pages/product/product/product_bloc.dart';
-import 'package:sudoo/app/pages/product/product/viewer.dart';
 import 'package:sudoo/app/widgets/blocks/category_block.dart';
+import 'package:sudoo/app/widgets/blocks/extras_block.dart';
 import 'package:sudoo/app/widgets/blocks/image_block.dart';
+import 'package:sudoo/app/widgets/blocks/size_block.dart';
 import 'package:sudoo/app/widgets/loading_view.dart';
 
 import '../../../../resources/R.dart';
@@ -102,7 +103,7 @@ class ProductPage extends BasePage<ProductBloc> {
                     child: _buildTextFieldBlock(
                       bloc.descriptionController,
                       maxLines: 5,
-                      maxLength: 500,
+                      maxLength: 5000,
                     ),
                   ),
                 ]),
@@ -147,8 +148,45 @@ class ProductPage extends BasePage<ProductBloc> {
                   ),
                 ]),
                 TableRow(children: [
+                  _buildTitle(R.string.sizeWeight, style),
+                  Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: SizeBlock(
+                      style: style,
+                      weightController: bloc.weightController,
+                      heightController: bloc.heightController,
+                      widthController: bloc.widthController,
+                      lengthController: bloc.lengthController,
+                    ),
+                  )
+                ]),
+                TableRow(children: [
+                  _buildTitle(R.string.saleStatus, style),
+                  Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: ValueListenableBuilder(
+                      valueListenable: bloc.saleable,
+                      builder: (context, value, child) => Switch(
+                        value: value,
+                        onChanged: (value) => bloc.onChangeSaleStatus(value),
+                        thumbColor: MaterialStateProperty.all(Colors.white),
+                        activeTrackColor: Colors.red,
+                        inactiveTrackColor: Colors.grey,
+                      ),
+                    ),
+                  ),
+                ]),
+                TableRow(children: [
                   _buildTitle(R.string.extras, style),
-                  _buildExtraBlock(context),
+                  Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: ExtrasBlock(
+                      enable3DViewer: bloc.enable3DViewer,
+                      enableARViewer: bloc.enableARViewer,
+                      sourceViewer: bloc.sourceViewer,
+                      onChangeEnableViewer: bloc.onChangeEnableViewer,
+                    ),
+                  ),
                 ])
               ],
             ),
@@ -303,53 +341,6 @@ class ProductPage extends BasePage<ProductBloc> {
           },
         ),
       ],
-    );
-  }
-
-  Widget _buildExtraBlock(BuildContext context) {
-    return Row(
-      children: [
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(
-              children: [
-                Text(R.string.enable3DViewer),
-                const SizedBox(
-                  width: 5,
-                ),
-                _buildSwitch(Viewer.viewer3D, bloc.enable3DViewer)
-              ],
-            ),
-            Row(
-              children: [
-                Text(R.string.enableARViewer),
-                const SizedBox(
-                  width: 5,
-                ),
-                _buildSwitch(Viewer.viewerAR, bloc.enableARViewer)
-              ],
-            )
-          ],
-        )
-      ],
-    );
-  }
-
-  Widget _buildSwitch(
-    Viewer viewer,
-    ValueNotifier<bool> value,
-  ) {
-    return ValueListenableBuilder(
-      valueListenable: value,
-      builder: (context, value, child) => Switch(
-        value: value,
-        onChanged: (value) => bloc.onChangeEnableViewer(viewer, value),
-        thumbColor: MaterialStateProperty.all(Colors.white),
-        activeTrackColor: Colors.red,
-        inactiveTrackColor: Colors.grey,
-      ),
     );
   }
 

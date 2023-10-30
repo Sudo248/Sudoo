@@ -22,6 +22,10 @@ class ProductDto {
   final DateTime? startDateDiscount;
   final DateTime? endDateDiscount;
   final bool saleable;
+  final int weight;
+  final int height;
+  final int width;
+  final int length;
   final List<FileDto> images;
   final SupplierDto supplier;
   final List<CategoryDto> categories;
@@ -41,13 +45,18 @@ class ProductDto {
     this.startDateDiscount,
     this.endDateDiscount,
     this.saleable,
+    this.weight,
+    this.height,
+    this.width,
+    this.length,
     this.images,
     this.supplier,
     this.categories,
     this.extras,
   );
 
-  factory ProductDto.fromJson(Map<String, dynamic> json) => _$ProductDtoFromJson(json);
+  factory ProductDto.fromJson(Map<String, dynamic> json) =>
+      _$ProductDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$ProductDtoToJson(this);
 }
@@ -55,23 +64,26 @@ class ProductDto {
 extension Mapper on ProductDto {
   Product toProduct() {
     return Product(
-      productId,
-      sku,
-      name,
-      description,
-      price,
-      listedPrice,
-      amount,
-      soldAmount,
-      rate,
-      discount,
-      startDateDiscount,
-      endDateDiscount,
-      saleable,
-      images.map((e) => e.toFile()).toList(),
-      supplier.toSupplier(),
-      categories.map((e) => e.toCategory()).toList(),
-      extras.toExtras()
-    );
+        productId,
+        sku,
+        name,
+        description,
+        price,
+        listedPrice,
+        amount,
+        soldAmount,
+        rate,
+        discount,
+        startDateDiscount,
+        endDateDiscount,
+        saleable,
+        weight,
+        height,
+        width,
+        length,
+        images.map((e) => e.toFile()).toList(),
+        supplier.toSupplier(),
+        categories.map((e) => e.toCategory()).toList(),
+        extras.toExtras());
   }
 }

@@ -17,6 +17,10 @@ class UpsertProduct {
   final bool? saleable;
   final List<UpsertFile>? images;
   final List<String>? categoryIds;
+  final int weight;
+  final int height;
+  final int width;
+  final int length;
   final Extras? extras;
 
   const UpsertProduct({
@@ -32,6 +36,10 @@ class UpsertProduct {
     this.startDateDiscount,
     this.endDateDiscount,
     this.saleable,
+    this.weight = 0,
+    this.height = 0,
+    this.width = 0,
+    this.length = 0,
     this.images,
     this.categoryIds,
     this.extras,

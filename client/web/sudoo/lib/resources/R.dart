@@ -88,6 +88,14 @@ class AppString extends R {
   String get enable3DViewer => "Enable 3D viewer";
 
   String get enableARViewer => "Enable AR viewer";
+
+  String get chooseFile => "Choose file";
+
+  String get weight => "Weight";
+  String get height => "Height";
+  String get width => "Width";
+  String get length => "Length";
+  String get sizeWeight => "Size and Weight";
 }
 
 class AppColor extends R {

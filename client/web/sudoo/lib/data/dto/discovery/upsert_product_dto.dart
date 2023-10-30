@@ -19,6 +19,10 @@ class UpsertProductDto {
   final DateTime? startDateDiscount;
   final DateTime? endDateDiscount;
   final bool saleable;
+  final int weight;
+  final int height;
+  final int width;
+  final int length;
   final List<FileDto>? images;
   final List<String>? categoryIds;
   final ExtrasDto? extras;
@@ -36,6 +40,10 @@ class UpsertProductDto {
     this.startDateDiscount,
     this.endDateDiscount,
     this.saleable,
+    this.weight,
+    this.height,
+    this.width,
+    this.length,
     this.images,
     this.categoryIds,
     this.extras,
