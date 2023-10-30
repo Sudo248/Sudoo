@@ -22,56 +22,6 @@ class CartRepositoryImpl @Inject constructor(
     private val cartService: CartService,
     private val ioDispatcher: CoroutineDispatcher
 ) : CartRepository {
-    override suspend fun addProductToCart(
-        addCartProduct: AddCartProduct
-    ): DataState<Cart, Exception> = stateOn(ioDispatcher) {
-        val response = handleResponse(
-            cartService.addProductToCart(
-                addCartProduct.toAddSupplierProductDto()
-            )
-        )
-        if (response.isSuccess) {
-            response.data().toCart()
-        } else {
-            throw response.error().errorBody()
-        }
-    }
-
-    override suspend fun updateSupplierProduct(
-        cartId: String,
-        addCartProduct: AddCartProduct
-    ): DataState<Cart, Exception> = stateOn(ioDispatcher) {
-        val response = handleResponse(
-            cartService.updateSupplierProduct(
-                cartId,
-                listOf(addCartProduct.toAddSupplierProductDto())
-            )
-        )
-        if (response.isSuccess) {
-            response.data().toCart()
-        } else {
-            throw response.error().errorBody()
-        }
-    }
-
-    override suspend fun deleteSupplierProduct(
-        cartId: String,
-        addCartProduct: AddCartProduct
-    ): DataState<Cart, Exception> = stateOn(ioDispatcher) {
-        val response = handleResponse(
-            cartService.deleteSupplierProduct(
-                cartId,
-                addCartProduct.supplierId,
-                addCartProduct.productId
-            )
-        )
-        if (response.isSuccess) {
-            response.data().toCart()
-        } else {
-            throw response.error().errorBody()
-        }
-    }
-
 
     override suspend fun getCart(): DataState<Cart, Exception> = stateOn(ioDispatcher) {
         val response = handleResponse(cartService.getActiveCart())

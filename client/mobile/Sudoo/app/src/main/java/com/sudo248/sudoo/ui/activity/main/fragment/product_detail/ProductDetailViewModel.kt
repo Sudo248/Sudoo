@@ -114,9 +114,9 @@ class ProductDetailViewModel @Inject constructor(
     }
 
     fun addProductToCart() = launch {
-        getCartProduct()?.let { carProduct ->
+        getCartProduct()?.let { cartProduct ->
             setState(UiState.LOADING)
-            cartRepository.addProductToActiveCart(carProduct)
+            cartRepository.addProductToActiveCart(cartProduct)
                 .onSuccess { cart ->
                     viewController?.setBadgeCart(cart.totalAmount)
                 }
@@ -129,7 +129,6 @@ class ProductDetailViewModel @Inject constructor(
     private fun getCartProduct(): AddCartProduct? {
         return try {
             AddCartProduct(
-                supplierId = _product.value!!.supplier!!.supplierId,
                 productId = _product.value!!.productId,
                 amount = 1
             )
