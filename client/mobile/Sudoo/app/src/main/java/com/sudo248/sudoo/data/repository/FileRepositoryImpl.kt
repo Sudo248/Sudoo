@@ -50,7 +50,7 @@ class FileRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getImageResource(source: String): DataState<Uri, Exception> {
+    override suspend fun getImageResource(context: Context, source: String): DataState<Uri, Exception> = stateOn(ioDispatcher) {
         TODO("Not yet implemented")
     }
 }

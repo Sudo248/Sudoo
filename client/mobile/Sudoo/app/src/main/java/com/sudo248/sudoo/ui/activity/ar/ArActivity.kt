@@ -42,7 +42,7 @@ class ArActivity : BaseActivity<ActivityArBinding, ArViewModel>() {
         }
         setupArFragment()
         getSourceFromIntent()?.let {
-            viewModel.getModelResource(it)
+            viewModel.getModelResource(this, it)
         }
     }
 

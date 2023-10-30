@@ -8,5 +8,5 @@ interface FileRepository {
     suspend fun uploadImage(context: Context, uri: Uri): DataState<String, Exception>
     suspend fun uploadImage(pathImage: String): DataState<String, Exception>
 
-    suspend fun getImageResource(source: String): DataState<Uri, Exception>
+    suspend fun getImageResource(context: Context, source: String): DataState<Uri, Exception>
 }

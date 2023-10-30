@@ -1,5 +1,6 @@
 package com.sudo248.sudoo.ui.activity.ar
 
+import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -24,9 +25,9 @@ class ArViewModel @Inject constructor(
     private val _modelSource = MutableLiveData<Uri>()
     val modelSource: LiveData<Uri> = _modelSource
 
-    fun getModelResource(source: String) = launch {
+    fun getModelResource(context: Context, source: String) = launch {
         emitState(UiState.LOADING)
-        fileRepository.getImageResource(source)
+        fileRepository.getImageResource(context, source)
             .onSuccess {
                 _modelSource.postValue(it)
             }
