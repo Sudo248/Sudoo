@@ -300,6 +300,7 @@ class ProductServiceImpl(
             throw BadRequestException("Not enough product")
         }
         product.amount += patchProduct.amount
+        product.soldAmount -= patchProduct.amount
         productRepository.save(product)
         patchProduct.amount = product.amount
         return patchProduct

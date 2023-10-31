@@ -6,6 +6,7 @@ import com.sudoo.productservice.dto.PatchAmountPromotionDto
 import com.sudoo.productservice.dto.PromotionDto
 import com.sudoo.productservice.service.PromotionService
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -39,7 +40,7 @@ class PromotionController (
         promotionService.upsertPromotion(promotionDto)
     }
 
-    @GetMapping("/{promotionId}")
+    @DeleteMapping("/{promotionId}")
     suspend fun deletePromotion(
         @PathVariable("promotionId") promotionId: String
     ) : ResponseEntity<BaseResponse<*>> = handle {
