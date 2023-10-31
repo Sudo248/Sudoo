@@ -3,8 +3,10 @@ package com.sudo248.orderservice.controller.order;
 import com.sudo248.domain.base.BaseResponse;
 import com.sudo248.domain.common.Constants;
 import com.sudo248.domain.exception.ApiException;
+import com.sudo248.domain.util.Utils;
 import com.sudo248.orderservice.controller.order.dto.UpsertOrderDto;
 import com.sudo248.orderservice.controller.order.dto.OrderDto;
+import com.sudo248.orderservice.controller.order.dto.UpsertOrderPromotionDto;
 import com.sudo248.orderservice.service.order.OrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,40 +26,58 @@ public class OrderController {
     public ResponseEntity<BaseResponse<?>> createOrder(
             @RequestHeader(Constants.HEADER_USER_ID) String userId,
             @RequestBody UpsertOrderDto upsertOrderDto
-    ) throws ApiException {
-        OrderDto savedOrder = orderService.createOrder(userId, upsertOrderDto);
-        return BaseResponse.ok(savedOrder);
+    ) {
+        return Utils.handleException(() -> {
+            OrderDto savedOrder = orderService.createOrder(userId, upsertOrderDto);
+            return BaseResponse.ok(savedOrder);
+        });
     }
 
     @GetMapping
     public ResponseEntity<BaseResponse<?>> getOrderByUserId(
             @RequestHeader(Constants.HEADER_USER_ID) String userId
-    ) throws ApiException {
-        List<OrderDto> list = orderService.getOrdersByUserId(userId);
-        return BaseResponse.ok(list);
+    ) {
+        return Utils.handleException(() -> {
+            List<OrderDto> list = orderService.getOrdersByUserId(userId);
+            return BaseResponse.ok(list);
+        });
     }
 
     @GetMapping("/{orderId}")
     public ResponseEntity<BaseResponse<?>> getOrderById(@PathVariable String orderId) throws ApiException {
-        OrderDto orderDto = orderService.getOrderById(orderId);
-        return BaseResponse.ok(orderDto);
+        return Utils.handleException(()->{
+            OrderDto orderDto = orderService.getOrderById(orderId);
+            return BaseResponse.ok(orderDto);
+        });
     }
 
     @DeleteMapping("/{orderId}")
     public ResponseEntity<BaseResponse<?>> deleteOrderById(@PathVariable String orderId) {
-        boolean res = orderService.deleteOrder(orderId);
-        if(res)
-            return BaseResponse.ok(orderId);
-        return BaseResponse.ok(null);
+        return Utils.handleException(() -> {
+            boolean res = orderService.deleteOrder(orderId);
+            if(res)
+                return BaseResponse.ok(orderId);
+            return BaseResponse.ok(null);
+        });
     }
 
-    @PatchMapping("/{orderId}/update/{field}/{fieldId}")
-    public ResponseEntity<BaseResponse<?>> updateInvoiceByCase(
+    @PatchMapping("/{orderId}/{field}/{fieldId}")
+    public ResponseEntity<BaseResponse<?>> updateOrderByCase(
             @PathVariable(name = "orderId") String orderId,
             @PathVariable(name = "field") String field,
             @PathVariable(name = "fieldId") String fieldId
-    ) throws ApiException {
-        return BaseResponse.ok(orderService.updateOrderByField(orderId, field, fieldId));
+    ) {
+        return Utils.handleException(() -> {
+            return BaseResponse.ok(orderService.updateOrderByField(orderId, field, fieldId));
+        });
+    }
+
+    @PatchMapping("/{orderId}/promotion")
+    public ResponseEntity<BaseResponse<?>> updateOrderPromotion(
+            @PathVariable(name = "orderId") String orderId,
+            @RequestBody UpsertOrderPromotionDto upsertOrderPromotionDto
+            ) {
+        return Utils.handleException(() -> BaseResponse.ok(orderService.updateOrderPromotion(orderId, upsertOrderPromotionDto)));
     }
 
     @PatchMapping("/{orderId}/payment/{paymentId}")
@@ -65,7 +85,9 @@ public class OrderController {
             @PathVariable("orderId") String orderId,
             @PathVariable("paymentId") String paymentId
     ) {
-        orderService.updateOrderPayment(orderId, paymentId);
-        return BaseResponse.ok(true);
+        return Utils.handleException(() -> {
+            orderService.updateOrderPayment(orderId, paymentId);
+            return BaseResponse.ok(true);
+        });
     }
 }

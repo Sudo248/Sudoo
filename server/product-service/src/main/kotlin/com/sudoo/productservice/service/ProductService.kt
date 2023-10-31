@@ -26,5 +26,5 @@ interface ProductService {
 
     suspend fun getListOrderProductInfoByIds(ids: List<String>): List<OrderProductInfoDto>
 
-
+    suspend fun patchAmountProduct(patchProduct: PatchAmountProductDto): PatchAmountProductDto
 }

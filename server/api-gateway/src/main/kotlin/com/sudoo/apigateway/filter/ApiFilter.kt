@@ -50,9 +50,9 @@ class ApiFilter(
 
             log.info("[${request.method}] ${request.path}")
 
-//            if (isApiInternal.test(request)) {
-//                throw ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, SudooError.INTERNAL_API_NOT_ALLOW.message)
-//            }
+            if (isApiInternal.test(request)) {
+                throw ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, SudooError.INTERNAL_API_NOT_ALLOW.message)
+            }
 
             if (isApiSecured.test(request)) {
                 if (!request.headers.containsKey(Constants.AUTHORIZATION)) {
