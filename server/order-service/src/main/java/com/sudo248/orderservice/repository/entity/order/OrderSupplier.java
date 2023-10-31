@@ -30,9 +30,6 @@ public class OrderSupplier {
     @Column(name = "promotion_id")
     private String promotionId;
 
-    @Column(name = "promotion_value")
-    private double promotionValue;
-
     @Column(name = "total_price")
     private double totalPrice;
 

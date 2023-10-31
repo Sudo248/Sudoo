@@ -3,19 +3,16 @@ USE `product-db`;
 DROP TABLE IF EXISTS `suppliers`;
 CREATE TABLE `suppliers`
 (
-    `supplier_id`   CHAR(32)     NOT NULL PRIMARY KEY,
-    `user_id`       CHAR(32)     NOT NULL,
-    `ghn_shop_id`   INT          NOT NULL,
-    `address_id`    CHAR(32)     NOT NULL,
-    `name`          VARCHAR(255) NOT NULL,
-    `avatar`        VARCHAR(255),
-    `brand`         VARCHAR(255),
-    `contact_url`   VARCHAR(255),
-    `longitude`     FLOAT8   DEFAULT 0.0,
-    `latitude`      FLOAT8   DEFAULT 0.0,
-    `location_name` VARCHAR(255),
-    `rate`          FLOAT4   DEFAULT 0.0,
-    `create_at`     DATETIME DEFAULT CURRENT_TIMESTAMP
+    `supplier_id` CHAR(32)     NOT NULL PRIMARY KEY,
+    `user_id`     CHAR(32)     NOT NULL,
+    `ghn_shop_id` INT          NOT NULL,
+    `address_id`  CHAR(32)     NOT NULL,
+    `name`        VARCHAR(255) NOT NULL,
+    `avatar`      VARCHAR(255),
+    `brand`       VARCHAR(255),
+    `contact_url` VARCHAR(255),
+    `rate`        FLOAT4   DEFAULT 0.0,
+    `create_at`   DATETIME DEFAULT CURRENT_TIMESTAMP
 ) CHARACTER SET = utf8mb4
     COMMENT = 'Store all supplier';
 
@@ -42,8 +39,8 @@ CREATE TABLE `products`
     `length`              INT4,
     `width`               INT4,
 
-    INDEX                 id_index (product_id),
-    INDEX                 sku_index (sku),
+    INDEX id_index (product_id),
+    INDEX sku_index (sku),
 
     FOREIGN KEY (supplier_id) REFERENCES suppliers (supplier_id) ON DELETE CASCADE
 
@@ -58,10 +55,10 @@ CREATE TABLE `product_extras`
     `enable_ar_viewer` BOOLEAN DEFAULT FALSE,
     `source`           VARCHAR(255),
 
-    INDEX              id_index (product_id),
+    INDEX id_index (product_id),
 
     FOREIGN KEY (product_id) REFERENCES products (product_id) ON DELETE CASCADE
-)CHARACTER SET = utf8mb4
+) CHARACTER SET = utf8mb4
     COMMENT = 'Store all product extra';
 
 DROP TABLE IF EXISTS `categories`;
@@ -97,7 +94,7 @@ CREATE TABLE `users_products`
     `updated_at`      DATETIME DEFAULT CURRENT_TIMESTAMP,
     `created_at`      DATETIME DEFAULT CURRENT_TIMESTAMP,
 
-    INDEX             product_id_index (product_id),
+    INDEX product_id_index (product_id),
 
     FOREIGN KEY (product_id) REFERENCES products (product_id) ON DELETE CASCADE
 
@@ -112,4 +109,15 @@ CREATE TABLE `images`
     `url`      VARCHAR(255) NOT NULL
 ) CHARACTER SET = utf8mb4
     COMMENT = 'Store all images';
+
+DROP TABLE IF EXISTS `promotions`;
+CREATE TABLE `promotions`
+(
+    `promotion_id` CHAR(32) NOT NULL PRIMARY KEY,
+    `supplier_id`  CHAR(32) NOT NULL,
+    `name`         VARCHAR(255),
+    `value`        FLOAT4,
+    `total_amount` INT DEFAULT 0
+) CHARACTER SET = utf8mb4
+    COMMENT = 'Store all promotion';
 

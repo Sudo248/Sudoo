@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import org.springframework.stereotype.Service
+import kotlin.math.abs
 
 @Service
 class ProductServiceImpl(
@@ -291,6 +292,18 @@ class ProductServiceImpl(
                 product.toOrderProductDto()
             }
         }.toList().awaitAll()
+    }
+
+    override suspend fun patchAmountProduct(patchProduct: PatchAmountProductDto): PatchAmountProductDto {
+        val product = productRepository.findById(patchProduct.productId) ?: throw NotFoundException("Not found product ${patchProduct.productId}")
+        if (patchProduct.amount < 0 && abs(patchProduct.amount) > product.amount) {
+            throw BadRequestException("Not enough product")
+        }
+        product.amount += patchProduct.amount
+        product.soldAmount -= patchProduct.amount
+        productRepository.save(product)
+        patchProduct.amount = product.amount
+        return patchProduct
     }
 
     suspend fun getProductInfoByName(name: String, offsetRequest: OffsetRequest): ProductPagination<ProductInfoDto> =

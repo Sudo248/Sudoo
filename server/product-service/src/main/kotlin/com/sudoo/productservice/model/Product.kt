@@ -33,7 +33,7 @@ data class Product(
     val listedPrice: Float,
 
     @Column("amount")
-    val amount: Int,
+    var amount: Int,
 
     @Column("sold_amount")
     var soldAmount: Int,

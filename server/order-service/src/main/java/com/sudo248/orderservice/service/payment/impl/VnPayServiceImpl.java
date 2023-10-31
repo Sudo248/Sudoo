@@ -4,18 +4,23 @@ import com.sudo248.domain.base.BaseResponse;
 import com.sudo248.domain.exception.ApiException;
 import com.sudo248.domain.util.Utils;
 import com.sudo248.orderservice.config.VnPayConfig;
+import com.sudo248.orderservice.controller.order.dto.CartDto;
+import com.sudo248.orderservice.controller.order.dto.OrderCartProductDto;
+import com.sudo248.orderservice.controller.order.dto.PatchAmountProductDto;
+import com.sudo248.orderservice.controller.order.dto.PatchAmountPromotionDto;
 import com.sudo248.orderservice.controller.payment.dto.PaymentDto;
 import com.sudo248.orderservice.controller.payment.dto.PaymentInfoDto;
 import com.sudo248.orderservice.controller.payment.dto.VnPayResponse;
 import com.sudo248.orderservice.internal.CartService;
 import com.sudo248.orderservice.internal.NotificationService;
+import com.sudo248.orderservice.internal.ProductService;
 import com.sudo248.orderservice.repository.OrderRepository;
 import com.sudo248.orderservice.repository.PaymentRepository;
 import com.sudo248.orderservice.repository.entity.order.Order;
+import com.sudo248.orderservice.repository.entity.order.OrderSupplier;
 import com.sudo248.orderservice.repository.entity.payment.Notification;
 import com.sudo248.orderservice.repository.entity.payment.Payment;
 import com.sudo248.orderservice.repository.entity.payment.PaymentStatus;
-import com.sudo248.orderservice.service.order.OrderService;
 import com.sudo248.orderservice.service.payment.VnpayService;
 import com.sudo248.orderservice.service.payment.PaymentService;
 import org.springframework.http.HttpStatus;
@@ -38,18 +43,21 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
 
     private final NotificationService notificationService;
 
+    private final ProductService productService;
+
     private final Locale locale = new Locale("vi", "VN");
 
     public VnPayServiceImpl(
             PaymentRepository paymentRepository,
             OrderRepository orderRepository,
             CartService cartService,
-            NotificationService notificationService
-    ) {
+            NotificationService notificationService,
+            ProductService productService) {
         this.paymentRepository = paymentRepository;
         this.orderRepository = orderRepository;
         this.cartService = cartService;
         this.notificationService = notificationService;
+        this.productService = productService;
     }
 
     public ResponseEntity<BaseResponse<?>> pay(String userId, PaymentDto paymentDto) {
@@ -78,13 +86,12 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
             vnp_Params.put("vnp_ReturnUrl", VnPayConfig.vnp_ReturnUrl);
             vnp_Params.put("vnp_IpAddr", paymentDto.getIpAddress());
 
-            Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
-            //cld.setTimeInMillis(currentTime);
+            Calendar cld = Calendar.getInstance(paymentDto.getTimeZone());
             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
             String vnp_CreateDate = formatter.format(cld.getTime());
             vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
 
-            cld.add(Calendar.HOUR, +15);
+            cld.add(Calendar.MINUTE, 15);
             String vnp_ExpireDate = formatter.format(cld.getTime());
             vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
 
@@ -118,16 +125,59 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
             String vnp_SecureHash = VnPayConfig.hmacSHA512(VnPayConfig.vnp_HashSecret, hashData.toString());
             queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
             String paymentUrl = VnPayConfig.vnp_Url + "?" + queryUrl;
-            updateOrderPayment(payment);
-            cartService.updateStatusCart(userId);
-            return BaseResponse.ok(toDto(payment, paymentUrl));
+            updateStatusCart(order.getCartId());
+            updateAmountProduct(order.getCartId(), false);
+            updateAmountPromotion(order.getPromotionId());
+            return BaseResponse.ok(toDto(payment, paymentUrl, paymentDto.getTimeZone()));
         });
     }
 
-    private void updateOrderPayment(Payment payment) {
-        final Order order = orderRepository.getReferenceById(payment.getOrder().getOrderId());
-        order.setPayment(payment);
-        orderRepository.save(order);
+    private void updateStatusCart(String cartId) {
+        // confirm lai de update status cart khi thanh toan
+        cartService.updateStatusCart(cartId);
+    }
+
+    private void updateAmountProduct(String cartId, Boolean isRestore) throws ApiException {
+        CartDto cart = getCartById(cartId);
+        for (OrderCartProductDto orderCartProductDto : cart.getCartProducts()) {
+            updateAmountProduct(orderCartProductDto, isRestore);
+        }
+    }
+
+    // isRestore == true => hoan lai so luong san pham
+    private void updateAmountProduct(OrderCartProductDto orderCartProductDto, Boolean isRestore) throws ApiException {
+        final PatchAmountProductDto patchAmountProductDto = new PatchAmountProductDto(
+                orderCartProductDto.getProduct().getProductId(),
+                isRestore ? orderCartProductDto.getQuantity() : -orderCartProductDto.getQuantity()
+        );
+        ResponseEntity<BaseResponse<?>> response = productService.patchProductAmount(patchAmountProductDto);
+        if (!response.hasBody()) {
+            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, "Some thing went wrong");
+        }
+        if (!Objects.requireNonNull(response.getBody()).isSuccess()) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, response.getBody().getMessage());
+        }
+    }
+
+    private void updateAmountPromotion(String promotionId) throws ApiException {
+        final PatchAmountPromotionDto promotionDto = new PatchAmountPromotionDto(
+                promotionId,
+                1
+        );
+        ResponseEntity<BaseResponse<?>> response = productService.patchPromotionAmount(promotionDto);
+        if (!response.hasBody()) {
+            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, "Some thing went wrong");
+        }
+        if (!Objects.requireNonNull(response.getBody()).isSuccess()) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, response.getBody().getMessage());
+        }
+    }
+
+    private CartDto getCartById(String cartId) throws ApiException {
+        var response = cartService.getCartById(cartId);
+        if (response.getStatusCode() != HttpStatus.OK || !response.hasBody())
+            throw new ApiException(HttpStatus.NOT_FOUND, "Not found cart " + cartId);
+        return Objects.requireNonNull(response.getBody()).getData();
     }
 
     @Override
@@ -168,7 +218,7 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
         );
     }
 
-    private PaymentDto toDto(Payment payment, String paymentUrl) {
+    private PaymentDto toDto(Payment payment, String paymentUrl, TimeZone timeZone) {
         return new PaymentDto(
                 payment.getPaymentId(),
                 payment.getOrder().getOrderId(),
@@ -177,6 +227,7 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
                 payment.getAmount(),
                 payment.getPaymentType(),
                 payment.getIpAddress(),
+                timeZone,
                 paymentUrl,
                 payment.getStatus()
         );
@@ -224,6 +275,8 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
 //        }
     }
 
+    // vnpay call to update merchant payment
+    // This API will be call to verify update payment in merchant website after that call return url
     @Override
     public VnPayResponse ipnVnpay(
             String vnp_TmnCode,
@@ -280,7 +333,7 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
             String bankCode,
             String paymentStatus,
             String responseCode
-    ) {
+    ) throws ApiException {
 
         if (paymentRepository.existsById(paymentId)) {
             Payment payment = paymentRepository.getReferenceById(paymentId);
@@ -305,6 +358,8 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
                                 "Thanh toán thất bại",
                                 "Có lỗi xảy ra trong quá trình thanh toán. Hãy kiểm tra lại"
                         );
+                        // if thanh toan that bai => tra lai so luong cho san pham
+                        updateAmountProduct(payment.getOrder().getCartId(), true);
                     }
                     notificationService.sendNotificationPaymentStatus(payment.getOrder().getUserId(), notification);
                     if (payment.getBankCode() == null || payment.getBankCode().isEmpty()) {

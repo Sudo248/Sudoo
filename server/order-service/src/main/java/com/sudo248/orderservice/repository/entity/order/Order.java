@@ -1,5 +1,6 @@
 package com.sudo248.orderservice.repository.entity.order;
 
+import com.sudo248.orderservice.controller.order.dto.PromotionDto;
 import com.sudo248.orderservice.repository.entity.payment.Payment;
 import lombok.*;
 
@@ -26,7 +27,7 @@ public class Order {
     private String userId;
 
     @Column(name = "total_price")
-    private Double totalPrice;
+    private Double totalPrice = 0.0;
 
     @Column(name = "status")
     private OrderStatus status;
@@ -35,13 +36,13 @@ public class Order {
     private String promotionId;
 
     @Column(name = "total_promotion_price")
-    private Double totalPromotionPrice;
+    private Double totalPromotionPrice = 0.0;
 
     @Column(name = "total_shipment_price")
-    private Double totalShipmentPrice;
+    private Double totalShipmentPrice = 0.0;
 
     @Column(name = "final_price")
-    private Double finalPrice;
+    private Double finalPrice = 0.0;
 
     @Column(name = "address")
     private String address;
@@ -52,6 +53,18 @@ public class Order {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderSupplier> orderSuppliers;
+
+    public double calculateTotalPromotionPrice(PromotionDto promotionDto, List<PromotionDto> supplierPromotion) {
+        if (promotionDto != null) {
+            this.totalPromotionPrice = promotionDto.getValue();
+        } else {
+            this.totalPromotionPrice = 0.0;
+        }
+        if (supplierPromotion != null && !supplierPromotion.isEmpty()) {
+            this.totalPromotionPrice += supplierPromotion.stream().map(PromotionDto::getValue).reduce(0.0, Double::sum);
+        }
+        return this.totalPromotionPrice;
+    }
 
     public double calculateTotalShipmentPrice() {
         this.totalShipmentPrice = orderSuppliers.stream().map(orderSupplier -> orderSupplier.getShipment().getShipmentPrice()).reduce(0.0, Double::sum);
