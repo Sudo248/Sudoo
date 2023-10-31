@@ -47,11 +47,25 @@ class CartController(
         cartService.createProcessingCart(userId, cartProductsDto.cartProducts)
     }
 
+    @GetMapping("/processing")
+        suspend fun getProcessingCart(
+        @RequestHeader(Constants.HEADER_USER_ID) userId: String,
+    ): ResponseEntity<BaseResponse<*>> = handle {
+        cartService.getProcessingCart(userId)
+    }
+
     @DeleteMapping("/processing")
     suspend fun deleteProcessingCart(
         @RequestHeader(Constants.HEADER_USER_ID) userId: String,
     ): ResponseEntity<BaseResponse<*>> = handle {
         cartService.deleteProcessingCart(userId)
+    }
+
+    @PostMapping("/checkout")
+    suspend fun checkoutProcessingCart(
+        @RequestHeader(Constants.HEADER_USER_ID) userId: String,
+    ): ResponseEntity<BaseResponse<*>> = handle {
+        cartService.checkoutProcessingCart(userId)
     }
 
     //Call from other service

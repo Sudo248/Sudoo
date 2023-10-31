@@ -1,6 +1,7 @@
 package com.sudoo.cartservice.service.impl
 
 import com.sudoo.cartservice.controller.dto.ProductInfoDto
+import com.sudoo.cartservice.controller.dto.order.OrderProductInfoDto
 import com.sudoo.cartservice.service.ProductService
 import com.sudoo.domain.base.BaseResponse
 import com.sudoo.domain.exception.NotFoundException
@@ -25,6 +26,21 @@ class ProductServiceImpl(
             throw e
         }
         return response.data ?: throw NotFoundException("Not found product $productId")
+    }
+
+    override suspend fun getListOrderProductInfoByIds(productIds: List<String>): List<OrderProductInfoDto> {
+        val response = try{
+            client.post()
+                .uri("/list?orderInfo=true")
+                .bodyValue(productIds)
+                .retrieve()
+                .awaitBodyOrNull<BaseResponse<List<OrderProductInfoDto>>>()
+                ?: throw NotFoundException("Not found product list")
+        }catch (e:Exception){
+            e.printStackTrace()
+            throw e
+        }
+        return response.data?: throw NotFoundException("Not found product list")
     }
 
 }

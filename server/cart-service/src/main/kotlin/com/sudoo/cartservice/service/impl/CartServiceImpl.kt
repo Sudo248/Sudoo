@@ -1,6 +1,8 @@
 package com.sudoo.cartservice.service.impl
 
 import com.sudoo.cartservice.controller.dto.*
+import com.sudoo.cartservice.controller.dto.order.OrderCartDto
+import com.sudoo.cartservice.controller.dto.order.OrderCartProductDto
 import com.sudoo.cartservice.repository.CartProductRepository
 //import com.sudoo.cartservice.service.ProductService
 import com.sudoo.cartservice.repository.CartRepository
@@ -34,7 +36,7 @@ class CartServiceImpl(
                 totalPrice = 0.0,
                 totalAmount = 0,
                 status = cart.status,
-                cartProducts = getCartProducts(cart.cartId)
+                cartProducts = cartProducts
             )
 
             for (cartProduct in cartProducts) {
@@ -72,6 +74,10 @@ class CartServiceImpl(
     }
 
     override suspend fun createCartByStatus(userId: String, status: String): CartDto {
+        val processingCarts = cartRepository.findCartByUserIdAndStatus(userId,CartStatus.PROCESSING.value).toList()
+        for(cart in processingCarts){
+            cartRepository.deleteById(cart.cartId)
+        }
         val cart = Cart(
             cartId = IdentifyCreator.create(),
             userId = userId,
@@ -113,6 +119,16 @@ class CartServiceImpl(
         val cartProductsOfCart = cartProductRepository.findCartProductByCartId(cartId).toList()
         for (cartProduct in cartProductsOfCart) {
             cartProducts.add(cartProduct.toCartProductDto(productService.getProductInfo(cartProduct.productId)))
+        }
+        return cartProducts.toList()
+    }
+
+    override suspend fun getOrderCartProducts(cartId: String): List<OrderCartProductDto> {
+        val cartProducts: MutableList<OrderCartProductDto> = mutableListOf()
+        val cartProductsOfCart = cartProductRepository.findCartProductByCartId(cartId).toList()
+        val listOrderProductInfo = productService.getListOrderProductInfoByIds(cartProductsOfCart.map { it.productId })
+        for (cartProduct in cartProductsOfCart) {
+            cartProducts.add(cartProduct.toOrderCartProductDto(listOrderProductInfo.first { it.productId == cartProduct.productId }))
         }
         return cartProducts.toList()
     }
@@ -203,6 +219,26 @@ class CartServiceImpl(
         true
     }
 
+    override suspend fun getProcessingCart(userId: String): OrderCartDto {
+        val processingCart = cartRepository.findCartByUserIdAndStatus(userId,CartStatus.PROCESSING.value).toList()[0]
+        val cartProducts = getOrderCartProducts(processingCart.cartId)
+        val orderCartDto = OrderCartDto(
+            userId = processingCart.userId,
+            cartId = processingCart.cartId,
+            totalPrice = 0.0,
+            totalAmount = 0,
+            status = processingCart.status,
+            cartProducts = cartProducts
+        )
+
+        for (cartProduct in cartProducts) {
+            orderCartDto.totalAmount += cartProduct.quantity
+            orderCartDto.totalPrice += (cartProduct.product?.price ?: 0.0f) * (cartProduct.quantity)
+        }
+
+        return orderCartDto
+    }
+
     override suspend fun createProcessingCart(userId: String, cartProducts: List<CartProductDto>): CartDto {
         val processingCart = createCartByStatus(userId, CartStatus.PROCESSING.value)
         val cartProductsOfProcessingCart = mutableListOf<CartProductDto>()
@@ -246,11 +282,14 @@ class CartServiceImpl(
 
     override suspend fun checkoutProcessingCart(userId: String) {
         val processingCart = try {
-            cartRepository.findCartByUserIdAndStatus(userId, CartStatus.ACTIVE.value).toList()[0]
+            cartRepository.findCartByUserIdAndStatus(userId, CartStatus.PROCESSING.value).toList()[0]
         } catch (e: Exception) {
             e.printStackTrace()
             throw e
         }
+
+        processingCart.status = CartStatus.COMPLETED.value
+        cartRepository.save(processingCart)
 
         val productIdsInProcessingCart =
             cartProductRepository.findCartProductByCartId(processingCart.cartId).toList().map { it.productId }

@@ -2,6 +2,8 @@ package com.sudoo.cartservice.repository.entity
 
 import com.sudoo.cartservice.controller.dto.CartProductDto
 import com.sudoo.cartservice.controller.dto.ProductInfoDto
+import com.sudoo.cartservice.controller.dto.order.OrderCartProductDto
+import com.sudoo.cartservice.controller.dto.order.OrderProductInfoDto
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.Transient
 import org.springframework.data.domain.Persistable
@@ -32,6 +34,15 @@ data class CartProduct(
 
 fun CartProduct.toCartProductDto(product:ProductInfoDto): CartProductDto {
     return CartProductDto(
+        cartProductId = this.cartProductId,
+        cartId = this.cartId,
+        quantity = this.quantity,
+        product = product
+    )
+}
+
+fun CartProduct.toOrderCartProductDto(product:OrderProductInfoDto): OrderCartProductDto {
+    return OrderCartProductDto(
         cartProductId = this.cartProductId,
         cartId = this.cartId,
         quantity = this.quantity,

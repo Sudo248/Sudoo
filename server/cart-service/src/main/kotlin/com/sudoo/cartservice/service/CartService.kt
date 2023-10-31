@@ -4,6 +4,8 @@ import com.sudoo.cartservice.controller.dto.CartDto
 import com.sudoo.cartservice.controller.dto.CartProductDto
 import com.sudoo.cartservice.controller.dto.ProductInfoDto
 import com.sudoo.cartservice.controller.dto.UpsertCartProductDto
+import com.sudoo.cartservice.controller.dto.order.OrderCartDto
+import com.sudoo.cartservice.controller.dto.order.OrderCartProductDto
 
 
 interface CartService {
@@ -17,6 +19,7 @@ interface CartService {
     suspend fun getActiveCart(userId: String): CartDto
     suspend fun getCartById(userId: String, cartId: String, hasRoute: Boolean): CartDto
     suspend fun getCartProducts(cartId: String): List<CartProductDto>
+    suspend fun getOrderCartProducts(cartId: String): List<OrderCartProductDto>
 
     //---CartProductInActiveCart-------------
 
@@ -32,6 +35,8 @@ interface CartService {
 
 
     //---Processing Cart-------------
+
+    suspend fun getProcessingCart(userId: String): OrderCartDto
 
     /**
      * Tạo processing cart từ active cart
