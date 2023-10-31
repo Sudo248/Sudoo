@@ -8,7 +8,10 @@ import com.sudo248.sudoo.data.dto.order.UpsertOrderDto
 import com.sudo248.sudoo.data.ktx.data
 import com.sudo248.sudoo.data.ktx.errorBody
 import com.sudo248.sudoo.data.mapper.toOrder
+import com.sudo248.sudoo.data.mapper.toUpsertOrderPromotion
+import com.sudo248.sudoo.data.mapper.toUpsertOrderPromotionDto
 import com.sudo248.sudoo.domain.entity.order.Order
+import com.sudo248.sudoo.domain.entity.order.UpsertOrderPromotion
 import com.sudo248.sudoo.domain.repository.OrderRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
@@ -20,28 +23,38 @@ class OrderRepositoryImpl @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher
 ) : OrderRepository {
 
-    override suspend fun createOrder(cartId: String): DataState<String, Exception> = stateOn(ioDispatcher) {
-        val response = handleResponse(orderService.createOrder(UpsertOrderDto(cartId = cartId)))
-        if (response.isSuccess) {
-            response.data().orderId!!
-        } else {
-            throw response.error().errorBody()
+    override suspend fun createOrder(cartId: String): DataState<Order, Exception> =
+        stateOn(ioDispatcher) {
+            val response = handleResponse(orderService.createOrder(UpsertOrderDto(cartId = cartId)))
+            if (response.isSuccess) {
+                response.data().toOrder()
+            } else {
+                throw response.error().errorBody()
+            }
         }
-    }
 
-    override suspend fun getOrderById(invoiceId: String): DataState<Order, Exception> = stateOn(ioDispatcher) {
-        val response = handleResponse(orderService.getOrderById(invoiceId))
-        if (response.isSuccess) {
-            response.data().toOrder()
-        } else {
-            throw response.error().errorBody()
+    override suspend fun getOrderById(orderId: String): DataState<Order, Exception> =
+        stateOn(ioDispatcher) {
+            val response = handleResponse(orderService.getOrderById(orderId))
+            if (response.isSuccess) {
+                response.data().toOrder()
+            } else {
+                throw response.error().errorBody()
+            }
         }
-    }
 
-    override suspend fun updatePromotion(invoiceId: String, promotionId: String): DataState<Order, Exception> = stateOn(ioDispatcher) {
-        val response = handleResponse(orderService.updatePromotion(invoiceId, promotionId))
+    override suspend fun updatePromotion(
+        orderId: String,
+        upsertOrderPromotion: UpsertOrderPromotion
+    ): DataState<UpsertOrderPromotion, Exception> = stateOn(ioDispatcher) {
+        val response = handleResponse(
+            orderService.updatePromotion(
+                orderId,
+                upsertOrderPromotion.toUpsertOrderPromotionDto()
+            )
+        )
         if (response.isSuccess) {
-            response.data().toOrder()
+            response.data().toUpsertOrderPromotion()
         } else {
             throw response.error().errorBody()
         }

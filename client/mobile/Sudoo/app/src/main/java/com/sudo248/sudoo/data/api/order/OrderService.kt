@@ -8,6 +8,7 @@ import com.sudo248.sudoo.BuildConfig
 import com.sudo248.sudoo.data.api.BaseResponse
 import com.sudo248.sudoo.data.dto.order.UpsertOrderDto
 import com.sudo248.sudoo.data.dto.order.OrderDto
+import com.sudo248.sudoo.data.dto.order.UpsertOrderPromotionDto
 import com.sudo248.sudoo.domain.common.Constants
 import retrofit2.Response
 import retrofit2.http.Body
@@ -22,15 +23,15 @@ import retrofit2.http.Path
 interface OrderService {
 
     @POST("orders")
-    suspend fun createOrder(@Body upsertOrderDto: UpsertOrderDto): Response<BaseResponse<UpsertOrderDto>>
+    suspend fun createOrder(@Body upsertOrderDto: UpsertOrderDto): Response<BaseResponse<OrderDto>>
 
     @GET("orders/{orderId}")
     suspend fun getOrderById(@Path("orderId") orderId: String): Response<BaseResponse<OrderDto>>
 
-    @PATCH("orders/{orderId}/update/promotion/{promotionId}")
+    @PATCH("orders/{orderId}/promotion")
     suspend fun updatePromotion(
         @Path("orderId") orderId: String,
-        @Path("promotionId") promotionId: String
-    ): Response<BaseResponse<OrderDto>>
+        @Body upsertOrderPromotionDto: UpsertOrderPromotionDto
+    ): Response<BaseResponse<UpsertOrderPromotionDto>>
 
 }

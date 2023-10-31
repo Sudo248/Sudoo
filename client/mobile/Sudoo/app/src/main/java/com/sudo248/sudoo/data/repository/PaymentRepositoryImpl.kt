@@ -10,6 +10,7 @@ import com.sudo248.sudoo.data.mapper.toPayment
 import com.sudo248.sudoo.domain.entity.payment.Payment
 import com.sudo248.sudoo.domain.repository.PaymentRepository
 import kotlinx.coroutines.CoroutineDispatcher
+import java.util.TimeZone
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -24,9 +25,10 @@ class PaymentRepositoryImpl @Inject constructor(
             bankCode = payment.bankCode,
             orderId = payment.orderId,
             orderType = payment.orderType,
-            amount = payment.amount
+            amount = payment.amount,
+            timeZone = TimeZone.getDefault()
         )
-        val response = handleResponse(paymentService.pay(System.currentTimeMillis(), request))
+        val response = handleResponse(paymentService.pay(request))
         if (response.isSuccess) {
             response.get().data!!.toPayment()
         } else {

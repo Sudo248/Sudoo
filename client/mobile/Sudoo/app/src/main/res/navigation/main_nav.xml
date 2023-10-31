@@ -79,7 +79,11 @@
         android:id="@+id/cartFragment"
         android:name="com.sudo248.sudoo.ui.activity.main.fragment.cart.CartFragment"
         android:label="CartFragment"
-        tools:layout="@layout/fragment_cart" />
+        tools:layout="@layout/fragment_cart">
+        <action
+            android:id="@+id/action_cartFragment_to_orderFragment"
+            app:destination="@id/orderFragment" />
+    </fragment>
     <fragment
         android:id="@+id/promotionFragment"
         android:name="com.sudo248.sudoo.ui.activity.main.fragment.promotion.PromotionFragment"
@@ -117,5 +121,18 @@
         <action
             android:id="@+id/action_reviewListFragment_to_reviewFragment"
             app:destination="@id/reviewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderFragment"
+        android:name="com.sudo248.sudoo.ui.activity.main.fragment.order.OrderFragment"
+        android:label="OrderFragment"
+        tools:layout="@layout/fragment_order">
+        <argument
+            android:name="cartId"
+            app:argType="string"
+            app:nullable="false" />
+        <action
+            android:id="@+id/action_orderFragment_to_promotionFragment"
+            app:destination="@id/promotionFragment" />
     </fragment>
 </navigation>
