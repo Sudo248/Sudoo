@@ -13,8 +13,7 @@ import java.util.List;
 public class OrderSupplierDto {
     private String orderSupplierId;
     private SupplierInfoDto supplier;
-    private String promotionId;
-    private double promotionValue;
+    private PromotionDto promotion;
     private double totalPrice;
     private Shipment shipment;
     private List<OrderCartProductDto> orderCartProducts;

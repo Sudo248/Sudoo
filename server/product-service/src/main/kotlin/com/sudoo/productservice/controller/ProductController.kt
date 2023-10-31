@@ -6,6 +6,7 @@ import com.sudoo.domain.base.OffsetRequest
 import com.sudoo.domain.common.Constants
 import com.sudoo.domain.validator.ProductValidator
 import com.sudoo.productservice.dto.CategoryProductDto
+import com.sudoo.productservice.dto.PatchAmountProductDto
 import com.sudoo.productservice.dto.UpsertProductDto
 import com.sudoo.productservice.dto.UserProductDto
 import com.sudoo.productservice.service.CategoryService
@@ -159,6 +160,13 @@ class ProductController(
     ): ResponseEntity<BaseResponse<*>> = handle {
         val offsetRequest = OffsetRequest(offset, limit)
         productService.getProductInfoByCategoryAndName(categoryId, name, offsetRequest)
+    }
+
+    @PatchMapping("/internal/amount")
+    suspend fun pathAmountPromotion(
+        @RequestBody product: PatchAmountProductDto
+    ) : ResponseEntity<BaseResponse<*>> = handle {
+        productService.patchAmountProduct(product)
     }
 
     @GetMapping("/headers")
