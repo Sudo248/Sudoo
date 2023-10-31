@@ -197,18 +197,18 @@ interface ProductRepository : CoroutineCrudRepository<Product, String> {
 
     @Query(
         """
-        SELECT 
-        products.product_id, 
+        SELECT
+        products.product_id,
         products.supplier_id,
-        products.sku, 
-        products.name, 
+        products.sku,
+        products.name,
         products.price,
         products.weight,
         products.height,
         products.length,
         products.width
-        FROM products 
-        WHERE products.product_id IN :ids
+        FROM products
+        WHERE products.product_id IN (:ids)
     """
     )
     fun getListOrderProductInfoByIds(@Param("ids") ids: Collection<String>): Flow<OrderProductInfo>
