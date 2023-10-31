@@ -15,7 +15,7 @@ import com.sudo248.sudoo.ui.util.Utils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>(), ViewController {
+class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
     override val viewModel: CartViewModel by viewModels()
     override val enableStateScreen: Boolean
         get() = true
@@ -40,7 +40,6 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>(), ViewCon
     }
 
     override fun initView() {
-        viewModel.viewController = this
         binding.rcvItems.adapter = adapter
         binding.refresh.setOnRefreshListener {
             viewModel.getActiveCart()
@@ -79,13 +78,7 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>(), ViewCon
         }
     }
 
-    fun setBadgeCart(amount: Int) {
+    private fun setBadgeCart(amount: Int) {
         (requireActivity() as MainActivity).setBadgeCart(amount)
-    }
-
-    override fun navigateToPayment(invoiceId: String) {
-        (requireActivity() as MainActivity).navigateTo(PaymentActivity::class.createActionIntentDirections {
-            putExtra(Constants.Key.INVOICE_ID, invoiceId)
-        })
     }
 }

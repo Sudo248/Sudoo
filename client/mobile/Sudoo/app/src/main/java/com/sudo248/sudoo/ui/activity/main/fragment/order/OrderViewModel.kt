@@ -1,4 +1,4 @@
-package com.sudo248.sudoo.ui.activity.payment.fragment
+package com.sudo248.sudoo.ui.activity.main.fragment.order
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,6 +11,7 @@ import com.sudo248.base_android.ktx.bindUiState
 import com.sudo248.base_android.ktx.onError
 import com.sudo248.base_android.ktx.onSuccess
 import com.sudo248.sudoo.domain.entity.order.Order
+import com.sudo248.sudoo.domain.entity.order.UpsertOrderPromotion
 import com.sudo248.sudoo.domain.entity.payment.Payment
 import com.sudo248.sudoo.domain.entity.payment.PaymentStatus
 import com.sudo248.sudoo.domain.entity.payment.PaymentType
@@ -24,7 +25,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PaymentViewModel @Inject constructor(
+class OrderViewModel @Inject constructor(
     private val paymentRepository: PaymentRepository,
     private val orderRepository: OrderRepository
 ) : BaseViewModel<NavDirections>() {
@@ -52,33 +53,32 @@ class PaymentViewModel @Inject constructor(
         _currentPaymentType.postValue(type)
     }
 
-    fun onBack() {
-        navigator.back()
-    }
-
     fun onPayment() {
         when (_currentPaymentType.value) {
             null -> {
                 viewController?.toast("Hãy chọn phương thức thanh toán")
             }
+
             PaymentType.VN_PAY -> {
                 viewController?.openVnPaySdk()
             }
+
             else -> {
                 payWithCOD()
             }
         }
     }
 
-    fun getInvoice(invoiceId: String) = launch {
+    fun createOrder(cartId: String) = launch {
         emitState(UiState.LOADING)
-        orderRepository.getOrderById(invoiceId).onSuccess {
-                _userInfo.postValue("${it.user.fullName} | ${it.user.phone}\n${it.user.address.fullAddress}")
+        orderRepository.createOrder(cartId)
+            .onSuccess {
+                _userInfo.postValue("${it.user.fullName} | ${it.user.phone}\n${it.address}")
                 _order.postValue(it)
                 _promotion.postValue(it.promotion)
                 _finalPrice.postValue(it.finalPrice)
-            }.onError {
-                it.printStackTrace()
+            }
+            .onError {
                 error = SingleEvent(it.message)
             }.bindUiState(_uiState)
     }
@@ -86,10 +86,13 @@ class PaymentViewModel @Inject constructor(
     fun applyPromotion(promotion: Promotion) = launch {
         order.value?.let {
             emitState(UiState.LOADING)
-            orderRepository.updatePromotion(it.orderId,)
-                .onSuccess { newInvoice ->
+            orderRepository.updatePromotion(
+                it.orderId,
+                UpsertOrderPromotion(promotionId = promotion.promotionId)
+            )
+                .onSuccess { upsertOrderPromotion ->
                     _promotion.postValue(promotion)
-                    _finalPrice.postValue(newInvoice.finalPrice)
+                    _finalPrice.postValue(upsertOrderPromotion.finalPrice)
                 }.onError { ex ->
                     error = SingleEvent(ex.message)
                 }.bindUiState(_uiState)
@@ -111,6 +114,7 @@ class PaymentViewModel @Inject constructor(
                 emitState(UiState.SUCCESS)
                 response.requireData().paymentUrl
             }
+
             else -> {
                 error = SingleEvent(response.error().message)
                 emitState(UiState.ERROR)
@@ -129,11 +133,15 @@ class PaymentViewModel @Inject constructor(
                 amount = _order.value!!.finalPrice
             )
         ).onSuccess {
-                setState(UiState.SUCCESS)
-                viewController?.payWithCODSuccess()
-            }.onError {
-                error = SingleEvent(it.message)
-                setState(UiState.ERROR)
-            }
+            setState(UiState.SUCCESS)
+            viewController?.payWithCODSuccess()
+        }.onError {
+            error = SingleEvent(it.message)
+            setState(UiState.ERROR)
+        }
+    }
+
+    fun back() {
+
     }
 }

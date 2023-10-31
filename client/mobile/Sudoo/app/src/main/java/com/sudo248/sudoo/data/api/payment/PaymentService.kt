@@ -19,6 +19,6 @@ import retrofit2.http.Path
 @LoggingLever(level = Level.BODY)
 interface PaymentService {
 
-    @POST("pay/{currentTime}")
-    suspend fun pay(@Path("currentTime") currentTime: Long, @Body request: PaymentRequest): Response<BaseResponse<PaymentDto>>
+    @POST("pay")
+    suspend fun pay(@Body request: PaymentRequest): Response<BaseResponse<PaymentDto>>
 }

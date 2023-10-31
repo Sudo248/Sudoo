@@ -16,5 +16,6 @@ data class OrderDto(
     val totalPromotionPrice: Double,
     val totalShipmentPrice: Double,
     val finalPrice: Double,
+    val address: String,
     val orderSuppliers: List<OrderSupplierDto>
 )

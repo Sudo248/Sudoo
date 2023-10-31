@@ -1,7 +1,6 @@
 package com.sudo248.sudoo.ui.activity.main.fragment.cart
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavDirections
@@ -12,7 +11,6 @@ import com.sudo248.base_android.ktx.bindUiState
 import com.sudo248.base_android.ktx.onError
 import com.sudo248.base_android.ktx.onSuccess
 import com.sudo248.sudoo.domain.entity.cart.AddCartProduct
-import com.sudo248.sudoo.domain.entity.cart.AddCartProducts
 import com.sudo248.sudoo.domain.entity.cart.Cart
 import com.sudo248.sudoo.domain.repository.CartRepository
 import com.sudo248.sudoo.domain.repository.OrderRepository
@@ -33,8 +31,6 @@ class CartViewModel @Inject constructor(
     val totalPrice: LiveData<Double> = _totalPrice
 
     var error: SingleEvent<String?> = SingleEvent(null)
-
-    var viewController: ViewController? = null
 
     fun getActiveCart() = launch {
         setState(UiState.LOADING)
@@ -78,13 +74,11 @@ class CartViewModel @Inject constructor(
         orderRepository.createOrder(_cart.value!!.cartId)
             .onSuccess {
                 Log.i("CART_ID", it)
-                viewController?.navigateToPayment(it)
+                navigator.navigateTo(CartFragmentDirections.actionCartFragmentToOrderFragment(cartId = it))
             }
             .onError {
                 error = SingleEvent(it.message)
             }.bindUiState(_uiState)
-//        invoiceRepository.createInvoice(_cart.value!!.cartId)
-
     }
 
     private fun updateTotalPrice(cart: Cart) {
@@ -94,11 +88,4 @@ class CartViewModel @Inject constructor(
         }
         _totalPrice.postValue(totalPrice * 1.0)
     }
-
-    override fun onCleared() {
-        super.onCleared()
-        viewController = null
-    }
-
-
 }

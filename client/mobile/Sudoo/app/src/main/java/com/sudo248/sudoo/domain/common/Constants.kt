@@ -18,7 +18,7 @@ object Constants {
         const val TOKEN = "TOKEN"
         const val REFRESH_TOKEN = "REFRESH_TOKEN"
         const val USER_ID = "USER_ID"
-        const val INVOICE_ID = "INVOICE_ID"
+        const val CART_ID = "CART_ID"
         const val PROMOTION = "PROMOTION"
         const val SCREEN = "SCREEN"
         const val FCM_TOKEN = "FCM_TOKEN"

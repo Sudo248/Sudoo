@@ -1,4 +1,4 @@
-package com.sudo248.sudoo.ui.activity.payment.fragment
+package com.sudo248.sudoo.ui.activity.main.fragment.order
 
 import android.app.Dialog
 import android.content.Intent
@@ -9,18 +9,20 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
 import com.sudo248.base_android.base.BaseFragment
 import com.sudo248.base_android.ktx.showWithTransparentBackground
 import com.sudo248.base_android.navigation.ResultCallback
 import com.sudo248.base_android.utils.DialogUtils
 import com.sudo248.sudoo.R
 import com.sudo248.sudoo.databinding.DialogChoosePaymentMethodBinding
-import com.sudo248.sudoo.databinding.FragmentPaymentBinding
+import com.sudo248.sudoo.databinding.FragmentOrderBinding
 import com.sudo248.sudoo.domain.common.Constants
 import com.sudo248.sudoo.domain.entity.order.Order
 import com.sudo248.sudoo.domain.entity.promotion.Promotion
 import com.sudo248.sudoo.ui.activity.main.MainActivity
 import com.sudo248.sudoo.ui.activity.main.adapter.OrderAdapter
+import com.sudo248.sudoo.ui.activity.payment.fragment.PaymentFragmentDirections
 import com.sudo248.sudoo.ui.ktx.showErrorDialog
 import com.sudo248.sudoo.ui.util.Utils
 import com.vnpay.authentication.VNP_AuthenticationActivity
@@ -29,9 +31,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class PaymentFragment : BaseFragment<FragmentPaymentBinding, PaymentViewModel>(), ViewController {
-
-    override val viewModel: PaymentViewModel by viewModels()
+class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>(), ViewController {
+    override val viewModel: OrderViewModel by viewModels()
+    private val args: OrderFragmentArgs by navArgs()
 
     override val enableStateScreen: Boolean = true
 
@@ -41,13 +43,8 @@ class PaymentFragment : BaseFragment<FragmentPaymentBinding, PaymentViewModel>()
         binding.viewModel = viewModel
         viewModel.viewController = this
         binding.rcvOrderSupplier.adapter = adapter
-        activity?.intent?.getStringExtra(Constants.Key.CART_ID)?.let {
-            viewModel.getInvoice(it)
-        }
+        viewModel.createOrder(args.cartId)
         setupOnClickListener()
-        binding.imgBack.setOnClickListener {
-            activity?.onBackPressed()
-        }
     }
 
     private fun setupOnClickListener() {
@@ -56,12 +53,13 @@ class PaymentFragment : BaseFragment<FragmentPaymentBinding, PaymentViewModel>()
                 showDialogChoosePaymentType()
             }
             constrainVoucherPayment.setOnClickListener {
-                navigateForResult(PaymentFragmentDirections.actionPaymentFragmentToPromotionFragment(), Constants.Key.PROMOTION, object : ResultCallback {
+                navigateForResult(PaymentFragmentDirections.actionPaymentFragmentToPromotionFragment(), Constants.Key.PROMOTION, object :
+                    ResultCallback {
                     override fun onResult(key: String, data: Bundle?) {
                         data?.let {
                             it.getSerializable(Constants.Key.PROMOTION)?.let { _promotion ->
                                 val promotion = _promotion as Promotion
-                                this@PaymentFragment.viewModel.applyPromotion(promotion)
+                                this@OrderFragment.viewModel.applyPromotion(promotion)
                             }
                         }
                     }
@@ -77,17 +75,18 @@ class PaymentFragment : BaseFragment<FragmentPaymentBinding, PaymentViewModel>()
 
         viewModel.promotion.observe(viewLifecycleOwner) {
             it?.let {
-                binding.txtDiscount.text = "-${Utils.formatVnCurrency(it.value)}"
+                binding.txtTotalPromotionPrice.text = "-${Utils.formatVnCurrency(it.value)}"
                 if (it.name.isNotEmpty()) {
-                    binding.voucherPayment.text = it.name
+                    binding.txtVoucher.text = it.name
                 }
             }
         }
 
-        viewModel.finalPrice.observe(viewLifecycleOwner) { finalPrice ->
+        viewModel.finalPrice.observe(viewLifecycleOwner) {
             binding.apply {
-                finalSumProductPayment.text = Utils.formatVnCurrency(finalPrice)
-                txtSum.text = Utils.formatVnCurrency(finalPrice)
+                val finalPrice = Utils.formatVnCurrency(it)
+                txtFinalPrice.text = finalPrice
+                txtPaymentAmount.text = finalPrice
             }
         }
     }
@@ -95,8 +94,8 @@ class PaymentFragment : BaseFragment<FragmentPaymentBinding, PaymentViewModel>()
     private fun setupOrder(order: Order) {
         adapter.submitList(order.orderSuppliers)
         binding.apply {
-            sumProductPayment.text = Utils.formatVnCurrency(order.totalPrice)
-            sumShipperPayment.text = Utils.formatVnCurrency(order.totalShipmentPrice)
+            txtTotalPrice.text = Utils.formatVnCurrency(order.totalPrice)
+            txtTotalShipmentPrice.text = Utils.formatVnCurrency(order.totalShipmentPrice)
         }
     }
 
@@ -214,5 +213,4 @@ class PaymentFragment : BaseFragment<FragmentPaymentBinding, PaymentViewModel>()
     private fun onVnPaySdkActionSuccess() {
         activity?.finish()
     }
-
 }

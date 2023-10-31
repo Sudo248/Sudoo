@@ -4,10 +4,12 @@ import com.sudo248.sudoo.data.dto.order.OrderCartProductDto
 import com.sudo248.sudoo.data.dto.order.OrderDto
 import com.sudo248.sudoo.data.dto.order.OrderProductInfoDto
 import com.sudo248.sudoo.data.dto.order.OrderSupplierDto
+import com.sudo248.sudoo.data.dto.order.UpsertOrderPromotionDto
 import com.sudo248.sudoo.domain.entity.order.Order
 import com.sudo248.sudoo.domain.entity.order.OrderCartProduct
 import com.sudo248.sudoo.domain.entity.order.OrderProductInfo
 import com.sudo248.sudoo.domain.entity.order.OrderSupplier
+import com.sudo248.sudoo.domain.entity.order.UpsertOrderPromotion
 
 fun OrderDto.toOrder(): Order {
     return Order(
@@ -21,6 +23,7 @@ fun OrderDto.toOrder(): Order {
         totalPromotionPrice = totalPromotionPrice,
         totalShipmentPrice = totalShipmentPrice,
         finalPrice = finalPrice,
+        address = address,
         orderSuppliers = orderSuppliers.map {
             it.toOrderSupplier()
         }
@@ -65,4 +68,14 @@ fun OrderProductInfoDto.toOrderProductInfo(): OrderProductInfo {
         length = length,
         width = width,
     )
+}
+
+fun UpsertOrderPromotionDto.toUpsertOrderPromotion(): UpsertOrderPromotion {
+    return UpsertOrderPromotion(
+        promotionId, orderSupplierId, totalPrice, totalPromotionPrice, finalPrice
+    )
+}
+
+fun UpsertOrderPromotion.toUpsertOrderPromotionDto(): UpsertOrderPromotionDto {
+    return UpsertOrderPromotionDto(promotionId, orderSupplierId)
 }

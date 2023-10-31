@@ -123,18 +123,6 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
     private fun setImageSlideshow(images: List<String>) {
         binding.slideshowImageProduct.apply {
             setImageList(images.map { it.toSlideModel() }, ScaleTypes.CENTER_INSIDE)
-
-//            when (images.size) {
-//                1 -> {
-//                    this.auto
-//                }
-//                in 2..3 -> {
-//
-//                }
-//                else -> {
-//
-//                }
-//            }
         }
     }
 
@@ -164,9 +152,8 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
         badge = BadgeDrawable.create(requireContext()).apply {
             isVisible = false
             BadgeUtils.attachBadgeDrawable(this, binding.imgCart, binding.frameCart)
-            badgeGravity = BadgeDrawable.TOP_START
-            verticalOffset = 35
-            horizontalOffset = 40
+            badgeGravity = BadgeDrawable.TOP_END
+            verticalOffset = 3
             backgroundColor = ContextCompat.getColor(requireContext(), R.color.primaryColor)
             badgeTextColor = ContextCompat.getColor(requireContext(), R.color.white)
         }
