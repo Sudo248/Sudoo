@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sudoo/data/api/base_request.dart';
+import 'package:sudoo/data/api/discovery/request/upsert_extras_request.dart';
 import 'package:sudoo/data/api/discovery/request/upsert_file_request.dart';
 import 'package:sudoo/domain/model/discovery/upsert_product.dart';
 
@@ -19,8 +20,13 @@ class UpsertProductRequest extends BaseRequest {
   final DateTime? startDateDiscount;
   final DateTime? endDateDiscount;
   final bool? saleable;
+  final int weight;
+  final int height;
+  final int width;
+  final int length;
   final List<UpsertFileRequest>? images;
   final List<String>? categoryIds;
+  final UpsertExtrasRequest? extras;
 
   UpsertProductRequest(
     this.productId,
@@ -35,8 +41,13 @@ class UpsertProductRequest extends BaseRequest {
     this.startDateDiscount,
     this.endDateDiscount,
     this.saleable,
+    this.weight,
+    this.height,
+    this.width,
+    this.length,
     this.images,
     this.categoryIds,
+    this.extras,
   );
 
   @override
@@ -58,8 +69,13 @@ extension Mapper on UpsertProduct {
       startDateDiscount,
       endDateDiscount,
       saleable,
+      weight,
+      height,
+      width,
+      length,
       images?.map((e) => e.toUpsertImageRequest()).toList(),
       categoryIds,
+      extras?.toUpsertProductExtraRequest()
     );
   }
 }

@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:sudoo/data/config/api_config.dart';
 
 class OnlineImage extends StatelessWidget {
   final String src;
@@ -8,8 +11,12 @@ class OnlineImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String imageUrl = src;
+    if (!src.startsWith("http")) {
+      imageUrl = "${ApiConfig.baseUrl}/storage/images/$src";
+    }
     return Image.network(
-      src,
+      imageUrl,
       height: height,
       width: width,
       loadingBuilder: (context, child, loadingProgress) {
@@ -18,7 +25,15 @@ class OnlineImage extends StatelessWidget {
           child: CircularProgressIndicator(),
         );
       },
-      errorBuilder: (context, error, stackTrace) => const Icon(Icons.image),
+      errorBuilder: (context, error, stackTrace) => SizedBox(
+        height: height,
+        width: width,
+        child: Icon(
+          Icons.error,
+          color: Colors.red,
+          size: width != null ? width! / 2 : null,
+        ),
+      ),
       fit: fit ?? BoxFit.fill,
     );
   }

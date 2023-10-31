@@ -25,10 +25,18 @@ UpsertProductRequest _$UpsertProductRequestFromJson(
           ? null
           : DateTime.parse(json['endDateDiscount'] as String),
       json['saleable'] as bool?,
+      json['weight'] as int,
+      json['height'] as int,
+      json['width'] as int,
+      json['length'] as int,
       (json['images'] as List<dynamic>?)
           ?.map((e) => UpsertFileRequest.fromJson(e as Map<String, dynamic>))
           .toList(),
       (json['categoryIds'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      json['extras'] == null
+          ? null
+          : UpsertExtrasRequest.fromJson(
+              json['extras'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$UpsertProductRequestToJson(
@@ -46,6 +54,11 @@ Map<String, dynamic> _$UpsertProductRequestToJson(
       'startDateDiscount': instance.startDateDiscount?.toIso8601String(),
       'endDateDiscount': instance.endDateDiscount?.toIso8601String(),
       'saleable': instance.saleable,
+      'weight': instance.weight,
+      'height': instance.height,
+      'width': instance.width,
+      'length': instance.length,
       'images': instance.images,
       'categoryIds': instance.categoryIds,
+      'extras': instance.extras,
     };

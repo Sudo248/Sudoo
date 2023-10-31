@@ -7,13 +7,13 @@ part of 'file_dto.dart';
 // **************************************************************************
 
 FileDto _$FileDtoFromJson(Map<String, dynamic> json) => FileDto(
-      json['fileId'] as String,
+      json['imageId'] as String,
       json['ownerId'] as String,
       json['url'] as String,
     );
 
 Map<String, dynamic> _$FileDtoToJson(FileDto instance) => <String, dynamic>{
-      'fileId': instance.fileId,
+      'imageId': instance.fileId,
       'ownerId': instance.ownerId,
       'url': instance.url,
     };

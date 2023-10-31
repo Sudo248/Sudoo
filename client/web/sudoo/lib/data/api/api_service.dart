@@ -39,9 +39,10 @@ abstract class ApiService {
 
   Future upload(
     String path, {
+    required String key,
     String? filePath,
     List<int>? bytes,
-    String? imageName,
+    String? fileName,
     Map<String, dynamic>? queryParameters,
   });
 }

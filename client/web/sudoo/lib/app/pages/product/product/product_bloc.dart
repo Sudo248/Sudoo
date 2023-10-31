@@ -48,7 +48,7 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
 
   // extras
   final ValueNotifier<bool> enable3DViewer = ValueNotifier(false);
-  final ValueNotifier<bool> enableARViewer = ValueNotifier(false);
+  final ValueNotifier<bool> enableArViewer = ValueNotifier(false);
   final ValueNotifier<domain.File?> sourceViewer = ValueNotifier(null);
 
   Timer? debounce;
@@ -76,7 +76,7 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
     priceController.dispose();
     discountController.dispose();
     enable3DViewer.dispose();
-    enableARViewer.dispose();
+    enableArViewer.dispose();
     sourceViewer.dispose();
     weightController.dispose();
     heightController.dispose();
@@ -117,14 +117,17 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
     widthController.text = product.width.toString();
     lengthController.text = product.length.toString();
     enable3DViewer.value = product.extras?.enable3DViewer ?? false;
-    enableARViewer.value = product.extras?.enableARViewer ?? false;
-    sourceViewer.value = product.extras?.source;
+    enableArViewer.value = product.extras?.enableArViewer ?? false;
+    sourceViewer.value = domain.File.fromUrl(product.extras?.source);
     saleable.value = product.saleable;
   }
 
   @override
-  Future<String> uploadImage(List<int> bytes) async {
-    final result = await storageRepository.uploadImageBytes(bytes);
+  Future<String> uploadImage(List<int> bytes, {String? imageName}) async {
+    final result = await storageRepository.uploadImageBytes(
+      bytes,
+      imageName: imageName,
+    );
     if (result.isSuccess) {
       final url = result.get();
       return Future.value(url);
@@ -278,27 +281,35 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
 
   Future<void> createProduct() async {
     final images = await uploadImages();
+    String? extraSource = sourceViewer.value?.url;
+    if (sourceViewer.value != null &&
+        !sourceViewer.value!.bytes.isNullOrEmpty) {
+      extraSource =
+          await uploadFile(sourceViewer.value!.bytes!, sourceViewer.value?.url);
+    }
     final upsertProduct = UpsertProduct(
-        name: nameController.text,
-        sku: skuController.text.isNullOrEmpty ? null : skuController.text,
-        description: descriptionController.text,
-        listedPrice: double.parse(listedPriceController.text),
-        price: double.parse(priceController.text),
-        discount: int.parse(discountController.text),
-        startDateDiscount: startDateDiscount.value,
-        endDateDiscount: endDateDiscount.value,
-        amount: int.parse(amountController.text),
-        saleable: saleable.value,
-        weight: int.parse(weightController.text),
-        height: int.parse(heightController.text),
-        width: int.parse(widthController.text),
-        length: int.parse(lengthController.text),
-        images: images.map((e) => UpsertFile(url: e)).toList(),
-        categoryIds: categories.value!.map((e) => e.categoryId).toList(),
-        extras: Extras(
-            enable3DViewer: enable3DViewer.value,
-            enableARViewer: enableARViewer.value,
-            source: sourceViewer.value));
+      name: nameController.text,
+      sku: skuController.text.isNullOrEmpty ? null : skuController.text,
+      description: descriptionController.text,
+      listedPrice: double.parse(listedPriceController.text),
+      price: double.parse(priceController.text),
+      discount: int.parse(discountController.text),
+      startDateDiscount: startDateDiscount.value,
+      endDateDiscount: endDateDiscount.value,
+      amount: int.parse(amountController.text),
+      saleable: saleable.value,
+      weight: double.parse(weightController.text).toInt(),
+      height: double.parse(heightController.text).toInt(),
+      width: double.parse(widthController.text).toInt(),
+      length: double.parse(lengthController.text).toInt(),
+      images: images.map((e) => UpsertFile(url: e)).toList(),
+      categoryIds: categories.value!.map((e) => e.categoryId).toList(),
+      extras: Extras(
+        enable3DViewer: enable3DViewer.value,
+        enableArViewer: enableArViewer.value,
+        source: extraSource,
+      ),
+    );
     final result = await productRepository.upsertProduct(upsertProduct);
     if (result.isSuccess) {
       return;
@@ -321,7 +332,7 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
     images.value?.clear();
     categories.value?.clear();
     enable3DViewer.value = false;
-    enableARViewer.value = false;
+    enableArViewer.value = false;
     sourceViewer.value = null;
     weightController.clear();
     heightController.clear();
@@ -331,11 +342,30 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
 
   Future<List<String>> uploadImages() async {
     return await Future.wait<String>(
-        images.value!.map((e) => uploadImage(e.bytes!)));
+        images.value!.map((e) => uploadImage(e.bytes!, imageName: e.url)));
+  }
+
+  Future<String> uploadFile(List<int> bytes, String? fileName) async {
+    final result =
+        await storageRepository.uploadFileBytes(bytes, fileName: fileName);
+    if (result.isSuccess) {
+      final url = result.get();
+      return Future.value(url);
+    } else {
+      showErrorMessage(result.requireError());
+      return Future.error(result.requireError());
+    }
   }
 
   Future<void> updateProduct() async {
+    String? extraSource = sourceViewer.value?.url;
+    if (sourceViewer.value != null &&
+        !sourceViewer.value!.bytes.isNullOrEmpty) {
+      extraSource =
+          await uploadFile(sourceViewer.value!.bytes!, sourceViewer.value?.url);
+    }
     final upsertProduct = UpsertProduct(
+      productId: productId,
       name: nameController.text,
       description: descriptionController.text,
       listedPrice: double.parse(listedPriceController.text),
@@ -351,8 +381,8 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
       length: int.parse(lengthController.text),
       extras: Extras(
         enable3DViewer: enable3DViewer.value,
-        enableARViewer: enableARViewer.value,
-        source: sourceViewer.value,
+        enableArViewer: enableArViewer.value,
+        source: extraSource,
       ),
     );
 
@@ -369,7 +399,7 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
     if (viewer == Viewer.viewer3D) {
       enable3DViewer.value = value;
     } else {
-      enableARViewer.value = value;
+      enableArViewer.value = value;
     }
   }
 

@@ -6,6 +6,7 @@ part 'upsert_file_request.g.dart';
 
 @JsonSerializable()
 class UpsertFileRequest extends BaseRequest {
+  @JsonKey(name: "imageId")
   final String? fileId;
   final String? ownerId;
   final String url;

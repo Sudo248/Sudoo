@@ -6,9 +6,7 @@ class Supplier {
   final String name;
   final String avatar;
   final String brand;
-  final Location? location;
   final String contactUrl;
-  final String locationName;
   final int? totalProducts;
   final double? rate;
   final List<Product>? products;
@@ -18,9 +16,7 @@ class Supplier {
     this.name,
     this.avatar,
     this.brand,
-    this.location,
     this.contactUrl,
-    this.locationName,
     this.totalProducts,
     this.rate, {
     this.products,

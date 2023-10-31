@@ -30,9 +30,10 @@ class ProductRepositoryImpl with HandleResponse implements ProductRepository {
   Future<DataState<String, Exception>> deleteProduct(String productId) async {
     final response = await handleResponse(
       () => discoveryService.deleteProduct(productId),
+      fromJson: (json) => json as String?
     );
     if (response.isSuccess) {
-      return DataState.success(response.get() as String);
+      return DataState.success(response.get() ?? "");
     } else {
       return DataState.error(response.getError());
     }

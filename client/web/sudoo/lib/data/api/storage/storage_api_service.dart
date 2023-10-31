@@ -1,3 +1,5 @@
+import 'package:sudoo/data/config/api_config.dart';
+
 import '../api_service.dart';
 
 class StorageService {
@@ -11,11 +13,29 @@ class StorageService {
 
   const StorageService(this.api);
 
-  Future uploadImage(String path) => api.upload(uploadImageRoute, filePath: path);
+  Future uploadImage(String path) => api.upload(
+        uploadImageRoute,
+        key: ApiConfig.image,
+        filePath: path,
+      );
 
-  Future uploadImageBytes(List<int> bytes) => api.upload(uploadImageRoute, bytes: bytes);
+  Future uploadImageBytes(List<int> bytes, {String? imageName}) => api.upload(
+        uploadImageRoute,
+        key: ApiConfig.image,
+        fileName: imageName,
+        bytes: bytes,
+      );
 
-  Future uploadFile(String path) => api.upload(uploadFileRoute, filePath: path);
+  Future uploadFile(String path) => api.upload(
+        uploadFileRoute,
+        key: ApiConfig.file,
+        filePath: path,
+      );
 
-  Future uploadFileBytes(List<int> bytes) => api.upload(uploadFileRoute, bytes: bytes);
+  Future uploadFileBytes(List<int> bytes, {String? fileName}) => api.upload(
+        uploadFileRoute,
+        key: ApiConfig.file,
+        fileName: fileName,
+        bytes: bytes,
+      );
 }

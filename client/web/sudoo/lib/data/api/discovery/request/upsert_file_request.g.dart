@@ -8,14 +8,14 @@ part of 'upsert_file_request.dart';
 
 UpsertFileRequest _$UpsertFileRequestFromJson(Map<String, dynamic> json) =>
     UpsertFileRequest(
-      json['fileId'] as String?,
+      json['imageId'] as String?,
       json['ownerId'] as String?,
       json['url'] as String,
     );
 
 Map<String, dynamic> _$UpsertFileRequestToJson(UpsertFileRequest instance) =>
     <String, dynamic>{
-      'fileId': instance.fileId,
+      'imageId': instance.fileId,
       'ownerId': instance.ownerId,
       'url': instance.url,
     };

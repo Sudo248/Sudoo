@@ -144,10 +144,10 @@ class ImageBlock extends StatelessWidget {
   }
 
   Future<void> pickImage() async {
-    final imageBytes = await _pickImage();
-    if (imageBytes == null) return;
+    final image = await _pickImage();
+    if (image == null || image.value.isNullOrEmpty) return;
     if (productId != null) {
-      await callback.uploadImage(imageBytes).then((url) async {
+      await callback.uploadImage(image.value!, imageName: image.key).then((url) async {
         await callback
             .upsertImage(UpsertFile(ownerId: productId!, url: url))
             .then((image) {
@@ -163,19 +163,19 @@ class ImageBlock extends StatelessWidget {
       } else {
         currentImages = [];
       }
-      currentImages.add(domain.File.fromBytes(imageBytes));
+      currentImages.add(domain.File.fromBytes(image.value!, name: image.key));
       images.value = currentImages;
     }
   }
 
-  Future<List<int>?> _pickImage() async {
+  Future<MapEntry<String, List<int>?>?> _pickImage() async {
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.image,
         allowMultiple: false,
       );
       if (result == null || result.files.isEmpty) return null;
-      return result.files.single.bytes;
+      return MapEntry(result.files.single.name, result.files.single.bytes);
     } catch (e) {
       Logger.error(message: e.toString());
       return null;

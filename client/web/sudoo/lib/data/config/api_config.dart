@@ -1,5 +1,5 @@
 abstract class ApiConfig {
-  static const String host = "http://192.168.1.152";
+  static const String host = "http://192.168.1.86";
   static const String port = "9030";
   static const String portStorage = "8085";
   static const String baseUrl = "$host:$port/api/v1";

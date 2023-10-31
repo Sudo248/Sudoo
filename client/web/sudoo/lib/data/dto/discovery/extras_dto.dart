@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sudoo/data/dto/discovery/file_dto.dart';
+import 'package:sudoo/domain/model/discovery/file.dart';
+import 'package:sudoo/extensions/string_ext.dart';
 
 import '../../../domain/model/discovery/extras.dart';
 
@@ -8,11 +10,11 @@ part 'extras_dto.g.dart';
 @JsonSerializable()
 class ExtrasDto {
   final bool enable3DViewer;
-  final bool enableARViewer;
-  final FileDto? source;
+  final bool enableArViewer;
+  final String? source;
 
   ExtrasDto(
-      {this.enable3DViewer = false, this.enableARViewer = false, this.source});
+      {this.enable3DViewer = false, this.enableArViewer = false, this.source});
 
   factory ExtrasDto.fromJson(Map<String, dynamic> json) =>
       _$ExtrasDtoFromJson(json);
@@ -24,8 +26,8 @@ extension Mapper on ExtrasDto {
   Extras toExtras() {
     return Extras(
       enable3DViewer: enable3DViewer,
-      enableARViewer: enableARViewer,
-      source: source?.toFile(),
+      enableArViewer: enableArViewer,
+      source: source,
     );
   }
 }

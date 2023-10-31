@@ -6,7 +6,7 @@ import 'package:sudoo/app/pages/product/product/product_bloc.dart';
 import 'package:sudoo/app/widgets/blocks/category_block.dart';
 import 'package:sudoo/app/widgets/blocks/extras_block.dart';
 import 'package:sudoo/app/widgets/blocks/image_block.dart';
-import 'package:sudoo/app/widgets/blocks/size_block.dart';
+import 'package:sudoo/app/widgets/blocks/size_weight_block.dart';
 import 'package:sudoo/app/widgets/loading_view.dart';
 
 import '../../../../resources/R.dart';
@@ -24,11 +24,17 @@ class ProductPage extends BasePage<ProductBloc> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        buildContent(context),
-        LoadingView(controller: bloc.loadingController),
-      ],
+    return WillPopScope(
+      onWillPop: () async {
+        bloc.navigator.back();
+        return Future.value(true);
+      },
+      child: Stack(
+        children: [
+          buildContent(context),
+          LoadingView(controller: bloc.loadingController),
+        ],
+      ),
     );
   }
 
@@ -102,7 +108,7 @@ class ProductPage extends BasePage<ProductBloc> {
                     padding: const EdgeInsets.symmetric(vertical: 5.0),
                     child: _buildTextFieldBlock(
                       bloc.descriptionController,
-                      maxLines: 5,
+                      maxLines: 10,
                       maxLength: 5000,
                     ),
                   ),
@@ -111,7 +117,7 @@ class ProductPage extends BasePage<ProductBloc> {
                   children: [
                     _buildTitle(R.string.listedPrice, style),
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5.0),
+                      padding: const EdgeInsets.symmetric(vertical: 10.0),
                       child: _buildListedPriceBlock(),
                     ),
                   ],
@@ -120,7 +126,7 @@ class ProductPage extends BasePage<ProductBloc> {
                   children: [
                     _buildTitle(R.string.price, style),
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5.0),
+                      padding: const EdgeInsets.symmetric(vertical: 10.0),
                       child: _buildPriceBlock(),
                     ),
                   ],
@@ -131,7 +137,7 @@ class ProductPage extends BasePage<ProductBloc> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 5.0),
+                        padding: const EdgeInsets.symmetric(vertical: 10.0),
                         child: _buildTextFieldBlock(
                           bloc.amountController,
                           maxLines: 1,
@@ -139,6 +145,10 @@ class ProductPage extends BasePage<ProductBloc> {
                           keyboardType: TextInputType.number,
                           decoration: const InputDecoration(
                             constraints: BoxConstraints(maxWidth: 150),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 5,
+                            ),
                             border: OutlineInputBorder(),
                             counterText: "",
                           ),
@@ -150,8 +160,8 @@ class ProductPage extends BasePage<ProductBloc> {
                 TableRow(children: [
                   _buildTitle(R.string.sizeWeight, style),
                   Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: SizeBlock(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    child: SizeWeightBlock(
                       style: style,
                       weightController: bloc.weightController,
                       heightController: bloc.heightController,
@@ -163,15 +173,21 @@ class ProductPage extends BasePage<ProductBloc> {
                 TableRow(children: [
                   _buildTitle(R.string.saleStatus, style),
                   Padding(
-                    padding: const EdgeInsets.all(5.0),
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
                     child: ValueListenableBuilder(
                       valueListenable: bloc.saleable,
-                      builder: (context, value, child) => Switch(
-                        value: value,
-                        onChanged: (value) => bloc.onChangeSaleStatus(value),
-                        thumbColor: MaterialStateProperty.all(Colors.white),
-                        activeTrackColor: Colors.red,
-                        inactiveTrackColor: Colors.grey,
+                      builder: (context, value, child) => Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Switch(
+                            value: value,
+                            onChanged: (value) =>
+                                bloc.onChangeSaleStatus(value),
+                            thumbColor: MaterialStateProperty.all(Colors.white),
+                            activeTrackColor: Colors.red,
+                            inactiveTrackColor: Colors.grey,
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -179,11 +195,12 @@ class ProductPage extends BasePage<ProductBloc> {
                 TableRow(children: [
                   _buildTitle(R.string.extras, style),
                   Padding(
-                    padding: const EdgeInsets.all(5.0),
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
                     child: ExtrasBlock(
                       enable3DViewer: bloc.enable3DViewer,
-                      enableARViewer: bloc.enableARViewer,
+                      enableARViewer: bloc.enableArViewer,
                       sourceViewer: bloc.sourceViewer,
+                      style: style,
                       onChangeEnableViewer: bloc.onChangeEnableViewer,
                     ),
                   ),
@@ -254,10 +271,10 @@ class ProductPage extends BasePage<ProductBloc> {
             constraints: const BoxConstraints(
               maxWidth: 200,
             ),
-            suffixIcon: Text(
-              "đ",
-              style: style.copyWith(fontWeight: FontWeight.bold),
-            ),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            suffixText: "đ",
+            suffixStyle: style.copyWith(fontWeight: FontWeight.bold),
             border: const OutlineInputBorder(),
             counterText: "",
           ),
@@ -284,10 +301,10 @@ class ProductPage extends BasePage<ProductBloc> {
                 constraints: const BoxConstraints(
                   maxWidth: 200,
                 ),
-                suffixIcon: Text(
-                  "đ",
-                  style: style.copyWith(fontWeight: FontWeight.bold),
-                ),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                suffixText: "đ",
+                suffixStyle: style.copyWith(fontWeight: FontWeight.bold),
                 border: const OutlineInputBorder(),
                 counterText: "",
               ),
@@ -310,12 +327,12 @@ class ProductPage extends BasePage<ProductBloc> {
               controller: bloc.discountController,
               decoration: InputDecoration(
                 constraints: const BoxConstraints(
-                  maxWidth: 100,
+                  maxWidth: 80,
                 ),
-                suffixIcon: Text(
-                  "%",
-                  style: style.copyWith(fontWeight: FontWeight.bold),
-                ),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                suffixText: "%",
+                suffixStyle: style.copyWith(fontWeight: FontWeight.bold),
                 border: const OutlineInputBorder(),
                 counterText: "",
               ),
@@ -366,7 +383,7 @@ class ProductPage extends BasePage<ProductBloc> {
         final price = double.parse(value);
         final listedPrice = double.parse(bloc.listedPriceController.text);
         bloc.discountController.text =
-            (price / listedPrice * 100).toInt().toString();
+            (100 - (price / listedPrice * 100)).toInt().toString();
       } on Exception catch (e) {
         Logger.error(message: e.toString());
       }

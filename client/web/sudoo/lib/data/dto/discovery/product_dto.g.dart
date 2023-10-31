@@ -24,6 +24,10 @@ ProductDto _$ProductDtoFromJson(Map<String, dynamic> json) => ProductDto(
           ? null
           : DateTime.parse(json['endDateDiscount'] as String),
       json['saleable'] as bool,
+      json['weight'] as int,
+      json['height'] as int,
+      json['width'] as int,
+      json['length'] as int,
       (json['images'] as List<dynamic>)
           .map((e) => FileDto.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -49,6 +53,10 @@ Map<String, dynamic> _$ProductDtoToJson(ProductDto instance) =>
       'startDateDiscount': instance.startDateDiscount?.toIso8601String(),
       'endDateDiscount': instance.endDateDiscount?.toIso8601String(),
       'saleable': instance.saleable,
+      'weight': instance.weight,
+      'height': instance.height,
+      'width': instance.width,
+      'length': instance.length,
       'images': instance.images,
       'supplier': instance.supplier,
       'categories': instance.categories,

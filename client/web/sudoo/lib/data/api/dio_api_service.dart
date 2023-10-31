@@ -163,9 +163,10 @@ class DioApiService implements ApiService {
   @override
   Future<Response> upload(
     String path, {
+    required String key,
     String? filePath,
     List<int>? bytes,
-    String? imageName,
+    String? fileName,
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
@@ -175,14 +176,14 @@ class DioApiService implements ApiService {
       } else if (bytes != null) {
         multipartFile = MultipartFile.fromBytes(
           bytes,
-          filename: "test.png"
+          filename: fileName ?? "${key}_${DateTime.now().millisecond}.png",
         );
       } else {
         throw Exception("[filePath] or [bytes] must be not null");
       }
       final formData = FormData.fromMap(
         {
-          ApiConfig.image: multipartFile,
+          key: multipartFile,
         },
       );
 

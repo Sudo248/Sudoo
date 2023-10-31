@@ -23,7 +23,7 @@ class DashboardPage extends StatelessWidget {
         Expanded(
           flex: 6,
           child: Scaffold(
-            appBar: _buildAppBar(),
+            appBar: _buildAppBar(context),
             body: Navigator(
               key: bloc.navigator.navigatorKey,
               onGenerateRoute: (settings) => AppPages.getPages(settings),
@@ -35,10 +35,18 @@ class DashboardPage extends StatelessWidget {
     );
   }
 
-  AppBar _buildAppBar() {
+  AppBar _buildAppBar(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.white,
       centerTitle: true,
+      leading: GestureDetector(
+        onTap: () {
+          if (bloc.navigator.currentState.canPop()) {
+            bloc.navigator.back();
+          }
+        },
+        child: const Icon(Icons.arrow_back),
+      ),
       actions: [
         ValueListenableBuilder(
           valueListenable: bloc.notificationCount,
@@ -65,7 +73,7 @@ class DashboardPage extends StatelessWidget {
           width: 20,
         ),
       ],
-      leading: SearchBar(
+      title: SearchBar(
         leading: const Icon(Icons.search),
         constraints: const BoxConstraints(
           minWidth: 300,

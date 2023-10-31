@@ -96,6 +96,7 @@ class AuthRepositoryImpl with HandleResponse implements AuthRepository {
       final TokenDto token = response.get();
       pref.setString(PrefKeys.token, token.token);
       pref.setString(PrefKeys.refreshToken, token.refreshToken ?? "");
+      pref.setString(PrefKeys.role, token.role.value);
     }
     return response;
   }

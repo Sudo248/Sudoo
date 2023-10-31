@@ -7,6 +7,7 @@ part 'file_dto.g.dart';
 
 @JsonSerializable()
 class FileDto {
+  @JsonKey(name: "imageId")
   final String fileId;
   final String ownerId;
   final String url;

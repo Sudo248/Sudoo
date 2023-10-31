@@ -11,9 +11,7 @@ class SupplierDto {
   final String name;
   final String avatar;
   final String brand;
-  final Location? location;
   final String contactUrl;
-  final String locationName;
   final int? totalProducts;
   final double? rate;
 
@@ -22,9 +20,7 @@ class SupplierDto {
     this.name,
     this.avatar,
     this.brand,
-    this.location,
     this.contactUrl,
-    this.locationName,
     this.totalProducts,
     this.rate,
   );
@@ -42,9 +38,7 @@ extension Mapper on SupplierDto {
       name,
       avatar,
       brand,
-      location,
       contactUrl,
-      locationName,
       totalProducts,
       rate,
     );

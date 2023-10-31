@@ -12,12 +12,14 @@ class ExtrasBlock extends StatelessWidget {
   final ValueNotifier<bool> enable3DViewer;
   final ValueNotifier<bool> enableARViewer;
   final ValueNotifier<domain.File?> sourceViewer;
+  final TextStyle style;
 
   const ExtrasBlock({
     super.key,
     required this.enable3DViewer,
     required this.enableARViewer,
     required this.sourceViewer,
+    required this.style,
     this.onChangeEnableViewer,
   });
 
@@ -33,7 +35,10 @@ class ExtrasBlock extends StatelessWidget {
           children: [
             Row(
               children: [
-                Text(R.string.enable3DViewer),
+                Text(
+                  R.string.enable3DViewer,
+                  style: style,
+                ),
                 const SizedBox(
                   width: 5,
                 ),
@@ -45,7 +50,10 @@ class ExtrasBlock extends StatelessWidget {
             ),
             Row(
               children: [
-                Text(R.string.enableARViewer),
+                Text(
+                  R.string.enableARViewer,
+                  style: style,
+                ),
                 const SizedBox(
                   width: 5,
                 ),
@@ -77,11 +85,7 @@ class ExtrasBlock extends StatelessWidget {
 
   Widget _buildChooseFile() {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        vertical: 10,
-        horizontal: 5,
-      ),
-      constraints: const BoxConstraints(minWidth: 80, maxWidth: 200),
+      constraints: const BoxConstraints(minWidth: 100, maxWidth: 400),
       decoration: BoxDecoration(
         color: Colors.grey.shade300,
         borderRadius: BorderRadius.circular(5.0),
@@ -89,18 +93,6 @@ class ExtrasBlock extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Expanded(
-            child: ValueListenableBuilder(
-              valueListenable: sourceViewer,
-              builder: (context, value, child) => Text(
-                _getNameSource(value?.url),
-                style: R.style.h5,
-              ),
-            ),
-          ),
-          const SizedBox(
-            width: 3,
-          ),
           TextButton(
             onPressed: pickFile,
             style: R.buttonStyle.outlinedButtonStyle(
@@ -111,7 +103,20 @@ class ExtrasBlock extends StatelessWidget {
               R.string.chooseFile,
               style: R.style.h5,
             ),
-          )
+          ),
+          const SizedBox(
+            width: 3,
+          ),
+          Expanded(
+            child: ValueListenableBuilder(
+              valueListenable: sourceViewer,
+              builder: (context, value, child) => Text(
+                _getNameSource(value?.url),
+                style: R.style.h5.copyWith(color: Colors.black),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -128,11 +133,12 @@ class ExtrasBlock extends StatelessWidget {
 
   Future<void> pickFile() async {
     final fileBytes = await _pickFile();
-    if (fileBytes == null) return;
-    sourceViewer.value = domain.File.fromBytes(fileBytes);
+    if (fileBytes == null || fileBytes.value == null) return;
+    sourceViewer.value =
+        domain.File.fromBytes(fileBytes.value!, name: fileBytes.key);
   }
 
-  Future<List<int>?> _pickFile() async {
+  Future<MapEntry<String, List<int>?>?> _pickFile() async {
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
@@ -140,7 +146,8 @@ class ExtrasBlock extends StatelessWidget {
         allowMultiple: false,
       );
       if (result == null || result.files.isEmpty) return null;
-      return result.files.single.bytes;
+
+      return MapEntry(result.files.single.name, result.files.single.bytes);
     } catch (e) {
       Logger.error(message: e.toString());
       return null;

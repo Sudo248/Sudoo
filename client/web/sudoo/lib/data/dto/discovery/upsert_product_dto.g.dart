@@ -24,6 +24,10 @@ UpsertProductDto _$UpsertProductDtoFromJson(Map<String, dynamic> json) =>
           ? null
           : DateTime.parse(json['endDateDiscount'] as String),
       json['saleable'] as bool,
+      json['weight'] as int,
+      json['height'] as int,
+      json['width'] as int,
+      json['length'] as int,
       (json['images'] as List<dynamic>?)
           ?.map((e) => FileDto.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -47,6 +51,10 @@ Map<String, dynamic> _$UpsertProductDtoToJson(UpsertProductDto instance) =>
       'startDateDiscount': instance.startDateDiscount?.toIso8601String(),
       'endDateDiscount': instance.endDateDiscount?.toIso8601String(),
       'saleable': instance.saleable,
+      'weight': instance.weight,
+      'height': instance.height,
+      'width': instance.width,
+      'length': instance.length,
       'images': instance.images,
       'categoryIds': instance.categoryIds,
       'extras': instance.extras,
