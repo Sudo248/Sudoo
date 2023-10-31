@@ -14,6 +14,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 @Service
 public interface UserService {
     @GetMapping("/api/v1/users")
-    ResponseEntity<BaseResponse<UserDto>> getUserInfo(@RequestHeader(Constants.HEADER_USER_ID) String userId);
+    ResponseEntity<BaseResponse<UserDto>> getUser(@RequestHeader(Constants.HEADER_USER_ID) String userId);
 
 }

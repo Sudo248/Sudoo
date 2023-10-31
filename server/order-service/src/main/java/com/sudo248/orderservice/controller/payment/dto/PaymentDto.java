@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.TimeZone;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,6 +18,7 @@ public class PaymentDto {
     private Double amount;
     private String paymentType;
     private String ipAddress;
+    private TimeZone timeZone;
     private String paymentUrl;
     private PaymentStatus paymentStatus;
 }

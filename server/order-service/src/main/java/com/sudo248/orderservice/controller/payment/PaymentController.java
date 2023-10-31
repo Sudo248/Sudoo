@@ -9,6 +9,7 @@ import com.sudo248.orderservice.service.payment.PaymentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -32,6 +33,7 @@ public class PaymentController {
             HttpServletRequest request
     ) {
         if (paymentDto.getIpAddress() == null) paymentDto.setIpAddress(ipService.getIpAddress(request));
+        if (paymentDto.getTimeZone() == null) paymentDto.setTimeZone(RequestContextUtils.getTimeZone(request));
         return paymentService.pay(userId, paymentDto);
     }
 

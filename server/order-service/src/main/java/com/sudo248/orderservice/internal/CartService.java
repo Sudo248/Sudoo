@@ -12,16 +12,21 @@ import org.springframework.web.bind.annotation.*;
 @Service
 public interface CartService {
 
-    @GetMapping("/api/v1/cart/active")
+    @GetMapping("/api/v1/carts/active")
     ResponseEntity<BaseResponse<CartDto>> getActiveCartByUserId(@RequestHeader(Constants.HEADER_USER_ID) String userId);
 
-    @GetMapping("/api/v1/cart/{cartId}")
+    @GetMapping("/api/v1/carts/{cartId}")
     ResponseEntity<BaseResponse<CartDto>> getCartById(
             @PathVariable("cartId") String cartId
     );
 
-    @PutMapping("/api/v1/cart/active/completed")
+    @PutMapping("/api/v1/carts/active/completed")
     ResponseEntity<BaseResponse<?>> updateStatusCart(
+            @RequestHeader(Constants.HEADER_USER_ID) String userId
+    );
+
+    @DeleteMapping("/api/v1/carts/processing")
+    ResponseEntity<BaseResponse<?>> deleteProcessingCart(
             @RequestHeader(Constants.HEADER_USER_ID) String userId
     );
 }

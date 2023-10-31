@@ -16,16 +16,16 @@ import com.sudo248.orderservice.repository.entity.order.*;
 import com.sudo248.orderservice.repository.entity.payment.Payment;
 import com.sudo248.orderservice.service.order.OrderService;
 import com.sudo248.orderservice.service.payment.PaymentService;
+import com.sudo248.orderservice.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import static java.util.Map.of;
 
 @Service
 @Slf4j
@@ -97,13 +97,14 @@ public class OrderServiceImpl implements OrderService {
         builder.address(user.getAddress().getFullAddress());
         builder.orderSuppliers(createOrderSuppliersByCart(cart, user));
         PromotionDto promotionDto = null;
-        if (upsertOrderDto.getPromotionId() != null) {
+        if (!StringUtils.isNullOrEmpty(upsertOrderDto.getPromotionId())) {
             promotionDto = getPromotionById(upsertOrderDto.getPromotionId());
             builder.promotionId(promotionDto.getPromotionId());
-            builder.totalPromotionPrice(promotionDto.getValue());
         }
 
         Order order = builder.build();
+        // He thong chua ho tro promotion cho tung staff
+        order.calculateTotalPromotionPrice(promotionDto, null);
         order.calculateTotalShipmentPrice();
         order.calculateFinalPrice();
 
@@ -133,6 +134,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public boolean cancelOrderByUser(String orderId) {
+        final Order order = orderRepository.getReferenceById(orderId);
+        cartService.deleteProcessingCart(order.getUserId());
+        orderRepository.deleteById(orderId);
+        return false;
+    }
+
+    @Override
     public OrderDto toDto(Order order) throws ApiException {
         return OrderDto.builder()
                 .orderId(order.getOrderId())
@@ -156,11 +165,18 @@ public class OrderServiceImpl implements OrderService {
         if (orderSupplier.getSupplier() == null) {
             orderSupplier.setSupplier(productService.getSupplierById(orderSupplier.getSupplierId()).getData());
         }
+        PromotionDto promotionDto = null;
+        if (!StringUtils.isNullOrEmpty(orderSupplier.getPromotionId())) {
+            try {
+                promotionDto = getPromotionById(orderSupplier.getPromotionId());
+            } catch (ApiException e) {
+                e.printStackTrace();
+            }
+        }
         return new OrderSupplierDto(
                 orderSupplier.getOrderSupplierId(),
                 orderSupplier.getSupplier(),
-                orderSupplier.getPromotionId(),
-                orderSupplier.getPromotionValue(),
+                promotionDto,
                 orderSupplier.getTotalPrice(),
                 orderSupplier.getShipment(),
                 orderSupplier.getCartProducts()
@@ -170,6 +186,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Map<String, ?> updateOrderByField(String orderId, String field, String id) throws ApiException {
         Order order = orderRepository.getReferenceById(orderId);
+        Map<String, Object> result = new HashMap<>();
+        result.put(field, id);
         switch (field) {
             case "promotion":
                 PromotionDto promotionDto = getPromotionById(id);
@@ -177,8 +195,40 @@ public class OrderServiceImpl implements OrderService {
                 order.setTotalPromotionPrice(promotionDto.getValue());
                 order.calculateFinalPrice();
                 orderRepository.save(order);
+                result.putAll(getUpdateOrderMap(order));
         }
-        return Map.of(field, id);
+        return result;
+    }
+
+    @Override
+    public UpsertOrderPromotionDto updateOrderPromotion(String orderId, UpsertOrderPromotionDto upsertOrderPromotionDto) throws ApiException {
+        PromotionDto promotionDto = getPromotionById(upsertOrderPromotionDto.getPromotionId());
+        Order order = orderRepository.getReferenceById(orderId);
+        if (StringUtils.isNullOrEmpty(upsertOrderPromotionDto.getOrderSupplierId())) {
+            order.setPromotionId(upsertOrderPromotionDto.getPromotionId());
+        } else {
+            // update promotion for order supplier
+        }
+        order.calculateTotalPromotionPrice(promotionDto, null);
+        order.calculateFinalPrice();
+        orderRepository.save(order);
+        return new UpsertOrderPromotionDto(
+                upsertOrderPromotionDto.getPromotionId(),
+                upsertOrderPromotionDto.getOrderSupplierId(),
+                order.getTotalPrice(),
+                order.getTotalPromotionPrice(),
+                order.getFinalPrice()
+        );
+
+    }
+
+    private Map<String, Object> getUpdateOrderMap(Order order) {
+        return Map.of(
+                "totalPrice", order.getTotalPrice(),
+                "totalPromotionPrice", order.getTotalPromotionPrice(),
+                "totalShipmentPrice", order.getTotalShipmentPrice(),
+                "finalPrice", order.getFinalPrice()
+        );
     }
 
     @Override
@@ -199,7 +249,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private UserDto getUserById(String userId) {
-        ResponseEntity<BaseResponse<UserDto>> response = userService.getUserInfo(userId);
+        ResponseEntity<BaseResponse<UserDto>> response = userService.getUser(userId);
         if (response.getStatusCodeValue() == 200) {
             return Objects.requireNonNull(response.getBody()).getData();
         }
@@ -253,7 +303,6 @@ public class OrderServiceImpl implements OrderService {
                     .supplierId(supplierId)
                     .supplier(supplier)
                     .promotionId(null)
-                    .promotionValue(0.0)
                     .cartProducts(cartProducts);
 
             // Length is same for an product

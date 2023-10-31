@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*
 class CartController(
     val cartService: CartService
 ) : BaseController() {
-
+// thanh toan xog chua co update status cart
     @GetMapping("/active")
     suspend fun getActiveCart(
         @RequestHeader(Constants.HEADER_USER_ID) userId: String
