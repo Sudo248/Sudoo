@@ -201,6 +201,7 @@ class ProductServiceImpl(
     override suspend fun getProductDetailById(productId: String): ProductDto = coroutineScope {
         val product = productRepository.findById(productId) ?: throw NotFoundException("Not found product $productId")
         val supplierInfo = async { supplierService.getSupplierInfoById(product.supplierId) }
+        val extras = async { productExtrasRepository.findById(productId)?.toProductExtrasDto() }
         joinAll(
             launch {
                 product.images = imageRepository.getAllByOwnerId(productId).toList()
@@ -212,7 +213,7 @@ class ProductServiceImpl(
             }
         )
 
-        product.toProductDto(supplierInfo.await())
+        product.toProductDto(supplierInfo = supplierInfo.await(), extras = extras.await())
     }
 
     override suspend fun getProductInfoById(productId: String): ProductInfoDto = coroutineScope {
@@ -232,6 +233,7 @@ class ProductServiceImpl(
     override suspend fun getProductDetailBySku(sku: String): ProductDto = coroutineScope {
         val product = productRepository.getProductBySku(sku) ?: throw NotFoundException("Not found product sku $sku")
         val supplierInfo = async { supplierService.getSupplierInfoById(product.supplierId) }
+        val extras = async { productExtrasRepository.findById(product.productId)?.toProductExtrasDto() }
         joinAll(
             launch {
                 product.supplier = supplierRepository.findById(product.supplierId)
@@ -247,7 +249,7 @@ class ProductServiceImpl(
             }
         )
 
-        product.toProductDto(supplierInfo.await())
+        product.toProductDto(supplierInfo = supplierInfo.await(), extras = extras.await())
     }
 
     override suspend fun getProductInfoByCategoryAndName(
