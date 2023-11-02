@@ -1,12 +1,13 @@
 
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sudoo/domain/model/discovery/extras.dart';
-import 'package:sudoo/extensions/string_ext.dart';
+
+import '../../base_request.dart';
 
 part 'upsert_extras_request.g.dart';
 
 @JsonSerializable()
-class UpsertExtrasRequest {
+class UpsertExtrasRequest extends BaseRequest  {
   final bool enable3DViewer;
   final bool enableArViewer;
   final String? source;

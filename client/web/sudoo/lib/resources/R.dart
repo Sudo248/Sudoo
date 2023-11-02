@@ -15,6 +15,10 @@ class AppString extends R {
 
   String get home => "Home";
 
+  String get listProduct => "List product";
+
+  String get createProduct => "Create product";
+
   String get email => "Email";
 
   String get password => "Password";

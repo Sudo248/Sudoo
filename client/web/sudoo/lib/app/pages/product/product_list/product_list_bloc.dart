@@ -13,7 +13,6 @@ import 'package:sudoo/domain/repository/product_repository.dart';
 import 'package:sudoo/extensions/list_ext.dart';
 
 import '../../../../domain/model/discovery/category_product.dart';
-import '../../../routes/app_routes.dart';
 
 class ProductListBloc extends BaseBloc implements CategoryCallback, ProductInfoActionCallback {
   final ProductRepository productRepository;
@@ -62,7 +61,7 @@ class ProductListBloc extends BaseBloc implements CategoryCallback, ProductInfoA
   }
 
   Future<void> navigateToProductDetail(String productId) async {
-    await navigator.navigateTo(AppRoutes.product, arguments: productId);
+    // await navigator.navigateTo(AppRoutes.product, arguments: productId);
   }
 
   Future<bool> patchProduct(UpsertProduct product) async {

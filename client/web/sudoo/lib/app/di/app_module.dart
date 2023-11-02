@@ -7,12 +7,9 @@ import 'package:sudoo/app/services/scaffold_message_service.dart';
 
 import '../../utils/di.dart';
 import '../pages/auth/auth_bloc.dart';
-import '../services/navigator_service.dart';
 
 class AppModule {
   static Future<void> perform() async {
-    // getIt.registerLazySingleton<NavigatorService>(() => NavigatorService(), instanceName: Navigation.main.name);
-    getIt.registerLazySingleton<NavigatorService>(() => NavigatorService());
 
     getIt.registerLazySingleton<ScaffoldMessengerService>(
         () => ScaffoldMessengerService());

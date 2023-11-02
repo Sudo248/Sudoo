@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sudoo/app/model/product_info_action_callback.dart';
+import 'package:sudoo/app/routes/app_routes.dart';
 import 'package:sudoo/app/widgets/confirm_dialog.dart';
 import 'package:sudoo/domain/model/discovery/product_info.dart';
 
@@ -67,7 +69,8 @@ class ProductActionCell extends StatelessWidget {
           onChanged: (value) {
             switch (value) {
               case ProductAction.viewDetail:
-                callback.viewDetailProduct(product.productId);
+                // callback.viewDetailProduct(product.productId);
+                context.push("${AppRoutes.productDetail}/${product.productId}");
                 break;
               case ProductAction.manageImages:
                 callback.manageImages();

@@ -1,8 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sudoo/domain/model/discovery/supplier.dart';
 
-import '../../../domain/model/user/location.dart';
-
 part 'supplier_dto.g.dart';
 
 @JsonSerializable()

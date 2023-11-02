@@ -7,6 +7,7 @@ import 'package:sudoo/domain/model/discovery/price.dart';
 import '../../resources/R.dart';
 import '../../utils/logger.dart';
 
+// ignore: must_be_immutable
 class EditPriceDialog extends StatelessWidget {
   final Price price;
   final ValueSetter<Price>? onPositive;

@@ -1,4 +1,4 @@
-import 'package:sudoo/domain/model/discovery/file.dart';
+
 
 class Extras {
   final bool enable3DViewer;

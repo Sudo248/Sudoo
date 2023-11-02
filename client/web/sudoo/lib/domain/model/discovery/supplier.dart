@@ -1,5 +1,4 @@
 import 'package:sudoo/domain/model/discovery/product.dart';
-import 'package:sudoo/domain/model/user/location.dart';
 
 class Supplier {
   final String supplierId;

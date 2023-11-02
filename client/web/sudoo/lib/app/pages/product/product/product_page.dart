@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sudoo/app/base/base_page.dart';
 import 'package:sudoo/app/pages/product/product/product_bloc.dart';
 import 'package:sudoo/app/widgets/blocks/category_block.dart';
@@ -17,7 +18,7 @@ class ProductPage extends BasePage<ProductBloc> {
   final String? productId;
   late final TextStyle style;
 
-  ProductPage({super.key, required this.productId, TextStyle? style}) {
+  ProductPage({super.key, this.productId, TextStyle? style}) {
     this.style = style ?? R.style.h4_1.copyWith(color: Colors.black);
     bloc.fetchProduct(productId);
   }
@@ -26,7 +27,7 @@ class ProductPage extends BasePage<ProductBloc> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        bloc.navigator.back();
+        context.pop();
         return Future.value(true);
       },
       child: Stack(

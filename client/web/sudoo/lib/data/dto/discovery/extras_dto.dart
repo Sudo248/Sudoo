@@ -1,7 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:sudoo/data/dto/discovery/file_dto.dart';
-import 'package:sudoo/domain/model/discovery/file.dart';
-import 'package:sudoo/extensions/string_ext.dart';
 
 import '../../../domain/model/discovery/extras.dart';
 

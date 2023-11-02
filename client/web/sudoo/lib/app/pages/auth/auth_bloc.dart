@@ -108,7 +108,6 @@ class AuthBloc extends BaseBloc {
     passwordController.dispose();
     confirmPasswordController.dispose();
     otpController.dispose();
-    formKey.currentState?.dispose();
     form.dispose();
     loadingController.dispose();
   }
