@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sudoo/app/base/base_page.dart';
 import 'package:sudoo/app/pages/splash/splash_bloc.dart';
 import 'package:sudoo/app/widgets/loading_view.dart';
@@ -11,10 +12,10 @@ class SplashPage extends BasePage<SplashBloc> {
   @override
   Widget build(BuildContext context) {
     bloc.setOnNavigationToDashBoard(() {
-      Navigator.of(context).pushReplacementNamed(AppRoutes.dashboard);
+      context.go(AppRoutes.home);
     });
     bloc.setOnNavigationToAuth(() {
-      Navigator.of(context).pushReplacementNamed(AppRoutes.auth);
+      context.go(AppRoutes.auth);
     });
     bloc.refreshToken();
     return Center(

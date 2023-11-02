@@ -60,10 +60,6 @@ class ProductListBloc extends BaseBloc implements CategoryCallback, ProductInfoA
     }
   }
 
-  Future<void> navigateToProductDetail(String productId) async {
-    // await navigator.navigateTo(AppRoutes.product, arguments: productId);
-  }
-
   Future<bool> patchProduct(UpsertProduct product) async {
     loadingController.showLoading();
     final result = await productRepository.patchProduct(product);
@@ -143,10 +139,5 @@ class ProductListBloc extends BaseBloc implements CategoryCallback, ProductInfoA
 
   @override
   void manageImages() {
-  }
-
-  @override
-  Future<void> viewDetailProduct(String productId) async {
-    navigateToProductDetail(productId);
   }
 }

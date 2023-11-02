@@ -70,7 +70,7 @@ class ProductActionCell extends StatelessWidget {
             switch (value) {
               case ProductAction.viewDetail:
                 // callback.viewDetailProduct(product.productId);
-                context.push("${AppRoutes.productDetail}/${product.productId}");
+                context.go("${AppRoutes.products}/${product.productId}");
                 break;
               case ProductAction.manageImages:
                 callback.manageImages();

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sudoo/app/base/base_page.dart';
 import 'package:sudoo/app/pages/auth/auth_bloc.dart';
 import 'package:sudoo/app/pages/auth/auth_form.dart';
@@ -16,7 +17,7 @@ class AuthPage extends BasePage<AuthBloc> {
   @override
   Widget build(BuildContext context) {
     bloc.setOnNavigationToDashBoard(() {
-      Navigator.of(context).pushReplacementNamed(AppRoutes.dashboard);
+      context.go(AppRoutes.home);
     });
     final size = MediaQuery.sizeOf(context);
     return Scaffold(

@@ -5,6 +5,7 @@ import 'package:sudoo/app/routes/app_routes.dart';
 import 'package:sudoo/app/widgets/app_navigation_rail.dart';
 import 'package:sudoo/resources/R.dart';
 import 'package:sudoo/utils/di.dart';
+import 'package:sudoo/app/routes/app_router.dart';
 
 // ignore: must_be_immutable
 class DashboardPage extends StatelessWidget {
@@ -12,20 +13,21 @@ class DashboardPage extends StatelessWidget {
   DashboardPage({Key? key, required this.child})
       : super(key: key ?? const ValueKey("DashboardPageKey"));
   final DashboardBloc bloc = getIt.get();
-  int currentIndex = 0;
   void go(BuildContext context, int index) {
-    if (index == currentIndex) return;
+    if (index == AppRouter.indexDashboard.value) return;
+    AppRouter.indexDashboard.value = index;
     switch (index) {
       case 0:
         context.go(AppRoutes.home);
         break;
       case 1:
-        context.go(AppRoutes.productList);
+        context.go(AppRoutes.products);
         break;
       case 2:
         context.go(AppRoutes.createProduct);
         break;
       default:
+        context.go(AppRoutes.home);
     }
   }
 
@@ -52,14 +54,6 @@ class DashboardPage extends StatelessWidget {
     return AppBar(
       backgroundColor: Colors.white,
       centerTitle: true,
-      leading: GestureDetector(
-        onTap: () {
-          if (context.canPop()) {
-            context.pop();
-          }
-        },
-        child: const Icon(Icons.arrow_back),
-      ),
       actions: [
         ValueListenableBuilder(
           valueListenable: bloc.notificationCount,
@@ -108,27 +102,6 @@ class DashboardPage extends StatelessWidget {
           height: 0,
         ),
       ),
-    );
-  }
-
-  NavigationRail _buildNavigationRail(BuildContext context) {
-    return NavigationRail(
-      selectedIndex: 0,
-      onDestinationSelected: (value) => go(context, value),
-      destinations: [
-        NavigationRailDestination(
-          icon: const Icon(Icons.home),
-          label: Text(R.string.home),
-        ),
-        NavigationRailDestination(
-          icon: const Icon(Icons.list_alt),
-          label: Text(R.string.home),
-        ),
-        NavigationRailDestination(
-          icon: const Icon(Icons.create_outlined),
-          label: Text(R.string.createProduct),
-        )
-      ],
     );
   }
 }
