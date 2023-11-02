@@ -1,2 +1,17 @@
-package com.sudo248.orderservice.controller.order.dto;public class UpsertUserProductDto {
+package com.sudo248.orderservice.controller.order.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
+public class UpsertUserProductDto {
+    private String productId;
+    private String userId;
+
+    public UpsertUserProductDto(String productId) {
+        this.productId = productId;
+        this.userId = null;
+    }
 }

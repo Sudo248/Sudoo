@@ -4,10 +4,7 @@ import com.sudo248.domain.base.BaseResponse;
 import com.sudo248.domain.exception.ApiException;
 import com.sudo248.domain.util.Utils;
 import com.sudo248.orderservice.config.VnPayConfig;
-import com.sudo248.orderservice.controller.order.dto.CartDto;
-import com.sudo248.orderservice.controller.order.dto.OrderCartProductDto;
-import com.sudo248.orderservice.controller.order.dto.PatchAmountProductDto;
-import com.sudo248.orderservice.controller.order.dto.PatchAmountPromotionDto;
+import com.sudo248.orderservice.controller.order.dto.*;
 import com.sudo248.orderservice.controller.payment.dto.PaymentDto;
 import com.sudo248.orderservice.controller.payment.dto.PaymentInfoDto;
 import com.sudo248.orderservice.controller.payment.dto.VnPayResponse;
@@ -17,7 +14,6 @@ import com.sudo248.orderservice.internal.ProductService;
 import com.sudo248.orderservice.repository.OrderRepository;
 import com.sudo248.orderservice.repository.PaymentRepository;
 import com.sudo248.orderservice.repository.entity.order.Order;
-import com.sudo248.orderservice.repository.entity.order.OrderSupplier;
 import com.sudo248.orderservice.repository.entity.payment.Notification;
 import com.sudo248.orderservice.repository.entity.payment.Payment;
 import com.sudo248.orderservice.repository.entity.payment.PaymentStatus;
@@ -32,6 +28,9 @@ import java.nio.charset.StandardCharsets;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 @Service
 public class VnPayServiceImpl implements PaymentService, VnpayService {
@@ -46,6 +45,8 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
     private final ProductService productService;
 
     private final Locale locale = new Locale("vi", "VN");
+
+    private final Executor executor = Executors.newSingleThreadExecutor();
 
     public VnPayServiceImpl(
             PaymentRepository paymentRepository,
@@ -64,10 +65,10 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
         return handleException(() -> {
             if (paymentDto.getOrderId() == null) throw new ApiException(HttpStatus.BAD_REQUEST, "Require order id");
             Order order = orderRepository.getReferenceById(paymentDto.getOrderId());
+            updateOrderStatus(order);
             Payment payment = toEntity(paymentDto);
             payment.setOrder(order);
             paymentRepository.save(payment);
-
             Map<String, String> vnp_Params = new HashMap<>();
             vnp_Params.put("vnp_Version", VnPayConfig.vnp_Version);
             vnp_Params.put("vnp_Command", VnPayConfig.vnp_Command);
@@ -125,16 +126,18 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
             String vnp_SecureHash = VnPayConfig.hmacSHA512(VnPayConfig.vnp_HashSecret, hashData.toString());
             queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
             String paymentUrl = VnPayConfig.vnp_Url + "?" + queryUrl;
-            updateStatusCart(order.getCartId());
-            updateAmountProduct(order.getCartId(), false);
-            updateAmountPromotion(order.getPromotionId());
             return BaseResponse.ok(toDto(payment, paymentUrl, paymentDto.getTimeZone()));
         });
     }
 
-    private void updateStatusCart(String cartId) {
-        // confirm lai de update status cart khi thanh toan
-        cartService.updateStatusCart(cartId);
+    private void updateOrderStatus(Order order) throws ApiException {
+        updateAmountProduct(order.getCartId(), false);
+        updateAmountPromotion(order.getPromotionId());
+        checkoutProcessingCart(order.getUserId());
+    }
+
+    private void checkoutProcessingCart(String userId) {
+        cartService.checkoutProcessingCart(userId);
     }
 
     private void updateAmountProduct(String cartId, Boolean isRestore) throws ApiException {
@@ -292,7 +295,7 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
             String vnp_TxnRef,
             String vnp_SecureHashType,
             String vnp_SecureHash
-    ) {
+    ) throws ApiException {
         Map<String, String> fields = new HashMap<>();
         fields.put("vnp_TmnCode", vnp_TmnCode);
         fields.put("vnp_Amount", String.valueOf(vnp_Amount));
@@ -346,6 +349,7 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
 
                     if ("00".equals(responseCode)) {
                         payment.setStatus(PaymentStatus.SUCCESS);
+                        upsertUserProduct(payment.getOrder().getUserId(), payment.getOrder().getCartId());
                         notification = new Notification(
                                 null,
                                 "Thanh toán thành công",
@@ -392,4 +396,73 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
             );
         }
     }
+
+    private void upsertUserProduct(String userId, String cartId) {
+        CompletableFuture.runAsync(() -> {
+            try {
+                CartDto cart = getCartById(cartId);
+                CompletableFuture.allOf(cart.getCartProducts().stream().map((e) ->
+                        CompletableFuture.runAsync(() ->
+                                productService.upsertUserProduct(
+                                        userId,
+                                        new UpsertUserProductDto(e.getProduct().getProductId())
+                                )
+                        )
+                ).toArray(CompletableFuture[]::new));
+            } catch (ApiException e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
+        }, executor);
+    }
 }
+
+/*import java.util.Arrays;
+        import java.util.List;
+        import java.util.concurrent.CompletableFuture;
+        import java.util.concurrent.ExecutionException;
+        import java.util.concurrent.TimeUnit;
+        import java.util.stream.Collectors;
+
+public class CompletableFuture9 {
+
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
+
+        // A list of 100 web page links
+        List<String> webPageLinks = Arrays.asList( //
+                "https://www.google.com.vn/", "https://vnexpress.net/", "http://gpcoder.com/");
+
+        // Download contents of all the web pages asynchronously
+        List<CompletableFuture<String>> pageContentFutures = webPageLinks.stream()
+                .map(webPageLink -> downloadWebPage(webPageLink)).collect(Collectors.toList());
+
+        // Create a combined Future using allOf()
+        CompletableFuture<Void> allFutures = CompletableFuture
+                .allOf(pageContentFutures.toArray(new CompletableFuture[pageContentFutures.size()]));
+
+        // When all the Futures are completed, call `future.join()` to get their results
+        // and collect the results in a list
+        CompletableFuture<List<String>> allPageContentsFuture = allFutures.thenApply(v -> {
+            return pageContentFutures.stream().map(pageContentFuture -> pageContentFuture.join())
+                    .collect(Collectors.toList());
+        });
+
+        // Count the number of web pages having the "CompletableFuture" keyword.
+        CompletableFuture<Long> countFuture = allPageContentsFuture.thenApply(pageContents -> {
+            return pageContents.stream().filter(pageContent -> pageContent.contains("CompletableFuture")).count();
+        });
+
+        System.out.println("Number of Web Pages having CompletableFuture keyword: " + countFuture.get());
+    }
+
+    public static CompletableFuture<String> downloadWebPage(String pageLink) {
+        return CompletableFuture.supplyAsync(() -> {
+            System.out.println("Downloading: " + pageLink);
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            // Code to download and return the web page's content
+            return "CompletableFuture Completed";
+        });*/
