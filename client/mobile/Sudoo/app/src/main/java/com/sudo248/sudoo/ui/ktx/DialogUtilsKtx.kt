@@ -13,12 +13,13 @@ import com.sudo248.sudoo.R
  * @since 23:44 - 11/03/2023
  */
 
-fun DialogUtils.showErrorDialog(context: Context, message: String): Dialog {
+fun DialogUtils.showErrorDialog(context: Context, message: String, onClickConfirm: (() -> Unit)? = null): Dialog {
     return showDialog(
         context = context,
         title = context.getString(R.string.error),
         textColorTitle = R.color.red,
         description = message,
-        backgroundConfirmColor = R.color.red
+        backgroundConfirmColor = R.color.red,
+        onClickConfirm = onClickConfirm
     )
 }

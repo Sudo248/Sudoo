@@ -17,3 +17,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "Sudoo"
 include ':app'
+include ':sceneform'
+include ':sceneform-ux'

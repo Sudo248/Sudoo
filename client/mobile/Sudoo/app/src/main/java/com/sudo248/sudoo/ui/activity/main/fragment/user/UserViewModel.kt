@@ -14,7 +14,7 @@ import com.sudo248.base_android.utils.SharedPreferenceUtils
 import com.sudo248.sudoo.domain.common.Constants
 import com.sudo248.sudoo.domain.entity.user.AddressSuggestion
 import com.sudo248.sudoo.domain.repository.AuthRepository
-import com.sudo248.sudoo.domain.repository.FileRepository
+import com.sudo248.sudoo.domain.repository.StorageRepository
 import com.sudo248.sudoo.domain.repository.UserRepository
 import com.sudo248.sudoo.ui.activity.auth.AuthActivity
 import com.sudo248.sudoo.ui.activity.main.MainViewModel
@@ -31,7 +31,7 @@ import javax.inject.Inject
 class UserViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val authRepository: AuthRepository,
-    private val fileRepository: FileRepository
+    private val storageRepository: StorageRepository
 ) : BaseViewModel<NavDirections>() {
 
     private var viewController: ViewController? = null
@@ -102,7 +102,7 @@ class UserViewModel @Inject constructor(
         setState(UiState.LOADING)
         parentViewModel.imageUri.value?.let {
             viewController?.run {
-                val imageUrl = fileRepository.uploadImage(getPathImageFromUri(it)).get()
+                val imageUrl = storageRepository.uploadImage(getPathImageFromUri(it)).get()
                 _user.value?.avatar?.set(imageUrl)
             }
         }

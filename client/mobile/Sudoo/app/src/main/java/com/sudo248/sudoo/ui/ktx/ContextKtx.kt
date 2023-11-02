@@ -19,3 +19,15 @@ fun Context.createTempPictureUri(
 
     return FileProvider.getUriForFile(applicationContext, provider, tempFile)
 }
+
+fun Context.getUriForFile(file: File): Uri {
+    return FileProvider.getUriForFile(
+        applicationContext,
+        "${BuildConfig.APPLICATION_ID}.provider",
+        file
+    )
+}
+
+fun Context.createTempFile(prefix: String, suffix: String): File {
+    return File.createTempFile(prefix, suffix, cacheDir)
+}
