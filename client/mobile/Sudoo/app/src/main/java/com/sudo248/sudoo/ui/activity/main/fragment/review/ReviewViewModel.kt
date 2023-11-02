@@ -10,7 +10,7 @@ import com.sudo248.base_android.ktx.bindUiState
 import com.sudo248.base_android.ktx.onError
 import com.sudo248.base_android.ktx.onSuccess
 import com.sudo248.sudoo.domain.repository.DiscoveryRepository
-import com.sudo248.sudoo.domain.repository.FileRepository
+import com.sudo248.sudoo.domain.repository.StorageRepository
 import com.sudo248.sudoo.ui.activity.main.MainViewModel
 import com.sudo248.sudoo.ui.util.BundleKeys
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ReviewViewModel @Inject constructor(
     private val discoveryRepository: DiscoveryRepository,
-    private val fileRepository: FileRepository
+    private val storageRepository: StorageRepository
 ) : BaseViewModel<NavDirections>() {
 
     private var viewController: ViewController? = null
@@ -42,7 +42,7 @@ class ReviewViewModel @Inject constructor(
             emitState(UiState.LOADING)
             parentViewModel.imageUri.value?.let {
                 viewController?.run {
-                    val imageUrl = fileRepository.uploadImage(getPathImageFromUri(it)).get()
+                    val imageUrl = storageRepository.uploadImage(getPathImageFromUri(it)).get()
                     upserReview.images = listOf(imageUrl)
                 }
             }

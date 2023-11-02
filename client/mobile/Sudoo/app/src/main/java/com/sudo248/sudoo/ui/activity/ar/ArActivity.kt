@@ -9,12 +9,9 @@ import com.google.ar.core.Plane
 import com.google.ar.core.TrackingState
 import com.google.ar.sceneform.AnchorNode
 import com.google.ar.sceneform.rendering.ModelRenderable
-import com.google.ar.sceneform.rendering.Renderable
 import com.google.ar.sceneform.ux.ArFragment
 import com.google.ar.sceneform.ux.TransformableNode
 import com.sudo248.base_android.base.BaseActivity
-import com.sudo248.base_android.core.UiState
-import com.sudo248.base_android.event.SingleEvent
 import com.sudo248.base_android.utils.DialogUtils
 import com.sudo248.sudoo.R
 import com.sudo248.sudoo.databinding.ActivityArBinding
@@ -34,6 +31,7 @@ class ArActivity : BaseActivity<ActivityArBinding, ArViewModel>() {
     private lateinit var arFragment: ArFragment
     private var modelRenderable: ModelRenderable? = null
     private var isDetectedPlane = false
+    private var isModelRendered = false
 
     override fun initView() {
         if (!DeviceUtils.isDeviceSupportAR(this)) {
@@ -42,7 +40,7 @@ class ArActivity : BaseActivity<ActivityArBinding, ArViewModel>() {
         }
         setupArFragment()
         getSourceFromIntent()?.let {
-            viewModel.getModelResource(this, it)
+            viewModel.getModelResource(this.cacheDir, it)
         }
     }
 
@@ -57,18 +55,34 @@ class ArActivity : BaseActivity<ActivityArBinding, ArViewModel>() {
     }
 
     private fun initModelRenderable(source: Uri) {
-        ModelRenderable.builder()
-            .setSource(this, source, true)
-            .build()
-            .thenAccept {
-                modelRenderable = it
-                renderModelOrElse()
-            }
-            .exceptionally {
-                viewModel.error = SingleEvent(it.message)
-                viewModel.setState(UiState.ERROR)
-                return@exceptionally null;
-            }
+        try {
+            ModelRenderable.builder()
+                .setSource(this, source)
+                .setIsFilamentGltf(true)
+                .build()
+                .thenAccept {
+                    modelRenderable = it
+                    renderModelOrElse()
+                }
+                .exceptionally {
+                    DialogUtils.showErrorDialog(
+                        context = this@ArActivity,
+                        message = it.message ?: "Some thing went wrong",
+                        onClickConfirm = {
+                            finish()
+                        }
+                    )
+                    return@exceptionally null
+                }
+        } catch (e: Exception) {
+            DialogUtils.showErrorDialog(
+                context = this@ArActivity,
+                message = e.message ?: "Some thing went wrong",
+                onClickConfirm = {
+                    finish()
+                }
+            )
+        }
     }
 
     private fun setupArFragment() {
@@ -80,15 +94,17 @@ class ArActivity : BaseActivity<ActivityArBinding, ArViewModel>() {
     }
 
     private fun shouldShowModel() {
-        arFragment.arSceneView.arFrame?.getUpdatedTrackables(Plane::class.java)
-            ?.firstOrNull { it.trackingState == TrackingState.TRACKING }?.let {
-                isDetectedPlane = true
-                renderModelOrElse()
-            }
+        if (!isModelRendered) {
+            arFragment.arSceneView.arFrame?.getUpdatedTrackables(Plane::class.java)
+                ?.firstOrNull { it.trackingState == TrackingState.TRACKING }?.let {
+                    isDetectedPlane = true
+                    renderModelOrElse()
+                }
+        }
     }
 
     private fun renderModelOrElse() {
-        if (isDetectedPlane && modelRenderable != null) {
+        if (isDetectedPlane && modelRenderable != null && !isModelRendered) {
             renderModel(modelRenderable!!)
         }
     }
@@ -99,19 +115,19 @@ class ArActivity : BaseActivity<ActivityArBinding, ArViewModel>() {
         }
 
         lifecycleScope.launch {
-            while (true) {
+            while (!isModelRendered) {
                 val results = arFragment.arSceneView.session?.update()?.hitTest(centerPoint.x, centerPoint.y)
                 if (!results.isNullOrEmpty()) {
                     val anchor = AnchorNode(results.first().createAnchor())
                     anchor.setParent(arFragment.arSceneView.scene)
+
                     // attaching the anchorNode with the TransformableNode
                     val model = TransformableNode(arFragment.transformationSystem)
                     model.setParent(anchor)
-                    /*model.scaleController.maxScale = 0.6f
-                    model.scaleController.minScale = 0.6f*/
+                    model.scaleController.maxScale = 0.6f
+                    model.scaleController.minScale = 0.5f
                     model.renderable = renderable
-                    model.select()
-                    return@launch
+                    isModelRendered = true
                 } else {
                     delay(100)
                 }

@@ -163,6 +163,10 @@ class ProductDetailViewModel @Inject constructor(
         navigator.navigateOffAll(ProductDetailFragmentDirections.actionProductDetailFragmentToDiscoveryFragment())
     }
 
+    fun navigateToChat() {
+
+    }
+
     fun buyNow() = launch {
         addProductToCart().join()
         navigator.navigateOff(ProductDetailFragmentDirections.actionProductDetailFragmentToCartFragment())

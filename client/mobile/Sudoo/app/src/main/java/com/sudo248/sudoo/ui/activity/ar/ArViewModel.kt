@@ -11,23 +11,24 @@ import com.sudo248.base_android.ktx.bindUiState
 import com.sudo248.base_android.ktx.onError
 import com.sudo248.base_android.ktx.onSuccess
 import com.sudo248.base_android.navigation.IntentDirections
-import com.sudo248.sudoo.domain.repository.FileRepository
+import com.sudo248.sudoo.domain.repository.StorageRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
 class ArViewModel @Inject constructor(
-    private val fileRepository: FileRepository
+    private val storageRepository: StorageRepository
 ) : BaseViewModel<IntentDirections>() {
     var error: SingleEvent<String?> = SingleEvent(null)
 
     private val _modelSource = MutableLiveData<Uri>()
     val modelSource: LiveData<Uri> = _modelSource
 
-    fun getModelResource(context: Context, source: String) = launch {
+    fun getModelResource(parent: File, source: String) = launch {
         emitState(UiState.LOADING)
-        fileRepository.getImageResource(context, source)
+        storageRepository.getArModelResource(parent, source)
             .onSuccess {
                 _modelSource.postValue(it)
             }

@@ -175,7 +175,7 @@ constructor(
     }
 
     @SuppressLint("DrawAllocation")
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         val availableWidth = width - paddingRight - paddingLeft
         charSize = if (space < 0) {
             (availableWidth / (numChars * 2f - 1))
@@ -192,14 +192,14 @@ constructor(
         paint.getTextWidths(text, 0, textLength, textWidths)
 
         for (i in 0..numChars) {
-            canvas?.drawRoundRect(
+            canvas.drawRoundRect(
                 RectF(startX, strokeWidth, startX + charSize, availableHeight),
                 radius,
                 radius,
                 backgroundPaint
             )
             updateColorStroke(i <= textLength)
-            canvas?.drawRoundRect(
+            canvas.drawRoundRect(
                 RectF(startX, strokeWidth, startX + charSize, availableHeight),
                 radius,
                 radius,
@@ -207,7 +207,7 @@ constructor(
             )
             if (textLength > i) {
                 val middle = startX + charSize / 2
-                canvas?.drawText(
+                canvas.drawText(
                     text.toString(),
                     i,
                     i + 1,
