@@ -1,6 +1,7 @@
 package com.sudo248.orderservice.service.payment;
 
 
+import com.sudo248.domain.exception.ApiException;
 import com.sudo248.orderservice.controller.payment.dto.VnPayResponse;
 
 public interface VnpayService {

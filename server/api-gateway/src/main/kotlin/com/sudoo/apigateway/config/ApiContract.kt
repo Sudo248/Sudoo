@@ -10,6 +10,7 @@ internal enum class ApiContract(val paths: List<String>) {
             "/generate-otp",
             "/verify-otp",
             "/images",
+            "/files",
             "/return-vnpay",
             "/ipn-vnpay",
             "/static",
