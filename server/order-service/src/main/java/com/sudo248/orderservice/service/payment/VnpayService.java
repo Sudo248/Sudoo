@@ -36,6 +36,6 @@ public interface VnpayService {
             String vnp_TxnRef,
             String vnp_SecureHashType,
             String vnp_SecureHash
-    ) throws ApiException;
+    );
 
 }

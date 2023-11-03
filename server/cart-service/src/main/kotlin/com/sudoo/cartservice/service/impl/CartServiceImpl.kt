@@ -60,7 +60,7 @@ class CartServiceImpl(
             status = CartStatus.ACTIVE.value,
         ).apply { isNewCart = true }
         val savedCart = cartRepository.save(cart)
-        val cartDto = getCartById(userId = userId, cartId = savedCart.cartId, false)
+        val cartDto = getCartById(cartId = savedCart.cartId)
         return cartDto
     }
 
@@ -90,10 +90,10 @@ class CartServiceImpl(
             },
         ).apply { isNewCart = true }
         cartRepository.save(cart)
-        return getCartById(userId = userId, cartId = cart.cartId, false)
+        return getCartById(cartId = cart.cartId)
     }
 
-    override suspend fun getCartById(userId: String, cartId: String, hasRoute: Boolean): CartDto {
+    override suspend fun getCartById(cartId: String): CartDto {
         val cart = cartRepository.findById(cartId) ?: throw NotFoundException("Not found cart $cartId")
         val totalPrice = 0.0
         var totalAmount = 0

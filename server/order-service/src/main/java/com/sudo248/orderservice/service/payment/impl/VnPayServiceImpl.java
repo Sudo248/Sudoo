@@ -131,7 +131,7 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
     }
 
     private void updateOrderStatus(Order order) throws ApiException {
-        updateAmountProduct(order.getCartId(), false);
+        updateAmountProduct(order.getUserId(), false);
         updateAmountPromotion(order.getPromotionId());
         checkoutProcessingCart(order.getUserId());
     }
@@ -140,8 +140,8 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
         cartService.checkoutProcessingCart(userId);
     }
 
-    private void updateAmountProduct(String cartId, Boolean isRestore) throws ApiException {
-        CartDto cart = getCartById(cartId);
+    private void updateAmountProduct(String userId, Boolean isRestore) throws ApiException {
+        CartDto cart = getProcessingCart(userId);
         for (OrderCartProductDto orderCartProductDto : cart.getCartProducts()) {
             updateAmountProduct(orderCartProductDto, isRestore);
         }
@@ -176,10 +176,10 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
         }
     }
 
-    private CartDto getCartById(String cartId) throws ApiException {
-        var response = cartService.getCartById(cartId);
+    private CartDto getProcessingCart(String userId) throws ApiException {
+        var response = cartService.getProcessingCart(userId);
         if (response.getStatusCode() != HttpStatus.OK || !response.hasBody())
-            throw new ApiException(HttpStatus.NOT_FOUND, "Not found cart " + cartId);
+            throw new ApiException(HttpStatus.NOT_FOUND, "Not found processing cart for user" + userId);
         return Objects.requireNonNull(response.getBody()).getData();
     }
 
@@ -295,7 +295,7 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
             String vnp_TxnRef,
             String vnp_SecureHashType,
             String vnp_SecureHash
-    ) throws ApiException {
+    ) {
         Map<String, String> fields = new HashMap<>();
         fields.put("vnp_TmnCode", vnp_TmnCode);
         fields.put("vnp_Amount", String.valueOf(vnp_Amount));
@@ -336,7 +336,7 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
             String bankCode,
             String paymentStatus,
             String responseCode
-    ) throws ApiException {
+    ) {
 
         if (paymentRepository.existsById(paymentId)) {
             Payment payment = paymentRepository.getReferenceById(paymentId);
@@ -349,7 +349,7 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
 
                     if ("00".equals(responseCode)) {
                         payment.setStatus(PaymentStatus.SUCCESS);
-                        upsertUserProduct(payment.getOrder().getUserId(), payment.getOrder().getCartId());
+                        upsertUserProduct(payment.getOrder().getUserId());
                         notification = new Notification(
                                 null,
                                 "Thanh toán thành công",
@@ -363,7 +363,11 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
                                 "Có lỗi xảy ra trong quá trình thanh toán. Hãy kiểm tra lại"
                         );
                         // if thanh toan that bai => tra lai so luong cho san pham
-                        updateAmountProduct(payment.getOrder().getCartId(), true);
+                        try {
+                            updateAmountProduct(payment.getOrder().getUserId(), true);
+                        } catch (ApiException e) {
+                            e.printStackTrace();
+                        }
                     }
                     notificationService.sendNotificationPaymentStatus(payment.getOrder().getUserId(), notification);
                     if (payment.getBankCode() == null || payment.getBankCode().isEmpty()) {
@@ -397,10 +401,10 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
         }
     }
 
-    private void upsertUserProduct(String userId, String cartId) {
+    private void upsertUserProduct(String userId) {
         CompletableFuture.runAsync(() -> {
             try {
-                CartDto cart = getCartById(cartId);
+                CartDto cart = getProcessingCart(userId);
                 CompletableFuture.allOf(cart.getCartProducts().stream().map((e) ->
                         CompletableFuture.runAsync(() ->
                                 productService.upsertUserProduct(
