@@ -67,7 +67,7 @@ fun UpsertProductExtrasDto.combineProductExtra(extras: ProductExtras): ProductEx
     )
 }
 
-fun Product.toProductDto(supplierInfo: SupplierInfoDto, extras: ProductExtrasDto = ProductExtrasDto()): ProductDto {
+fun Product.toProductDto(supplierInfo: SupplierInfoDto, extras: ProductExtrasDto?): ProductDto {
     return ProductDto(
         productId = productId,
         supplierId = supplierId,
@@ -88,7 +88,7 @@ fun Product.toProductDto(supplierInfo: SupplierInfoDto, extras: ProductExtrasDto
         length = length,
         width = width,
         supplier = supplierInfo,
-        extras = extras,
+        extras = extras ?: ProductExtrasDto(),
         categories = categories?.map { it.toCategoryInfoDto() },
         images = images?.map { it.toImageDto() },
     )

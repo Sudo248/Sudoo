@@ -1,7 +1,6 @@
 package com.sudoo.cartservice.controller
 
 import com.sudoo.cartservice.controller.dto.CartDto
-import com.sudoo.cartservice.controller.dto.CartProductDto
 import com.sudoo.cartservice.controller.dto.CartProductsDto
 import com.sudoo.cartservice.service.CartService
 import com.sudoo.domain.base.BaseController
@@ -31,11 +30,10 @@ class CartController(
 
     @GetMapping("/{cartId}")
     suspend fun getCartById(
-        @RequestHeader(Constants.HEADER_USER_ID) userId: String,
         @PathVariable cartId: String,
-        @RequestParam(value = "hasRoute", required = false, defaultValue = "false") hasRoute: Boolean
+        @RequestParam(value = "orderInfo", required = false, defaultValue = "false") orderInfo: Boolean
     ): ResponseEntity<BaseResponse<*>> = handle {
-        cartService.getCartById(userId, cartId, hasRoute)
+        cartService.getCartById(cartId)
     }
 
 
@@ -75,6 +73,6 @@ class CartController(
         @PathVariable cartId: String,
         @RequestParam(value = "hasRoute", defaultValue = "false") hasRoute: Boolean
     ): CartDto {
-        return cartService.getCartById(userId, cartId, hasRoute)
+        return cartService.getCartById(cartId)
     }
 }

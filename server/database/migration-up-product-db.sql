@@ -106,7 +106,10 @@ CREATE TABLE `images`
 (
     `image_id` CHAR(32)     NOT NULL PRIMARY KEY,
     `owner_id` CHAR(32)     NOT NULL,
-    `url`      VARCHAR(255) NOT NULL
+    `url`      VARCHAR(255) NOT NULL,
+
+    INDEX owner_id_index (owner_id)
+
 ) CHARACTER SET = utf8mb4
     COMMENT = 'Store all images';
 

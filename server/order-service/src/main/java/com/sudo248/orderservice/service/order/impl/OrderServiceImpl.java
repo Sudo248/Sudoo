@@ -90,12 +90,12 @@ public class OrderServiceImpl implements OrderService {
                 .cartId(upsertOrderDto.getCartId())
                 .userId(userId);
 
-        CartDto cart = getCartById(upsertOrderDto.getCartId());
+        CartDto cart = getProcessingCart(userId);
         UserDto user = getUserById(userId);
 
         builder.totalPrice(cart.getTotalPrice());
         builder.address(user.getAddress().getFullAddress());
-        builder.orderSuppliers(createOrderSuppliersByCart(cart, user));
+
         PromotionDto promotionDto = null;
         if (!StringUtils.isNullOrEmpty(upsertOrderDto.getPromotionId())) {
             promotionDto = getPromotionById(upsertOrderDto.getPromotionId());
@@ -104,6 +104,7 @@ public class OrderServiceImpl implements OrderService {
 
         Order order = builder.build();
         // He thong chua ho tro promotion cho tung staff
+        order.setOrderSuppliers(createOrderSuppliersByCart(order, cart, user));
         order.calculateTotalPromotionPrice(promotionDto, null);
         order.calculateTotalShipmentPrice();
         order.calculateFinalPrice();
@@ -256,10 +257,10 @@ public class OrderServiceImpl implements OrderService {
         return new UserDto();
     }
 
-    private CartDto getCartById(String cartId) throws ApiException {
-        var response = cartService.getCartById(cartId);
+    private CartDto getProcessingCart(String userId) throws ApiException {
+        var response = cartService.getProcessingCart(userId);
         if (response.getStatusCode() != HttpStatus.OK || !response.hasBody())
-            throw new ApiException(HttpStatus.NOT_FOUND, "Not found cart " + cartId);
+            throw new ApiException(HttpStatus.NOT_FOUND, "Not found processing cart for user " + userId);
         return Objects.requireNonNull(response.getBody()).getData();
     }
 
@@ -285,7 +286,7 @@ public class OrderServiceImpl implements OrderService {
         );
     }
 
-    private List<OrderSupplier> createOrderSuppliersByCart(CartDto cart, UserDto user) throws ApiException {
+    private List<OrderSupplier> createOrderSuppliersByCart(Order order, CartDto cart, UserDto user) throws ApiException {
         final Map<String, List<OrderCartProductDto>> groupBySupplier = cart.getCartProducts().stream().collect(Collectors.groupingBy(orderCartProductDto ->
                 orderCartProductDto.getProduct().getSupplierId()
         ));
@@ -300,6 +301,7 @@ public class OrderServiceImpl implements OrderService {
 
             final var orderSupplierBuilder = OrderSupplier.builder()
                     .orderSupplierId(Utils.createId())
+                    .order(order)
                     .supplierId(supplierId)
                     .supplier(supplier)
                     .promotionId(null)
@@ -342,16 +344,5 @@ public class OrderServiceImpl implements OrderService {
             listOrderSupplier.add(orderSupplierBuilder.build());
         }
         return listOrderSupplier;
-    }
-
-    private List<OrderSupplier> getCartProductForOrderSupplier(List<OrderSupplier> orderSuppliers, String cartId) throws ApiException {
-        CartDto cart = getCartById(cartId);
-        final Map<String, List<OrderCartProductDto>> groupBySupplier = cart.getCartProducts().stream().collect(Collectors.groupingBy(orderCartProductDto ->
-                orderCartProductDto.getProduct().getSupplierId()
-        ));
-        for (OrderSupplier orderSupplier : orderSuppliers) {
-            orderSupplier.setCartProducts(groupBySupplier.get(orderSupplier.getSupplierId()));
-        }
-        return orderSuppliers;
     }
 }

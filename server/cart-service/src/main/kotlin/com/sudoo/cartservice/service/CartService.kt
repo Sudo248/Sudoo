@@ -2,7 +2,6 @@ package com.sudoo.cartservice.service
 
 import com.sudoo.cartservice.controller.dto.CartDto
 import com.sudoo.cartservice.controller.dto.CartProductDto
-import com.sudoo.cartservice.controller.dto.ProductInfoDto
 import com.sudoo.cartservice.controller.dto.UpsertCartProductDto
 import com.sudoo.cartservice.controller.dto.order.OrderCartDto
 import com.sudoo.cartservice.controller.dto.order.OrderCartProductDto
@@ -17,7 +16,7 @@ interface CartService {
 
     //---Active Cart-----------
     suspend fun getActiveCart(userId: String): CartDto
-    suspend fun getCartById(userId: String, cartId: String, hasRoute: Boolean): CartDto
+    suspend fun getCartById(cartId: String): CartDto
     suspend fun getCartProducts(cartId: String): List<CartProductDto>
     suspend fun getOrderCartProducts(cartId: String): List<OrderCartProductDto>
 

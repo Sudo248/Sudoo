@@ -114,7 +114,7 @@ class ProductServiceImpl(
                 .map { product ->
                     async {
                         product.brand = supplierRepository.getBrand(product.supplierId)
-                        product.images = imageRepository.getAllByOwnerId(product.productId).map { it.url }.toList()
+                        product.images = listOf(imageRepository.getFirstByOwnerId(product.productId).url)
                         product.toProductInfoDto()
                     }
                 }
@@ -136,7 +136,7 @@ class ProductServiceImpl(
                     .map { product ->
                         async {
                             product.brand = supplierRepository.getBrand(product.supplierId)
-                            product.images = imageRepository.getAllByOwnerId(product.productId).map { it.url }.toList()
+                            product.images = listOf(imageRepository.getFirstByOwnerId(product.productId).url)
                             product.toProductInfoDto()
                         }
                     }
@@ -161,7 +161,7 @@ class ProductServiceImpl(
                 val productInfo = productRepository.getProductInfoById(productId)
                     ?: throw NotFoundException("Not found product $productId")
                 productInfo.brand = supplierRepository.getBrand(productInfo.supplierId)
-                productInfo.images = imageRepository.getAllByOwnerId(productInfo.productId).map { it.url }.toList()
+                productInfo.images = listOf(imageRepository.getFirstByOwnerId(productInfo.productId).url)
                 productInfo.toProductInfoDto()
             }
         }
@@ -184,7 +184,7 @@ class ProductServiceImpl(
         ).map { product ->
             async {
                 product.brand = supplierRepository.getBrand(supplierId)
-                product.images = imageRepository.getAllByOwnerId(product.productId).map { it.url }.toList()
+                product.images = listOf(imageRepository.getFirstByOwnerId(product.productId).url)
                 product.toProductInfoDto()
             }
         }
@@ -201,6 +201,7 @@ class ProductServiceImpl(
     override suspend fun getProductDetailById(productId: String): ProductDto = coroutineScope {
         val product = productRepository.findById(productId) ?: throw NotFoundException("Not found product $productId")
         val supplierInfo = async { supplierService.getSupplierInfoById(product.supplierId) }
+        val extras = async { productExtrasRepository.findById(productId)?.toProductExtrasDto() }
         joinAll(
             launch {
                 product.images = imageRepository.getAllByOwnerId(productId).toList()
@@ -212,7 +213,7 @@ class ProductServiceImpl(
             }
         )
 
-        product.toProductDto(supplierInfo.await())
+        product.toProductDto(supplierInfo = supplierInfo.await(), extras = extras.await())
     }
 
     override suspend fun getProductInfoById(productId: String): ProductInfoDto = coroutineScope {
@@ -223,7 +224,7 @@ class ProductServiceImpl(
                 productInfo.brand = supplierRepository.getBrand(productInfo.supplierId)
             },
             launch {
-                productInfo.images = imageRepository.getAllByOwnerId(productInfo.productId).map { it.url }.toList()
+                productInfo.images = listOf(imageRepository.getFirstByOwnerId(productInfo.productId).url)
             }
         )
         productInfo.toProductInfoDto()
@@ -232,6 +233,7 @@ class ProductServiceImpl(
     override suspend fun getProductDetailBySku(sku: String): ProductDto = coroutineScope {
         val product = productRepository.getProductBySku(sku) ?: throw NotFoundException("Not found product sku $sku")
         val supplierInfo = async { supplierService.getSupplierInfoById(product.supplierId) }
+        val extras = async { productExtrasRepository.findById(product.productId)?.toProductExtrasDto() }
         joinAll(
             launch {
                 product.supplier = supplierRepository.findById(product.supplierId)
@@ -247,7 +249,7 @@ class ProductServiceImpl(
             }
         )
 
-        product.toProductDto(supplierInfo.await())
+        product.toProductDto(supplierInfo = supplierInfo.await(), extras = extras.await())
     }
 
     override suspend fun getProductInfoByCategoryAndName(
@@ -278,7 +280,7 @@ class ProductServiceImpl(
         productRepository.getListProductInfoByIds(ids).map { product ->
             async {
                 product.brand = supplierRepository.getBrand(product.supplierId)
-                product.images = imageRepository.getAllByOwnerId(product.productId).map { it.url }.toList()
+                product.images = listOf(imageRepository.getFirstByOwnerId(product.productId).url)
                 product.toProductInfoDto()
             }
         }.toList().awaitAll()
@@ -288,7 +290,7 @@ class ProductServiceImpl(
         productRepository.getListOrderProductInfoByIds(ids).map { product ->
             async {
                 product.brand = supplierRepository.getBrand(product.supplierId)
-                product.images = imageRepository.getAllByOwnerId(product.productId).map { it.url }.toList()
+                product.images = listOf(imageRepository.getFirstByOwnerId(product.productId).url)
                 product.toOrderProductDto()
             }
         }.toList().awaitAll()
@@ -318,7 +320,7 @@ class ProductServiceImpl(
                     .map { product ->
                         async {
                             product.brand = supplierRepository.getBrand(product.supplierId)
-                            product.images = imageRepository.getAllByOwnerId(product.productId).map { it.url }.toList()
+                            product.images = listOf(imageRepository.getFirstByOwnerId(product.productId).url)
                             product.toProductInfoDto()
                         }
                     }
@@ -347,7 +349,7 @@ class ProductServiceImpl(
                 .map { product ->
                     async {
                         product.brand = supplierRepository.getBrand(product.supplierId)
-                        product.images = imageRepository.getAllByOwnerId(product.productId).map { it.url }.toList()
+                        product.images = listOf(imageRepository.getFirstByOwnerId(product.productId).url)
                         product.toProductInfoDto()
                     }
                 }

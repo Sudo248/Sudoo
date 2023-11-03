@@ -3,6 +3,7 @@ package com.sudo248.orderservice.repository.entity.order;
 import com.sudo248.orderservice.controller.order.dto.PromotionDto;
 import com.sudo248.orderservice.repository.entity.payment.Payment;
 import lombok.*;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.util.List;

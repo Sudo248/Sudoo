@@ -20,8 +20,13 @@ public interface CartService {
             @PathVariable("cartId") String cartId
     );
 
-    @PutMapping("/api/v1/carts/active/completed")
-    ResponseEntity<BaseResponse<?>> updateStatusCart(
+    @GetMapping("/api/v1/carts/processing")
+    ResponseEntity<BaseResponse<CartDto>> getProcessingCart(
+            @RequestHeader(Constants.HEADER_USER_ID) String userId
+    );
+
+    @PostMapping("/api/v1/carts/checkout")
+    ResponseEntity<BaseResponse<?>> checkoutProcessingCart(
             @RequestHeader(Constants.HEADER_USER_ID) String userId
     );
 
