@@ -236,6 +236,7 @@ class CartServiceImpl(
             orderCartDto.totalPrice += (cartProduct.product?.price ?: 0.0f) * (cartProduct.quantity)
         }
 
+
         return orderCartDto
     }
 

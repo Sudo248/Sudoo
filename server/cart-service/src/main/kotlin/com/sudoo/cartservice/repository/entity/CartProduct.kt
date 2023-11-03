@@ -46,6 +46,7 @@ fun CartProduct.toOrderCartProductDto(product:OrderProductInfoDto): OrderCartPro
         cartProductId = this.cartProductId,
         cartId = this.cartId,
         quantity = this.quantity,
+        totalPrice = this.quantity * product.price * 1.0,
         product = product
     )
 }
