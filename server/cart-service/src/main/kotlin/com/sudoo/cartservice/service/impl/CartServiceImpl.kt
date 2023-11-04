@@ -114,6 +114,27 @@ class CartServiceImpl(
         )
     }
 
+    override suspend fun getOrderCartById(cartId: String): OrderCartDto {
+        val cart = cartRepository.findById(cartId) ?: throw NotFoundException("Not found cart $cartId")
+        val cartProducts = getOrderCartProducts(cart.cartId)
+        val orderCartDto = OrderCartDto(
+            userId = cart.userId,
+            cartId = cart.cartId,
+            totalPrice = 0.0,
+            totalAmount = 0,
+            status = cart.status,
+            cartProducts = cartProducts
+        )
+
+        for (cartProduct in cartProducts) {
+            orderCartDto.totalAmount += cartProduct.quantity
+            orderCartDto.totalPrice += (cartProduct.product?.price ?: 0.0f) * (cartProduct.quantity)
+        }
+
+
+        return orderCartDto
+    }
+
     override suspend fun getCartProducts(cartId: String): List<CartProductDto> {
         val cartProducts: MutableList<CartProductDto> = mutableListOf()
         val cartProductsOfCart = cartProductRepository.findCartProductByCartId(cartId).toList()
