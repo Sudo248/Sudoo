@@ -75,7 +75,11 @@ object DataModule {
 
     @Singleton
     @Provides
-    fun provideOrderService(): OrderService = ApiService()
+    fun provideOrderService(): OrderService = api {
+        converterFactory = GsonConverterFactory.create(
+            GsonBuilder().registerTypeAdapter(LocalDate::class.java, LocalDateConverter()).create()
+        )
+    }
 
     @Singleton
     @Provides

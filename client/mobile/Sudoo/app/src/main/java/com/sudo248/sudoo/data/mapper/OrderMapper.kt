@@ -34,8 +34,7 @@ fun OrderSupplierDto.toOrderSupplier(): OrderSupplier {
     return OrderSupplier(
         orderSupplierId = orderSupplierId,
         supplier = supplier.toSupplierInfo(),
-        promotionId = promotionId,
-        promotionValue = promotionValue,
+        promotion = promotion?.toPromotion(),
         shipment = shipment,
         totalPrice = totalPrice,
         orderCartProducts = orderCartProducts.map {

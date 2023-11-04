@@ -123,7 +123,7 @@ class PaymentFragment : BaseFragment<FragmentPaymentBinding, PaymentViewModel>()
         )
         dialog.setContentView(dialogBinding.root)
         dialogBinding.lifecycleOwner = this
-        dialogBinding.viewModel = viewModel
+//        dialogBinding.viewModel = viewModel
         dialogBinding.txtAgree.setOnClickListener {
             dialog.hide()
         }
