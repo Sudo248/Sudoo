@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*
 class CartController(
     val cartService: CartService
 ) : BaseController() {
-// thanh toan xog chua co update status cart
+    // thanh toan xog chua co update status cart
     @GetMapping("/active")
     suspend fun getActiveCart(
         @RequestHeader(Constants.HEADER_USER_ID) userId: String
@@ -33,9 +33,9 @@ class CartController(
         @PathVariable cartId: String,
         @RequestParam(value = "orderInfo", required = false, defaultValue = "false") orderInfo: Boolean
     ): ResponseEntity<BaseResponse<*>> = handle {
-        cartService.getCartById(cartId)
+        if (orderInfo) cartService.getOrderCartById(cartId)
+        else cartService.getCartById(cartId)
     }
-
 
     @PostMapping("/processing")
     suspend fun createProcessingCart(
@@ -46,7 +46,7 @@ class CartController(
     }
 
     @GetMapping("/processing")
-        suspend fun getProcessingCart(
+    suspend fun getProcessingCart(
         @RequestHeader(Constants.HEADER_USER_ID) userId: String,
     ): ResponseEntity<BaseResponse<*>> = handle {
         cartService.getProcessingCart(userId)
