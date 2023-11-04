@@ -2,12 +2,12 @@ package com.sudo248.sudoo.domain.entity.order
 
 import com.sudo248.base_android.base.ItemDiff
 import com.sudo248.sudoo.domain.entity.discovery.SupplierInfo
+import com.sudo248.sudoo.domain.entity.promotion.Promotion
 
 data class OrderSupplier(
     val orderSupplierId: String,
     val supplier: SupplierInfo,
-    val promotionId: String,
-    val promotionValue: Double,
+    val promotion: Promotion?,
     val shipment: Shipment,
     val totalPrice: Double,
     val orderCartProducts: List<OrderCartProduct>

@@ -1,6 +1,5 @@
 package com.sudo248.sudoo.ui.activity.main.fragment.cart
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavDirections
@@ -11,6 +10,7 @@ import com.sudo248.base_android.ktx.bindUiState
 import com.sudo248.base_android.ktx.onError
 import com.sudo248.base_android.ktx.onSuccess
 import com.sudo248.sudoo.domain.entity.cart.AddCartProduct
+import com.sudo248.sudoo.domain.entity.cart.AddCartProducts
 import com.sudo248.sudoo.domain.entity.cart.Cart
 import com.sudo248.sudoo.domain.repository.CartRepository
 import com.sudo248.sudoo.domain.repository.OrderRepository
@@ -71,10 +71,9 @@ class CartViewModel @Inject constructor(
 
     fun buy() = launch {
         emitState(UiState.LOADING)
-        orderRepository.createOrder(_cart.value!!.cartId)
+        cartRepository.createProcessingCart(getAddCartProducts())
             .onSuccess {
-                Log.i("CART_ID", it)
-                navigator.navigateTo(CartFragmentDirections.actionCartFragmentToOrderFragment(cartId = it))
+                navigator.navigateTo(CartFragmentDirections.actionCartFragmentToOrderFragment(cartId = it.cartId))
             }
             .onError {
                 error = SingleEvent(it.message)
@@ -87,5 +86,9 @@ class CartViewModel @Inject constructor(
             totalPrice += (cartProduct.product?.price ?: 0.0f) * (cartProduct.quantity)
         }
         _totalPrice.postValue(totalPrice * 1.0)
+    }
+
+    private fun getAddCartProducts(): AddCartProducts {
+        return AddCartProducts(_cart.value!!.cartProducts)
     }
 }

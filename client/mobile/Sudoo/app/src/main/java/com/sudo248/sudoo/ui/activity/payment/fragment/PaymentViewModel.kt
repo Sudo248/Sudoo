@@ -85,14 +85,14 @@ class PaymentViewModel @Inject constructor(
 
     fun applyPromotion(promotion: Promotion) = launch {
         order.value?.let {
-            emitState(UiState.LOADING)
-            orderRepository.updatePromotion(it.orderId,)
-                .onSuccess { newInvoice ->
-                    _promotion.postValue(promotion)
-                    _finalPrice.postValue(newInvoice.finalPrice)
-                }.onError { ex ->
-                    error = SingleEvent(ex.message)
-                }.bindUiState(_uiState)
+//            emitState(UiState.LOADING)
+//            orderRepository.updatePromotion(it.orderId,)
+//                .onSuccess { newInvoice ->
+//                    _promotion.postValue(promotion)
+//                    _finalPrice.postValue(newInvoice.finalPrice)
+//                }.onError { ex ->
+//                    error = SingleEvent(ex.message)
+//                }.bindUiState(_uiState)
         }
     }
 
