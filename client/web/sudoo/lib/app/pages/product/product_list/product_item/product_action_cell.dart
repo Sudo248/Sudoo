@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sudoo/app/model/product_info_action_callback.dart';
-import 'package:sudoo/app/widgets/confirm_dialog.dart';
+import 'package:sudoo/app/routes/app_routes.dart';
+import 'package:sudoo/app/dialog/confirm_dialog.dart';
 import 'package:sudoo/domain/model/discovery/product_info.dart';
 
 import '../../../../../resources/R.dart';
@@ -67,7 +69,8 @@ class ProductActionCell extends StatelessWidget {
           onChanged: (value) {
             switch (value) {
               case ProductAction.viewDetail:
-                callback.viewDetailProduct(product.productId);
+                // callback.viewDetailProduct(product.productId);
+                pushToProductDetail(context);
                 break;
               case ProductAction.manageImages:
                 callback.manageImages();
@@ -88,5 +91,12 @@ class ProductActionCell extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Future<void> pushToProductDetail(BuildContext context) async {
+    final needUpdate = await context.push("${AppRoutes.products}/${product.productId}");
+    if (needUpdate != null && needUpdate is bool && needUpdate) {
+      callback.updateItemProduct(product.productId);
+    }
   }
 }

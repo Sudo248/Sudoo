@@ -120,7 +120,9 @@ CREATE TABLE `promotions`
     `supplier_id`  CHAR(32) NOT NULL,
     `name`         VARCHAR(255),
     `value`        FLOAT4,
-    `total_amount` INT DEFAULT 0
+    `enable`       BOOLEAN DEFAULT TRUE,
+    `image`        VARCHAR(255),
+    `total_amount` INT     DEFAULT 0
 ) CHARACTER SET = utf8mb4
     COMMENT = 'Store all promotion';
 

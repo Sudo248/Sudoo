@@ -5,8 +5,11 @@ import com.sudoo.productservice.dto.CategoryDto
 import com.sudoo.productservice.dto.CategoryInfoDto
 import com.sudoo.productservice.mapper.toCategory
 import com.sudoo.productservice.mapper.toCategoryDto
+import com.sudoo.productservice.repository.CategoryProductRepository
 import com.sudoo.productservice.repository.CategoryRepository
 import com.sudoo.productservice.service.CategoryService
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
@@ -15,9 +18,19 @@ import org.springframework.stereotype.Service
 @Service
 class CategoryServiceImpl(
     private val categoryRepository: CategoryRepository,
+    private val categoryProductRepository: CategoryProductRepository,
 ) : CategoryService {
-    override suspend fun getCategories(): List<CategoryDto> {
-        return categoryRepository.findAll().map { it.toCategoryDto() }.toList()
+    override suspend fun getCategories(select: String): List<CategoryDto> = coroutineScope{
+        if (select.isBlank()) {
+            categoryRepository.findAll().map { it.toCategoryDto() }.toList()
+        } else {
+            categoryRepository.findAll().map {
+                async {
+                    val countProduct = categoryProductRepository.countProductOfCategory(it.categoryId).toInt()
+                    it.toCategoryDto(countProduct = countProduct)
+                }
+            }.toList().awaitAll()
+        }
     }
 
     override suspend fun getCategoryInfos(): List<CategoryInfoDto> {

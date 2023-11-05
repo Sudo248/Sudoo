@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -22,8 +23,10 @@ class PromotionController (
 ) : BaseController() {
 
     @GetMapping
-    suspend fun getAllPromotion() : ResponseEntity<BaseResponse<*>> = handle {
-        promotionService.getAllPromotion()
+    suspend fun getAllPromotion(
+        @RequestParam("enable", required =  false) enable: Boolean?
+    ) : ResponseEntity<BaseResponse<*>> = handle {
+        promotionService.getAllPromotion(enable)
     }
 
     @GetMapping("/{promotionId}")

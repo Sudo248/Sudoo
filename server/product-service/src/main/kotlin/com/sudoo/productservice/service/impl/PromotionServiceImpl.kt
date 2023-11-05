@@ -14,15 +14,18 @@ import org.springframework.stereotype.Service
 import kotlin.math.abs
 
 @Service
-class PromotionServiceImpl (
+class PromotionServiceImpl(
     private val promotionRepository: PromotionRepository
 ) : PromotionService {
-    override suspend fun getAllPromotion(): List<PromotionDto> {
-        return promotionRepository.findAll().map { it.toPromotionDto() }.toList()
+    override suspend fun getAllPromotion(enable: Boolean?): List<PromotionDto> {
+        return enable?.let {
+            promotionRepository.getAllByEnable(it).map { promotion -> promotion.toPromotionDto() }.toList()
+        } ?: promotionRepository.findAll().map { it.toPromotionDto() }.toList()
     }
 
     override suspend fun getPromotion(promotionId: String): PromotionDto {
-        val promotion = promotionRepository.findById(promotionId) ?: throw NotFoundException("Not found promotion $promotionId")
+        val promotion =
+            promotionRepository.findById(promotionId) ?: throw NotFoundException("Not found promotion $promotionId")
         return promotion.toPromotionDto()
     }
 
@@ -32,12 +35,14 @@ class PromotionServiceImpl (
     }
 
     override suspend fun deletePromotion(promotionId: String) {
-        val promotion = promotionRepository.findById(promotionId) ?: throw NotFoundException("Not found promotion $promotionId")
+        val promotion =
+            promotionRepository.findById(promotionId) ?: throw NotFoundException("Not found promotion $promotionId")
         promotionRepository.deleteById(promotionId)
     }
 
     override suspend fun patchPromotion(patchPromotion: PatchAmountPromotionDto): PatchAmountPromotionDto {
-        val promotion = promotionRepository.findById(patchPromotion.promotionId) ?: throw NotFoundException("Not found promotion ${patchPromotion.promotionId}")
+        val promotion = promotionRepository.findById(patchPromotion.promotionId)
+            ?: throw NotFoundException("Not found promotion ${patchPromotion.promotionId}")
         if (patchPromotion.amount < 0 && abs(patchPromotion.amount) > promotion.totalAmount) {
             throw BadRequestException("Not enough promotion")
         }

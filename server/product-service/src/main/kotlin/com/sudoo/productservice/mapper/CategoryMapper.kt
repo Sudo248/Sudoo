@@ -5,11 +5,12 @@ import com.sudoo.productservice.dto.CategoryDto
 import com.sudoo.productservice.dto.CategoryInfoDto
 import com.sudoo.productservice.model.Category
 
-fun Category.toCategoryDto(): CategoryDto {
+fun Category.toCategoryDto(countProduct: Int? = null): CategoryDto {
     return CategoryDto(
         categoryId = categoryId,
         name = name,
         image = image,
+        countProduct = countProduct,
     )
 }
 
