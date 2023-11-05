@@ -20,13 +20,14 @@ class ChooseAddressDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Dialog(
       child: Container(
-        constraints: const BoxConstraints(
-          minWidth: 100,
-          maxWidth: 150,
-          minHeight: 200,
-          maxHeight: 250,
+        constraints: BoxConstraints(
+          minWidth: 200,
+          maxWidth: 400,
+          minHeight: size.height * 0.5,
+          maxHeight: size.width * 0.3,
         ),
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.white),
@@ -77,7 +78,7 @@ class ChooseAddressDialog extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
                           child: Text(
                             value[index].addressName,
-                            style: R.style.h5,
+                            style: R.style.h5.copyWith(color: Colors.black),
                           ),
                         ),
                       ),

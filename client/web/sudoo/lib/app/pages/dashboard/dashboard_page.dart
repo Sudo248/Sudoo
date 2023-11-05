@@ -11,9 +11,12 @@ import 'package:sudoo/app/routes/app_router.dart';
 // ignore: must_be_immutable
 class DashboardPage extends StatelessWidget {
   final Widget child;
-
-  DashboardPage({Key? key, required this.child}) : super(key: key ?? const ValueKey("DashboardPageKey"));
   final DashboardBloc bloc = getIt.get();
+
+  DashboardPage({Key? key, required this.child}) : super(key: key ?? const ValueKey("DashboardPageKey")) {
+    bloc.onInit();
+  }
+
 
   void go(BuildContext context, int index) {
     if (AppRouter.isAdmin.value) {
@@ -25,6 +28,9 @@ class DashboardPage extends StatelessWidget {
           break;
         case 1:
           _dashboardGo(context, AppRoutes.adminCategories);
+          break;
+        case 2:
+          _dashboardGo(context, AppRoutes.adminPromotions);
           break;
         default:
           context.go(AppRoutes.home);
@@ -42,7 +48,7 @@ class DashboardPage extends StatelessWidget {
         case 2:
           _dashboardGo(context, AppRoutes.createProduct);
           break;
-        case 4:
+        case 3:
           _dashboardGo(context, AppRoutes.supplier);
           break;
         default:
@@ -102,7 +108,10 @@ class DashboardPage extends StatelessWidget {
             builder: (context, value, child) {
               return CircleAvatar(
                 child: value == null
-                    ? const CircularProgressIndicator()
+                    ? const Padding(
+                      padding: EdgeInsets.all(3.0),
+                      child: CircularProgressIndicator(),
+                    )
                     : MenuAnchor(
                         builder: (context, controller, child) => GestureDetector(
                           onTap: () {

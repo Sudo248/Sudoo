@@ -23,8 +23,8 @@ class AppRouter {
     routes: getAppRoutes(),
   );
 
-  static final indexDashboard = ValueNotifier(0);
-  static final adminIndexDashboard = ValueNotifier(0);
+  static final ValueNotifier<int> indexDashboard = ValueNotifier(0);
+  static final ValueNotifier<int> adminIndexDashboard = ValueNotifier(0);
   static final isAdmin = ValueNotifier(false);
 
   static List<RouteBase> getAppRoutes() {

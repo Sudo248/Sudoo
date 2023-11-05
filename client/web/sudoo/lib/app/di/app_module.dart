@@ -20,7 +20,7 @@ class AppModule {
 
     getIt.registerFactory(() => AuthBloc(getIt.get()));
 
-    getIt.registerFactory(() => DashboardBloc());
+    getIt.registerLazySingleton(() => DashboardBloc(getIt.get()));
 
     getIt.registerFactory(() => ProductListBloc(getIt.get(), getIt.get()));
 
@@ -30,7 +30,7 @@ class AppModule {
 
     getIt.registerFactory(() => CategoryBloc(getIt.get(), getIt.get()));
 
-    getIt.registerFactory(() => SupplierBloc(getIt.get(), getIt.get()));
+    getIt.registerFactory(() => SupplierBloc(getIt.get(), getIt.get(), getIt.get()));
 
   }
 }

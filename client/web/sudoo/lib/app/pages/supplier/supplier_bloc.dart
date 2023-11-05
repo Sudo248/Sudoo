@@ -4,12 +4,27 @@ import 'package:sudoo/domain/model/discovery/supplier.dart';
 import 'package:sudoo/domain/repository/product_repository.dart';
 import 'package:sudoo/domain/repository/storage_repository.dart';
 import 'package:sudoo/extensions/list_ext.dart';
+import 'package:sudoo/extensions/string_ext.dart';
 
 import '../../../domain/model/discovery/file.dart';
+import '../../../domain/model/user/address_suggestion.dart';
+import '../../../domain/model/user/choose_address_step.dart';
+import '../../../domain/repository/user_repository.dart';
+import '../user/choose_address_callback.dart';
 
-class SupplierBloc extends BaseBloc {
+class SupplierBloc extends BaseBloc implements ChooseAddressCallback {
   final ProductRepository productRepository;
   final StorageRepository storageRepository;
+  final UserRepository userRepository;
+
+  final ValueNotifier<List<AddressSuggestion>?> suggestion =
+      ValueNotifier(null);
+  final ValueNotifier<ChooseAddressStep> stepChooseAddress =
+      ValueNotifier(ChooseAddressStep.province);
+
+  List<AddressSuggestion>? suggestionProvince,
+      suggestionDistrict,
+      suggestionWard;
 
   Supplier? supplier;
   final ValueNotifier<File?> avatar = ValueNotifier(null);
@@ -21,7 +36,7 @@ class SupplierBloc extends BaseBloc {
       wardCodeController = TextEditingController(),
       addressController = TextEditingController();
 
-  SupplierBloc(this.productRepository, this.storageRepository);
+  SupplierBloc(this.productRepository, this.storageRepository, this.userRepository);
 
   @override
   void onDispose() {
@@ -87,6 +102,102 @@ class SupplierBloc extends BaseBloc {
     return supplier!;
   }
 
+  @override
+  Future<void> onChooseAddress(AddressSuggestion suggestion) async {
+    switch(stepChooseAddress.value) {
+      case ChooseAddressStep.province:
+        setProvince(suggestion.addressId, suggestion.addressName);
+        onChooseDistrict();
+        break;
+      case ChooseAddressStep.district:
+        setDistrict(suggestion.addressId, suggestion.addressName);
+        onChooseWard();
+        break;
+      case ChooseAddressStep.ward:
+        setWard(suggestion.addressCode, suggestion.addressName);
+        stepChooseAddress.value = ChooseAddressStep.finish;
+        break;
+      default:
+    }
+  }
+
+  @override
+  Future<void> onChooseProvince() async {
+    stepChooseAddress.value = ChooseAddressStep.province;
+    if (suggestionProvince == null) {
+      suggestion.value = null;
+      suggestionProvince = await getSuggestionProvince();
+    }
+    suggestion.value = suggestionProvince;
+  }
+
+  @override
+  Future<void> onChooseDistrict() async {
+    stepChooseAddress.value = ChooseAddressStep.district;
+    if (suggestionDistrict == null) {
+      suggestion.value = null;
+      suggestionDistrict = await getSuggestionDistrict();
+    }
+    suggestion.value = suggestionDistrict;
+  }
+
+  @override
+  Future<void> onChooseWard() async {
+    stepChooseAddress.value = ChooseAddressStep.ward;
+    if (suggestionWard == null) {
+      suggestion.value = null;
+      suggestionWard = await getSuggestionWard();
+    }
+    suggestion.value = suggestionWard;
+  }
+
+  Future<List<AddressSuggestion>> getSuggestionProvince() async {
+    final result = await userRepository.getSuggestionProvince();
+    if (result.isSuccess) {
+      return Future.value(result.get());
+    } else {
+      showErrorMessage(result.getError());
+      return Future.error(result.getError());
+    }
+  }
+
+  Future<List<AddressSuggestion>> getSuggestionDistrict() async {
+    if (supplier == null) {
+      showErrorMessage(Exception("Supplier was not set"));
+      return [];
+    }
+    if (supplier!.address.provinceID == 0 || supplier!.address.provinceName.isNullOrEmpty) {
+      showErrorMessage(Exception("Must choose province before choose district"));
+      return [];
+    }
+    final result = await userRepository.getSuggestionDistrict(supplier!.address.provinceID);
+    if (result.isSuccess) {
+      return Future.value(result.get());
+    } else {
+      showErrorMessage(result.getError());
+      return Future.error(result.getError());
+    }
+  }
+
+  Future<List<AddressSuggestion>> getSuggestionWard() async {
+    if (supplier == null) {
+      showErrorMessage(Exception("Supplier was not set"));
+      return [];
+    }
+    if (supplier!.address.districtID == 0 || supplier!.address.districtName.isNullOrEmpty) {
+      showErrorMessage(Exception("Must choose district before choose ward"));
+      return [];
+    }
+    final result = await userRepository.getSuggestionWard(supplier!.address.districtID);
+    if (result.isSuccess) {
+      return Future.value(result.get());
+    } else {
+      showErrorMessage(result.getError());
+      return Future.error(result.getError());
+    }
+  }
+
+  @override
   void setDistrict(int districtId, String districtName) {
     supplier ??= Supplier.empty();
     supplier!.address.districtID = districtId;
@@ -95,6 +206,7 @@ class SupplierBloc extends BaseBloc {
 
   }
 
+  @override
   void setProvince(int provinceId, String provinceName) {
     supplier ??= Supplier.empty();
     supplier!.address.provinceID = provinceId;
@@ -102,6 +214,7 @@ class SupplierBloc extends BaseBloc {
     provinceController.text = provinceName;
   }
 
+  @override
   void setWard(String wardCode, String wardName) {
     supplier ??= Supplier.empty();
     supplier!.address.wardCode = wardCode;

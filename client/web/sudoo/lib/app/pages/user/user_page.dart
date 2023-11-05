@@ -5,6 +5,7 @@ import 'package:sudoo/app/widgets/date_time_selector.dart';
 
 import '../../../domain/model/user/gender.dart';
 import '../../../resources/R.dart';
+import '../../dialog/choose_address_dialog.dart';
 import '../../widgets/avatar_image.dart';
 
 class UserPage extends BasePage<UserBloc> {
@@ -51,21 +52,30 @@ class UserPage extends BasePage<UserBloc> {
                   bloc.provinceController,
                   maxLines: 1,
                   readOnly: true,
-                  onTap: bloc.onChooseProvince,
+                  onTap: () {
+                    bloc.onChooseProvince();
+                    showDialogChooseAddress(context);
+                  },
                 ),
                 ..._buildInputField(
                   R.string.district,
                   bloc.districtController,
                   maxLines: 1,
                   readOnly: true,
-                  onTap: bloc.onChooseDistrict,
+                  onTap: () {
+                    bloc.onChooseDistrict();
+                    showDialogChooseAddress(context);
+                  },
                 ),
                 ..._buildInputField(
                   R.string.ward,
                   bloc.wardCodeController,
                   maxLines: 1,
                   readOnly: true,
-                  onTap: bloc.onChooseWard,
+                  onTap: () {
+                    bloc.onChooseWard();
+                    showDialogChooseAddress(context);
+                  },
                 ),
                 ..._buildInputField(
                   R.string.address,
@@ -164,5 +174,15 @@ class UserPage extends BasePage<UserBloc> {
         height: 15,
       ),
     ];
+  }
+
+  void showDialogChooseAddress(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => ChooseAddressDialog(
+          suggestion: bloc.suggestion,
+          step: bloc.stepChooseAddress,
+          callback: bloc),
+    );
   }
 }

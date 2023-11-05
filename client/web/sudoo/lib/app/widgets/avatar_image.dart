@@ -6,7 +6,6 @@ import 'package:sudoo/app/widgets/online_image.dart';
 import 'package:sudoo/extensions/list_ext.dart';
 
 import '../../domain/model/discovery/file.dart';
-import '../../resources/R.dart';
 import '../../utils/logger.dart';
 
 class AvatarImage extends StatelessWidget {
@@ -26,30 +25,19 @@ class AvatarImage extends StatelessWidget {
       height: height,
       width: width,
       decoration: const BoxDecoration(shape: BoxShape.circle),
-      child: Stack(
-        children: [
-          avatar.value == null
-              ? const ColoredBox(color: Colors.white)
-              : avatar.value!.bytes != null
-                  ? Image.memory(
-                      Uint8List.fromList(avatar.value!.bytes!),
-                      fit: BoxFit.cover,
-                    )
-                  : OnlineImage(
-                      avatar.value!.url,
-                      fit: BoxFit.cover,
-                    ),
-          Positioned(
-              bottom: 0,
-              child: Container(
-                height: height * 0.2,
-                color: R.color.backgroundNavColor,
-                child: const Center(
-                  child: Icon(Icons.image_outlined),
+      child: avatar.value == null
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : avatar.value!.bytes != null
+              ? Image.memory(
+                  Uint8List.fromList(avatar.value!.bytes!),
+                  fit: BoxFit.cover,
+                )
+              : OnlineImage(
+                  avatar.value!.url,
+                  fit: BoxFit.cover,
                 ),
-              ))
-        ],
-      ),
     );
   }
 

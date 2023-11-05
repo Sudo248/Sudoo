@@ -12,28 +12,31 @@ class AppNavigationRail extends StatelessWidget {
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: AppRouter.isAdmin.value ? AppRouter.adminIndexDashboard : AppRouter.indexDashboard,
-      builder: (context, value, child) => NavigationRail(
-        destinations: AppRouter.isAdmin.value ? _getAdminDashboardDestination() : _getDashboardDestination(),
-        selectedIndex: value,
-        extended: true,
-        backgroundColor: R.color.backgroundNavColor,
-        unselectedIconTheme: const IconThemeData(color: Colors.grey),
-        unselectedLabelTextStyle: const TextStyle(color: Colors.grey),
-        selectedIconTheme: const IconThemeData(color: Colors.white),
-        selectedLabelTextStyle: const TextStyle(color: Colors.white),
-        indicatorColor: R.color.backgroundNavColor,
-        useIndicator: true,
-        elevation: 5,
-        leading: const Padding(
-          padding: EdgeInsets.symmetric(vertical: 20),
-          child: FlutterLogo(
-            size: 80,
+      builder: (context, value, child) {
+        print("Sudoo: AppNavigationRail index: $value");
+        return NavigationRail(
+          destinations: AppRouter.isAdmin.value ? _getAdminDashboardDestination() : _getDashboardDestination(),
+          selectedIndex: value >= 0 ? value : 0,
+          extended: true,
+          backgroundColor: R.color.backgroundNavColor,
+          unselectedIconTheme: const IconThemeData(color: Colors.grey),
+          unselectedLabelTextStyle: const TextStyle(color: Colors.grey),
+          selectedIconTheme: const IconThemeData(color: Colors.white),
+          selectedLabelTextStyle: const TextStyle(color: Colors.white),
+          indicatorColor: R.color.backgroundNavColor,
+          useIndicator: true,
+          elevation: 5,
+          leading: const Padding(
+            padding: EdgeInsets.symmetric(vertical: 20),
+            child: FlutterLogo(
+              size: 80,
+            ),
           ),
-        ),
-        onDestinationSelected: (value) {
-          onDestinationChanged(value);
-        },
-      ),
+          onDestinationSelected: (value) {
+            onDestinationChanged(value);
+          },
+        );
+      },
     );
   }
 
@@ -52,10 +55,6 @@ class AppNavigationRail extends StatelessWidget {
         label: Text(R.string.createProduct),
       ),
       NavigationRailDestination(
-        icon: const Icon(Icons.category_outlined),
-        label: Text(R.string.categories),
-      ),
-      NavigationRailDestination(
         icon: const Icon(Icons.info_outline),
         label: Text(R.string.info),
       ),
@@ -70,6 +69,10 @@ class AppNavigationRail extends StatelessWidget {
       ),
       NavigationRailDestination(
         icon: const Icon(Icons.category_outlined),
+        label: Text(R.string.categories),
+      ),
+      NavigationRailDestination(
+        icon: const Icon(Icons.discount_outlined),
         label: Text(R.string.categories),
       ),
     ];
