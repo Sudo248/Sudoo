@@ -31,14 +31,14 @@ abstract class BasePage<@required T extends BaseBloc> extends StatefulWidget {
 class _BasePageState extends State<BasePage> with AutomaticKeepAliveClientMixin<BasePage> {
   @override
   void initState() {
-    super.initState();
     widget.onInit();
+    super.initState();
   }
 
   @override
   void dispose() {
-    super.dispose();
     widget.onDispose();
+    super.dispose();
   }
 
   @override

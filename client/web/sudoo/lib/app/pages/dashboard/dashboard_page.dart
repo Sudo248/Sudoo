@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sudoo/app/base/base_page.dart';
 import 'package:sudoo/app/pages/dashboard/dashboard_bloc.dart';
+import 'package:sudoo/app/routes/app_router.dart';
 import 'package:sudoo/app/routes/app_routes.dart';
 import 'package:sudoo/app/widgets/app_navigation_rail.dart';
 import 'package:sudoo/app/widgets/online_image.dart';
 import 'package:sudoo/resources/R.dart';
-import 'package:sudoo/utils/di.dart';
-import 'package:sudoo/app/routes/app_router.dart';
 
 // ignore: must_be_immutable
-class DashboardPage extends StatelessWidget {
+class DashboardPage extends BasePage<DashboardBloc> {
   final Widget child;
-  final DashboardBloc bloc = getIt.get();
-
-  DashboardPage({Key? key, required this.child}) : super(key: key ?? const ValueKey("DashboardPageKey")) {
-    bloc.onInit();
-  }
+  
+  @override
+  bool get wantKeepAlive => true;
+  
+  DashboardPage({Key? key, required this.child}) : super(key: key ?? const ValueKey("DashboardPageKey"));
 
 
   void go(BuildContext context, int index) {

@@ -5,6 +5,7 @@ import 'package:sudoo/app/pages/dashboard/dashboard_page.dart';
 import 'package:sudoo/app/pages/promotion/promotion_page.dart';
 import 'package:sudoo/app/pages/supplier/supplier_page.dart';
 import 'package:sudoo/app/pages/user/user_page.dart';
+import 'package:sudoo/extensions/string_ext.dart';
 
 import '../pages/auth/views/auth_page.dart';
 import '../pages/home/home_page.dart';
@@ -14,8 +15,10 @@ import '../pages/splash/splash_page.dart';
 import 'app_routes.dart';
 
 class AppRouter {
-  static final GlobalKey<NavigatorState> _appNavigatorKey = GlobalKey<NavigatorState>(debugLabel: "app");
-  static final GlobalKey<NavigatorState> _dashboardNavigatorKey = GlobalKey<NavigatorState>(debugLabel: "dashboard");
+  static final GlobalKey<NavigatorState> _appNavigatorKey =
+      GlobalKey<NavigatorState>(debugLabel: "app");
+  static final GlobalKey<NavigatorState> _dashboardNavigatorKey =
+      GlobalKey<NavigatorState>(debugLabel: "dashboard");
 
   static final GoRouter router = GoRouter(
     navigatorKey: _appNavigatorKey,
@@ -115,7 +118,8 @@ class AppRouter {
 class DashboardGoRouterObserver extends NavigatorObserver {
   @override
   void didPush(Route route, Route? previousRoute) {
-    final routeName = route.settings.name;
+    final routeName = route.settings.name.orEmpty;
+    if (routeName.isNullOrEmpty) return;
     int index = 0;
     if (AppRouter.isAdmin.value) {
       switch (routeName) {
@@ -136,14 +140,14 @@ class DashboardGoRouterObserver extends NavigatorObserver {
         case AppRoutes.products:
           index = 1;
           break;
+        case AppRoutes.productDetail:
+          index = 1;
+          break;
         case AppRoutes.createProduct:
           index = 2;
           break;
-        case AppRoutes.adminCategories:
-          index = 3;
-          break;
         case AppRoutes.supplier:
-          index = 4;
+          index = 3;
           break;
         default:
           index = 0;
@@ -156,7 +160,47 @@ class DashboardGoRouterObserver extends NavigatorObserver {
   }
 
   @override
-  void didPop(Route route, Route? previousRoute) {}
+  void didPop(Route route, Route? previousRoute) {
+    final routeName = route.settings.name;
+    if (routeName.isNullOrEmpty) return;
+    int index = 0;
+    if (AppRouter.isAdmin.value) {
+      switch (routeName) {
+        case AppRoutes.adminCategories:
+          index = 1;
+          break;
+        case AppRoutes.createProduct:
+          index = 2;
+        default:
+          index = 0;
+          break;
+      }
+      if (index != AppRouter.adminIndexDashboard.value) {
+        AppRouter.adminIndexDashboard.value = index;
+      }
+    } else {
+      switch (routeName) {
+        case AppRoutes.products:
+          index = 1;
+          break;
+        case AppRoutes.productDetail:
+          index = 1;
+          break;
+        case AppRoutes.createProduct:
+          index = 2;
+          break;
+        case AppRoutes.supplier:
+          index = 3;
+          break;
+        default:
+          index = 0;
+          break;
+      }
+      if (index != AppRouter.indexDashboard.value) {
+        AppRouter.indexDashboard.value = index;
+      }
+    }
+  }
 
   @override
   void didRemove(Route route, Route? previousRoute) {}
@@ -165,7 +209,4 @@ class DashboardGoRouterObserver extends NavigatorObserver {
   void didReplace({Route? newRoute, Route? oldRoute}) {}
 }
 
-class AppGoRouterObserver extends NavigatorObserver {
-
-
-}
+class AppGoRouterObserver extends NavigatorObserver {}

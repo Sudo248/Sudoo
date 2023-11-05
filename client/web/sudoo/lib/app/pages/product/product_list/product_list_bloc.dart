@@ -5,7 +5,6 @@ import 'package:sudoo/app/base/base_bloc.dart';
 import 'package:sudoo/app/model/category_callback.dart';
 import 'package:sudoo/app/model/product_info_action_callback.dart';
 import 'package:sudoo/app/pages/product/product_list/product_list_data_source.dart';
-import 'package:sudoo/app/widgets/loading_view.dart';
 import 'package:sudoo/domain/model/discovery/category.dart';
 import 'package:sudoo/domain/model/discovery/upsert_product.dart';
 import 'package:sudoo/domain/repository/category_repository.dart';
@@ -17,8 +16,7 @@ import '../../../../domain/model/discovery/category_product.dart';
 class ProductListBloc extends BaseBloc implements CategoryCallback, ProductInfoActionCallback {
   final ProductRepository productRepository;
   final CategoryRepository categoryRepository;
-  late ProductListDataSource productDataSource;
-  final LoadingViewController loadingController = LoadingViewController();
+  late final ProductListDataSource productDataSource;
   final ValueNotifier<int> totalProducts = ValueNotifier(0);
   final List<Category> categories = List.empty(growable: true);
 
@@ -39,13 +37,21 @@ class ProductListBloc extends BaseBloc implements CategoryCallback, ProductInfoA
 
   @override
   void onDispose() {
-    productDataSource.dispose();
+    // should dispose
+    // productDataSource.dispose();
   }
 
   @override
   void onInit() {
+    refresh();
+  }
+
+  Future<void> refresh() async {
+    _offset = 0;
+    loadingController.showLoading();
     getCategories();
-    loadMore();
+    await loadMore();
+    loadingController.hideLoading();
   }
 
   Future<void> loadMore() async {
@@ -139,5 +145,15 @@ class ProductListBloc extends BaseBloc implements CategoryCallback, ProductInfoA
 
   @override
   void manageImages() {
+  }
+  
+  @override
+  Future<void> updateItemProduct(String productId) async {
+    final result = await productRepository.getProductInfo(productId);
+    if (result.isSuccess) {
+      productDataSource.updateProduct(result.get());
+    } else {
+      refresh();
+    }
   }
 }

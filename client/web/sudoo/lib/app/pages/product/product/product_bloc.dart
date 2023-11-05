@@ -49,6 +49,8 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
   final ValueNotifier<bool> enableArViewer = ValueNotifier(false);
   final ValueNotifier<domain.File?> sourceViewer = ValueNotifier(null);
 
+  bool isSaved = false;
+
   Timer? debounce;
   String? productId;
 
@@ -243,6 +245,7 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
         await createProduct();
       }
       loadingController.hideLoading();
+      isSaved = true;
     }
   }
 

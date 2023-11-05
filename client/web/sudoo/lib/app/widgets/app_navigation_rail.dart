@@ -10,32 +10,46 @@ class AppNavigationRail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: AppRouter.isAdmin.value ? AppRouter.adminIndexDashboard : AppRouter.indexDashboard,
-      builder: (context, value, child) {
-        print("Sudoo: AppNavigationRail index: $value");
-        return NavigationRail(
-          destinations: AppRouter.isAdmin.value ? _getAdminDashboardDestination() : _getDashboardDestination(),
-          selectedIndex: value >= 0 ? value : 0,
-          extended: true,
-          backgroundColor: R.color.backgroundNavColor,
-          unselectedIconTheme: const IconThemeData(color: Colors.grey),
-          unselectedLabelTextStyle: const TextStyle(color: Colors.grey),
-          selectedIconTheme: const IconThemeData(color: Colors.white),
-          selectedLabelTextStyle: const TextStyle(color: Colors.white),
-          indicatorColor: R.color.backgroundNavColor,
-          useIndicator: true,
-          elevation: 5,
-          leading: const Padding(
-            padding: EdgeInsets.symmetric(vertical: 20),
-            child: FlutterLogo(
-              size: 80,
+    return AppRouter.isAdmin.value
+        ? ValueListenableBuilder(
+            valueListenable: AppRouter.adminIndexDashboard,
+            builder: (context, selectedIndex, child) => _buildNavigationRail(
+                  destinations: _getAdminDashboardDestination(),
+                  selectedIndex: selectedIndex,
+                ))
+        : ValueListenableBuilder(
+            valueListenable: AppRouter.indexDashboard,
+            builder: (context, selectedIndex, child) => _buildNavigationRail(
+              destinations: _getDashboardDestination(),
+              selectedIndex: selectedIndex,
             ),
-          ),
-          onDestinationSelected: (value) {
-            onDestinationChanged(value);
-          },
-        );
+          );
+  }
+
+  Widget _buildNavigationRail({
+    required List<NavigationRailDestination> destinations,
+    required int selectedIndex,
+  }) {
+    return NavigationRail(
+      destinations: destinations,
+      selectedIndex: selectedIndex,
+      extended: true,
+      backgroundColor: R.color.backgroundNavColor,
+      unselectedIconTheme: const IconThemeData(color: Colors.grey),
+      unselectedLabelTextStyle: const TextStyle(color: Colors.grey),
+      selectedIconTheme: const IconThemeData(color: Colors.white),
+      selectedLabelTextStyle: const TextStyle(color: Colors.white),
+      indicatorColor: R.color.backgroundNavColor,
+      useIndicator: true,
+      elevation: 5,
+      leading: const Padding(
+        padding: EdgeInsets.symmetric(vertical: 20),
+        child: FlutterLogo(
+          size: 80,
+        ),
+      ),
+      onDestinationSelected: (value) {
+        onDestinationChanged(value);
       },
     );
   }

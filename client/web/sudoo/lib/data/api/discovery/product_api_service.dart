@@ -31,6 +31,8 @@ class ProductService {
 
   Future getProductDetail(String identify) => api.get("$products/$identify");
 
+  Future getProductInfo(String productId) => api.get("$products/$productId/info");
+
   Future upsertProduct(UpsertProductRequest request) =>
       api.post(products, request: request);
 

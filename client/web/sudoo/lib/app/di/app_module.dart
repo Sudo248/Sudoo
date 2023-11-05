@@ -5,6 +5,7 @@ import 'package:sudoo/app/pages/product/product/product_bloc.dart';
 import 'package:sudoo/app/pages/product/product_list/product_list_bloc.dart';
 import 'package:sudoo/app/pages/splash/splash_bloc.dart';
 import 'package:sudoo/app/pages/supplier/supplier_bloc.dart';
+import 'package:sudoo/app/pages/user/user_bloc.dart';
 import 'package:sudoo/app/services/scaffold_message_service.dart';
 
 import '../../utils/di.dart';
@@ -22,7 +23,7 @@ class AppModule {
 
     getIt.registerLazySingleton(() => DashboardBloc(getIt.get()));
 
-    getIt.registerFactory(() => ProductListBloc(getIt.get(), getIt.get()));
+    getIt.registerLazySingleton(() => ProductListBloc(getIt.get(), getIt.get()));
 
     getIt.registerFactory(() => ProductBloc(getIt.get(), getIt.get(), getIt.get()));
 
@@ -31,6 +32,8 @@ class AppModule {
     getIt.registerFactory(() => CategoryBloc(getIt.get(), getIt.get()));
 
     getIt.registerFactory(() => SupplierBloc(getIt.get(), getIt.get(), getIt.get()));
+
+    getIt.registerFactory(() => UserBloc(getIt.get(), getIt.get()));
 
   }
 }

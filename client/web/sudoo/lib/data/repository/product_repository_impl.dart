@@ -255,4 +255,18 @@ class ProductRepositoryImpl with HandleResponse implements ProductRepository {
       return DataState.error(response.getError());
     }
   }
+  
+  @override
+  Future<DataState<ProductInfo, Exception>> getProductInfo(String productId) async {
+    final response = await handleResponse(
+      () => productService.getProductInfo(productId),
+      fromJson: (json) => ProductInfoDto.fromJson(json as Map<String, dynamic>),
+    );
+
+    if (response.isSuccess) {
+      return DataState.success((response.get() as ProductInfoDto).toProductInfo());
+    } else {
+      return DataState.error(response.getError());
+    }
+  }
 }

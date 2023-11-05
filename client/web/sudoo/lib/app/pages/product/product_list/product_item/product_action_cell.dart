@@ -70,7 +70,7 @@ class ProductActionCell extends StatelessWidget {
             switch (value) {
               case ProductAction.viewDetail:
                 // callback.viewDetailProduct(product.productId);
-                context.go("${AppRoutes.products}/${product.productId}");
+                pushToProductDetail(context);
                 break;
               case ProductAction.manageImages:
                 callback.manageImages();
@@ -91,5 +91,12 @@ class ProductActionCell extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Future<void> pushToProductDetail(BuildContext context) async {
+    final needUpdate = await context.push("${AppRoutes.products}/${product.productId}");
+    if (needUpdate != null && needUpdate is bool && needUpdate) {
+      callback.updateItemProduct(product.productId);
+    }
   }
 }

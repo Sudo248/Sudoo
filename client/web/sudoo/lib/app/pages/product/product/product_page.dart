@@ -30,7 +30,7 @@ class ProductPage extends BasePage<ProductBloc> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        context.pop();
+        context.pop(bloc.isSaved);
         return Future.value(true);
       },
       child: Stack(
