@@ -19,8 +19,10 @@ class CategoryController(
 ) : BaseController() {
 
     @GetMapping
-    suspend fun getCategories(): ResponseEntity<BaseResponse<*>> = handle {
-        categoryService.getCategories()
+    suspend fun getCategories(
+        @RequestParam("select", required = false, defaultValue = "") select: String,
+    ): ResponseEntity<BaseResponse<*>> = handle {
+        categoryService.getCategories(select)
     }
 
     @GetMapping("/{categoryId}")

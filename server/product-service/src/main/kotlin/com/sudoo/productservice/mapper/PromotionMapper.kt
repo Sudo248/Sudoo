@@ -11,6 +11,8 @@ fun PromotionDto.toPromotion(): Promotion {
         supplierId = supplierId ?: Constants.ADMIN_ID,
         name = name,
         value = value,
+        enable = enable,
+        image = image,
         totalAmount = totalAmount
     ).also {
         it.isNewPromotion = promotionId.isNullOrEmpty()
@@ -23,6 +25,8 @@ fun Promotion.toPromotionDto(): PromotionDto {
         supplierId = supplierId,
         name = name,
         value = value,
+        enable = enable,
+        image = image,
         totalAmount = totalAmount
     )
 }
