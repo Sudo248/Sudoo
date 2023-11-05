@@ -2,7 +2,7 @@ import 'package:sudoo/domain/model/discovery/file.dart';
 
 import 'category.dart';
 import 'extras.dart';
-import 'supplier.dart';
+import 'supplier_info.dart';
 
 class Product {
   final String productId;
@@ -23,7 +23,7 @@ class Product {
   final int width;
   final int length;
   final List<File> images;
-  final Supplier supplier;
+  final SupplierInfo supplier;
   final List<Category> categories;
   final Extras? extras;
 

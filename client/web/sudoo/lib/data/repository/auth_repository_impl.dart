@@ -12,6 +12,8 @@ import 'package:sudoo/domain/model/auth/verify_otp.dart';
 import 'package:sudoo/domain/repository/auth_repository.dart';
 import 'package:sudoo/extensions/string_ext.dart';
 
+import '../../domain/model/auth/token.dart';
+
 class AuthRepositoryImpl with HandleResponse implements AuthRepository {
   final AuthApiService authApiService;
   final SharedPreferences pref;
@@ -39,7 +41,7 @@ class AuthRepositoryImpl with HandleResponse implements AuthRepository {
   }
 
   @override
-  Future<DataState<dynamic, Exception>> signIn(Account account) async {
+  Future<DataState<Token, Exception>> signIn(Account account) async {
     final request = AccountRequest(
       emailOrPhoneNumber: account.emailOrPhoneNumber,
       password: account.password,
@@ -52,8 +54,12 @@ class AuthRepositoryImpl with HandleResponse implements AuthRepository {
       final TokenDto token = response.get();
       pref.setString(PrefKeys.token, token.token);
       pref.setString(PrefKeys.refreshToken, token.refreshToken ?? "");
+      pref.setString(PrefKeys.role, token.role.value);
+      return DataState.success(token.toToken());
+    } else {
+      return DataState.error(response.getError());
     }
-    return response;
+
   }
 
   @override
@@ -69,7 +75,7 @@ class AuthRepositoryImpl with HandleResponse implements AuthRepository {
   }
 
   @override
-  Future<DataState<dynamic, Exception>> submitOtp(VerifyOtp verifyOtp) async {
+  Future<DataState<Token, Exception>> submitOtp(VerifyOtp verifyOtp) async {
     final request =
         VerifyOtpRequest(verifyOtp.emailOrPhoneNumber, verifyOtp.otp);
     final response = await handleResponse(
@@ -79,12 +85,15 @@ class AuthRepositoryImpl with HandleResponse implements AuthRepository {
       final TokenDto token = response.get();
       pref.setString(PrefKeys.token, token.token);
       pref.setString(PrefKeys.refreshToken, token.refreshToken ?? "");
+      pref.setString(PrefKeys.role, token.role.value);
+      return DataState.success(token.toToken());
+    } else {
+      return DataState.error(response.getError());
     }
-    return response;
   }
 
   @override
-  Future<DataState<dynamic, Exception>> refreshToken() async {
+  Future<DataState<Token, Exception>> refreshToken() async {
     final refreshToken = pref.getString(PrefKeys.refreshToken);
     if (refreshToken.isNullOrEmpty) {
       return DataState.error(Exception());
@@ -97,7 +106,9 @@ class AuthRepositoryImpl with HandleResponse implements AuthRepository {
       pref.setString(PrefKeys.token, token.token);
       pref.setString(PrefKeys.refreshToken, token.refreshToken ?? "");
       pref.setString(PrefKeys.role, token.role.value);
+      return DataState.success(token.toToken());
+    } else {
+      return DataState.error(response.getError());
     }
-    return response;
   }
 }

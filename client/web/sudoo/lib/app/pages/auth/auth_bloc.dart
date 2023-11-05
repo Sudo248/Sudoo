@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sudoo/app/base/base_bloc.dart';
 import 'package:sudoo/app/pages/auth/auth_form.dart';
-import 'package:sudoo/app/widgets/loading_view.dart';
+import 'package:sudoo/app/routes/app_router.dart';
+import 'package:sudoo/domain/model/auth/role.dart';
 import 'package:sudoo/domain/model/auth/verify_otp.dart';
 import 'package:sudoo/domain/repository/auth_repository.dart';
 import 'package:sudoo/resources/R.dart';
@@ -17,8 +18,6 @@ class AuthBloc extends BaseBloc {
       passwordController = TextEditingController(),
       confirmPasswordController = TextEditingController(),
       otpController = TextEditingController();
-
-  final LoadingViewController loadingController = LoadingViewController();
 
   late VoidCallback _navigateToDashboard;
 
@@ -67,6 +66,7 @@ class AuthBloc extends BaseBloc {
       final result = await authRepository.signIn(account);
       loadingController.hideLoading();
       if (result.isSuccess) {
+        AppRouter.isAdmin.value = result.get().role == Role.ADMIN;
         _navigateToDashboard.call();
       } else {
         showErrorMessage(result.requireError());
@@ -96,6 +96,7 @@ class AuthBloc extends BaseBloc {
     VerifyOtp verifyOtp = VerifyOtp(emailController.text, otpController.text);
     final result = await authRepository.submitOtp(verifyOtp);
     if (result.isSuccess) {
+      AppRouter.isAdmin.value = result.get().role == Role.ADMIN;
       _navigateToDashboard.call();
     } else {
       showErrorMessage(result.requireError());

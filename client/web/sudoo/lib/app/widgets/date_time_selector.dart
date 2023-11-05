@@ -3,7 +3,7 @@ import 'package:sudoo/extensions/date_time_ext.dart';
 
 import '../../resources/R.dart';
 
-class DateTimeSelector extends StatefulWidget {
+class DateTimeSelector extends StatelessWidget {
   final bool isEditable;
   final DateTime? value;
   final String? hint;
@@ -14,25 +14,19 @@ class DateTimeSelector extends StatefulWidget {
     super.key,
     this.value,
     this.onSelectedDate,
-    this.hint,
+    this.hint = "Choose",
     this.isEditable = true,
     this.style,
   });
 
   @override
-  State<DateTimeSelector> createState() => _DateTimeSelectorState();
-}
-
-class _DateTimeSelectorState extends State<DateTimeSelector> {
-  @override
   Widget build(BuildContext context) {
-    final TextStyle style =
-        widget.style ?? R.style.h4_1.copyWith(color: Colors.black);
-    if (!widget.isEditable) {
+    final TextStyle style = this.style ?? R.style.h4_1.copyWith(color: Colors.black);
+    if (!isEditable) {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 5.0),
         child: Text(
-          "${widget.value == null ? widget.hint : widget.value!.formatDate()}",
+          "${value == null ? hint : value!.formatDate()}",
           style: style,
         ),
       );
@@ -48,9 +42,9 @@ class _DateTimeSelectorState extends State<DateTimeSelector> {
         child: Row(
           children: [
             Text(
-              "${widget.value == null ? widget.hint : widget.value!.formatDate()}",
+              "${value == null ? hint : value!.formatDate()}",
               style: style.copyWith(
-                color: widget.value == null ? Colors.grey : Colors.black,
+                color: value == null ? Colors.grey : Colors.black,
               ),
             ),
             const SizedBox(
@@ -69,12 +63,12 @@ class _DateTimeSelectorState extends State<DateTimeSelector> {
         final DateTime now = DateTime.now();
         final selectedDate = await showDatePicker(
           context: context,
-          initialDate: widget.value ?? now,
+          initialDate: value ?? now,
           firstDate: DateTime(now.year),
           lastDate: DateTime(now.year + 1),
         );
         if (selectedDate != null) {
-          widget.onSelectedDate?.call(selectedDate);
+          onSelectedDate?.call(selectedDate);
         }
       },
       child: const Icon(
@@ -84,4 +78,3 @@ class _DateTimeSelectorState extends State<DateTimeSelector> {
     );
   }
 }
-

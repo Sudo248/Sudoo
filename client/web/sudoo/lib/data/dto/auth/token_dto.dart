@@ -1,3 +1,5 @@
+import 'package:sudoo/domain/model/auth/token.dart';
+
 import '../../../domain/model/auth/role.dart';
 
 class TokenDto {
@@ -15,10 +17,15 @@ class TokenDto {
 
   factory TokenDto.fromJson(Map<String, dynamic> json) {
     return TokenDto(
-      token: json["token"],
-      role: Role.fromValue(json["role"]),
-      refreshToken: json["refreshToken"],
-      userId: json["userId"]
-    );
+        token: json["token"],
+        role: Role.fromValue(json["role"]),
+        refreshToken: json["refreshToken"],
+        userId: json["userId"]);
+  }
+}
+
+extension Mapper on TokenDto {
+  Token toToken() {
+    return Token(token, refreshToken, role);
   }
 }

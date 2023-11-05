@@ -79,6 +79,10 @@ class AppString extends R {
 
   String get name => "Name";
 
+  String get brand => "Brand";
+
+  String get contactUrl => "Contact URL";
+
   String get description => "Description";
 
   String get optional => "Optional";
@@ -100,6 +104,12 @@ class AppString extends R {
   String get width => "Width";
   String get length => "Length";
   String get sizeWeight => "Size and Weight";
+  String get info => "Info";
+  String get dob => "Date of birth";
+  String get province => "Province";
+  String get district => "District";
+  String get ward => "Ward";
+  String get address => "Address";
 }
 
 class AppColor extends R {
@@ -110,6 +120,8 @@ class AppColor extends R {
   Color get primaryColorLight => const Color(0xFF9EF5F8);
 
   Color get backgroundNavColor => const Color(0xFF002B31);
+
+  Color get backgroundAvatarColor => const Color(0x80595959);
 }
 
 class AppFont extends R {

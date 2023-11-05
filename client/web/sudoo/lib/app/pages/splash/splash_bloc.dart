@@ -2,11 +2,11 @@ import 'package:flutter/foundation.dart';
 import 'package:sudoo/app/base/base_bloc.dart';
 import 'package:sudoo/domain/repository/auth_repository.dart';
 
-import '../../widgets/loading_view.dart';
+import '../../../domain/model/auth/role.dart';
+import '../../routes/app_router.dart';
 
 class SplashBloc extends BaseBloc {
   final AuthRepository authRepository;
-  final LoadingViewController loadingController = LoadingViewController();
   late VoidCallback _navigateToDashboard, _navigateToAuth;
 
   void setOnNavigationToDashBoard(VoidCallback navigation) {
@@ -34,6 +34,7 @@ class SplashBloc extends BaseBloc {
     try {
       final result = await authRepository.refreshToken();
       if (result.isSuccess) {
+        AppRouter.isAdmin.value = result.get().role == Role.ADMIN;
         _navigateToDashboard();
       } else {
         _navigateToAuth();

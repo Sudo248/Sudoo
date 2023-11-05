@@ -32,7 +32,7 @@ class OnlineImage extends StatelessWidget {
           size: width != null ? width! / 2 : null,
         ),
       ),
-      fit: fit ?? BoxFit.fill,
+      fit: fit ?? BoxFit.cover,
     );
   }
 }

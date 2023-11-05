@@ -15,6 +15,9 @@ import '../../../../utils/logger.dart';
 import '../../../widgets/blocks/range_time_block.dart';
 
 class ProductPage extends BasePage<ProductBloc> {
+  @override
+  bool get enableStatePage => true;
+
   final String? productId;
   late final TextStyle style;
 

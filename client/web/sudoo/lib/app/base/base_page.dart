@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:sudoo/app/base/base_bloc.dart';
+import 'package:sudoo/app/widgets/loading_view.dart';
 import 'package:sudoo/utils/di.dart';
 
 abstract class BasePage<@required T extends BaseBloc> extends StatefulWidget {
   final T _bloc = getIt.get();
+
   T get bloc => _bloc;
+  final bool wantKeepAlive = false;
+  final bool enableStatePage = false;
 
   BasePage({Key? key}) : super(key: key);
 
@@ -24,7 +28,7 @@ abstract class BasePage<@required T extends BaseBloc> extends StatefulWidget {
   State<BasePage> createState() => _BasePageState();
 }
 
-class _BasePageState extends State<BasePage> {
+class _BasePageState extends State<BasePage> with AutomaticKeepAliveClientMixin<BasePage> {
   @override
   void initState() {
     super.initState();
@@ -38,6 +42,20 @@ class _BasePageState extends State<BasePage> {
   }
 
   @override
-  Widget build(BuildContext context) => widget.build(context);
-}
+  Widget build(BuildContext context) {
+    super.build(context);
+    if (widget.enableStatePage) {
+      return Stack(
+        children: [
+          widget.build(context),
+          LoadingView(controller: widget.bloc.loadingController),
+        ],
+      );
+    } else {
+      return widget.build(context);
+    }
+  }
 
+  @override
+  bool get wantKeepAlive => widget.wantKeepAlive;
+}

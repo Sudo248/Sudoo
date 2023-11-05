@@ -2,12 +2,14 @@ import 'package:sudoo/domain/model/discovery/category_product.dart';
 import 'package:sudoo/domain/model/discovery/file.dart';
 import 'package:sudoo/domain/model/discovery/product.dart';
 import 'package:sudoo/domain/model/discovery/product_info.dart';
+import 'package:sudoo/domain/model/discovery/supplier.dart';
 import 'package:sudoo/domain/model/discovery/upsert_file.dart';
 import 'package:sudoo/domain/model/discovery/upsert_product.dart';
 
 import '../core/data_state.dart';
 import '../model/discovery/category.dart';
 import '../model/discovery/product_pagination.dart';
+import '../model/promotion/promotion.dart';
 
 abstract class ProductRepository {
   Future<DataState<ProductPagination<ProductInfo>, Exception>> getProducts(
@@ -34,4 +36,13 @@ abstract class ProductRepository {
   Future<DataState<File, Exception>> upsertImage(UpsertFile upsertImage);
 
   Future<DataState<File, Exception>> deleteImage(String imageId);
+
+  Future<DataState<Supplier, Exception>> getSupplier();
+
+  Future<DataState<Supplier, Exception>> upsertSupplier(Supplier supplier);
+
+// Admin
+  Future<DataState<List<Promotion>, Exception>> getPromotions();
+  Future<DataState<Promotion, Exception>> upsertPromotion(Promotion promotion);
+  Future<DataState<String, Exception>> deletePromotion(String promotionId);
 }

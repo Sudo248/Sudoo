@@ -82,7 +82,7 @@ extension Mapper on ProductDto {
         width,
         length,
         images.map((e) => e.toFile()).toList(),
-        supplier.toSupplier(),
+        supplier.toSupplierInfo(),
         categories.map((e) => e.toCategory()).toList(),
         extras.toExtras());
   }

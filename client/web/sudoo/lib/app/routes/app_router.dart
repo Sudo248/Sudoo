@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sudoo/app/pages/dashboard/views/dashboard_page.dart';
+import 'package:sudoo/app/pages/category/category_page.dart';
+import 'package:sudoo/app/pages/dashboard/dashboard_page.dart';
+import 'package:sudoo/app/pages/promotion/promotion_page.dart';
+import 'package:sudoo/app/pages/supplier/supplier_page.dart';
+import 'package:sudoo/app/pages/user/user_page.dart';
 
 import '../pages/auth/views/auth_page.dart';
 import '../pages/home/home_page.dart';
@@ -10,18 +14,18 @@ import '../pages/splash/splash_page.dart';
 import 'app_routes.dart';
 
 class AppRouter {
-  static final GlobalKey<NavigatorState> _appNavigatorKey =
-      GlobalKey<NavigatorState>(debugLabel: "app");
-  static final GlobalKey<NavigatorState> _dashboardNavigatorKey =
-      GlobalKey<NavigatorState>(debugLabel: "dashboard");
+  static final GlobalKey<NavigatorState> _appNavigatorKey = GlobalKey<NavigatorState>(debugLabel: "app");
+  static final GlobalKey<NavigatorState> _dashboardNavigatorKey = GlobalKey<NavigatorState>(debugLabel: "dashboard");
 
   static final GoRouter router = GoRouter(
     navigatorKey: _appNavigatorKey,
-    initialLocation: AppRoutes.auth,
+    initialLocation: AppRoutes.splash,
     routes: getAppRoutes(),
   );
 
   static final indexDashboard = ValueNotifier(0);
+  static final adminIndexDashboard = ValueNotifier(0);
+  static final isAdmin = ValueNotifier(false);
 
   static List<RouteBase> getAppRoutes() {
     return <RouteBase>[
@@ -35,6 +39,11 @@ class AppRouter {
         path: AppRoutes.auth,
         builder: (context, state) => AuthPage(),
       ),
+      GoRoute(
+        name: AppRoutes.user,
+        path: AppRoutes.user,
+        builder: (context, state) => UserPage(),
+      ),
       ShellRoute(
         navigatorKey: _dashboardNavigatorKey,
         routes: getDashBoardRoutes(),
@@ -45,9 +54,7 @@ class AppRouter {
             child: child,
           ),
         ),
-        observers: [
-          DashboardGoRouterObserver()
-        ]
+        observers: [DashboardGoRouterObserver()],
       )
     ];
   }
@@ -81,7 +88,26 @@ class AppRouter {
         name: AppRoutes.createProduct,
         path: AppRoutes.createProduct,
         builder: (context, state) => ProductPage(),
-      )
+      ),
+      GoRoute(
+        parentNavigatorKey: _dashboardNavigatorKey,
+        name: AppRoutes.supplier,
+        path: AppRoutes.supplier,
+        builder: (context, state) => SupplierPage(),
+      ),
+      // category
+      GoRoute(
+        parentNavigatorKey: _dashboardNavigatorKey,
+        name: AppRoutes.adminCategories,
+        path: AppRoutes.adminCategories,
+        builder: (context, state) => CategoryPage(),
+      ),
+      GoRoute(
+        parentNavigatorKey: _dashboardNavigatorKey,
+        name: AppRoutes.adminPromotions,
+        path: AppRoutes.adminPromotions,
+        builder: (context, state) => PromotionPage(),
+      ),
     ];
   }
 }
@@ -89,18 +115,57 @@ class AppRouter {
 class DashboardGoRouterObserver extends NavigatorObserver {
   @override
   void didPush(Route route, Route? previousRoute) {
-
+    final routeName = route.settings.name;
+    int index = 0;
+    if (AppRouter.isAdmin.value) {
+      switch (routeName) {
+        case AppRoutes.adminCategories:
+          index = 1;
+          break;
+        case AppRoutes.createProduct:
+          index = 2;
+        default:
+          index = 0;
+          break;
+      }
+      if (index != AppRouter.adminIndexDashboard.value) {
+        AppRouter.adminIndexDashboard.value = index;
+      }
+    } else {
+      switch (routeName) {
+        case AppRoutes.products:
+          index = 1;
+          break;
+        case AppRoutes.createProduct:
+          index = 2;
+          break;
+        case AppRoutes.adminCategories:
+          index = 3;
+          break;
+        case AppRoutes.supplier:
+          index = 4;
+          break;
+        default:
+          index = 0;
+          break;
+      }
+      if (index != AppRouter.indexDashboard.value) {
+        AppRouter.indexDashboard.value = index;
+      }
+    }
   }
 
   @override
-  void didPop(Route route, Route? previousRoute) {
-  }
+  void didPop(Route route, Route? previousRoute) {}
 
   @override
-  void didRemove(Route route, Route? previousRoute) {
-  }
+  void didRemove(Route route, Route? previousRoute) {}
 
   @override
-  void didReplace({Route? newRoute, Route? oldRoute}) {
-  }
+  void didReplace({Route? newRoute, Route? oldRoute}) {}
+}
+
+class AppGoRouterObserver extends NavigatorObserver {
+
+
 }

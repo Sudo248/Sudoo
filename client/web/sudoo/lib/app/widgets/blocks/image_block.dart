@@ -108,7 +108,7 @@ class ImageBlock extends StatelessWidget {
                 Uint8List.fromList(image.bytes!),
                 width: 150,
                 height: 200,
-                fit: BoxFit.fill,
+                fit: BoxFit.cover,
               )
             : OnlineImage(
                 image.url,

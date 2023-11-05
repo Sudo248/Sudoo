@@ -5,7 +5,6 @@ import 'package:sudoo/app/base/base_bloc.dart';
 import 'package:sudoo/app/model/category_callback.dart';
 import 'package:sudoo/app/model/image_callback.dart';
 import 'package:sudoo/app/pages/product/product/viewer.dart';
-import 'package:sudoo/app/widgets/loading_view.dart';
 import 'package:sudoo/domain/model/discovery/category.dart';
 import 'package:sudoo/domain/model/discovery/category_product.dart';
 import 'package:sudoo/domain/model/discovery/extras.dart';
@@ -21,7 +20,6 @@ import '../../../../domain/model/discovery/upsert_product.dart';
 import '../../../../domain/repository/category_repository.dart';
 
 class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
-  final LoadingViewController loadingController = LoadingViewController();
   final ProductRepository productRepository;
   final CategoryRepository categoryRepository;
   final StorageRepository storageRepository;

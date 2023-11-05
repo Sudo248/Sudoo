@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:sudoo/domain/model/discovery/supplier.dart';
+import 'package:sudoo/domain/model/discovery/supplier_info.dart';
 
 part 'supplier_dto.g.dart';
 
@@ -30,8 +30,8 @@ class SupplierDto {
 }
 
 extension Mapper on SupplierDto {
-  Supplier toSupplier() {
-    return Supplier(
+  SupplierInfo toSupplierInfo() {
+    return SupplierInfo(
       supplierId,
       name,
       avatar,

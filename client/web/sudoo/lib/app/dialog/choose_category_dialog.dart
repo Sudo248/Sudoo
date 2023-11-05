@@ -28,10 +28,11 @@ class _ChooseCategoryDialogState extends State<ChooseCategoryDialog> {
       child: Container(
         padding: const EdgeInsets.all(15.0),
         constraints: BoxConstraints(
-            minWidth: 300,
-            minHeight: 400,
-            maxWidth: size.width * 0.3,
-            maxHeight: size.height * 0.5),
+          minWidth: 300,
+          minHeight: 400,
+          maxWidth: size.width * 0.3,
+          maxHeight: size.height * 0.5,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -51,9 +52,7 @@ class _ChooseCategoryDialogState extends State<ChooseCategoryDialog> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Checkbox(
-                        value: category != null &&
-                            category!.categoryId ==
-                                widget.categories[index].categoryId,
+                        value: category != null && category!.categoryId == widget.categories[index].categoryId,
                         onChanged: (value) {
                           if (value == true) {
                             setState(() {

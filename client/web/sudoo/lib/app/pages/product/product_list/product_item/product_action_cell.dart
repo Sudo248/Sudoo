@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sudoo/app/model/product_info_action_callback.dart';
 import 'package:sudoo/app/routes/app_routes.dart';
-import 'package:sudoo/app/widgets/confirm_dialog.dart';
+import 'package:sudoo/app/dialog/confirm_dialog.dart';
 import 'package:sudoo/domain/model/discovery/product_info.dart';
 
 import '../../../../../resources/R.dart';

@@ -11,22 +11,9 @@ class AppNavigationRail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: AppRouter.indexDashboard,
+      valueListenable: AppRouter.isAdmin.value ? AppRouter.adminIndexDashboard : AppRouter.indexDashboard,
       builder: (context, value, child) => NavigationRail(
-        destinations: <NavigationRailDestination>[
-          NavigationRailDestination(
-            icon: const Icon(Icons.home),
-            label: Text(R.string.home),
-          ),
-          NavigationRailDestination(
-            icon: const Icon(Icons.list_alt),
-            label: Text(R.string.listProduct),
-          ),
-          NavigationRailDestination(
-            icon: const Icon(Icons.create),
-            label: Text(R.string.createProduct),
-          ),
-        ],
+        destinations: AppRouter.isAdmin.value ? _getAdminDashboardDestination() : _getDashboardDestination(),
         selectedIndex: value,
         extended: true,
         backgroundColor: R.color.backgroundNavColor,
@@ -48,5 +35,43 @@ class AppNavigationRail extends StatelessWidget {
         },
       ),
     );
+  }
+
+  List<NavigationRailDestination> _getDashboardDestination() {
+    return [
+      NavigationRailDestination(
+        icon: const Icon(Icons.home),
+        label: Text(R.string.home),
+      ),
+      NavigationRailDestination(
+        icon: const Icon(Icons.list_alt_outlined),
+        label: Text(R.string.listProduct),
+      ),
+      NavigationRailDestination(
+        icon: const Icon(Icons.create_outlined),
+        label: Text(R.string.createProduct),
+      ),
+      NavigationRailDestination(
+        icon: const Icon(Icons.category_outlined),
+        label: Text(R.string.categories),
+      ),
+      NavigationRailDestination(
+        icon: const Icon(Icons.info_outline),
+        label: Text(R.string.info),
+      ),
+    ];
+  }
+
+  List<NavigationRailDestination> _getAdminDashboardDestination() {
+    return [
+      NavigationRailDestination(
+        icon: const Icon(Icons.home),
+        label: Text(R.string.home),
+      ),
+      NavigationRailDestination(
+        icon: const Icon(Icons.category_outlined),
+        label: Text(R.string.categories),
+      ),
+    ];
   }
 }
