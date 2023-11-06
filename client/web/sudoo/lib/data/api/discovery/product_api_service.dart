@@ -15,7 +15,12 @@ class ProductService {
   static const promotions = "$discovery/promotions";
   static const offsetKey = "offset";
   static const limitKey = "limit";
+  static const sortByKey = "sortBy";
+  static const orderByKey = "orderBy";
   static const selectKey = "select";
+  static const createdAt = "created_at";
+  static const asc = "asc";
+  static const desc = "desc";
 
   final ApiService api;
 
@@ -26,6 +31,8 @@ class ProductService {
         queryParameters: {
           offsetKey: offset,
           limitKey: limit,
+          sortByKey: createdAt,
+          orderByKey: desc,
         },
       );
 

@@ -122,11 +122,16 @@ class ProductListDataSource extends DataGridSource {
     notifyDataSetChange();
   }
 
+  void clearProducts() {
+    products.clear();
+  }
+
   void updateProduct(ProductInfo productInfo) {
     final index =
         products.indexWhere((e) => e.productId == productInfo.productId);
     if (index == -1) return;
     products[index] = productInfo;
+    buildDataRows();
     notifyItemChange(index, 0);
     notifyItemChange(index, 1);
   }

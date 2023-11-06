@@ -22,6 +22,7 @@ class ProductListBloc extends BaseBloc implements CategoryCallback, ProductInfoA
 
   int _offset = 0;
   final int _limit = 20;
+  bool _isLastPage = false;
 
   ProductListBloc(
     this.productRepository,
@@ -48,6 +49,8 @@ class ProductListBloc extends BaseBloc implements CategoryCallback, ProductInfoA
 
   Future<void> refresh() async {
     _offset = 0;
+    _isLastPage = false;
+    productDataSource.clearProducts();
     loadingController.showLoading();
     getCategories();
     await loadMore();
@@ -55,12 +58,14 @@ class ProductListBloc extends BaseBloc implements CategoryCallback, ProductInfoA
   }
 
   Future<void> loadMore() async {
+    if (_isLastPage) return;
     final result = await productRepository.getProducts(_offset, _limit);
     if (result.isSuccess) {
       final pagination = result.get();
       productDataSource.addProducts(pagination.products);
-      _offset = pagination.pagination.offset;
       totalProducts.value = pagination.pagination.total;
+      _offset = pagination.pagination.offset;
+      _isLastPage = pagination.products.length < _limit;
     } else {
       showErrorMessage(result.requireError());
     }

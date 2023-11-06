@@ -88,6 +88,7 @@ class SupplierBloc extends BaseBloc implements ChooseAddressCallback {
     avatar.value = File.fromUrl(supplier.avatar);
     nameController.text = supplier.name;
     brandController.text = supplier.brand;
+    contactUrlController.text = supplier.contactUrl;
     districtController.text = supplier.address.districtName;
     provinceController.text = supplier.address.provinceName;
     wardCodeController.text = supplier.address.wardName;

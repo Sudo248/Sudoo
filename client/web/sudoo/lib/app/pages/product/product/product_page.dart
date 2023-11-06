@@ -28,22 +28,13 @@ class ProductPage extends BasePage<ProductBloc> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        context.pop(bloc.isSaved);
-        return Future.value(true);
-      },
-      child: Stack(
-        children: [
-          buildContent(context),
-          LoadingView(controller: bloc.loadingController),
-        ],
-      ),
-    );
+    bloc.pop = (isUpdate) => context.pop(isUpdate);
+    return buildContent(context);
   }
 
   Widget buildContent(BuildContext context) {
     return SingleChildScrollView(
+      controller: bloc.scrollController,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

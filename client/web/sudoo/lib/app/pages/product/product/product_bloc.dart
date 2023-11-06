@@ -27,6 +27,8 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
 
   final ValueNotifier<List<domain.File>?> images = ValueNotifier(null);
   final ValueNotifier<List<Category>?> categories = ValueNotifier(null);
+  final ScrollController scrollController = ScrollController();
+  Function(bool)? pop;
 
   final TextEditingController nameController = TextEditingController(),
       descriptionController = TextEditingController(),
@@ -48,8 +50,6 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
   final ValueNotifier<bool> enable3DViewer = ValueNotifier(false);
   final ValueNotifier<bool> enableArViewer = ValueNotifier(false);
   final ValueNotifier<domain.File?> sourceViewer = ValueNotifier(null);
-
-  bool isSaved = false;
 
   Timer? debounce;
   String? productId;
@@ -245,7 +245,6 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
         await createProduct();
       }
       loadingController.hideLoading();
-      isSaved = true;
     }
   }
 
@@ -313,6 +312,12 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
     );
     final result = await productRepository.upsertProduct(upsertProduct);
     if (result.isSuccess) {
+      clearProduct();
+      scrollController.animateTo(
+        0.0,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
       return;
     } else {
       showErrorMessage(result.requireError());
@@ -339,6 +344,8 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
     heightController.clear();
     widthController.clear();
     lengthController.clear();
+    images.value = List.empty();
+    categories.value = List.empty();
   }
 
   Future<List<String>> uploadImages() async {
@@ -389,6 +396,7 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
 
     final result = await productRepository.upsertProduct(upsertProduct);
     if (result.isSuccess) {
+      pop?.call(true);
       return;
     } else {
       showErrorMessage(result.requireError());
