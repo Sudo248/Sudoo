@@ -38,6 +38,7 @@ CREATE TABLE `products`
     `height`              INT4,
     `length`              INT4,
     `width`               INT4,
+    `created_at`          DATETIME              DEFAULT CURRENT_TIMESTAMP,
 
     INDEX id_index (product_id),
     INDEX sku_index (sku),

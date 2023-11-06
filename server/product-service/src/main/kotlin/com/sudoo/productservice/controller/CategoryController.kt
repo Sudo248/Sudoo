@@ -53,7 +53,7 @@ class CategoryController(
         @RequestParam("limit", required = false, defaultValue = Constants.DEFAULT_LIMIT) limit: Int,
     ): ResponseEntity<BaseResponse<*>> = handle {
         val offsetRequest = OffsetRequest(offset, limit)
-        productService.getListProductInfoByCategory(categoryId, offsetRequest)
+        productService.getListProductInfoByCategory(categoryId, offsetRequest,)
     }
 
     @PostMapping("/{categoryId}/products")

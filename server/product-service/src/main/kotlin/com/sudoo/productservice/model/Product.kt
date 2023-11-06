@@ -1,6 +1,5 @@
 package com.sudoo.productservice.model
 
-import kotlinx.coroutines.flow.Flow
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.Transient
 import org.springframework.data.domain.Persistable
@@ -72,7 +71,10 @@ data class Product(
     @Column("width")
     val width: Int,
 
-) : Persistable<String> {
+    @Column("create_at")
+    val createdAt: LocalDateTime,
+
+    ) : Persistable<String> {
 
     @Transient
     var brand: String = ""
