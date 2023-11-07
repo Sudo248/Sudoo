@@ -23,10 +23,10 @@ class CartProductController(val cartService: CartService) : BaseController() {
     @DeleteMapping("/product")
     suspend fun deleteProductInCart(
         @RequestHeader(Constants.HEADER_USER_ID) userId: String,
-        @PathVariable("cartId") cartId: String,
-        @PathVariable("cartProductId") cartProductId: String
+        @RequestParam("cartId") cartId: String,
+        @RequestParam("cartProductId") cartProductId: String
     ): ResponseEntity<BaseResponse<*>> = handle {
-        cartService.deleteCartProduct(userId, cartProductId)
+        cartService.deleteCartProduct(cartId, cartProductId)
     }
 
 }
