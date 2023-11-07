@@ -17,6 +17,12 @@ data class Promotion(
     @Column("supplier_id")
     val supplierId: String,
 
+    @Column("enable")
+    val enable: Boolean,
+
+    @Column("image")
+    val image: String,
+
     @Column("name")
     val name: String,
 

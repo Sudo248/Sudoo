@@ -1,6 +1,7 @@
 package com.sudoo.productservice.repository
 
 import com.sudoo.productservice.model.Promotion
+import kotlinx.coroutines.flow.Flow
 import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 import org.springframework.stereotype.Repository
 
@@ -8,5 +9,7 @@ import org.springframework.stereotype.Repository
 interface PromotionRepository : CoroutineCrudRepository<Promotion, String> {
 
     suspend fun deleteAllBySupplierId(supplierId: String)
+
+    fun getAllByEnable(enable: Boolean): Flow<Promotion>
 
 }

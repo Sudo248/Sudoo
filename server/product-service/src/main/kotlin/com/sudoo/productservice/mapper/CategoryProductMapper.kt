@@ -7,8 +7,8 @@ import com.sudoo.productservice.model.CategoryProduct
 fun CategoryProductDto.toCategoryProduct(): CategoryProduct {
     return CategoryProduct(
         categoryProductId = IdentifyCreator.createOrElse(categoryProductId),
-        productId = productId!!,
-        categoryId = categoryId!!,
+        productId = productId,
+        categoryId = categoryId,
     ).also {
         it.isNewCategoryProduct = categoryProductId.isNullOrEmpty()
     }

@@ -3,16 +3,15 @@ package com.sudoo.productservice.controller
 import com.sudoo.domain.base.BaseController
 import com.sudoo.domain.base.BaseResponse
 import com.sudoo.domain.base.OffsetRequest
+import com.sudoo.domain.base.SortRequest
 import com.sudoo.domain.common.Constants
 import com.sudoo.domain.validator.ProductValidator
 import com.sudoo.productservice.dto.CategoryProductDto
 import com.sudoo.productservice.dto.PatchAmountProductDto
 import com.sudoo.productservice.dto.UpsertProductDto
-import com.sudoo.productservice.dto.UserProductDto
 import com.sudoo.productservice.service.CategoryService
 import com.sudoo.productservice.service.ImageService
 import com.sudoo.productservice.service.ProductService
-import com.sudoo.productservice.service.UserProductService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -52,9 +51,12 @@ class ProductController(
         @RequestParam("name", required = false, defaultValue = "") name: String,
         @RequestParam("offset", required = false, defaultValue = Constants.DEFAULT_OFFSET) offset: Int,
         @RequestParam("limit", required = false, defaultValue = Constants.DEFAULT_LIMIT) limit: Int,
+        @RequestParam("sortBy", required = false, defaultValue = "") sortBy: String,
+        @RequestParam("orderBy", required = false, defaultValue = "asc") orderBy: String,
     ): ResponseEntity<BaseResponse<*>> = handle {
         val offsetRequest = OffsetRequest(offset, limit)
-        productService.getProductInfoByCategoryAndName(categoryId, name, offsetRequest)
+        val sortRequest = if (sortBy.isBlank()) null else SortRequest(sortBy, orderBy)
+        productService.getProductInfoByCategoryAndName(categoryId, name, offsetRequest, sortRequest)
     }
 
     @GetMapping("/recommend")
