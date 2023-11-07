@@ -9,6 +9,7 @@ import com.sudo248.sudoo.R
 import com.sudo248.sudoo.databinding.ItemCategoryBinding
 import com.sudo248.sudoo.databinding.ItemPromotionBinding
 import com.sudo248.sudoo.domain.entity.promotion.Promotion
+import com.sudo248.sudoo.ui.uimodel.adapter.loadImage
 import com.sudo248.sudoo.ui.util.Utils
 
 class PromotionAdapter(
@@ -22,16 +23,17 @@ class PromotionAdapter(
         BaseViewHolder<Promotion, ItemPromotionBinding>(binding) {
         override fun onBind(item: Promotion) {
             binding.apply {
+                loadImage(binding.imageVoucher, item.image)
                 txtNamePromotion.text = item.name
                 txtReducePrice.text = Utils.formatVnCurrency(item.value)
-                txtPromotionCode.text = item.promotionId
+                txtRemain.text = itemView.context.getString(R.string.remain, "${item.totalAmount}")
             }
             itemView.setOnClickListener {
                 if (!it.isSelected) {
                     setSelectedItem()
                     onItemSelected.invoke(item)
                 }
-                currentSelectedPosition = bindingAdapterPosition
+                currentSelectedPosition = adapterPosition
             }
         }
 
@@ -43,7 +45,7 @@ class PromotionAdapter(
             lastSelectedItemBinding = binding
         }
 
-        fun selectedItem(itemBinding: ItemPromotionBinding) {
+        private fun selectedItem(itemBinding: ItemPromotionBinding) {
             itemBinding.apply {
                 root.isSelected = true
                 root.setBackgroundColor(
@@ -57,12 +59,12 @@ class PromotionAdapter(
                     R.color.white
                 )
                 txtNamePromotion.setTextColor(colorWhite)
-                txtPromotionCode.setTextColor(colorWhite)
+                txtRemain.setTextColor(colorWhite)
                 txtReducePrice.setTextColor(colorWhite)
             }
         }
 
-        fun notSelectedItem(itemBinding: ItemPromotionBinding) {
+        private fun notSelectedItem(itemBinding: ItemPromotionBinding) {
             itemBinding.apply {
                 root.isSelected = false
                 root.setBackgroundColor(
@@ -76,7 +78,7 @@ class PromotionAdapter(
                     R.color.black
                 )
                 txtNamePromotion.setTextColor(colorBlack)
-                txtPromotionCode.setTextColor(colorBlack)
+                txtRemain.setTextColor(colorBlack)
                 txtReducePrice.setTextColor(colorBlack)
             }
         }

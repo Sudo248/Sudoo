@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <import type="android.view.View" />
         <variable
             name="viewModel"
             type="com.sudo248.sudoo.ui.activity.main.fragment.cart.CartViewModel" />
@@ -105,15 +105,15 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.08"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintDimensionRatio="H,375:55"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="@{viewModel.cart.totalAmount > 0 ? View.VISIBLE : View.GONE}">
 
             <CheckBox
                 android:id="@+id/checkAll"
@@ -125,41 +125,35 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tất cả"
-                android:textColor="@color/black"
-                android:textSize="24sp"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/checkAll"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
                 android:id="@+id/txtTotalPrice"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="5dp"
                 android:layout_marginTop="5dp"
                 android:lines="2"
-                android:text="@string/total_price"
+                android:gravity="center_vertical"
                 android:textColor="@color/primaryColor"
                 android:textSize="18sp"
+                android:text="@{String.format(@string/total_price, viewModel.totalPrice)}"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/btnBuyNow"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/total_price" />
 
             <Button
                 android:id="@+id/btnBuyNow"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-
-                android:text="@string/buy_now"
+                android:layout_margin="5dp"
                 app:backgroundTint="@color/primaryColor"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                android:text="@string/continue_order"
                 app:layout_constraintTop_toTopOf="parent"
+                android:textAllCaps="false"
+                android:textSize="17sp"
+                android:textColor="@color/white"
                 app:layout_constraintWidth_percent="0.5" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 

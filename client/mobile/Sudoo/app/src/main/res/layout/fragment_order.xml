@@ -48,7 +48,7 @@
             android:layout_height="0dp"
             android:layout_marginTop="10dp"
             android:clipToPadding="true"
-            app:layout_constraintBottom_toTopOf="@+id/btnOrderNow"
+            app:layout_constraintBottom_toTopOf="@+id/vBottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/headerPayment">
@@ -337,7 +337,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constrainSumPayment4"
+                    android:id="@+id/constrainPromotion"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
@@ -376,19 +376,19 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="25dp"
                     android:background="@color/white"
                     android:padding="5dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/constrainSumPayment4">
+                    app:layout_constraintTop_toBottomOf="@+id/constrainPromotion"
+                    app:layout_constraintBottom_toBottomOf="parent">
 
                     <TextView
                         android:id="@+id/textFinalSumPayment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/total_payment"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="@+id/txtFinalPrice"
                         app:layout_constraintStart_toStartOf="parent"
@@ -415,27 +415,31 @@
         </androidx.core.widget.NestedScrollView>
 
         <View
+            android:id="@+id/vBottom"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@color/white"
-            app:layout_constraintBottom_toBottomOf="@id/btnOrderNow"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/btnOrderNow" />
+            app:layout_constraintDimensionRatio="H,375:60"/>
 
         <TextView
             android:id="@+id/btnOrderNow"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rectangle_conner_25_primary"
+            android:layout_height="0dp"
+            android:background="@drawable/bg_rectangle_conner_5"
+            android:backgroundTint="@color/primaryColor"
+            android:layout_margin="8dp"
             android:onClick="@{(v) -> viewModel.onPayment()}"
             android:paddingHorizontal="30dp"
-            android:paddingVertical="15dp"
+            android:gravity="center_vertical"
             android:text="@string/payment"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="@id/vBottom"
+            app:layout_constraintBottom_toBottomOf="@id/vBottom"
             app:layout_constraintEnd_toEndOf="parent"/>
 
         <TextView
@@ -445,10 +449,10 @@
             android:layout_marginEnd="15dp"
             android:text="@string/sum_payment"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/btnOrderNow"
-            app:layout_constraintTop_toTopOf="@+id/btnOrderNow" />
+            app:layout_constraintTop_toTopOf="@+id/vBottom" />
 
         <TextView
             android:id="@+id/txtPaymentAmount"

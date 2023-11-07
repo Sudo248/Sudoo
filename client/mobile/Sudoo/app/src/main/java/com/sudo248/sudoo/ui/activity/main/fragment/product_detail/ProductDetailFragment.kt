@@ -16,6 +16,7 @@ import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeDrawable.BadgeGravity
 import com.google.android.material.badge.BadgeUtils
 import com.sudo248.base_android.base.BaseFragment
+import com.sudo248.base_android.ktx.gone
 import com.sudo248.base_android.ktx.invisible
 import com.sudo248.base_android.ktx.visible
 import com.sudo248.base_android.utils.DialogUtils
@@ -102,6 +103,11 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
             setRating(product.rate)
             txtNumberSold.text = Utils.formatSold(product.soldAmount)
             txtDescription.text = product.description
+            if (this@ProductDetailFragment.viewModel.canAddToCart()) {
+                binding.txtBuyNow.text = getString(R.string.add_to_cart)
+            } else {
+                binding.txtBuyNow.text = getString(R.string.contact)
+            }
         }
     }
 
@@ -186,5 +192,10 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
         } else {
             badge?.isVisible = false
         }
+    }
+
+    override fun openContact(url: String) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(intent)
     }
 }
