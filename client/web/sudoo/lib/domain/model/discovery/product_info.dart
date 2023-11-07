@@ -1,3 +1,5 @@
+import 'package:sudoo/domain/model/discovery/category.dart';
+
 class ProductInfo {
   final String productId;
   final String sku;
@@ -12,6 +14,7 @@ class ProductInfo {
   final bool saleable;
   final String brand;
   final List<String> images;
+  List<Category>? categories;
 
   const ProductInfo(
     this.productId,

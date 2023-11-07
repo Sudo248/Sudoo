@@ -4,7 +4,7 @@ import com.sudoo.productservice.dto.PatchAmountPromotionDto
 import com.sudoo.productservice.dto.PromotionDto
 
 interface PromotionService {
-    suspend fun getAllPromotion(): List<PromotionDto>
+    suspend fun getAllPromotion(enable: Boolean?): List<PromotionDto>
 
     suspend fun getPromotion(promotionId: String): PromotionDto
 

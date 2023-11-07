@@ -7,8 +7,9 @@ import com.sudoo.productservice.model.OrderProductInfo
 import com.sudoo.productservice.model.Product
 import com.sudoo.productservice.model.ProductExtras
 import com.sudoo.productservice.model.ProductInfo
+import java.time.LocalDateTime
 
-fun UpsertProductDto.toProduct(supplierId: String, brand: String): Product {
+fun UpsertProductDto.toProduct(supplierId: String, brand: String, createAt: LocalDateTime? = null): Product {
     return Product(
         productId = IdentifyCreator.createOrElse(productId),
         supplierId = supplierId,
@@ -29,6 +30,7 @@ fun UpsertProductDto.toProduct(supplierId: String, brand: String): Product {
         height = height.orZero(),
         length = length.orZero(),
         width = width.orZero(),
+        createdAt = createAt ?: LocalDateTime.now()
     ).also {
         it.isNewProduct = productId.isNullOrEmpty()
     }
@@ -55,6 +57,7 @@ fun UpsertProductDto.combineProduct(product: Product): Product {
         height = height ?: product.height,
         length = length ?: product.length,
         width = width ?: product.width,
+        createdAt = product.createdAt,
     )
 }
 

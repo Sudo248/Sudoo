@@ -3,6 +3,7 @@ package com.sudoo.productservice.controller
 import com.sudoo.domain.base.BaseController
 import com.sudoo.domain.base.BaseResponse
 import com.sudoo.domain.base.OffsetRequest
+import com.sudoo.domain.base.SortRequest
 import com.sudoo.domain.common.Constants
 import com.sudoo.productservice.dto.UpsertSupplierDto
 import com.sudoo.productservice.service.ProductService
@@ -70,8 +71,24 @@ class SupplierController(
         @PathVariable("supplierId") supplierId: String,
         @RequestParam("offset", required = false, defaultValue = Constants.DEFAULT_OFFSET) offset: Int,
         @RequestParam("limit", required = false, defaultValue = Constants.DEFAULT_LIMIT) limit: Int,
+        @RequestParam("sortBy", required = false, defaultValue = "") sortBy: String,
+        @RequestParam("orderBy", required = false, defaultValue = "asc") orderBy: String,
     ): ResponseEntity<BaseResponse<*>> = handle {
         val offsetRequest = OffsetRequest(offset, limit)
-        productService.getListProductInfoBySupplier(supplierId, offsetRequest)
+        val sortRequest = if (sortBy.isBlank()) null else SortRequest(sortBy, orderBy)
+        productService.getListProductInfoBySupplier(supplierId, offsetRequest, sortRequest)
+    }
+
+    @GetMapping("/self/products")
+    suspend fun getProductBySupplierSelf(
+        @RequestHeader(Constants.HEADER_USER_ID) userId: String,
+        @RequestParam("offset", required = false, defaultValue = Constants.DEFAULT_OFFSET) offset: Int,
+        @RequestParam("limit", required = false, defaultValue = Constants.DEFAULT_LIMIT) limit: Int,
+        @RequestParam("sortBy", required = false, defaultValue = "") sortBy: String,
+        @RequestParam("orderBy", required = false, defaultValue = "asc") orderBy: String,
+    ): ResponseEntity<BaseResponse<*>> = handle {
+        val offsetRequest = OffsetRequest(offset, limit)
+        val sortRequest = if (sortBy.isBlank()) null else SortRequest(sortBy, orderBy)
+        productService.getListProductInfoByUserId(userId, offsetRequest, sortRequest)
     }
 }

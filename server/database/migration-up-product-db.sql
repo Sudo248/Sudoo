@@ -38,6 +38,7 @@ CREATE TABLE `products`
     `height`              INT4,
     `length`              INT4,
     `width`               INT4,
+    `created_at`          DATETIME              DEFAULT CURRENT_TIMESTAMP,
 
     INDEX id_index (product_id),
     INDEX sku_index (sku),
@@ -120,7 +121,9 @@ CREATE TABLE `promotions`
     `supplier_id`  CHAR(32) NOT NULL,
     `name`         VARCHAR(255),
     `value`        FLOAT4,
-    `total_amount` INT DEFAULT 0
+    `enable`       BOOLEAN DEFAULT TRUE,
+    `image`        VARCHAR(255),
+    `total_amount` INT     DEFAULT 0
 ) CHARACTER SET = utf8mb4
     COMMENT = 'Store all promotion';
 

@@ -33,9 +33,12 @@ class ProductSaleInfoCell extends StatelessWidget {
   }
 
   Future<void> getCategories() async {
-    categories.value = null;
-    categories.value =
-        await categoryCallback.getCategoriesOfProduct(product.productId);
+    if (product.categories == null) {
+      categories.value = null;
+      product.categories =
+          await categoryCallback.getCategoriesOfProduct(product.productId);
+    }
+    categories.value = product.categories;
   }
 
   @override
