@@ -11,4 +11,5 @@ interface CartProductRepository : CoroutineCrudRepository<CartProduct, String> {
     suspend fun findCartProductByCartId(cartId: String): Flow<CartProduct>
     suspend fun deleteCartProductByCartIdAndProductId(cartId: String, productId: String): Int
 
+
 }

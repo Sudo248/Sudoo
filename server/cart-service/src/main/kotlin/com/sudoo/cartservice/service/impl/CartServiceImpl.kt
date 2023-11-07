@@ -66,7 +66,8 @@ class CartServiceImpl(
 
     override suspend fun getCountItemActiveCart(userId: String): Int {
         return try {
-            cartRepository.countByUserIdAndStatus(userId, "active")
+            val activeCart = getActiveCart(userId)
+            cartProductRepository.findCartProductByCartId(activeCart.cartId).toList().size
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
             0
