@@ -32,7 +32,9 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@+id/constrainVoucherOrder"
-            app:layout_constraintTop_toBottomOf="@id/titleOrder">
+            app:layout_constraintTop_toBottomOf="@id/titleOrder"
+            app:layout_constraintVertical_bias="0.0"
+            tools:layout_editor_absoluteX="0dp">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcvItems"

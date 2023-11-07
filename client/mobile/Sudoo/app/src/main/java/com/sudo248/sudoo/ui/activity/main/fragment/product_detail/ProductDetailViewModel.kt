@@ -103,7 +103,7 @@ class ProductDetailViewModel @Inject constructor(
     }
 
     fun countItemInCart() = launch {
-        cartRepository.getItemInCart()
+        cartRepository.countItemInActiveCart()
             .onSuccess {
                 viewController?.setBadgeCart(it)
             }
