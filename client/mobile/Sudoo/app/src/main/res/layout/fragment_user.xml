@@ -50,7 +50,7 @@
                     android:layout_marginHorizontal="15dp"
                     android:layout_marginTop="15dp"
                     android:elevation="55dp"
-                    app:cardCornerRadius="25dp"
+                    app:cardCornerRadius="4dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txtTitle">
@@ -58,7 +58,7 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/primaryColor"
+                        android:background="@color/white"
                         android:paddingHorizontal="15dp"
                         android:paddingTop="15dp"
                         android:paddingBottom="35dp">
@@ -89,7 +89,7 @@
                             android:ellipsize="end"
                             android:maxLines="2"
                             android:text="@{viewModel.user.fullName}"
-                            android:textColor="@color/white"
+                            android:textColor="@color/black"
                             android:textSize="20sp"
                             android:textStyle="bold"
                             app:layout_constraintBottom_toTopOf="@id/txtRole"
@@ -106,7 +106,7 @@
                             android:paddingHorizontal="14dp"
                             android:paddingVertical="2dp"
                             android:text="@{viewModel.user.role}"
-                            android:textColor="@color/primaryColor"
+                            android:textColor="@color/white"
                             android:textSize="14sp"
                             app:layout_constraintBottom_toBottomOf="@+id/cardImageUser"
                             app:layout_constraintEnd_toEndOf="@+id/txtName"
@@ -124,7 +124,7 @@
                             android:src="@drawable/ic_settings"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:tint="@color/white" />
+                            app:tint="@color/primaryColor" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -133,8 +133,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="15dp"
-                    android:layout_marginTop="24dp"
-                    app:cardCornerRadius="25dp"
+                    android:layout_marginTop="8dp"
+                    app:cardCornerRadius="4dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cardHeader">
@@ -336,8 +336,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="15dp"
-                    android:layout_marginTop="24dp"
-                    app:cardCornerRadius="25dp"
+                    android:layout_marginTop="8dp"
+                    app:cardCornerRadius="4dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cardInfo"
@@ -371,7 +371,7 @@
                     android:layout_marginHorizontal="15dp"
                     android:layout_marginTop="50dp"
                     android:layout_marginBottom="50dp"
-                    android:background="@drawable/rectangle_conner_25"
+                    android:background="@drawable/rectangle_conner_8"
                     android:onClick="@{(v) -> viewModel.logout()}"
                     android:text="@string/log_out"
                     android:textAllCaps="false"

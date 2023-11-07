@@ -7,7 +7,7 @@ import com.sudo248.sudoo.domain.entity.cart.Cart
 
 interface CartRepository {
     suspend fun getCart(): DataState<Cart, Exception>
-    suspend fun getItemInCart(): DataState<Int, Exception>
+    suspend fun countItemInActiveCart(): DataState<Int, Exception>
 
 
     //--------
