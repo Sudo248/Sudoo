@@ -10,8 +10,8 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
         android:src="@drawable/img_voucher"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -21,34 +21,42 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
         android:ellipsize="end"
         android:maxLines="2"
         android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/txtReducePrice"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="15dp"
-        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@id/imageVoucher"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
         tools:text="Miễn phí 6-6" />
 
     <TextView
         android:id="@+id/txtReducePrice"
-        style="@style/textTitleSmall"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/black"
+        android:textSize="16sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/txtRemain"
         app:layout_constraintEnd_toEndOf="@+id/txtNamePromotion"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="@id/txtNamePromotion"
-        app:layout_constraintTop_toBottomOf="@id/txtNamePromotion"
+        app:layout_constraintTop_toBottomOf="@+id/txtNamePromotion"
         tools:text="Giảm giá: 10000d" />
 
     <TextView
-        android:id="@+id/txtPromotionCode"
+        android:id="@+id/txtRemain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
+        android:textSize="16sp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/txtReducePrice"
         app:layout_constraintTop_toBottomOf="@+id/txtReducePrice"
         tools:text="123456" />

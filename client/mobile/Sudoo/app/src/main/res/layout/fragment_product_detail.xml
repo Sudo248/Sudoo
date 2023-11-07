@@ -332,6 +332,7 @@
                         android:maxLines="50"
                         android:textColor="@color/gray_88"
                         android:textSize="18sp"
+                        app:layout_constraintHorizontal_weight="0.8"
                         app:layout_constraintTop_toBottomOf="@id/txtDescriptionLabel"
                         tools:text="After the Dialog was displayed, the initial EditText would always be in autofocus. Even after editing the text on the keyboard, the EditText would still retain focus and the keyboard would remain visible. Despite attempting various solutions from this thread, none of them proved effective for me." />
 
@@ -411,10 +412,17 @@
                 android:layout_height="0dp"
                 android:background="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintDimensionRatio="H,375:52"
+                app:layout_constraintDimensionRatio="H,375:55"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/contentDetail">
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/groupChat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="imgChat,vVerticalDivider"
+                    android:visibility="gone"/>
 
                 <ImageView
                     android:id="@+id/imgChat"
@@ -428,9 +436,11 @@
                     app:layout_constraintHorizontal_chainStyle="spread"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/primaryColor" />
+                    app:tint="@color/primaryColor"
+                    app:layout_constraintHorizontal_weight="0.3"/>
 
                 <View
+                    android:id="@+id/vVerticalDivider"
                     android:layout_width="1dp"
                     android:layout_height="20dp"
                     android:background="@color/gray_91"
@@ -450,21 +460,26 @@
                     app:layout_constraintEnd_toStartOf="@+id/txtBuyNow"
                     app:layout_constraintStart_toEndOf="@+id/imgChat"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/primaryColor" />
+                    app:layout_constraintHorizontal_weight="0.3"
+                    app:tint="@color/primaryColor"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/txtBuyNow"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:background="@color/primaryColor"
+                    android:background="@drawable/bg_rectangle_conner_5"
+                    android:backgroundTint="@color/primaryColor"
                     android:gravity="center"
                     android:onClick="@{(v) -> viewModel.buyNow()}"
-                    android:text="@string/mua_ngay"
+                    android:text="@string/add_to_cart"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:textStyle="bold"
+                    android:layout_margin="8dp"
+                    app:layout_constraintHorizontal_weight="0.7"
+                    app:layout_constraintStart_toEndOf="@id/imgAddToCart"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintDimensionRatio="W,89:26"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>

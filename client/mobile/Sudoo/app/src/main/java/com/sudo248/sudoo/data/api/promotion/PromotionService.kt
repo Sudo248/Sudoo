@@ -11,15 +11,16 @@ import com.sudo248.sudoo.domain.common.Constants
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 @ApiService(baseUrl = BuildConfig.BASE_URL)
 @EnableAuthentication(Constants.Key.TOKEN)
 @LoggingLever(level = Level.BODY)
 interface PromotionService {
 
-    @GET("promotion/")
-    suspend fun getAllPromotion(): Response<BaseResponse<List<PromotionDto>>>
+    @GET("promotions/")
+    suspend fun getAllPromotion(@Query("enable") enable: Boolean = true): Response<BaseResponse<List<PromotionDto>>>
 
-    @GET("promotion/{promotionId}")
+    @GET("promotions/{promotionId}")
     suspend fun getPromotionById(@Path("promotionId") promotionId: String): Response<BaseResponse<PromotionDto>>
 }

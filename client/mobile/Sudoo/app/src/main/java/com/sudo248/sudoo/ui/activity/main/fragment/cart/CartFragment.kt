@@ -57,12 +57,6 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
             adapter.submitList(it.cartProducts)
             setBadgeCart(it.cartProducts.size)
         }
-
-        viewModel.totalPrice.observe(viewLifecycleOwner) {
-            binding.apply {
-                txtTotalPrice.text = getString(R.string.total_price, Utils.formatVnCurrency(it))
-            }
-        }
     }
 
     override fun onStateError() {

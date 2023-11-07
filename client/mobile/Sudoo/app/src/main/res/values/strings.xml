@@ -35,7 +35,6 @@
     <string name="food_that_you_love">Food that you love</string>
     <string name="image_for_user">image for user</string>
     <string name="image_for_title">image for title</string>
-    <string name="mua_ngay">Mua ngay</string>
     <string name="distance">%.2fkm</string>
     <string name="user">User</string>
     <string name="user_title">Cá nhân</string>
@@ -113,4 +112,8 @@
     <string name="take_image">Chụp ảnh</string>
     <string name="pick_image">Chọn ảnh</string>
     <string name="comment_product">Nhận xét sản phẩm</string>
+    <string name="remain">Còn lại: %s</string>
+    <string name="contact">Liên hệ</string>
+    <string name="add_to_cart">Thêm vào giỏ</string>
+    <string name="continue_order">Tiếp tục</string>
 </resources>

@@ -74,12 +74,12 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>(), View
         }
 
         viewModel.promotion.observe(viewLifecycleOwner) {
-            it?.let {
-                binding.txtTotalPromotionPrice.text = "-${Utils.formatVnCurrency(it.value)}"
+            binding.txtTotalPromotionPrice.text = it?.let {
                 if (it.name.isNotEmpty()) {
                     binding.txtVoucher.text = it.name
                 }
-            }
+                "-${Utils.formatVnCurrency(it.value)}"
+            } ?: Utils.formatVnCurrency(0.0)
         }
 
         viewModel.finalPrice.observe(viewLifecycleOwner) {

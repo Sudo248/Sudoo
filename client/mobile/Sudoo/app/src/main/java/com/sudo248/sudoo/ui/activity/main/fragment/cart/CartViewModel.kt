@@ -14,21 +14,21 @@ import com.sudo248.sudoo.domain.entity.cart.AddCartProducts
 import com.sudo248.sudoo.domain.entity.cart.Cart
 import com.sudo248.sudoo.domain.repository.CartRepository
 import com.sudo248.sudoo.domain.repository.OrderRepository
+import com.sudo248.sudoo.ui.util.Utils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CartViewModel @Inject constructor(
-    private val cartRepository: CartRepository,
-    private val orderRepository: OrderRepository
+    private val cartRepository: CartRepository
 ) : BaseViewModel<NavDirections>() {
 
     private val _cart = MutableLiveData<Cart>()
     val cart: LiveData<Cart> = _cart
 
-    private val _totalPrice = MutableLiveData<Double>()
-    val totalPrice: LiveData<Double> = _totalPrice
+    private val _totalPrice = MutableLiveData<String>()
+    val totalPrice: LiveData<String> = _totalPrice
 
     var error: SingleEvent<String?> = SingleEvent(null)
 
@@ -81,11 +81,7 @@ class CartViewModel @Inject constructor(
     }
 
     private fun updateTotalPrice(cart: Cart) {
-        var totalPrice = 0.0f
-        for (cartProduct in cart.cartProducts) {
-            totalPrice += (cartProduct.product?.price ?: 0.0f) * (cartProduct.quantity)
-        }
-        _totalPrice.postValue(totalPrice * 1.0)
+        _totalPrice.postValue(Utils.formatVnCurrency(cart.totalPrice))
     }
 
     private fun getAddCartProducts(): AddCartProducts {

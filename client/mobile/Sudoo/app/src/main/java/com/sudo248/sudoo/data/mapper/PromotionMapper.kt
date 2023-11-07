@@ -5,6 +5,12 @@ import com.sudo248.sudoo.domain.entity.promotion.Promotion
 
 fun PromotionDto.toPromotion(): Promotion {
     return Promotion(
-        promotionId, value, name
+        promotionId,
+        supplierId,
+        value,
+        name,
+        enable,
+        image,
+        totalAmount
     )
 }

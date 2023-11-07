@@ -139,6 +139,10 @@ class ProductDetailViewModel @Inject constructor(
         }
     }
 
+    fun canAddToCart(): Boolean {
+        return product.value != null && product.value!!.saleable && product.value!!.amount > 0
+    }
+
     fun onBack() {
         navigator.back()
     }
@@ -156,9 +160,20 @@ class ProductDetailViewModel @Inject constructor(
     }
 
     fun buyNow() = launch {
-        addProductToCart().join()
-        navigator.navigateOff(ProductDetailFragmentDirections.actionProductDetailFragmentToCartFragment())
+        if (canAddToCart()) {
+            addProductToCart().join()
+        } else {
+            product.value?.supplier?.let {
+                viewController?.openContact(it.contactUrl)
+            }
+
+        }
+//        navigator.navigateOff(ProductDetailFragmentDirections.actionProductDetailFragmentToCartFragment())
     }
+
+//    private fun getAddCartProducts(): AddCartProducts {
+//        return AddCartProducts(listOf(CartProduct()))
+//    }
 
     fun getDeeplinkToProduction(): String {
         return ""
