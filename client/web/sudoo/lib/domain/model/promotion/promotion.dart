@@ -1,9 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:sudoo/data/api/base_request.dart';
 
 part 'promotion.g.dart';
 
 @JsonSerializable()
-class Promotion {
+class Promotion implements BaseRequest {
   String promotionId;
   String? supplierId;
   String name;
@@ -20,5 +21,6 @@ class Promotion {
 
   factory Promotion.fromJson(Map<String, dynamic> json) => _$PromotionFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PromotionToJson(this);
 }

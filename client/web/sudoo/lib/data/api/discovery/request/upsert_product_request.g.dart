@@ -58,7 +58,7 @@ Map<String, dynamic> _$UpsertProductRequestToJson(
       'height': instance.height,
       'width': instance.width,
       'length': instance.length,
-      'images': instance.images,
+      'images': instance.images?.map((e) => e.toJson()).toList(),
       'categoryIds': instance.categoryIds,
-      'extras': instance.extras,
+      'extras': instance.extras?.toJson(),
     };

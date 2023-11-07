@@ -33,7 +33,8 @@ abstract class ProductRepository {
 
   Future<DataState<CategoryProduct, Exception>> upsertCategoryToProduct(CategoryProduct categoryProduct);
 
-  Future<DataState<CategoryProduct, Exception>> deleteCategoryOfProduct(CategoryProduct categoryProduct);
+  Future<DataState<CategoryProduct, Exception>> deleteCategoryOfProduct(
+      CategoryProduct categoryProduct);
 
   Future<DataState<File, Exception>> upsertImage(UpsertFile upsertImage);
 
@@ -43,8 +44,16 @@ abstract class ProductRepository {
 
   Future<DataState<Supplier, Exception>> upsertSupplier(Supplier supplier);
 
+  Future<DataState<ProductPagination<ProductInfo>, Exception>>
+      getSupplierProducts(
+    int offset,
+    int limit,
+  );
+
 // Admin
   Future<DataState<List<Promotion>, Exception>> getPromotions();
+
   Future<DataState<Promotion, Exception>> upsertPromotion(Promotion promotion);
+
   Future<DataState<String, Exception>> deletePromotion(String promotionId);
 }

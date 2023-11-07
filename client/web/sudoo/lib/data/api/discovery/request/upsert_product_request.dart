@@ -6,7 +6,7 @@ import 'package:sudoo/domain/model/discovery/upsert_product.dart';
 
 part 'upsert_product_request.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class UpsertProductRequest extends BaseRequest {
   final String? productId;
   final String? sku;

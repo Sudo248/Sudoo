@@ -5,15 +5,20 @@ import 'package:sudoo/app/base/base_bloc.dart';
 import 'package:sudoo/app/model/category_callback.dart';
 import 'package:sudoo/app/model/product_info_action_callback.dart';
 import 'package:sudoo/app/pages/product/product_list/product_list_data_source.dart';
+import 'package:sudoo/data/config/api_config.dart';
 import 'package:sudoo/domain/model/discovery/category.dart';
 import 'package:sudoo/domain/model/discovery/upsert_product.dart';
 import 'package:sudoo/domain/repository/category_repository.dart';
 import 'package:sudoo/domain/repository/product_repository.dart';
 import 'package:sudoo/extensions/list_ext.dart';
 
+import '../../../../domain/core/data_state.dart';
 import '../../../../domain/model/discovery/category_product.dart';
+import '../../../../domain/model/discovery/product_info.dart';
+import '../../../../domain/model/discovery/product_pagination.dart';
 
-class ProductListBloc extends BaseBloc implements CategoryCallback, ProductInfoActionCallback {
+class ProductListBloc extends BaseBloc
+    implements CategoryCallback, ProductInfoActionCallback {
   final ProductRepository productRepository;
   final CategoryRepository categoryRepository;
   late final ProductListDataSource productDataSource;
@@ -59,7 +64,7 @@ class ProductListBloc extends BaseBloc implements CategoryCallback, ProductInfoA
 
   Future<void> loadMore() async {
     if (_isLastPage) return;
-    final result = await productRepository.getProducts(_offset, _limit);
+    final result = await getProducts(_offset, _limit);
     if (result.isSuccess) {
       final pagination = result.get();
       productDataSource.addProducts(pagination.products);
@@ -68,6 +73,17 @@ class ProductListBloc extends BaseBloc implements CategoryCallback, ProductInfoA
       _isLastPage = pagination.products.length < _limit;
     } else {
       showErrorMessage(result.requireError());
+    }
+  }
+
+  Future<DataState<ProductPagination<ProductInfo>, Exception>> getProducts(
+    int offset,
+    int limit,
+  ) async {
+    if (ApiConfig.useAdminSite) {
+      return productRepository.getSupplierProducts(offset, limit);
+    } else {
+      return productRepository.getProducts(offset, limit);
     }
   }
 

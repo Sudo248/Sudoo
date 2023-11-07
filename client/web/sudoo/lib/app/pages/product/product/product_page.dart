@@ -8,7 +8,6 @@ import 'package:sudoo/app/widgets/blocks/category_block.dart';
 import 'package:sudoo/app/widgets/blocks/extras_block.dart';
 import 'package:sudoo/app/widgets/blocks/image_block.dart';
 import 'package:sudoo/app/widgets/blocks/size_weight_block.dart';
-import 'package:sudoo/app/widgets/loading_view.dart';
 
 import '../../../../resources/R.dart';
 import '../../../../utils/logger.dart';

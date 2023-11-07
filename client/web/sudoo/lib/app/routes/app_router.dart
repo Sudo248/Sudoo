@@ -28,7 +28,7 @@ class AppRouter {
 
   static final ValueNotifier<int> indexDashboard = ValueNotifier(0);
   static final ValueNotifier<int> adminIndexDashboard = ValueNotifier(0);
-  static final isAdmin = ValueNotifier(false);
+  static bool isAdmin = false;
 
   static List<RouteBase> getAppRoutes() {
     return <RouteBase>[
@@ -50,13 +50,16 @@ class AppRouter {
       ShellRoute(
         navigatorKey: _dashboardNavigatorKey,
         routes: getDashBoardRoutes(),
-        pageBuilder: (context, state, child) => NoTransitionPage(
-          key: state.pageKey,
-          name: AppRoutes.dashboard,
-          child: DashboardPage(
-            child: child,
-          ),
-        ),
+        pageBuilder: (context, state, child) {
+          updateIndexDashboard(state.fullPath);
+          return NoTransitionPage(
+            key: state.pageKey,
+            name: AppRoutes.dashboard,
+            child: DashboardPage(
+              child: child,
+            ),
+          );
+        },
         observers: [DashboardGoRouterObserver()],
       )
     ];
@@ -113,15 +116,11 @@ class AppRouter {
       ),
     ];
   }
-}
 
-class DashboardGoRouterObserver extends NavigatorObserver {
-  @override
-  void didPush(Route route, Route? previousRoute) {
-    final routeName = route.settings.name.orEmpty;
+  static updateIndexDashboard(String? routeName) {
     if (routeName.isNullOrEmpty) return;
     int index = 0;
-    if (AppRouter.isAdmin.value) {
+    if (AppRouter.isAdmin) {
       switch (routeName) {
         case AppRoutes.adminCategories:
           index = 1;
@@ -158,19 +157,23 @@ class DashboardGoRouterObserver extends NavigatorObserver {
       }
     }
   }
+}
+
+class DashboardGoRouterObserver extends NavigatorObserver {
 
   @override
   void didPop(Route route, Route? previousRoute) {
     final routeName = route.settings.name;
     if (routeName.isNullOrEmpty) return;
     int index = 0;
-    if (AppRouter.isAdmin.value) {
+    if (AppRouter.isAdmin) {
       switch (routeName) {
         case AppRoutes.adminCategories:
           index = 1;
           break;
         case AppRoutes.createProduct:
           index = 2;
+          break;
         default:
           index = 0;
           break;
@@ -201,12 +204,6 @@ class DashboardGoRouterObserver extends NavigatorObserver {
       }
     }
   }
-
-  @override
-  void didRemove(Route route, Route? previousRoute) {}
-
-  @override
-  void didReplace({Route? newRoute, Route? oldRoute}) {}
 }
 
 class AppGoRouterObserver extends NavigatorObserver {}

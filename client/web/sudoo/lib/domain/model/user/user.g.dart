@@ -26,7 +26,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'bio': instance.bio,
       'avatar': instance.avatar,
       'cover': instance.cover,
-      'address': instance.address,
+      'address': instance.address.toJson(),
       'gender': _$GenderEnumMap[instance.gender]!,
     };
 

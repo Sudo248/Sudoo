@@ -9,6 +9,7 @@ class RangeTimeBlock extends StatelessWidget {
   final ValueNotifier<DateTime?> endDate;
   final TextStyle? style;
   final AsyncValueSetter<DateTime>? onSelectedStartTime, onSelectedEndTime;
+  final DateTime? firstDate, lastDate;
 
   const RangeTimeBlock({
     super.key,
@@ -17,10 +18,13 @@ class RangeTimeBlock extends StatelessWidget {
     this.style,
     this.onSelectedStartTime,
     this.onSelectedEndTime,
+    this.firstDate,
+    this.lastDate,
   });
 
   @override
   Widget build(BuildContext context) {
+    final now = DateTime.now();
     return Row(
       children: [
         Text(
@@ -35,6 +39,8 @@ class RangeTimeBlock extends StatelessWidget {
           builder: (context, value, child) {
             return DateTimeSelector(
               value: value,
+              firstDate: firstDate ?? now,
+              lastDate: lastDate ?? DateTime(now.year + 1),
               onSelectedDate: onSelectedStartTime,
             );
           },
@@ -62,6 +68,8 @@ class RangeTimeBlock extends StatelessWidget {
           builder: (context, value, child) {
             return DateTimeSelector(
               value: value,
+              firstDate: firstDate ?? now,
+              lastDate: lastDate ?? DateTime(now.year + 1),
               onSelectedDate: onSelectedEndTime,
             );
           },

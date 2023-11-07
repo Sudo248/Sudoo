@@ -57,8 +57,8 @@ Map<String, dynamic> _$ProductDtoToJson(ProductDto instance) =>
       'height': instance.height,
       'width': instance.width,
       'length': instance.length,
-      'images': instance.images,
-      'supplier': instance.supplier,
-      'categories': instance.categories,
-      'extras': instance.extras,
+      'images': instance.images.map((e) => e.toJson()).toList(),
+      'supplier': instance.supplier.toJson(),
+      'categories': instance.categories.map((e) => e.toJson()).toList(),
+      'extras': instance.extras.toJson(),
     };

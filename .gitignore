@@ -51,3 +51,49 @@ build/
 ### VS Code ###
 .vscode/
 /server/.DS_Store
+
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+/client/web/sudoo/.DS_Store
+/client/web/sudoo/.atom/
+/client/web/sudoo/.buildlog/
+/client/web/sudoo/.history
+/client/web/sudoo/.svn/
+/client/web/sudoo/migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+/client/web/sudoo/.idea/
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+/client/web/sudoo/.dart_tool/
+/client/web/sudoo/.flutter-plugins
+/client/web/sudoo/.flutter-plugins-dependencies
+/client/web/sudoo/.packages
+/client/web/sudoo/.pub-cache/
+/client/web/sudoo/.pub/
+/client/web/sudoo/build/
+
+# Symbolication related
+/client/web/sudoo/app.*.symbols
+
+# Obfuscation related
+/client/web/sudoo/app.*.map.json
+
+# Android Studio will place build artifacts here
+/client/web/sudoo/android/app/debug
+/client/web/sudoo/android/app/profile
+/client/web/sudoo/android/app/release
+/client/web/sudoo/pubspec.lock

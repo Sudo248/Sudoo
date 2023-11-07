@@ -7,7 +7,7 @@ import 'package:sudoo/domain/model/discovery/product.dart';
 
 part 'product_dto.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class ProductDto {
   final String productId;
   final String sku;

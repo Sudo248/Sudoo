@@ -21,14 +21,15 @@ class CategoryPage extends BasePage<CategoryBloc> {
       valueListenable: bloc.categories,
       builder: (context, value, child) => GridView.builder(
         itemCount: value.length + 1,
+        padding: const EdgeInsets.all(20),
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: 200,
-          mainAxisSpacing: 10,
-          crossAxisSpacing: 10,
-          childAspectRatio: 4 / 3,
+          mainAxisSpacing: 50,
+          crossAxisSpacing: 50,
+          childAspectRatio: 3 / 4,
         ),
         itemBuilder: (context, index) {
-          if (index < value.length - 1) {
+          if (index < value.length) {
             return CategoryItem(
               category: value[index],
               onItemClick: (category) => _showEditCategoryDialog(

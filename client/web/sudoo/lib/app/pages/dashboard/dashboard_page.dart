@@ -11,15 +11,27 @@ import 'package:sudoo/resources/R.dart';
 // ignore: must_be_immutable
 class DashboardPage extends BasePage<DashboardBloc> {
   final Widget child;
-  
+  final MenuStyle menuStyle = MenuStyle(
+    padding: MaterialStateProperty.all<EdgeInsetsGeometry?>(
+      const EdgeInsets.only(top: 15, bottom: 20),
+    ),
+    backgroundColor:
+        MaterialStateProperty.all<Color?>(R.color.backgroundMenuColor),
+    shape: MaterialStateProperty.all<OutlinedBorder>(
+      RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5.0),
+      ),
+    ),
+  );
+
   @override
   bool get wantKeepAlive => true;
-  
-  DashboardPage({Key? key, required this.child}) : super(key: key ?? const ValueKey("DashboardPageKey"));
 
+  DashboardPage({Key? key, required this.child})
+      : super(key: key ?? const ValueKey("DashboardPageKey"));
 
   void go(BuildContext context, int index) {
-    if (AppRouter.isAdmin.value) {
+    if (AppRouter.isAdmin) {
       if (index == AppRouter.adminIndexDashboard.value) return;
       AppRouter.adminIndexDashboard.value = index;
       switch (index) {
@@ -113,7 +125,10 @@ class DashboardPage extends BasePage<DashboardBloc> {
                       child: CircularProgressIndicator(),
                     )
                     : MenuAnchor(
-                        builder: (context, controller, child) => GestureDetector(
+                        style: menuStyle,
+                        alignmentOffset: const Offset(-10, 5),
+                        builder: (context, controller, child) =>
+                            GestureDetector(
                           onTap: () {
                             if (controller.isOpen) {
                               controller.close();
@@ -125,14 +140,29 @@ class DashboardPage extends BasePage<DashboardBloc> {
                         ),
                         menuChildren: <Widget>[
                           MenuItemButton(
+                            style: ButtonStyle(
+                                padding: MaterialStateProperty.all<EdgeInsetsGeometry?>(
+                                  const EdgeInsets.only(right: 100, left: 15),
+                                )
+                            ),
                             leadingIcon: const Icon(Icons.settings),
-                            child: const Text("Settings"),
+                            child: const Text(
+                              "Settings",
+                              style: TextStyle(fontSize: 16),
+                            ),
                             onPressed: () => context.go(AppRoutes.user),
                           ),
                           MenuItemButton(
+                            style: ButtonStyle(
+                                padding: MaterialStateProperty.all<EdgeInsetsGeometry?>(
+                                  const EdgeInsets.only(right: 100, left: 15),
+                                )
+                            ),
                             leadingIcon: const Icon(Icons.logout),
-                            child: const Text("Logout"),
-                            onPressed: () => bloc.logout().then((value) => context.pushReplacement(AppRoutes.auth)),
+                            child: const Text("Logout",
+                                style: TextStyle(fontSize: 16)),
+                            onPressed: () => bloc.logout().then((value) =>
+                                context.pushReplacement(AppRoutes.auth)),
                           )
                         ],
                         child: OnlineImage(

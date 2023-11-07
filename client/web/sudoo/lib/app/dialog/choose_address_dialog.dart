@@ -58,11 +58,15 @@ class ChooseAddressDialog extends StatelessWidget {
                   valueListenable: suggestion,
                   builder: (context, value, child) {
                     if (value == null) {
-                      return const CircularProgressIndicator();
+                      return const Center(
+                        child: SizedBox.square(
+                          dimension: 50,
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
                     }
                     if (value.isEmpty) {
-                      return const Padding(
-                        padding: EdgeInsets.all(15),
+                      return const Center(
                         child: Text(
                           "Empty list",
                           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -70,6 +74,7 @@ class ChooseAddressDialog extends StatelessWidget {
                       );
                     }
                     return ListView.builder(
+                      itemCount: value.length,
                       itemBuilder: (context, index) => GestureDetector(
                         onTap: () {
                           callback.onChooseAddress(value[index]);

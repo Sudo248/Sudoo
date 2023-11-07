@@ -1,6 +1,8 @@
 import 'package:sudoo/data/api/discovery/request/upsert_file_request.dart';
 import 'package:sudoo/data/api/discovery/request/upsert_product_request.dart';
 import 'package:sudoo/data/dto/discovery/category_dto.dart';
+import 'package:sudoo/domain/model/discovery/order_by.dart';
+import 'package:sudoo/domain/model/discovery/sort_by.dart';
 import 'package:sudoo/domain/model/discovery/supplier.dart';
 import 'package:sudoo/domain/model/promotion/promotion.dart';
 
@@ -12,7 +14,7 @@ class ProductService {
   static const categories = "$discovery/categories";
   static const images = "$discovery/images";
   static const suppliers = "$discovery/suppliers";
-  static const promotions = "$discovery/promotions";
+  static const promotions = "/promotions";
   static const offsetKey = "offset";
   static const limitKey = "limit";
   static const sortByKey = "sortBy";
@@ -51,7 +53,10 @@ class ProductService {
   Future getCategoriesByProductId(String productId) =>
       api.get("$products/$productId/categories");
 
-  Future getCategories({bool includeCountProduct = false}) => api.get(categories, queryParameters: includeCountProduct ? {selectKey: "countProduct"} : null);
+  Future getCategories({bool includeCountProduct = false}) =>
+      api.get(categories,
+          queryParameters:
+              includeCountProduct ? {selectKey: "countProduct"} : null);
 
   Future upsertCategoryToProduct(String productId, String categoryId) =>
       api.post("$products/$productId/categories/$categoryId");
@@ -59,24 +64,44 @@ class ProductService {
   Future deleteCategoryToProduct(String productId, String categoryId) =>
       api.delete("$products/$productId/categories/$categoryId");
 
-  Future upsertImage(UpsertFileRequest request) => api.post(images, request: request);
+  Future upsertImage(UpsertFileRequest request) =>
+      api.post(images, request: request);
 
   Future deleteImage(String imageId) => api.delete("$images/$imageId");
 
-  Future upsertSupplier(Supplier supplier) => api.post(suppliers, body: supplier);
+  Future upsertSupplier(Supplier supplier) =>
+      api.post(suppliers, request: supplier);
 
   Future getSupplier() => api.get("$suppliers/self");
 
-  // ADMIN
-  Future upsertCategory(CategoryDto categoryDto) => api.post(categories, body: categoryDto);
+  Future getSupplierProducts(
+    int offset,
+    int limit, {
+    SortBy sortBy = SortBy.createdAt,
+    OrderBy orderBy = OrderBy.desc,
+  }) =>
+      api.get(
+        "$suppliers/self/products",
+        queryParameters: {
+          offsetKey: offset,
+          limitKey: limit,
+          sortByKey: sortBy.value,
+          orderByKey: orderBy.value,
+        },
+      );
 
-  Future deleteCategory(String categoryId) => api.delete("$categories/$categoryId");
+  // ADMIN
+  Future upsertCategory(CategoryDto categoryDto) =>
+      api.post(categories, request: categoryDto);
+
+  Future deleteCategory(String categoryId) =>
+      api.delete("$categories/$categoryId");
 
   Future getPromotions() => api.get(promotions);
 
-  Future upsertPromotion(Promotion promotion) => api.post(promotions, body: promotion);
+  Future upsertPromotion(Promotion promotion) =>
+      api.post(promotions, request: promotion);
 
-  Future deletePromotion(String promotionId) => api.delete("$promotions/$promotionId");
-
-
+  Future deletePromotion(String promotionId) =>
+      api.delete("$promotions/$promotionId");
 }

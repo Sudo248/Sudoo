@@ -10,26 +10,29 @@ class AppNavigationRail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppRouter.isAdmin.value
+    return AppRouter.isAdmin
         ? ValueListenableBuilder(
             valueListenable: AppRouter.adminIndexDashboard,
             builder: (context, selectedIndex, child) => _buildNavigationRail(
-                  destinations: _getAdminDashboardDestination(),
-                  selectedIndex: selectedIndex,
-                ))
+              destinations: _getAdminDashboardDestination(),
+              selectedIndex: selectedIndex,
+              onDestinationChanged: onDestinationChanged,
+            ),
+          )
         : ValueListenableBuilder(
             valueListenable: AppRouter.indexDashboard,
             builder: (context, selectedIndex, child) => _buildNavigationRail(
               destinations: _getDashboardDestination(),
               selectedIndex: selectedIndex,
+              onDestinationChanged: onDestinationChanged,
             ),
           );
   }
 
-  Widget _buildNavigationRail({
-    required List<NavigationRailDestination> destinations,
-    required int selectedIndex,
-  }) {
+  Widget _buildNavigationRail(
+      {required List<NavigationRailDestination> destinations,
+      required int selectedIndex,
+      required ValueChanged<int> onDestinationChanged}) {
     return NavigationRail(
       destinations: destinations,
       selectedIndex: selectedIndex,
@@ -87,7 +90,7 @@ class AppNavigationRail extends StatelessWidget {
       ),
       NavigationRailDestination(
         icon: const Icon(Icons.discount_outlined),
-        label: Text(R.string.categories),
+        label: Text(R.string.promotions),
       ),
     ];
   }

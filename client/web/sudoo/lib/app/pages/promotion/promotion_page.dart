@@ -20,15 +20,16 @@ class PromotionPage extends BasePage<PromotionBloc> {
     return ValueListenableBuilder(
       valueListenable: bloc.promotions,
       builder: (context, value, child) => GridView.builder(
+        padding: const EdgeInsets.all(20),
         itemCount: value.length + 1,
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: 230,
-          mainAxisSpacing: 10,
-          crossAxisSpacing: 10,
-          childAspectRatio: 4 / 3,
+          mainAxisSpacing: 50,
+          crossAxisSpacing: 50,
+          childAspectRatio: 3 / 4,
         ),
         itemBuilder: (context, index) {
-          if (index < value.length - 1) {
+          if (index < value.length) {
             return PromotionItem(
               promotion: value[index],
               onItemClick: (promotion) => _showEditPromotionDialog(

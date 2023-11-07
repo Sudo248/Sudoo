@@ -14,7 +14,7 @@ class UserService {
 
   Future getUser() => api.get(users);
   
-  Future updateUser(User user) => api.put(users, body: user);
+  Future updateUser(User user) => api.put(users, request: user);
 
   Future getSuggestionProvince() => api.get(suggestionProvince);
 

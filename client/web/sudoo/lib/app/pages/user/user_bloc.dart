@@ -132,7 +132,11 @@ class UserBloc extends BaseBloc implements ChooseAddressCallback {
   Future<List<AddressSuggestion>> getSuggestionProvince() async {
     final result = await userRepository.getSuggestionProvince();
     if (result.isSuccess) {
-      return Future.value(result.get());
+      final address = result.get();
+      address.sort(
+            (a, b) => a.addressName.compareTo(b.addressName),
+      );
+      return Future.value(address);
     } else {
       showErrorMessage(result.getError());
       return Future.error(result.getError());
@@ -150,7 +154,11 @@ class UserBloc extends BaseBloc implements ChooseAddressCallback {
     }
     final result = await userRepository.getSuggestionDistrict(user!.address.provinceID);
     if (result.isSuccess) {
-      return Future.value(result.get());
+      final address = result.get();
+      address.sort(
+            (a, b) => a.addressName.compareTo(b.addressName),
+      );
+      return Future.value(address);
     } else {
       showErrorMessage(result.getError());
       return Future.error(result.getError());
@@ -168,7 +176,11 @@ class UserBloc extends BaseBloc implements ChooseAddressCallback {
     }
     final result = await userRepository.getSuggestionWard(user!.address.districtID);
     if (result.isSuccess) {
-      return Future.value(result.get());
+      final address = result.get();
+      address.sort(
+            (a, b) => a.addressName.compareTo(b.addressName),
+      );
+      return Future.value(address);
     } else {
       showErrorMessage(result.getError());
       return Future.error(result.getError());

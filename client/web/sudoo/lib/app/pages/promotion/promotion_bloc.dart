@@ -49,7 +49,7 @@ class PromotionBloc extends BaseBloc {
     final result = await productRepository.upsertPromotion(promotion);
     if (result.isSuccess) {
       final newCategory = result.get();
-      final value = promotions.value;
+      final value = promotions.value.toList(growable: true);
       if (promotion.promotionId.isEmpty) {
         value.add(newCategory);
       } else {
@@ -62,7 +62,7 @@ class PromotionBloc extends BaseBloc {
     } else {
       loadingController.hideLoading();
       showErrorMessage(result.requireError());
-      return Future.error(result.requireError());
+      return Future.value(false);
     }
   }
 

@@ -36,6 +36,8 @@ class SupplierPage extends BasePage<SupplierBloc> {
           children: [
             AvatarImage(
               avatar: bloc.avatar,
+              height: 150,
+              width: 150,
             ),
             const SizedBox(
               height: 20,
@@ -50,6 +52,12 @@ class SupplierPage extends BasePage<SupplierBloc> {
                     R.string.name,
                     bloc.nameController,
                     maxLines: 1,
+                  ),
+                  ValueListenableBuilder(
+                    valueListenable: bloc.showInputPhoneNumber,
+                    builder: (context, value, child) =>
+                        value ? child! : const SizedBox.shrink(),
+                    child: _buildPhoneNumberField(),
                   ),
                   ..._buildInputField(
                     R.string.brand,
@@ -122,6 +130,19 @@ class SupplierPage extends BasePage<SupplierBloc> {
     );
   }
 
+  Widget _buildPhoneNumberField() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: _buildInputField(
+        R.string.phoneNumber,
+        bloc.phoneNumberController,
+        maxLines: 1,
+        maxLength: 14,
+      ),
+    );
+  }
+
   List<Widget> _buildInputField(
     String label,
     TextEditingController controller, {
@@ -155,7 +176,7 @@ class SupplierPage extends BasePage<SupplierBloc> {
         ),
       ),
       const SizedBox(
-        height: 15,
+        height: 30,
       )
     ];
   }
@@ -164,9 +185,10 @@ class SupplierPage extends BasePage<SupplierBloc> {
     showDialog(
       context: context,
       builder: (context) => ChooseAddressDialog(
-          suggestion: bloc.suggestion,
-          step: bloc.stepChooseAddress,
-          callback: bloc),
+        suggestion: bloc.suggestion,
+        step: bloc.stepChooseAddress,
+        callback: bloc,
+      ),
     );
   }
 }

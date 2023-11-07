@@ -1,12 +1,13 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:sudoo/data/api/base_request.dart';
 import 'package:sudoo/domain/model/user/address.dart';
 
 import 'gender.dart';
 
 part 'user.g.dart';
 
-@JsonSerializable()
-class User {
+@JsonSerializable(explicitToJson: true)
+class User implements BaseRequest{
   final String userId;
   String fullName;
   String emailOrPhoneNumber;
@@ -26,10 +27,11 @@ class User {
     this.avatar,
     this.cover,
     this.address,
-      this.gender,
+    this.gender,
   );
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$UserToJson(this);
 }

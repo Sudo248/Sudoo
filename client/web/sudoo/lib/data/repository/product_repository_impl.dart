@@ -269,4 +269,26 @@ class ProductRepositoryImpl with HandleResponse implements ProductRepository {
       return DataState.error(response.getError());
     }
   }
+
+  @override
+  Future<DataState<ProductPagination<ProductInfo>, Exception>> getSupplierProducts(int offset, int limit) async {
+    final response = await handleResponse(
+          () => productService.getSupplierProducts(offset, limit),
+      fromJson: (json) => ProductPaginationDto.fromJson(
+        json as Map<String, dynamic>,
+            (json) => ProductInfoDto.fromJson(json as Map<String, dynamic>),
+      ),
+    );
+
+    if (response.isSuccess) {
+      final pagination = response.get() as ProductPaginationDto;
+      return DataState.success(
+        pagination.toProductPagination(
+          converter: (e) => (e as ProductInfoDto).toProductInfo(),
+        ),
+      );
+    } else {
+      return DataState.error(response.getError());
+    }
+  }
 }

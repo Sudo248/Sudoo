@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sudoo/app/base/base_page.dart';
 import 'package:sudoo/app/pages/user/user_bloc.dart';
 import 'package:sudoo/app/widgets/date_time_selector.dart';
@@ -22,6 +23,12 @@ class UserPage extends BasePage<UserBloc> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: GestureDetector(
+          onTap: () => context.pop(),
+          child: const Icon(Icons.arrow_back),
+        ),
+      ),
       body: SizedBox(
         width: double.infinity,
         child: SingleChildScrollView(
@@ -33,6 +40,8 @@ class UserPage extends BasePage<UserBloc> {
             children: [
               AvatarImage(
                 avatar: bloc.avatar,
+                height: 150,
+                width: 150,
               ),
               const SizedBox(
                 height: 20,
@@ -149,7 +158,9 @@ class UserPage extends BasePage<UserBloc> {
   List<Widget> _buildGender(BuildContext context) {
     return [
       DropdownMenu<Gender>(
+        width: 500,
         controller: bloc.genderController,
+        textStyle: style,
         dropdownMenuEntries: Gender.values
             .map<DropdownMenuEntry<Gender>>(
               (e) => DropdownMenuEntry<Gender>(
@@ -170,9 +181,12 @@ class UserPage extends BasePage<UserBloc> {
       ValueListenableBuilder(
         valueListenable: bloc.dob,
         builder: (context, value, child) => DateTimeSelector(
+          firstDate: DateTime(1870),
+          lastDate: DateTime.now(),
           value: value,
           hint: R.string.dob,
           onSelectedDate: (dob) => bloc.dob.value = dob,
+            isExpandedIcon: true,
         ),
       ),
       const SizedBox(

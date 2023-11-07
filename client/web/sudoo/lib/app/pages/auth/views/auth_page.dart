@@ -18,8 +18,8 @@ class AuthPage extends BasePage<AuthBloc> {
 
   @override
   Widget build(BuildContext context) {
-    bloc.setOnNavigationToDashBoard(() {
-      context.go(AppRoutes.home);
+    bloc.setOnNavigationToDashBoard((path) {
+      context.go(path);
     });
     final size = MediaQuery.sizeOf(context);
     return Scaffold(

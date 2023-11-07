@@ -5,6 +5,7 @@ import 'package:sudoo/app/base/base_bloc.dart';
 import 'package:sudoo/app/model/category_callback.dart';
 import 'package:sudoo/app/model/image_callback.dart';
 import 'package:sudoo/app/pages/product/product/viewer.dart';
+import 'package:sudoo/app/pages/supplier/supplier_bloc.dart';
 import 'package:sudoo/domain/model/discovery/category.dart';
 import 'package:sudoo/domain/model/discovery/category_product.dart';
 import 'package:sudoo/domain/model/discovery/extras.dart';
@@ -273,6 +274,11 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
 
     if (amountController.text.isNullOrEmpty) {
       showErrorMessage(Exception("Amount must be not empty"));
+      return false;
+    }
+
+    if (!SupplierBloc.isRegistered) {
+      showErrorMessage(Exception("Require register supplier"));
       return false;
     }
 

@@ -49,6 +49,8 @@ class AppString extends R {
 
   String get categories => "Categories";
 
+  String get promotions => "Promotions";
+
   String get listedPrice => "Listed price";
 
   String get price => "Price";
@@ -80,6 +82,8 @@ class AppString extends R {
   String get name => "Name";
 
   String get brand => "Brand";
+
+  String get phoneNumber => "Phone number";
 
   String get contactUrl => "Contact URL";
 
@@ -122,6 +126,8 @@ class AppColor extends R {
   Color get backgroundNavColor => const Color(0xFF002B31);
 
   Color get backgroundAvatarColor => const Color(0x80595959);
+
+  Color get backgroundMenuColor => const Color(0xFFE4EAF3);
 }
 
 class AppFont extends R {

@@ -13,6 +13,7 @@ import '../../../domain/repository/user_repository.dart';
 import '../user/choose_address_callback.dart';
 
 class SupplierBloc extends BaseBloc implements ChooseAddressCallback {
+  static bool isRegistered = true;
   final ProductRepository productRepository;
   final StorageRepository storageRepository;
   final UserRepository userRepository;
@@ -21,6 +22,8 @@ class SupplierBloc extends BaseBloc implements ChooseAddressCallback {
       ValueNotifier(null);
   final ValueNotifier<ChooseAddressStep> stepChooseAddress =
       ValueNotifier(ChooseAddressStep.province);
+
+  final ValueNotifier<bool> showInputPhoneNumber = ValueNotifier(true);
 
   List<AddressSuggestion>? suggestionProvince,
       suggestionDistrict,
@@ -34,9 +37,14 @@ class SupplierBloc extends BaseBloc implements ChooseAddressCallback {
       provinceController = TextEditingController(),
       districtController = TextEditingController(),
       wardCodeController = TextEditingController(),
-      addressController = TextEditingController();
+      addressController = TextEditingController(),
+      phoneNumberController = TextEditingController();
 
-  SupplierBloc(this.productRepository, this.storageRepository, this.userRepository);
+  SupplierBloc(
+    this.productRepository,
+    this.storageRepository,
+    this.userRepository,
+  );
 
   @override
   void onDispose() {
@@ -47,6 +55,10 @@ class SupplierBloc extends BaseBloc implements ChooseAddressCallback {
     districtController.dispose();
     wardCodeController.dispose();
     addressController.dispose();
+    phoneNumberController.dispose();
+    suggestion.dispose();
+    stepChooseAddress.dispose();
+    showInputPhoneNumber.dispose();
   }
 
   @override
@@ -58,6 +70,7 @@ class SupplierBloc extends BaseBloc implements ChooseAddressCallback {
     loadingController.showLoading();
     final result = await productRepository.getSupplier();
     if (result.isSuccess) {
+      showInputPhoneNumber.value = false;
       setSupplier(result.get());
     } else {
       showErrorMessage(result.getError());
@@ -72,6 +85,7 @@ class SupplierBloc extends BaseBloc implements ChooseAddressCallback {
     }
     final result = await productRepository.upsertSupplier(supplier);
     if (result.isSuccess) {
+      isRegistered = true;
       setSupplier(result.get());
     } else {
       showErrorMessage(result.getError());
@@ -80,7 +94,41 @@ class SupplierBloc extends BaseBloc implements ChooseAddressCallback {
   }
 
   Future<void> onSave() async {
-    upsertSupplier(_getSupplier());
+    if (_validateSupplier()) {
+      upsertSupplier(_getSupplier());
+    }
+  }
+
+  bool _validateSupplier() {
+
+    if (supplier == null) {
+      showErrorMessage(Exception("Empty supplier"));
+      return false;
+    }
+
+    if (supplier!.supplierId.isNullOrEmpty && phoneNumberController.text.isNullOrEmpty ) {
+      showErrorMessage(Exception("Phone number's supplier is required"));
+      return false;
+    }
+
+    if (nameController.text.isNullOrEmpty) {
+      showErrorMessage(Exception("Name's supplier is required"));
+      return false;
+    }
+
+    if (brandController.text.isNullOrEmpty) {
+      showErrorMessage(Exception("Brand's supplier is required"));
+      return false;
+    }
+
+    if (provinceController.text.isNullOrEmpty ||
+        districtController.text.isNullOrEmpty ||
+        wardCodeController.text.isNullOrEmpty ||
+        addressController.text.isNullOrEmpty) {
+      showErrorMessage(Exception("Address's supplier is required"));
+      return false;
+    }
+    return true;
   }
 
   void setSupplier(Supplier supplier) {
@@ -99,6 +147,7 @@ class SupplierBloc extends BaseBloc implements ChooseAddressCallback {
     supplier ??= Supplier.empty();
     supplier!.name = nameController.text;
     supplier!.brand = brandController.text;
+    supplier!.phoneNumber = phoneNumberController.text;
     supplier!.address.address = addressController.text;
     return supplier!;
   }
@@ -155,7 +204,11 @@ class SupplierBloc extends BaseBloc implements ChooseAddressCallback {
   Future<List<AddressSuggestion>> getSuggestionProvince() async {
     final result = await userRepository.getSuggestionProvince();
     if (result.isSuccess) {
-      return Future.value(result.get());
+      final address = result.get();
+      address.sort(
+        (a, b) => a.addressName.compareTo(b.addressName),
+      );
+      return Future.value(address);
     } else {
       showErrorMessage(result.getError());
       return Future.error(result.getError());
@@ -173,7 +226,11 @@ class SupplierBloc extends BaseBloc implements ChooseAddressCallback {
     }
     final result = await userRepository.getSuggestionDistrict(supplier!.address.provinceID);
     if (result.isSuccess) {
-      return Future.value(result.get());
+      final address = result.get();
+      address.sort(
+        (a, b) => a.addressName.compareTo(b.addressName),
+      );
+      return Future.value(address);
     } else {
       showErrorMessage(result.getError());
       return Future.error(result.getError());
@@ -191,7 +248,11 @@ class SupplierBloc extends BaseBloc implements ChooseAddressCallback {
     }
     final result = await userRepository.getSuggestionWard(supplier!.address.districtID);
     if (result.isSuccess) {
-      return Future.value(result.get());
+      final address = result.get();
+      address.sort(
+        (a, b) => a.addressName.compareTo(b.addressName),
+      );
+      return Future.value(address);
     } else {
       showErrorMessage(result.getError());
       return Future.error(result.getError());
@@ -204,7 +265,6 @@ class SupplierBloc extends BaseBloc implements ChooseAddressCallback {
     supplier!.address.districtID = districtId;
     supplier!.address.districtName = districtName;
     districtController.text = districtName;
-
   }
 
   @override

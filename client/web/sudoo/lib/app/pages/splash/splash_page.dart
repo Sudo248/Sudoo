@@ -11,8 +11,8 @@ class SplashPage extends BasePage<SplashBloc> {
 
   @override
   Widget build(BuildContext context) {
-    bloc.setOnNavigationToDashBoard(() {
-      context.go(AppRoutes.home);
+    bloc.setOnNavigationToDashBoard((path) {
+      context.go(path);
     });
     bloc.setOnNavigationToAuth(() {
       context.go(AppRoutes.auth);

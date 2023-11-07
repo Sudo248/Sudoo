@@ -45,9 +45,27 @@ class ScaffoldMessengerService {
   }) {
     return showAppSnackBar(
       content: Text(
-        "Error: $message",
+        message,
         style: const TextStyle(
+          fontSize: 18,
           color: Colors.red,
+        ),
+      ),
+    );
+  }
+
+  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showInfoMessage(
+      String message, {
+        EdgeInsetsGeometry? padding,
+        EdgeInsetsGeometry? margin,
+        Color backgroundColor = Colors.white,
+      }) {
+    return showAppSnackBar(
+      content: Text(
+        message,
+        style: const TextStyle(
+          fontSize: 18,
+          color: Colors.black,
         ),
       ),
     );

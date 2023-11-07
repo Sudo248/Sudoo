@@ -9,21 +9,26 @@ class DateTimeSelector extends StatelessWidget {
   final String? hint;
   final TextStyle? style;
   final ValueSetter<DateTime>? onSelectedDate;
+  final bool isExpandedIcon;
+  final DateTime firstDate, lastDate;
 
   const DateTimeSelector({
     super.key,
+    required this.firstDate,
+    required this.lastDate,
     this.value,
     this.onSelectedDate,
     this.hint = "Choose",
     this.isEditable = true,
     this.style,
+    this.isExpandedIcon = false,
   });
 
   @override
   Widget build(BuildContext context) {
     final TextStyle style = this.style ?? R.style.h4_1.copyWith(color: Colors.black);
     if (!isEditable) {
-      return Container(
+      return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5.0),
         child: Text(
           "${value == null ? hint : value!.formatDate()}",
@@ -47,9 +52,11 @@ class DateTimeSelector extends StatelessWidget {
                 color: value == null ? Colors.grey : Colors.black,
               ),
             ),
-            const SizedBox(
-              width: 10,
-            ),
+            isExpandedIcon
+                ? const Expanded(child: SizedBox.shrink())
+                : const SizedBox(
+                    width: 10,
+                  ),
             _buildDatePicker(context),
           ],
         ),
@@ -64,8 +71,8 @@ class DateTimeSelector extends StatelessWidget {
         final selectedDate = await showDatePicker(
           context: context,
           initialDate: value ?? now,
-          firstDate: DateTime(now.year),
-          lastDate: DateTime(now.year + 1),
+          firstDate: firstDate,
+          lastDate: lastDate,
         );
         if (selectedDate != null) {
           onSelectedDate?.call(selectedDate);

@@ -12,11 +12,15 @@ mixin BaseMixin {
   void showErrorMessage(Exception exception) {
     var message = "";
     if (exception is BaseException) {
-      message = exception.message.toString();
+      message = "Error: ${exception.message}";
     } else {
       message = exception.toString();
     }
     scaffoldMessenger.showErrorMessage(message);
+  }
+
+  void showInfoMessage(String message) {
+    scaffoldMessenger.showInfoMessage(message);
   }
 
   void hideMessage() {

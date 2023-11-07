@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:sudoo/app/base/base_bloc.dart';
 import 'package:sudoo/app/pages/auth/auth_form.dart';
+import 'package:sudoo/app/pages/supplier/supplier_bloc.dart';
 import 'package:sudoo/app/routes/app_router.dart';
+import 'package:sudoo/app/routes/app_routes.dart';
 import 'package:sudoo/domain/model/auth/role.dart';
 import 'package:sudoo/domain/model/auth/verify_otp.dart';
 import 'package:sudoo/domain/repository/auth_repository.dart';
+import 'package:sudoo/domain/repository/product_repository.dart';
 import 'package:sudoo/resources/R.dart';
 import 'package:sudoo/utils/validator.dart';
 
@@ -12,6 +15,7 @@ import '../../../domain/model/auth/account.dart';
 
 class AuthBloc extends BaseBloc {
   final AuthRepository authRepository;
+  final ProductRepository productRepository;
   final formKey = GlobalKey<FormState>();
   final ValueNotifier<AuthForm> form = ValueNotifier(AuthForm.signInForm);
   final TextEditingController emailController = TextEditingController(),
@@ -19,11 +23,13 @@ class AuthBloc extends BaseBloc {
       confirmPasswordController = TextEditingController(),
       otpController = TextEditingController();
 
-  late VoidCallback _navigateToDashboard;
+  final bool enableOtp = false;
 
-  AuthBloc(this.authRepository);
+  late Function(String) _navigateToDashboard;
 
-  void setOnNavigationToDashBoard(VoidCallback navigation) {
+  AuthBloc(this.authRepository, this.productRepository);
+
+  void setOnNavigationToDashBoard(Function(String) navigation) {
     _navigateToDashboard = navigation;
   }
 
@@ -31,7 +37,8 @@ class AuthBloc extends BaseBloc {
   void onInit() {}
 
   String? emailValidator(String? email) {
-    if (Validator.validateEmail(email)) {
+    if (Validator.isAdmin(emailController.text) ||
+        Validator.validateEmail(email)) {
       return null;
     } else {
       return R.string.invalidEmail;
@@ -39,7 +46,8 @@ class AuthBloc extends BaseBloc {
   }
 
   String? passwordValidator(String? password) {
-    if (Validator.validatePassword(password)) {
+    if (Validator.isAdmin(emailController.text) ||
+        Validator.validatePassword(password)) {
       return null;
     } else {
       return R.string.invalidPassword;
@@ -48,11 +56,16 @@ class AuthBloc extends BaseBloc {
 
   void navigateToSignUpForm() {
     formKey.currentState?.reset();
+    emailController.clear();
+    passwordController.clear();
     form.value = AuthForm.signUpForm;
   }
 
   void navigateToSignInForm() {
     formKey.currentState?.reset();
+    emailController.clear();
+    passwordController.clear();
+    confirmPasswordController.clear();
     form.value = AuthForm.signInForm;
   }
 
@@ -66,8 +79,17 @@ class AuthBloc extends BaseBloc {
       final result = await authRepository.signIn(account);
       loadingController.hideLoading();
       if (result.isSuccess) {
-        AppRouter.isAdmin.value = result.get().role == Role.ADMIN;
-        _navigateToDashboard.call();
+        AppRouter.isAdmin = result.get().role == Role.ADMIN;
+        // only check for staff
+        if (!AppRouter.isAdmin) {
+          final resultSupplier = await productRepository.getSupplier();
+          if (!resultSupplier.isSuccess) {
+            SupplierBloc.isRegistered = false;
+            _navigateToDashboard.call(AppRoutes.supplier);
+            return;
+          }
+        }
+        _navigateToDashboard.call(AppRoutes.home);
       } else {
         showErrorMessage(result.requireError());
       }
@@ -84,7 +106,12 @@ class AuthBloc extends BaseBloc {
       final result = await authRepository.signUp(account);
       loadingController.hideLoading();
       if (result.isSuccess) {
-        form.value = AuthForm.otpForm;
+        showInfoMessage("Sign up is successful");
+        if (enableOtp) {
+          form.value = AuthForm.otpForm;
+        } else {
+          navigateToSignInForm();
+        }
       } else {
         showErrorMessage(result.requireError());
       }
@@ -96,8 +123,15 @@ class AuthBloc extends BaseBloc {
     VerifyOtp verifyOtp = VerifyOtp(emailController.text, otpController.text);
     final result = await authRepository.submitOtp(verifyOtp);
     if (result.isSuccess) {
-      AppRouter.isAdmin.value = result.get().role == Role.ADMIN;
-      _navigateToDashboard.call();
+      AppRouter.isAdmin = result.get().role == Role.ADMIN;
+      if (!AppRouter.isAdmin) {
+        final resultSupplier = await productRepository.getSupplier();
+        if (!resultSupplier.isSuccess) {
+          _navigateToDashboard.call(AppRoutes.supplier);
+          return;
+        }
+      }
+      _navigateToDashboard.call(AppRoutes.home);
     } else {
       showErrorMessage(result.requireError());
     }

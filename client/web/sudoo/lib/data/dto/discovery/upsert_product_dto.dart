@@ -5,7 +5,7 @@ import 'package:sudoo/domain/model/discovery/upsert_product.dart';
 
 part 'upsert_product_dto.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class UpsertProductDto {
   final String productId;
   final String sku;

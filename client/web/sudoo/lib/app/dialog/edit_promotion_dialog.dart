@@ -1,6 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sudoo/domain/model/promotion/promotion.dart';
 import 'package:sudoo/extensions/list_ext.dart';
 
@@ -12,13 +13,19 @@ import '../widgets/online_image.dart';
 
 class EditPromotionDialog extends StatelessWidget {
   late final Promotion promotion;
-  final Function(Promotion, File?)? onSubmitPromotion;
-  final ValueNotifier<bool> enable = ValueNotifier(false);
+  final Future<bool> Function(Promotion, File?)? onSubmitPromotion;
+  final ValueNotifier<bool> enable = ValueNotifier(true);
   final ValueNotifier<File?> image = ValueNotifier(null);
+  final TextStyle style = R.style.h5.copyWith(color: Colors.black);
+  final TextEditingController nameController = TextEditingController(),
+      amountController = TextEditingController();
 
-  EditPromotionDialog({super.key, Promotion? promotion, this.onSubmitPromotion}) {
+  EditPromotionDialog(
+      {super.key, Promotion? promotion, this.onSubmitPromotion}) {
     if (promotion != null) {
       this.promotion = promotion;
+      image.value = File.fromUrl(promotion.image);
+      enable.value = promotion.enable ?? false;
     } else {
       this.promotion = Promotion.empty();
     }
@@ -33,120 +40,194 @@ class EditPromotionDialog extends StatelessWidget {
         padding: const EdgeInsets.all(15.0),
         constraints: const BoxConstraints(
           minWidth: 300,
-          minHeight: 650,
+          minHeight: 300 * 1.7,
           maxWidth: 350,
-          maxHeight: 750,
+          maxHeight: 350 * 1.7,
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              isCreate ? "Create promotion" : "Edit promotion",
-              style: R.style.h4_1.copyWith(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            ValueListenableBuilder(
-              valueListenable: image,
-              builder: (context, value, child) {
-                if (isCreate) {
-                  return value == null ? child! : _buildImage(value);
-                } else {
-                  return _buildImage(value!);
-                }
-              },
-              child: Container(
-                width: 300,
-                height: 300,
-                padding: const EdgeInsets.all(10.0),
-                decoration: BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
-                child: const Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.add,
-                      size: 50,
-                      color: Colors.blueGrey,
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Text(
-                      "Upload",
-                      style: TextStyle(
-                        fontSize: 24,
-                        color: Colors.blueGrey,
-                      ),
-                    )
-                  ],
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                isCreate ? "Create promotion" : "Edit promotion",
+                style: R.style.h4_1.copyWith(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             const SizedBox(
               height: 10,
             ),
-            TextFormField(
-              initialValue: promotion.name,
+            Align(
+              alignment: Alignment.center,
+              child: GestureDetector(
+                onTap: pickImage,
+                child: ValueListenableBuilder(
+                  valueListenable: image,
+                  builder: (context, value, child) {
+                    if (isCreate) {
+                      return value == null ? child! : _buildImage(value);
+                    } else {
+                      return _buildImage(value);
+                    }
+                  },
+                  child: Container(
+                    width: 150,
+                    height: 150,
+                    padding: const EdgeInsets.all(10.0),
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    child: const Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.add,
+                          size: 50,
+                          color: Colors.blueGrey,
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Text(
+                          "Upload",
+                          style: TextStyle(
+                            fontSize: 24,
+                            color: Colors.blueGrey,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            ..._buildInputField(
+              "Name",
+              nameController..text = promotion.name,
+              maxLength: 100,
               maxLines: 1,
-              maxLength: 50,
-              style: R.style.h5,
-              decoration: const InputDecoration(hintText: "Name promotion", border: OutlineInputBorder()),
-              onChanged: (value) => promotion.name = value,
             ),
-            const SizedBox(
-              height: 10,
+            ..._buildInputField(
+              "Amount",
+              amountController..text = promotion.totalAmount.toString(),
+              maxLines: 1,
+              maxLength: 5,
+              keyboardType: TextInputType.number,
             ),
             isCreate || promotion.enable != null
-                ? ValueListenableBuilder(
-                    valueListenable: enable,
-                    builder: (context, value, child) => Switch(
-                      value: value,
-                      onChanged: (value) async {
-                        if (value != promotion.enable) {
-                          promotion.enable = value;
-                        }
-                      },
-                      thumbColor: MaterialStateProperty.all(Colors.white),
-                      activeTrackColor: Colors.red,
-                      inactiveTrackColor: Colors.grey,
-                    ),
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Enable: ",
+                        style: R.style.h5.copyWith(color: Colors.black),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      ValueListenableBuilder(
+                        valueListenable: enable,
+                        builder: (context, value, child) => Switch(
+                          value: value,
+                          onChanged: (value) async {
+                            if (value != promotion.enable) {
+                              promotion.enable = value;
+                            }
+                          },
+                          thumbColor: MaterialStateProperty.all(Colors.white),
+                          activeTrackColor: Colors.red,
+                          inactiveTrackColor: Colors.grey,
+                        ),
+                      )
+                    ],
                   )
                 : const SizedBox.shrink(),
-            const SizedBox(
-              height: 10,
-            ),
+            const Expanded(child: SizedBox.shrink()),
             ConfirmButton(
               textPositive: isCreate ? "Create" : "Update",
               onPositive: () {
+                promotion.name = nameController.text;
+                promotion.totalAmount = double.parse(amountController.text).toInt();
+                context.pop();
                 onSubmitPromotion?.call(promotion, image.value);
               },
-            )
+              onNegative: () {
+                context.pop();
+              },
+            ),
+            const SizedBox(
+              height: 30,
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildImage(File image) {
+  List<Widget> _buildInputField(
+    String label,
+    TextEditingController? controller, {
+    int? maxLines,
+    int? maxLength,
+    bool readOnly = false,
+    bool expands = false,
+    TextInputType? keyboardType,
+    VoidCallback? onTap,
+  }) {
+    return [
+      Text(
+        label,
+        style: style.copyWith(fontWeight: FontWeight.bold),
+      ),
+      const SizedBox(
+        height: 5,
+      ),
+      TextField(
+        controller: controller,
+        style: style,
+        maxLines: maxLines,
+        maxLength: maxLength,
+        readOnly: readOnly,
+        expands: expands,
+        onTap: onTap,
+        keyboardType: keyboardType,
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          counterText: "",
+        ),
+      ),
+      const SizedBox(
+        height: 15,
+      )
+    ];
+  }
+
+  Widget _buildImage(File? image) {
     return SizedBox.square(
-      dimension: 300,
-      child: image.bytes.isNullOrEmpty
-          ? OnlineImage(
-              image.url,
-              fit: BoxFit.cover,
+      dimension: 150,
+      child: image == null
+          ? const Padding(
+              padding: EdgeInsets.all(100),
+              child: CircularProgressIndicator(),
             )
-          : Image.memory(
-              Uint8List.fromList(image.bytes!),
-              fit: BoxFit.cover,
-            ),
+          : image.bytes.isNullOrEmpty
+              ? OnlineImage(
+                  image.url,
+                  fit: BoxFit.cover,
+                )
+              : Image.memory(
+                  Uint8List.fromList(image.bytes!),
+                  fit: BoxFit.cover,
+                ),
     );
   }
 

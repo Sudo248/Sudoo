@@ -9,6 +9,7 @@ part of 'supplier.dart';
 Supplier _$SupplierFromJson(Map<String, dynamic> json) => Supplier(
       json['supplierId'] as String,
       json['ghnShopId'] as int,
+      json['phoneNumber'] as String?,
       json['name'] as String,
       json['avatar'] as String,
       json['brand'] as String,
@@ -24,6 +25,7 @@ Supplier _$SupplierFromJson(Map<String, dynamic> json) => Supplier(
 Map<String, dynamic> _$SupplierToJson(Supplier instance) => <String, dynamic>{
       'supplierId': instance.supplierId,
       'ghnShopId': instance.ghnShopId,
+      'phoneNumber': instance.phoneNumber,
       'name': instance.name,
       'avatar': instance.avatar,
       'brand': instance.brand,
@@ -31,5 +33,5 @@ Map<String, dynamic> _$SupplierToJson(Supplier instance) => <String, dynamic>{
       'totalProducts': instance.totalProducts,
       'rate': instance.rate,
       'createAt': instance.createAt?.toIso8601String(),
-      'address': instance.address,
+      'address': instance.address.toJson(),
     };

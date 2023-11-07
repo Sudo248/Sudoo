@@ -1,12 +1,14 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:sudoo/data/api/base_request.dart';
 import 'package:sudoo/domain/model/user/address.dart';
 
 part 'supplier.g.dart';
 
-@JsonSerializable()
-class Supplier {
+@JsonSerializable(explicitToJson: true)
+class Supplier implements BaseRequest{
   String supplierId;
   int ghnShopId;
+  String? phoneNumber;
   String name;
   String avatar;
   String brand;
@@ -19,6 +21,7 @@ class Supplier {
   Supplier(
     this.supplierId,
     this.ghnShopId,
+    this.phoneNumber,
     this.name,
     this.avatar,
     this.brand,
@@ -33,6 +36,7 @@ class Supplier {
     return Supplier(
       "",
       0,
+      null,
       "",
       "",
       "",
@@ -46,5 +50,6 @@ class Supplier {
 
   factory Supplier.fromJson(Map<String, dynamic> json) => _$SupplierFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$SupplierToJson(this);
 }

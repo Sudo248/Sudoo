@@ -46,8 +46,10 @@ class CategoryRepositoryImpl with HandleResponse implements CategoryRepository {
   Future<DataState<Category, Exception>> upsertCategory(
       Category category,
       ) async {
-    final response = await handleResponse(() => productService.upsertCategory(category.toCategoryDto()),
-        fromJson: (json) => CategoryDto.fromJson(json as Map<String, dynamic>));
+    final response = await handleResponse(
+      () => productService.upsertCategory(category.toCategoryDto()),
+      fromJson: (json) => CategoryDto.fromJson(json as Map<String, dynamic>),
+    );
     if (response.isSuccess) {
       final categoryDto = response.get() as CategoryDto;
       return DataState.success(categoryDto.toCategory());

@@ -21,25 +21,35 @@ class AvatarImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: height,
-      width: width,
-      decoration: const BoxDecoration(shape: BoxShape.circle),
-      child: ValueListenableBuilder(
-        valueListenable: avatar,
-        builder: (context, value, child) => avatar.value == null
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : avatar.value!.bytes != null
-                ? Image.memory(
-                    Uint8List.fromList(avatar.value!.bytes!),
-                    fit: BoxFit.cover,
-                  )
-                : OnlineImage(
-                    avatar.value!.url,
-                    fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: pickImage,
+      child: Container(
+        height: height,
+        width: width,
+        decoration: const BoxDecoration(shape: BoxShape.circle),
+        child: ValueListenableBuilder(
+          valueListenable: avatar,
+          builder: (context, value, child) => avatar.value == null
+              ? SizedBox.expand(
+                child: ColoredBox(
+                  color: Colors.grey,
+                  child: Icon(
+                    Icons.image_outlined,
+                    color: Colors.blueGrey,
+                    size: width * 0.5,
                   ),
+                ),
+              )
+              : avatar.value!.bytes != null
+                  ? Image.memory(
+                      Uint8List.fromList(avatar.value!.bytes!),
+                      fit: BoxFit.cover,
+                    )
+                  : OnlineImage(
+                      avatar.value!.url,
+                      fit: BoxFit.cover,
+                    ),
+        ),
       ),
     );
   }

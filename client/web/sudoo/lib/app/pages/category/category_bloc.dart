@@ -35,10 +35,10 @@ class CategoryBloc extends BaseBloc {
       loadingController.hideLoading();
   }
 
-  Future<void> upsertCategory(Category category, File? image) async {
+  Future<bool> upsertCategory(Category category, File? image) async {
     if (category.categoryId.isEmpty && image == null) {
       showErrorMessage(Exception("Require image for category"));
-      return;
+      return Future.value(false);
     }
     loadingController.showLoading();
     if (image != null && !image.bytes.isNullOrEmpty) {
@@ -48,7 +48,7 @@ class CategoryBloc extends BaseBloc {
     final result = await categoryRepository.upsertCategory(category);
     if (result.isSuccess) {
       final newCategory = result.get();
-      final value = categories.value;
+      final value = categories.value.toList(growable: true);
       if (category.categoryId.isEmpty) {
         value.add(newCategory);
       } else {
@@ -57,11 +57,11 @@ class CategoryBloc extends BaseBloc {
       }
       categories.value = value;
       loadingController.hideLoading();
-      return;
+      return Future.value(true);
     } else {
       loadingController.hideLoading();
       showErrorMessage(result.requireError());
-      return Future.error(result.requireError());
+      return Future.value(false);
     }
   }
 

@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sudoo/app/widgets/confirm_button.dart';
 import 'package:sudoo/app/widgets/online_image.dart';
 import 'package:sudoo/extensions/list_ext.dart';
@@ -13,12 +14,15 @@ import '../../utils/logger.dart';
 
 class EditCategoryDialog extends StatelessWidget {
   late final Category category;
-  final Function(Category, File?)? onSubmitCategory;
+  final Future<bool> Function(Category, File?)? onSubmitCategory;
   final ValueNotifier<File?> image = ValueNotifier(null);
+  final TextStyle style = R.style.h5.copyWith(color: Colors.black);
+  final TextEditingController nameController = TextEditingController();
 
   EditCategoryDialog({super.key, Category? category, this.onSubmitCategory}) {
     if (category != null) {
       this.category = category;
+      image.value = File.fromUrl(category.image);
     } else {
       this.category = Category.empty();
     }
@@ -33,102 +37,175 @@ class EditCategoryDialog extends StatelessWidget {
         padding: const EdgeInsets.all(15.0),
         constraints: const BoxConstraints(
           minWidth: 300,
-          minHeight: 600,
+          minHeight: 300 * 1.3,
           maxWidth: 350,
-          maxHeight: 700,
+          maxHeight: 350 * 1.3,
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              isCreate ? "Create category" : "Edit category",
-              style: R.style.h4_1.copyWith(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            ValueListenableBuilder(
-              valueListenable: image,
-              builder: (context, value, child) {
-                if (isCreate) {
-                  return value == null ? child! : _buildImage(value);
-                } else {
-                  return _buildImage(value!);
-                }
-              },
-              child: Container(
-                width: 300,
-                height: 300,
-                padding: const EdgeInsets.all(10.0),
-                decoration: BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
-                child: const Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.add,
-                      size: 50,
-                      color: Colors.blueGrey,
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Text(
-                      "Upload",
-                      style: TextStyle(
-                        fontSize: 24,
-                        color: Colors.blueGrey,
-                      ),
-                    )
-                  ],
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                isCreate ? "Create category" : "Edit category",
+                style: R.style.h4_1.copyWith(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             const SizedBox(
               height: 10,
             ),
-            TextFormField(
-              initialValue: category.name,
+            Align(
+              alignment: Alignment.center,
+              child: GestureDetector(
+                onTap: pickImage,
+                child: ValueListenableBuilder(
+                  valueListenable: image,
+                  builder: (context, value, child) {
+                    if (isCreate) {
+                      return value == null ? child! : _buildImage(value);
+                    } else {
+                      return _buildImage(value);
+                    }
+                  },
+                  child: Container(
+                    width: 150,
+                    height: 150,
+                    padding: const EdgeInsets.all(10.0),
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    child: const Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.add,
+                          size: 30,
+                          color: Colors.blueGrey,
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Text(
+                          "Upload",
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.blueGrey,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            ..._buildInputField(
+              "Name",
+              nameController..text = category.name,
               maxLines: 1,
               maxLength: 50,
-              style: R.style.h5,
-              decoration: const InputDecoration(
-                  hintText: "Name category", border: OutlineInputBorder()),
-              onChanged: (value) => category.name = value,
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            !isCreate
+                ? Row(
+                    children: [
+                      Text(
+                        "Total product: ",
+                        style: style,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        "${category.countProduct ?? 0}",
+                        style: style,
+                      )
+                    ],
+                  )
+                : const SizedBox.shrink(),
+            const Expanded(child: SizedBox.shrink()),
             ConfirmButton(
               textPositive: isCreate ? "Create" : "Update",
               onPositive: () {
+                category.name = nameController.text;
+                context.pop();
                 onSubmitCategory?.call(category, image.value);
               },
-            )
+              onNegative: () {
+                context.pop();
+              },
+            ),
+            const SizedBox(
+              height: 30,
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildImage(File image) {
+  List<Widget> _buildInputField(
+    String label,
+    TextEditingController? controller, {
+    int? maxLines,
+    int? maxLength,
+    bool readOnly = false,
+    bool expands = false,
+    TextInputType? keyboardType,
+    VoidCallback? onTap,
+  }) {
+    return [
+      Text(
+        label,
+        style: style.copyWith(fontWeight: FontWeight.bold),
+      ),
+      const SizedBox(
+        height: 5,
+      ),
+      TextField(
+        controller: controller,
+        style: style,
+        maxLines: maxLines,
+        maxLength: maxLength,
+        readOnly: readOnly,
+        expands: expands,
+        onTap: onTap,
+        keyboardType: keyboardType,
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          counterText: "",
+        ),
+      ),
+      const SizedBox(
+        height: 15,
+      )
+    ];
+  }
+
+  Widget _buildImage(File? image) {
     return SizedBox.square(
-      dimension: 300,
-      child: image.bytes.isNullOrEmpty
-          ? OnlineImage(
-              image.url,
-              fit: BoxFit.cover,
+      dimension: 150,
+      child: image == null
+          ? const Padding(
+              padding: EdgeInsets.all(100),
+              child: CircularProgressIndicator(),
             )
-          : Image.memory(
-              Uint8List.fromList(image.bytes!),
-              fit: BoxFit.cover,
-            ),
+          : image.bytes.isNullOrEmpty
+              ? OnlineImage(
+                  image.url,
+                  fit: BoxFit.cover,
+                )
+              : Image.memory(
+                  Uint8List.fromList(image.bytes!),
+                  fit: BoxFit.cover,
+                ),
     );
   }
 
