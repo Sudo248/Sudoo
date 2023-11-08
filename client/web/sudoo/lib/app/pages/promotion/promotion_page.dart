@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:sudoo/app/base/base_page.dart';
 import 'package:sudoo/app/dialog/edit_promotion_dialog.dart';
@@ -26,7 +25,7 @@ class PromotionPage extends BasePage<PromotionBloc> {
           maxCrossAxisExtent: 230,
           mainAxisSpacing: 50,
           crossAxisSpacing: 50,
-          childAspectRatio: 3 / 4,
+          childAspectRatio: 3 / 4.2,
         ),
         itemBuilder: (context, index) {
           if (index < value.length) {

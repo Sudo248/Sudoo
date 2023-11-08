@@ -18,7 +18,8 @@ class EditPromotionDialog extends StatelessWidget {
   final ValueNotifier<File?> image = ValueNotifier(null);
   final TextStyle style = R.style.h5.copyWith(color: Colors.black);
   final TextEditingController nameController = TextEditingController(),
-      amountController = TextEditingController();
+      amountController = TextEditingController(),
+      valueController = TextEditingController();
 
   EditPromotionDialog(
       {super.key, Promotion? promotion, this.onSubmitPromotion}) {
@@ -123,6 +124,15 @@ class EditPromotionDialog extends StatelessWidget {
               maxLength: 5,
               keyboardType: TextInputType.number,
             ),
+            ..._buildInputField(
+              "Value",
+              valueController..text = promotion.value.toStringAsFixed(1),
+              maxLines: 1,
+              maxLength: 5,
+              keyboardType: TextInputType.number,
+              suffixText: "đ",
+              suffixStyle: style.copyWith(fontWeight: FontWeight.bold),
+            ),
             isCreate || promotion.enable != null
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -156,7 +166,9 @@ class EditPromotionDialog extends StatelessWidget {
               textPositive: isCreate ? "Create" : "Update",
               onPositive: () {
                 promotion.name = nameController.text;
-                promotion.totalAmount = double.parse(amountController.text).toInt();
+                promotion.totalAmount =
+                    double.parse(amountController.text).toInt();
+                promotion.value = double.parse(valueController.text);
                 context.pop();
                 onSubmitPromotion?.call(promotion, image.value);
               },
@@ -181,6 +193,8 @@ class EditPromotionDialog extends StatelessWidget {
     bool readOnly = false,
     bool expands = false,
     TextInputType? keyboardType,
+    String? suffixText,
+    TextStyle? suffixStyle,
     VoidCallback? onTap,
   }) {
     return [
@@ -200,13 +214,15 @@ class EditPromotionDialog extends StatelessWidget {
         expands: expands,
         onTap: onTap,
         keyboardType: keyboardType,
-        decoration: const InputDecoration(
-          border: OutlineInputBorder(),
+        decoration: InputDecoration(
+          suffixText: suffixText,
+          suffixStyle: suffixStyle,
+          border: const OutlineInputBorder(),
           counterText: "",
         ),
       ),
       const SizedBox(
-        height: 15,
+        height: 20,
       )
     ];
   }

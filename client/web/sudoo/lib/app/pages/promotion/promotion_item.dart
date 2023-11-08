@@ -10,7 +10,11 @@ class PromotionItem extends StatelessWidget {
   final Future<bool> Function(Promotion)? upsertPromotion;
   final ValueNotifier<bool> enable = ValueNotifier(false);
 
-  PromotionItem({super.key, required this.promotion, this.onItemClick, this.upsertPromotion}) {
+  PromotionItem(
+      {super.key,
+      required this.promotion,
+      this.onItemClick,
+      this.upsertPromotion}) {
     if (promotion.enable != null) {
       enable.value = promotion.enable!;
     }
@@ -57,6 +61,16 @@ class PromotionItem extends StatelessWidget {
             ),
             Text(
               "Total amount: ${promotion.totalAmount}",
+              maxLines: 1,
+              style: R.style.h5.copyWith(
+                color: Colors.black,
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              "Value: ${promotion.value.toStringAsFixed(1)}đ",
               maxLines: 1,
               style: R.style.h5.copyWith(
                 color: Colors.black,
