@@ -9,3 +9,10 @@ CREATE TABLE `accounts`
     `is_validated`          BOOLEAN      NOT NULL,
     `create_at`             DATETIME
 ) CHARACTER SET = utf8mb4;
+
+# create admin account;
+INSERT INTO `accounts` VALUES(
+                              (SELECT UUID()),
+                              'admin@gmail.com',
+                              ''
+                             );

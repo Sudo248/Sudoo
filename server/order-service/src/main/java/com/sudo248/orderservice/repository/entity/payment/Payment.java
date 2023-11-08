@@ -35,7 +35,7 @@ public class Payment {
     @Column(name = "status")
     private PaymentStatus status;
 
-    @OneToOne(mappedBy = "payment")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "payment")
     private Order order;
 
 }

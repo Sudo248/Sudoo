@@ -33,7 +33,7 @@ public class PaymentController {
             HttpServletRequest request
     ) {
         if (paymentDto.getIpAddress() == null) paymentDto.setIpAddress(ipService.getIpAddress(request));
-        if (paymentDto.getTimeZone() == null) paymentDto.setTimeZone(RequestContextUtils.getTimeZone(request));
+        if (paymentDto.getTimeZoneId() == null) paymentDto.setTimeZoneId(RequestContextUtils.getTimeZone(request).getID());
         return paymentService.pay(userId, paymentDto);
     }
 

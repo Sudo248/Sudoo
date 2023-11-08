@@ -114,19 +114,35 @@ class ProductServiceImpl(
         sortRequest: SortRequest?
     ): ProductPagination<ProductInfoDto> = coroutineScope {
         val count = async { productRepository.count() }
-        val products =
-            productRepository.getProductInfoWithOffset(offset = offsetRequest.offset, limit = offsetRequest.limit)
-                .map { product ->
-                    async {
-                        product.brand = supplierRepository.getBrand(product.supplierId)
-                        product.images = listOf(imageRepository.getFirstByOwnerId(product.productId).url)
-                        product.toProductInfoDto()
-                    }
+        val products = (if (sortRequest != null && sortRequest.sortBy.lowercase() == "created_at") {
+            if (sortRequest.orderBy.uppercase() == "DESC") {
+                productRepository.getProductInfoWithOffsetAndOrderByCreatedAtDesc(
+                    offset = offsetRequest.offset,
+                    limit = offsetRequest.limit
+                )
+            } else {
+                productRepository.getProductInfoWithOffsetAndOrderByCreatedAtAsc(
+                    offset = offsetRequest.offset,
+                    limit = offsetRequest.limit
+                )
+            }
+        } else {
+            productRepository.getProductInfoWithOffset(
+                offset = offsetRequest.offset,
+                limit = offsetRequest.limit
+            )
+        })
+            .map { product ->
+                async {
+                    product.brand = supplierRepository.getBrand(product.supplierId)
+                    product.images = listOf(imageRepository.getFirstByOwnerId(product.productId).url)
+                    product.toProductInfoDto()
                 }
+            }
         ProductPagination(
             products = products.toList().awaitAll(),
             pagination = Pagination(
-                offset = Utils.getNexOffset(offsetRequest.offset + products.count()),
+                offset = Utils.getNexOffset(offsetRequest.offset, products.count()),
                 total = count.await()
             )
         )
@@ -148,7 +164,7 @@ class ProductServiceImpl(
             ProductPagination(
                 products = products.toList().awaitAll(),
                 pagination = Pagination(
-                    offset = Utils.getNexOffset(offsetRequest.offset + products.count()),
+                    offset = Utils.getNexOffset(offsetRequest.offset, products.count()),
                     total = count.await()
                 )
             )
@@ -192,7 +208,7 @@ class ProductServiceImpl(
         ProductPagination(
             products = products.toList().awaitAll(),
             pagination = Pagination(
-                offset = Utils.getNexOffset(offsetRequest.offset + products.count()),
+                offset = Utils.getNexOffset(offsetRequest.offset, products.count()),
                 total = count.await()
             )
         )
@@ -231,7 +247,7 @@ class ProductServiceImpl(
         ProductPagination(
             products = products.toList().awaitAll(),
             pagination = Pagination(
-                offset = Utils.getNexOffset(offsetRequest.offset + products.count()),
+                offset = Utils.getNexOffset(offsetRequest.offset, products.count()),
                 total = count.await(),
             )
         )
@@ -242,7 +258,8 @@ class ProductServiceImpl(
         offsetRequest: OffsetRequest,
         sortRequest: SortRequest?
     ): ProductPagination<ProductInfoDto> = coroutineScope {
-        val supplierId = supplierRepository.getSupplierIdByUserId(userId) ?: throw NotFoundException("Not found supplier for user $userId")
+        val supplierId = supplierRepository.getSupplierIdByUserId(userId)
+            ?: throw NotFoundException("Not found supplier for user $userId")
         getListProductInfoBySupplier(
             supplierId = supplierId,
             offsetRequest = offsetRequest,
@@ -384,7 +401,7 @@ class ProductServiceImpl(
             ProductPagination(
                 products = products.toList().awaitAll(),
                 pagination = Pagination(
-                    offset = Utils.getNexOffset(offsetRequest.offset + products.count()),
+                    offset = Utils.getNexOffset(offsetRequest.offset, products.count()),
                     total = count.await()
                 )
             )
@@ -413,7 +430,7 @@ class ProductServiceImpl(
         ProductPagination(
             products = products.toList().awaitAll(),
             pagination = Pagination(
-                offset = Utils.getNexOffset(offsetRequest.offset + products.count()),
+                offset = Utils.getNexOffset(offsetRequest.offset, products.count()),
                 total = count.await()
             )
         )

@@ -19,7 +19,7 @@ class PromotionServiceImpl(
 ) : PromotionService {
     override suspend fun getAllPromotion(enable: Boolean?): List<PromotionDto> {
         return enable?.let {
-            promotionRepository.getAllByEnable(it).map { promotion -> promotion.toPromotionDto() }.toList()
+            promotionRepository.getAllByEnableAndTotalAmountGreaterThan(it, 0).map { promotion -> promotion.toPromotionDto() }.toList()
         } ?: promotionRepository.findAll().map { it.toPromotionDto() }.toList()
     }
 

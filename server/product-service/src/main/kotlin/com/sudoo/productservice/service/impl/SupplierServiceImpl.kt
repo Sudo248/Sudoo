@@ -78,17 +78,22 @@ class SupplierServiceImpl(
     override suspend fun upsertSupplier(userId: String, supplierDto: UpsertSupplierDto): SupplierDto {
         if (!ProductValidator.validateBrand(supplierDto.brand)) throw BadRequestException("Brand is too short, require at least 3 characters")
         if (supplierDto.address == null) throw BadRequestException("Required address to create store")
+        val ghnShopId = if (supplierDto.supplierId.isNullOrEmpty()) {
+            if (supplierDto.phoneNumber == null) throw BadRequestException("Required address to create store")
+            ghnService.createStore(
+                CreateStoreRequest(
+                    districtId = supplierDto.address.districtID,
+                    wardCode = supplierDto.address.wardCode,
+                    name = supplierDto.name,
+                    phone = supplierDto.phoneNumber,
+                    address = supplierDto.address.address
+                )
+            ).shopId
+        } else {
+            supplierDto.ghnShopId ?: throw BadRequestException("Required shopId")
+        }
 
-        val ghnStore = ghnService.createStore(
-            CreateStoreRequest(
-                districtId = supplierDto.address.districtID,
-                wardCode = supplierDto.address.wardCode,
-                name = supplierDto.name,
-                phone = supplierDto.phoneNumber,
-                address = supplierDto.address.address
-            )
-        )
-        val supplier = supplierDto.toSupplier(userId, ghnShopId = ghnStore.shopId)
+        val supplier = supplierDto.toSupplier(userId, ghnShopId = ghnShopId)
         val address = if (supplier.isNewSupplier) {
             val addressDto = supplierDto.address
             userService.postAddress(addressDto).also {

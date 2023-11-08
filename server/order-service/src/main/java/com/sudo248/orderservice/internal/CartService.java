@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(value = "CART-SERVICE")
+@FeignClient(value = "cart-service")
 @Service
 public interface CartService {
 

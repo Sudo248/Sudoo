@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class PatchAmountProductDto {
-    private String productId;
+public class PutAmountPromotionDto {
+    private String promotionId;
     private int amount;
 }

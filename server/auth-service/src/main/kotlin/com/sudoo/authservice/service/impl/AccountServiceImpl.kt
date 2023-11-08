@@ -24,11 +24,11 @@ import org.springframework.stereotype.Service
 
 @Service
 class AccountServiceImpl(
-        private val accountRepository: AccountRepository,
-        private val encoder: PasswordEncoder,
-        private val tokenUtils: TokenUtils,
-        private val otpService: OtpService,
-        private val userService: UserService,
+    private val accountRepository: AccountRepository,
+    private val encoder: PasswordEncoder,
+    private val tokenUtils: TokenUtils,
+    private val otpService: OtpService,
+    private val userService: UserService,
 ) : AccountService {
 
     @Value("\${otp.enable}")
@@ -36,7 +36,7 @@ class AccountServiceImpl(
 
     override suspend fun signIn(signInDto: SignInDto): TokenDto {
         val account = accountRepository.getAccountByEmailOrPhoneNumber(signInDto.emailOrPhoneNumber)
-                ?: throw EmailOrPhoneNumberInvalidException()
+            ?: throw EmailOrPhoneNumberInvalidException()
 
         if (!encoder.matches(signInDto.password, account.password)) {
             throw WrongPasswordException()
@@ -74,6 +74,22 @@ class AccountServiceImpl(
 
     override suspend fun logout(userId: String): Boolean {
         return true
+    }
+
+    override suspend fun registerAdmin(signUpDto: SignUpDto): Boolean {
+        if (accountRepository.existsByEmailOrPhoneNumber(signUpDto.emailOrPhoneNumber) == 1) {
+            return true
+        }
+        val account = signUpDto.toModel(isValidated = false)
+        return try {
+            userService.createUserForAccount(account)
+            account.isValidated = true
+            saveAccount(account)
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
     }
 
     private suspend fun saveAccount(account: Account, isHashPassword: Boolean = true) {

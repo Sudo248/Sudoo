@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 
-@FeignClient(value = "USER-SERVICE")
+@FeignClient(value = "user-service")
 @Service
 public interface UserService {
     @GetMapping("/api/v1/users")

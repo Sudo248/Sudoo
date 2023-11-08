@@ -10,4 +10,6 @@ interface AccountService {
     suspend fun signUp(signUpDto: SignUpDto)
     suspend fun changePassword(userId: String, changePasswordDto: ChangePasswordDto): Boolean
     suspend fun logout(userId: String): Boolean
+
+    suspend fun registerAdmin(signUpDto: SignUpDto): Boolean
 }

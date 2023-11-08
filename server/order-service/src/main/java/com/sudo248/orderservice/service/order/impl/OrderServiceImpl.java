@@ -110,6 +110,7 @@ public class OrderServiceImpl implements OrderService {
         order.calculateFinalPrice();
 
         orderRepository.save(order);
+//        41a86e86258493c18c9cb057e07b9508
 
         return OrderDto.builder()
                 .orderId(order.getOrderId())

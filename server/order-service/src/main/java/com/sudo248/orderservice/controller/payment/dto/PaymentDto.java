@@ -18,7 +18,7 @@ public class PaymentDto {
     private Double amount;
     private String paymentType;
     private String ipAddress;
-    private TimeZone timeZone;
+    private String timeZoneId;
     private String paymentUrl;
     private PaymentStatus paymentStatus;
 }

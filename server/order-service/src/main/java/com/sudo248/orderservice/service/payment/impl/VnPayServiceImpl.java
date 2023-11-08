@@ -64,10 +64,11 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
     public ResponseEntity<BaseResponse<?>> pay(String userId, PaymentDto paymentDto) {
         return handleException(() -> {
             if (paymentDto.getOrderId() == null) throw new ApiException(HttpStatus.BAD_REQUEST, "Require order id");
-            Order order = orderRepository.getReferenceById(paymentDto.getOrderId());
-            updateOrderStatus(order);
-            Payment payment = toEntity(paymentDto);
-            payment.setOrder(order);
+            Optional<Order> order = orderRepository.findById(paymentDto.getOrderId());
+            if (order.isEmpty()) throw new ApiException(HttpStatus.NOT_FOUND, "Not found order " + paymentDto.getOrderId());
+            updateOrderStatus(order.get());
+            Payment payment = toEntity(paymentDto, order.get());
+            order.get().setPayment(payment);
             paymentRepository.save(payment);
             Map<String, String> vnp_Params = new HashMap<>();
             vnp_Params.put("vnp_Version", VnPayConfig.vnp_Version);
@@ -87,7 +88,7 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
             vnp_Params.put("vnp_ReturnUrl", VnPayConfig.vnp_ReturnUrl);
             vnp_Params.put("vnp_IpAddr", paymentDto.getIpAddress());
 
-            Calendar cld = Calendar.getInstance(paymentDto.getTimeZone());
+            Calendar cld = Calendar.getInstance(TimeZone.getTimeZone(paymentDto.getTimeZoneId()));
             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
             String vnp_CreateDate = formatter.format(cld.getTime());
             vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
@@ -126,13 +127,15 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
             String vnp_SecureHash = VnPayConfig.hmacSHA512(VnPayConfig.vnp_HashSecret, hashData.toString());
             queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
             String paymentUrl = VnPayConfig.vnp_Url + "?" + queryUrl;
-            return BaseResponse.ok(toDto(payment, paymentUrl, paymentDto.getTimeZone()));
+            return BaseResponse.ok(toDto(payment, paymentUrl, paymentDto.getTimeZoneId()));
         });
     }
 
     private void updateOrderStatus(Order order) throws ApiException {
         updateAmountProduct(order.getUserId(), false);
-        updateAmountPromotion(order.getPromotionId());
+        if (order.getPromotionId() != null && !order.getPromotionId().isBlank()) {
+            updateAmountPromotion(order.getPromotionId());
+        }
         checkoutProcessingCart(order.getUserId());
     }
 
@@ -149,11 +152,11 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
 
     // isRestore == true => hoan lai so luong san pham
     private void updateAmountProduct(OrderCartProductDto orderCartProductDto, Boolean isRestore) throws ApiException {
-        final PatchAmountProductDto patchAmountProductDto = new PatchAmountProductDto(
+        final PutAmountProductDto putAmountProductDto = new PutAmountProductDto(
                 orderCartProductDto.getProduct().getProductId(),
                 isRestore ? orderCartProductDto.getQuantity() : -orderCartProductDto.getQuantity()
         );
-        ResponseEntity<BaseResponse<?>> response = productService.patchProductAmount(patchAmountProductDto);
+        ResponseEntity<BaseResponse<?>> response = productService.putProductAmount(putAmountProductDto);
         if (!response.hasBody()) {
             throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, "Some thing went wrong");
         }
@@ -163,11 +166,11 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
     }
 
     private void updateAmountPromotion(String promotionId) throws ApiException {
-        final PatchAmountPromotionDto promotionDto = new PatchAmountPromotionDto(
+        final PutAmountPromotionDto promotionDto = new PutAmountPromotionDto(
                 promotionId,
                 1
         );
-        ResponseEntity<BaseResponse<?>> response = productService.patchPromotionAmount(promotionDto);
+        ResponseEntity<BaseResponse<?>> response = productService.putPromotionAmount(promotionDto);
         if (!response.hasBody()) {
             throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, "Some thing went wrong");
         }
@@ -207,8 +210,7 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
         return paymentRepository.getReferenceById(paymentId);
     }
 
-    private Payment toEntity(PaymentDto paymentDto) {
-        final Order order = orderRepository.getReferenceById(paymentDto.getOrderId());
+    private Payment toEntity(PaymentDto paymentDto, Order order) {
         return new Payment(
                 Utils.createIdOrElse(paymentDto.getPaymentId()),
                 paymentDto.getOrderType(),
@@ -221,7 +223,7 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
         );
     }
 
-    private PaymentDto toDto(Payment payment, String paymentUrl, TimeZone timeZone) {
+    private PaymentDto toDto(Payment payment, String paymentUrl, String timeZoneId) {
         return new PaymentDto(
                 payment.getPaymentId(),
                 payment.getOrder().getOrderId(),
@@ -230,7 +232,7 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
                 payment.getAmount(),
                 payment.getPaymentType(),
                 payment.getIpAddress(),
-                timeZone,
+                timeZoneId,
                 paymentUrl,
                 payment.getStatus()
         );

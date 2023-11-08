@@ -68,13 +68,14 @@ services:
     depends_on:
       - registry
       - db-service
+      - user-service
     networks:
       - sudoo-network
 
-  discovery-service:
-    image: sudo248dev/discovery-service:0.0.1
-    container_name: discovery-service
-    hostname: discovery-service
+  product-service:
+    image: sudo248dev/product-service:0.0.1
+    container_name: product-service
+    hostname: product-service
     depends_on:
       - registry
       - db-service

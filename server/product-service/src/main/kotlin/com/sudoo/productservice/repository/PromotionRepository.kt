@@ -12,4 +12,6 @@ interface PromotionRepository : CoroutineCrudRepository<Promotion, String> {
 
     fun getAllByEnable(enable: Boolean): Flow<Promotion>
 
+    fun getAllByEnableAndTotalAmountGreaterThan(enable: Boolean, amount: Int): Flow<Promotion>
+
 }
