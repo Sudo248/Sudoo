@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
-@FeignClient(value = "NOTIFICATION-SERVICE")
+@FeignClient(value = "notification-service")
 @Service
 public interface NotificationService {
     @PostMapping("/api/v1/notification/send/payment")

@@ -42,7 +42,7 @@ fun UpsertSupplierDto.toSupplier(userId: String, ghnShopId: Int): Supplier {
         name = name,
         avatar = avatar,
         brand = brand,
-        contactUrl = contactUrl,
+        contactUrl = contactUrl.orEmpty(),
         rate = rate ?: 5.0f,
         addressId = address?.addressId.orEmpty(),
         createAt = createAt ?: LocalDateTime.now()

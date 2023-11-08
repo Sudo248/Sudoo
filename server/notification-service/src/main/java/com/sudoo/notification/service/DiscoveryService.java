@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(value = "PRODUCT-SERVICE")
+@FeignClient(value = "product-service")
 @Service
 public interface DiscoveryService {
     @GetMapping("/api/v1/discovery/supplier/info/{supplierId}")

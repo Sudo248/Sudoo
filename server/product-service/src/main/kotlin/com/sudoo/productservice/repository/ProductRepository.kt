@@ -172,6 +172,58 @@ interface ProductRepository : CoroutineCrudRepository<Product, String> {
         @Param("_limit") limit: Int = 0
     ): Flow<ProductInfo>
 
+    @Query(
+        """
+        SELECT 
+        products.product_id, 
+        products.supplier_id,
+        products.sku, 
+        products.name, 
+        products.price,
+        products.listed_price,
+        products.amount,
+        products.saleable,
+        products.rate,
+        products.discount,
+        products.start_date_discount,
+        products.end_date_discount
+        FROM products
+        ORDER BY products.created_at DESC
+        LIMIT :_limit
+        OFFSET :_offset
+    """
+    )
+    fun getProductInfoWithOffsetAndOrderByCreatedAtDesc(
+        @Param("_offset") offset: Int = 0,
+        @Param("_limit") limit: Int = 0
+    ): Flow<ProductInfo>
+
+    @Query(
+        """
+        SELECT 
+        products.product_id, 
+        products.supplier_id,
+        products.sku, 
+        products.name, 
+        products.price,
+        products.listed_price,
+        products.amount,
+        products.saleable,
+        products.rate,
+        products.discount,
+        products.start_date_discount,
+        products.end_date_discount
+        FROM products
+        ORDER BY products.created_at ASC 
+        LIMIT :_limit
+        OFFSET :_offset
+    """
+    )
+    fun getProductInfoWithOffsetAndOrderByCreatedAtAsc(
+        @Param("_offset") offset: Int = 0,
+        @Param("_limit") limit: Int = 0
+    ): Flow<ProductInfo>
+
     suspend fun countBySupplierId(supplierId: String): Long
 
     @Query(

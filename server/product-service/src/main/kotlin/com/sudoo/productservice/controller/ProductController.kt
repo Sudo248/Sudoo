@@ -159,12 +159,15 @@ class ProductController(
         @RequestParam("name", required = false, defaultValue = "") name: String,
         @RequestParam("offset", required = false, defaultValue = Constants.DEFAULT_OFFSET) offset: Int,
         @RequestParam("limit", required = false, defaultValue = Constants.DEFAULT_LIMIT) limit: Int,
+        @RequestParam("sortBy", required = false, defaultValue = "") sortBy: String,
+        @RequestParam("orderBy", required = false, defaultValue = "asc") orderBy: String,
+        @RequestParam("saleable", required = false, defaultValue = "") saleable: String,
     ): ResponseEntity<BaseResponse<*>> = handle {
         val offsetRequest = OffsetRequest(offset, limit)
         productService.getProductInfoByCategoryAndName(categoryId, name, offsetRequest)
     }
 
-    @PatchMapping("/internal/amount")
+    @PutMapping("/internal/amount")
     suspend fun pathAmountPromotion(
         @RequestBody product: PatchAmountProductDto
     ) : ResponseEntity<BaseResponse<*>> = handle {

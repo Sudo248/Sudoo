@@ -40,7 +40,8 @@ class CategoryServiceImpl(
     override suspend fun getCategoryById(categoryId: String): CategoryDto {
         val category =
             categoryRepository.findById(categoryId) ?: throw NotFoundException("Not found category $categoryId")
-        return category.toCategoryDto()
+        val countProduct = categoryProductRepository.countProductOfCategory(category.categoryId).toInt()
+        return category.toCategoryDto(countProduct = countProduct)
     }
 
     override suspend fun getCategoriesByProductId(productId: String): List<CategoryDto> = coroutineScope {
@@ -55,7 +56,12 @@ class CategoryServiceImpl(
     override suspend fun upsertCategory(categoryDto: CategoryDto): CategoryDto {
         val category = categoryDto.toCategory()
         categoryRepository.save(category)
-        return category.toCategoryDto()
+        return if (category.isNew) {
+            category.toCategoryDto(countProduct = 0)
+        } else {
+            val countProduct = categoryProductRepository.countProductOfCategory(category.categoryId).toInt()
+            category.toCategoryDto(countProduct = countProduct)
+        }
     }
 
     override suspend fun deleteCategory(categoryId: String): String {

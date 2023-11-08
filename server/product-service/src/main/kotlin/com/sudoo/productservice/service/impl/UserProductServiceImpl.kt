@@ -81,7 +81,7 @@ class UserProductServiceImpl(
         CommentPagination(
             comments = comments.toList(),
             pagination = Pagination(
-                offset = Utils.getNexOffset(offsetRequest.offset + comments.count()),
+                offset = Utils.getNexOffset(offsetRequest.offset, comments.count()),
                 total = totalCount.await(),
             )
         )
@@ -104,7 +104,7 @@ class UserProductServiceImpl(
         CommentPagination(
             comments = comments.toList(),
             pagination = Pagination(
-                offset = Utils.getNexOffset(offsetRequest.offset + comments.count()),
+                offset = Utils.getNexOffset(offsetRequest.offset, comments.count()),
                 total = totalCount.await(),
             )
         )
@@ -127,7 +127,7 @@ class UserProductServiceImpl(
         ReviewPagination(
             reviews = reviews.toList(),
             pagination = Pagination(
-                offset = Utils.getNexOffset(offsetRequest.offset + reviews.count()),
+                offset = Utils.getNexOffset(offsetRequest.offset, reviews.count()),
                 total = totalCount.await(),
             )
         )
@@ -152,7 +152,7 @@ class UserProductServiceImpl(
         CommentPagination(
             comments = comments.toList(),
             pagination = Pagination(
-                offset = Utils.getNexOffset(offsetRequest.offset + comments.count()),
+                offset = Utils.getNexOffset(offsetRequest.offset, comments.count()),
                 total = totalCount.await(),
             )
         )
@@ -177,7 +177,7 @@ class UserProductServiceImpl(
         ReviewPagination(
             reviews = reviews.toList(),
             pagination = Pagination(
-                offset = Utils.getNexOffset(offsetRequest.offset + reviews.count()),
+                offset = Utils.getNexOffset(offsetRequest.offset, reviews.count()),
                 total = totalCount.await(),
             )
         )

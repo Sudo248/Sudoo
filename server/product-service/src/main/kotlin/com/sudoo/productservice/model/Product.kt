@@ -71,7 +71,7 @@ data class Product(
     @Column("width")
     val width: Int,
 
-    @Column("create_at")
+    @Column("created_at")
     val createdAt: LocalDateTime,
 
     ) : Persistable<String> {

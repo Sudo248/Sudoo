@@ -6,15 +6,7 @@ import com.sudoo.productservice.dto.PatchAmountPromotionDto
 import com.sudoo.productservice.dto.PromotionDto
 import com.sudoo.productservice.service.PromotionService
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PatchMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/promotions")
@@ -24,7 +16,7 @@ class PromotionController (
 
     @GetMapping
     suspend fun getAllPromotion(
-        @RequestParam("enable", required =  false) enable: Boolean?
+        @RequestParam("enable", required =  false) enable: Boolean?,
     ) : ResponseEntity<BaseResponse<*>> = handle {
         promotionService.getAllPromotion(enable)
     }
@@ -50,7 +42,7 @@ class PromotionController (
         promotionService.deletePromotion(promotionId)
     }
 
-    @PatchMapping("/internal/amount")
+    @PutMapping("/internal/amount")
     suspend fun patchPromotion(
         @RequestBody promotion: PatchAmountPromotionDto
     ): ResponseEntity<BaseResponse<*>> = handle {
