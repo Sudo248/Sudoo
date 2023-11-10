@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
@@ -23,5 +24,6 @@ public class OrderDto {
     private OrderStatus status;
     private String address;
     private Double totalPrice, totalPromotionPrice, finalPrice, totalShipmentPrice;
+    private LocalDateTime createdAt;
     private List<OrderSupplierDto> orderSuppliers;
 }

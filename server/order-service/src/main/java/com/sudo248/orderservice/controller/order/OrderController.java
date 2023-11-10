@@ -7,6 +7,8 @@ import com.sudo248.domain.util.Utils;
 import com.sudo248.orderservice.controller.order.dto.UpsertOrderDto;
 import com.sudo248.orderservice.controller.order.dto.OrderDto;
 import com.sudo248.orderservice.controller.order.dto.UpsertOrderPromotionDto;
+import com.sudo248.orderservice.repository.entity.order.Order;
+import com.sudo248.orderservice.repository.entity.order.OrderStatus;
 import com.sudo248.orderservice.service.order.OrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,17 +37,18 @@ public class OrderController {
 
     @GetMapping
     public ResponseEntity<BaseResponse<?>> getOrderByUserId(
-            @RequestHeader(Constants.HEADER_USER_ID) String userId
+            @RequestHeader(Constants.HEADER_USER_ID) String userId,
+            @RequestParam(value = "status", required = false, defaultValue = "") String status
     ) {
         return Utils.handleException(() -> {
-            List<OrderDto> list = orderService.getOrdersByUserId(userId);
+            List<OrderDto> list = orderService.getOrdersByUserId(userId, status);
             return BaseResponse.ok(list);
         });
     }
 
     @GetMapping("/{orderId}")
     public ResponseEntity<BaseResponse<?>> getOrderById(@PathVariable String orderId) throws ApiException {
-        return Utils.handleException(()->{
+        return Utils.handleException(() -> {
             OrderDto orderDto = orderService.getOrderById(orderId);
             return BaseResponse.ok(orderDto);
         });
@@ -55,7 +58,19 @@ public class OrderController {
     public ResponseEntity<BaseResponse<?>> deleteOrderById(@PathVariable String orderId) {
         return Utils.handleException(() -> {
             boolean res = orderService.deleteOrder(orderId);
-            if(res)
+            if (res)
+                return BaseResponse.ok(orderId);
+            return BaseResponse.ok(null);
+        });
+    }
+
+    @DeleteMapping("/{orderId}/cancel")
+    public ResponseEntity<BaseResponse<?>> cancelOrderById(
+            @PathVariable String orderId
+    ) {
+        return Utils.handleException(() -> {
+            boolean res = orderService.cancelOrderByUser(orderId);
+            if (res)
                 return BaseResponse.ok(orderId);
             return BaseResponse.ok(null);
         });
@@ -76,7 +91,7 @@ public class OrderController {
     public ResponseEntity<BaseResponse<?>> updateOrderPromotion(
             @PathVariable(name = "orderId") String orderId,
             @RequestBody UpsertOrderPromotionDto upsertOrderPromotionDto
-            ) {
+    ) {
         return Utils.handleException(() -> BaseResponse.ok(orderService.updateOrderPromotion(orderId, upsertOrderPromotionDto)));
     }
 

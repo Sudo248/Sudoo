@@ -6,18 +6,19 @@ import com.sudo248.orderservice.controller.order.dto.UpsertOrderDto;
 import com.sudo248.orderservice.controller.order.dto.OrderDto;
 import com.sudo248.orderservice.controller.order.dto.UpsertOrderPromotionDto;
 import com.sudo248.orderservice.repository.entity.order.Order;
+import com.sudo248.orderservice.repository.entity.order.OrderStatus;
 import com.sudo248.orderservice.repository.entity.order.OrderSupplier;
 
 import java.util.List;
 import java.util.Map;
 
 public interface OrderService {
-    List<OrderDto> getOrdersByUserId(String userId) throws ApiException;
+    List<OrderDto> getOrdersByUserId(String userId, String statusValue) throws ApiException;
     OrderDto getOrderById(String orderId) throws ApiException;
     OrderDto createOrder(String userId, UpsertOrderDto upsertOrderDto) throws ApiException;
     boolean deleteOrder(String orderId);
 
-    boolean cancelOrderByUser(String orderId);
+    boolean cancelOrderByUser(String orderId) throws ApiException;
 
     OrderDto toDto(Order order) throws ApiException;
 

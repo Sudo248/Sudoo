@@ -3,10 +3,13 @@ package com.sudo248.orderservice.internal;
 import com.sudo248.domain.base.BaseResponse;
 import com.sudo248.domain.common.Constants;
 import com.sudo248.orderservice.controller.order.dto.CartDto;
+import com.sudo248.orderservice.controller.order.dto.CartProductDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @FeignClient(value = "cart-service")
 @Service
@@ -17,6 +20,11 @@ public interface CartService {
 
     @GetMapping("/api/v1/carts/{cartId}")
     ResponseEntity<BaseResponse<CartDto>> getCartById(
+            @PathVariable("cartId") String cartId
+    );
+
+    @GetMapping("/api/v1/carts/internal/{cartId}/products")
+    ResponseEntity<BaseResponse<List<CartProductDto>>> getCartProductByCartId(
             @PathVariable("cartId") String cartId
     );
 

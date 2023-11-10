@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service
 class ImageServiceImpl(
     private val imageRepository: ImageRepository,
 ) : ImageService {
+
+    private val banner = "banner"
+
     override suspend fun getImageByOwnerId(ownerId: String): List<ImageDto> {
         return imageRepository.getAllByOwnerId(ownerId).map {
             it.toImageDto()
@@ -34,6 +37,16 @@ class ImageServiceImpl(
     override suspend fun deleteImage(imageId: String): ImageDto {
         val image = imageRepository.findById(imageId) ?: throw NotFoundException("Not found image $imageId")
         imageRepository.delete(image)
+        return image.toImageDto()
+    }
+
+    override suspend fun getBanners(): List<ImageDto> {
+        return imageRepository.getAllByOwnerId(banner).map { it.toImageDto() }.toList()
+    }
+
+    override suspend fun upsertBanner(imageDto: ImageDto): ImageDto {
+        val image = imageDto.toImage().copy(ownerId = banner)
+        imageRepository.save(image)
         return image.toImageDto()
     }
 }

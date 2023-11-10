@@ -19,9 +19,11 @@ import com.sudo248.orderservice.repository.entity.payment.Payment;
 import com.sudo248.orderservice.repository.entity.payment.PaymentStatus;
 import com.sudo248.orderservice.service.payment.VnpayService;
 import com.sudo248.orderservice.service.payment.PaymentService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -34,6 +36,10 @@ import java.util.concurrent.Executors;
 
 @Service
 public class VnPayServiceImpl implements PaymentService, VnpayService {
+
+    @Value("${spring.profiles.default}")
+    private String profile;
+
     private final PaymentRepository paymentRepository;
 
     private final OrderRepository orderRepository;
@@ -59,6 +65,10 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
         this.cartService = cartService;
         this.notificationService = notificationService;
         this.productService = productService;
+    }
+
+    private boolean isDevProfile() {
+        return profile.equals("dev");
     }
 
     public ResponseEntity<BaseResponse<?>> pay(String userId, PaymentDto paymentDto) {
@@ -127,6 +137,12 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
             String vnp_SecureHash = VnPayConfig.hmacSHA512(VnPayConfig.vnp_HashSecret, hashData.toString());
             queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
             String paymentUrl = VnPayConfig.vnp_Url + "?" + queryUrl;
+
+            // if dev => create review in payment
+            if (isDevProfile()) {
+                upsertUserProduct(userId, order.get().getCartId());
+            }
+
             return BaseResponse.ok(toDto(payment, paymentUrl, paymentDto.getTimeZoneId()));
         });
     }
@@ -168,7 +184,7 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
     private void updateAmountPromotion(String promotionId) throws ApiException {
         final PutAmountPromotionDto promotionDto = new PutAmountPromotionDto(
                 promotionId,
-                1
+                -1
         );
         ResponseEntity<BaseResponse<?>> response = productService.putPromotionAmount(promotionDto);
         if (!response.hasBody()) {
@@ -183,6 +199,13 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
         var response = cartService.getProcessingCart(userId);
         if (response.getStatusCode() != HttpStatus.OK || !response.hasBody())
             throw new ApiException(HttpStatus.NOT_FOUND, "Not found processing cart for user" + userId);
+        return Objects.requireNonNull(response.getBody()).getData();
+    }
+
+    private List<CartProductDto> getCartProductByCartId(String cartId) throws ApiException {
+        var response = cartService.getCartProductByCartId(cartId);
+        if (response.getStatusCode() != HttpStatus.OK || !response.hasBody())
+            throw new ApiException(HttpStatus.NOT_FOUND, "Not found cart " + cartId);
         return Objects.requireNonNull(response.getBody()).getData();
     }
 
@@ -239,7 +262,7 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
     }
 
     @Override
-    public String returnVnPay(
+    public RedirectView returnVnPay(
             String vnp_TmnCode,
             long vnp_Amount,
             String vnp_BankCode,
@@ -271,9 +294,9 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
 
 //        if (signValue.equals(vnp_SecureHash)) {
         if ("00".equals(vnp_TransactionStatus)) {
-            return "payment_successful";
+            return new RedirectView(VnPayConfig.vnp_SuccessUrl);
         } else {
-            return "payment_fail";
+            return new RedirectView(VnPayConfig.vnp_FailUrl);
         }
 //        } else {
 //            return "payment_fail";
@@ -351,7 +374,12 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
 
                     if ("00".equals(responseCode)) {
                         payment.setStatus(PaymentStatus.SUCCESS);
-                        upsertUserProduct(payment.getOrder().getUserId());
+
+                        // if production => only review if pay successful
+                        if (!isDevProfile()) {
+                            upsertUserProduct(payment.getOrder().getUserId(), payment.getOrder().getCartId());
+                        }
+
                         notification = new Notification(
                                 null,
                                 "Thanh toán thành công",
@@ -403,18 +431,15 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
         }
     }
 
-    private void upsertUserProduct(String userId) {
+    private void upsertUserProduct(String userId, String cartId) {
         CompletableFuture.runAsync(() -> {
             try {
-                CartDto cart = getProcessingCart(userId);
-                CompletableFuture.allOf(cart.getCartProducts().stream().map((e) ->
-                        CompletableFuture.runAsync(() ->
-                                productService.upsertUserProduct(
-                                        userId,
-                                        new UpsertUserProductDto(e.getProduct().getProductId())
-                                )
+                getCartProductByCartId(cartId).stream().map((e) ->
+                        productService.upsertUserProduct(
+                                userId,
+                                new UpsertUserProductDto(e.getProductId())
                         )
-                ).toArray(CompletableFuture[]::new));
+                );
             } catch (ApiException e) {
                 e.printStackTrace();
                 throw new RuntimeException(e);
@@ -422,53 +447,3 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
         }, executor);
     }
 }
-
-/*import java.util.Arrays;
-        import java.util.List;
-        import java.util.concurrent.CompletableFuture;
-        import java.util.concurrent.ExecutionException;
-        import java.util.concurrent.TimeUnit;
-        import java.util.stream.Collectors;
-
-public class CompletableFuture9 {
-
-    public static void main(String[] args) throws InterruptedException, ExecutionException {
-
-        // A list of 100 web page links
-        List<String> webPageLinks = Arrays.asList( //
-                "https://www.google.com.vn/", "https://vnexpress.net/", "http://gpcoder.com/");
-
-        // Download contents of all the web pages asynchronously
-        List<CompletableFuture<String>> pageContentFutures = webPageLinks.stream()
-                .map(webPageLink -> downloadWebPage(webPageLink)).collect(Collectors.toList());
-
-        // Create a combined Future using allOf()
-        CompletableFuture<Void> allFutures = CompletableFuture
-                .allOf(pageContentFutures.toArray(new CompletableFuture[pageContentFutures.size()]));
-
-        // When all the Futures are completed, call `future.join()` to get their results
-        // and collect the results in a list
-        CompletableFuture<List<String>> allPageContentsFuture = allFutures.thenApply(v -> {
-            return pageContentFutures.stream().map(pageContentFuture -> pageContentFuture.join())
-                    .collect(Collectors.toList());
-        });
-
-        // Count the number of web pages having the "CompletableFuture" keyword.
-        CompletableFuture<Long> countFuture = allPageContentsFuture.thenApply(pageContents -> {
-            return pageContents.stream().filter(pageContent -> pageContent.contains("CompletableFuture")).count();
-        });
-
-        System.out.println("Number of Web Pages having CompletableFuture keyword: " + countFuture.get());
-    }
-
-    public static CompletableFuture<String> downloadWebPage(String pageLink) {
-        return CompletableFuture.supplyAsync(() -> {
-            System.out.println("Downloading: " + pageLink);
-            try {
-                TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            // Code to download and return the web page's content
-            return "CompletableFuture Completed";
-        });*/

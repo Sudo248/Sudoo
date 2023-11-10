@@ -3,10 +3,11 @@ package com.sudo248.orderservice.service.payment;
 
 import com.sudo248.domain.exception.ApiException;
 import com.sudo248.orderservice.controller.payment.dto.VnPayResponse;
+import org.springframework.web.servlet.view.RedirectView;
 
 public interface VnpayService {
 
-    String returnVnPay(
+    RedirectView returnVnPay(
             String vnp_TmnCode,
             long vnp_Amount,
             String vnp_BankCode,

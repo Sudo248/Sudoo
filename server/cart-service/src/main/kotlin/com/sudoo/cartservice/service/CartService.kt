@@ -5,6 +5,8 @@ import com.sudoo.cartservice.controller.dto.CartProductDto
 import com.sudoo.cartservice.controller.dto.UpsertCartProductDto
 import com.sudoo.cartservice.controller.dto.order.OrderCartDto
 import com.sudoo.cartservice.controller.dto.order.OrderCartProductDto
+import com.sudoo.cartservice.repository.entity.CartProduct
+import kotlinx.coroutines.flow.Flow
 
 
 interface CartService {
@@ -53,5 +55,7 @@ interface CartService {
      * Update active cart after checkout processing cart
      */
     suspend fun checkoutProcessingCart(userId: String)
+
+    suspend fun getCartProductsByCartId(cartId: String): Flow<CartProduct>
 
 }

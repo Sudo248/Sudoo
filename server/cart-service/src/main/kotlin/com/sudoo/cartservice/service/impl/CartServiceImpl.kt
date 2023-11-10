@@ -12,6 +12,8 @@ import com.sudoo.cartservice.service.ProductService
 import com.sudoo.domain.exception.NotFoundException
 import com.sudoo.domain.utils.IdentifyCreator
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import org.springframework.stereotype.Service
 
@@ -98,12 +100,11 @@ class CartServiceImpl(
         val cart = cartRepository.findById(cartId) ?: throw NotFoundException("Not found cart $cartId")
         val totalPrice = 0.0
         var totalAmount = 0
-        var cartProducts: List<CartProductDto> = ArrayList()
+        val cartProducts: List<CartProductDto> = getCartProducts(cartId)
         if (cart.cartProducts.isNotEmpty()) {
             for (cartProduct in cart.cartProducts) {
                 totalAmount += cartProduct.quantity
             }
-            cartProducts = getCartProducts(cartId)
         }
         return CartDto(
             userId = cart.userId,
@@ -257,8 +258,6 @@ class CartServiceImpl(
             orderCartDto.totalAmount += cartProduct.quantity
             orderCartDto.totalPrice += (cartProduct.product?.price ?: 0.0f) * (cartProduct.quantity)
         }
-
-
         return orderCartDto
     }
 
@@ -303,7 +302,7 @@ class CartServiceImpl(
         }
     }
 
-    override suspend fun checkoutProcessingCart(userId: String) {
+    override suspend fun checkoutProcessingCart(userId: String) = coroutineScope{
         val processingCart = try {
             cartRepository.findCartByUserIdAndStatus(userId, CartStatus.PROCESSING.value).toList()[0]
         } catch (e: Exception) {
@@ -314,10 +313,6 @@ class CartServiceImpl(
         processingCart.status = CartStatus.COMPLETED.value
         cartRepository.save(processingCart)
 
-        val productIdsInProcessingCart =
-            cartProductRepository.findCartProductByCartId(processingCart.cartId).toList().map { it.productId }
-
-
         val activeCart = try {
             cartRepository.findCartByUserIdAndStatus(userId, CartStatus.ACTIVE.value).toList()[0]
         } catch (e: Exception) {
@@ -325,14 +320,15 @@ class CartServiceImpl(
             throw e
         }
 
-        for (productId in productIdsInProcessingCart) {
-            val cartProductInActiveCart =
-                cartProductRepository.findCartProductByCartIdAndProductId(activeCart.cartId, productId)
+        cartProductRepository.findCartProductByCartId(processingCart.cartId).map {
+            launch {
+                cartProductRepository.deleteCartProductByCartIdAndProductId(activeCart.cartId, it.productId)
+            }
+        }.toList().joinAll()
+    }
 
-            cartProductInActiveCart?.cartProductId?.let { cartProductRepository.deleteById(it) }
-        }
-
-
+    override suspend fun getCartProductsByCartId(cartId: String): Flow<CartProduct> {
+        return cartProductRepository.findCartProductByCartId(cartId)
     }
 
 }

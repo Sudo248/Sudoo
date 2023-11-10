@@ -1,6 +1,7 @@
 package com.sudoo.storageservice.controller;
 
 import com.sudo248.domain.base.BaseResponse;
+import com.sudoo.storageservice.config.StorageSource;
 import com.sudoo.storageservice.service.ImageService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,6 @@ public class ImageController {
             @RequestParam(value = "image") MultipartFile image,
             @RequestParam(value = "source", required = false, defaultValue = "cloudinary") String source
     ) {
-        return imageService.storeImage(image, source);
+        return imageService.storeImage(image, StorageSource.valueOf(source));
     }
 }

@@ -2,8 +2,8 @@ FROM openjdk:11-jre-slim
 
 WORKDIR /app
 
-COPY target/image-service-0.0.1.jar image-service.jar
+COPY target/storage-service-0.0.1.jar storage-service.jar
 
 EXPOSE 8085
 
-ENTRYPOINT ["java","-jar", "/app/image-service.jar"]
+ENTRYPOINT ["java","-jar", "/app/storage-service.jar"]
