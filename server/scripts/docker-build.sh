@@ -1,13 +1,13 @@
 strings=(
-  registry:0.0.1
-  api-gateway:0.0.1
-  auth-service:0.0.1
-  product-service:0.0.1
-  user-service:0.0.1
-  cart-service:0.0.1
-  order-service:0.0.1
-  storage-service:0.0.1
-  notification-service:0.0.1
+  sudoo-registry
+  sudoo-api-gateway
+  sudoo-auth-service
+  sudoo-product-service
+  sudoo-user-service
+  sudoo-cart-service
+  sudoo-order-service
+  sudoo-storage-service
+  sudoo-notification-service
 )
 admin="sudo248dev/"
 # shellcheck disable=SC2046
