@@ -1,12 +1,5 @@
 version: '3'
 services:
-  nginx-proxy:
-    image: nginx
-    container_name: nginx-proxy
-    ports:
-      - "80:80"
-      - "443:443"
-
   db-service:
     platform: linux/x86_64
     image: mysql:8.0.32-debian
@@ -38,7 +31,7 @@ services:
       - "6379:6379"
 
   registry:
-    image: sudo248dev/registry:0.0.1
+    image: sudo248dev/registry
     container_name: registry
     hostname: registry
     networks:
@@ -47,7 +40,7 @@ services:
       - "8761:8761"
 
   api-gateway:
-    image: sudo248dev/api-gateway:0.0.1
+    image: sudo248dev/api-gateway
     container_name: api-gateway
     hostname: api-gateway
     depends_on:
@@ -58,7 +51,7 @@ services:
       - "9030:9030"
 
   storge-service:
-    image: sudo248dev/storage-service:0.0.1
+    image: sudo248dev/storage-service
     container_name: storage-service
     hostname: storage-service
     depends_on:
@@ -69,7 +62,7 @@ services:
       - ./storage-service/uploads/:/app/image-service/uploads/
 
   auth-service:
-    image: sudo248dev/auth-service:0.0.1
+    image: sudo248dev/auth-service
     container_name: auth-service
     hostname: auth-service
     depends_on:
@@ -80,7 +73,7 @@ services:
       - sudoo-network
 
   product-service:
-    image: sudo248dev/product-service:0.0.1
+    image: sudo248dev/product-service
     container_name: product-service
     hostname: product-service
     depends_on:
@@ -90,7 +83,7 @@ services:
       - sudoo-network
 
   user-service:
-    image: sudo248dev/user-service:0.0.1
+    image: sudo248dev/user-service
     container_name: user-service
     hostname: user-service
     depends_on:
@@ -100,7 +93,7 @@ services:
       - sudoo-network
 
   cart-service:
-    image: sudo248dev/cart-service:0.0.1
+    image: sudo248dev/cart-service
     container_name: cart-service
     hostname: cart-service
     depends_on:
@@ -110,7 +103,7 @@ services:
       - sudoo-network
 
   order-service:
-    image: sudo248dev/order-service:0.0.1
+    image: sudo248dev/order-service
     container_name: order-service
     hostname: order-service
     depends_on:
@@ -120,7 +113,7 @@ services:
       - sudoo-network
 
   notification-service:
-    image: sudo248dev/notification-service:0.0.1
+    image: sudo248dev/notification-service
     container_name: notification-service
     hostname: notification-service
     depends_on:

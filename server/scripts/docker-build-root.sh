@@ -6,8 +6,8 @@ docker rmi -f root nginx
 
 
 #build root image
-docker build -t "$admin/sudoo:0.0.1" .
+docker build -t "$root" .
 
 #build nginx
-docker build -t "$admin/sudoo-nginx:0.0.1" ./nginx
+docker build -t "$nginx" ./nginx
 
