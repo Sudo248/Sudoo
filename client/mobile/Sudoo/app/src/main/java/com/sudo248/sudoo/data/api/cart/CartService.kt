@@ -34,7 +34,7 @@ interface CartService {
     ): Response<BaseResponse<CartDto>>
 
     @GET("active/count-item")
-    suspend fun getItemInCart(): Response<BaseResponse<Int>>
+    suspend fun countItemInCart(): Response<BaseResponse<Int>>
 
     //------------------------------------
     @GET("active")

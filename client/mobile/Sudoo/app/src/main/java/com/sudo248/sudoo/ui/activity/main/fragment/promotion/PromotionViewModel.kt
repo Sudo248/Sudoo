@@ -26,18 +26,27 @@ class PromotionViewModel @Inject constructor(
     val promotions: LiveData<List<Promotion>> = _promotions
 
     var selectedPromotion: Promotion? = null
+        set(value) {
+            selectedPromotionId = value?.promotionId
+            field = value
+        }
+
+    var selectedPromotionId: String? = null
 
     var error: SingleEvent<String?> = SingleEvent(null)
 
-    init {
+    fun getPromotions() = launch{
+        setState(UiState.LOADING)
         getAllPromotion()
     }
 
     fun getAllPromotion() = launch {
-        emitState(UiState.LOADING)
         promotionRepository.getAllPromotion()
-            .onSuccess {
-                _promotions.postValue(it)
+            .onSuccess { promotions ->
+                selectedPromotionId?.let {  promotionId ->
+                    selectedPromotion = promotions.first { it.promotionId == promotionId }
+                }
+                _promotions.postValue(promotions)
             }
             .onError {
                 error = SingleEvent(it.message)

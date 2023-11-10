@@ -31,6 +31,7 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
                     title = "Xóa khỏi giỏ hàng",
                     description = "Bạn có chắc chắn muốn xóa sản phẩm này không?",
                     positive = "OK",
+                    negative = "Cancel",
                     onPositive = {
                         viewModel.deleteItemFromCart(addSupplierProduct)
                     }
@@ -40,6 +41,7 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
     }
 
     override fun initView() {
+        binding.viewModel = viewModel
         binding.rcvItems.adapter = adapter
         binding.refresh.setOnRefreshListener {
             viewModel.getActiveCart()

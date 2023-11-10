@@ -9,6 +9,7 @@ import com.sudo248.base_android.event.SingleEvent
 import com.sudo248.base_android.ktx.bindUiState
 import com.sudo248.base_android.ktx.onError
 import com.sudo248.base_android.ktx.onSuccess
+import com.sudo248.sudoo.R
 import com.sudo248.sudoo.domain.entity.cart.AddCartProduct
 import com.sudo248.sudoo.domain.entity.discovery.Offset
 import com.sudo248.sudoo.domain.entity.discovery.Product
@@ -103,14 +104,13 @@ class ProductDetailViewModel @Inject constructor(
     }
 
     fun countItemInCart() = launch {
-        cartRepository.getItemInCart()
+        cartRepository.countItemInCart()
             .onSuccess {
                 viewController?.setBadgeCart(it)
             }
             .onError {
                 error = SingleEvent(it.message)
             }.bindUiState(_uiState)
-
     }
 
     fun addProductToCart() = launch {
@@ -118,6 +118,7 @@ class ProductDetailViewModel @Inject constructor(
             setState(UiState.LOADING)
             cartRepository.addProductToActiveCart(cartProduct)
                 .onSuccess { cart ->
+                    viewController?.toast(R.string.add_to_cart_success)
                     viewController?.setBadgeCart(cart.totalAmount)
                 }
                 .onError {

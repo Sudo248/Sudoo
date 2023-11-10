@@ -8,6 +8,6 @@ data class PaymentRequest(
     val orderId: String,
     val orderType: String = "100000",
     val ipAddress: String? = null,
-    val timeZone: TimeZone? = null,
+    val timeZoneId: String? = null,
     val amount: Double = 0.0
 )

@@ -13,6 +13,7 @@ import com.sudo248.sudoo.ui.uimodel.adapter.loadImage
 import com.sudo248.sudoo.ui.util.Utils
 
 class PromotionAdapter(
+    private val initSelectedPromotionId: String? = null,
     private val onItemSelected: (Promotion) -> Unit
 ) : BaseListAdapter<Promotion, PromotionAdapter.ViewHolder>() {
 
@@ -28,12 +29,17 @@ class PromotionAdapter(
                 txtReducePrice.text = Utils.formatVnCurrency(item.value)
                 txtRemain.text = itemView.context.getString(R.string.remain, "${item.totalAmount}")
             }
+            initSelectedPromotionId?.let {
+                if (item.promotionId == initSelectedPromotionId) {
+                    setSelectedItem()
+                }
+            }
             itemView.setOnClickListener {
                 if (!it.isSelected) {
                     setSelectedItem()
                     onItemSelected.invoke(item)
                 }
-                currentSelectedPosition = adapterPosition
+                currentSelectedPosition = bindingAdapterPosition
             }
         }
 

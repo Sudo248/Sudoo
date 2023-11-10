@@ -1,5 +1,6 @@
 package com.sudo248.sudoo.ui.activity.main.fragment.order
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavDirections
@@ -48,6 +49,9 @@ class OrderViewModel @Inject constructor(
 
     var error: SingleEvent<String?> = SingleEvent(null)
 
+    var currentSelectedPromotionId: String? = null
+        private set
+
 
     fun onSelectPaymentType(type: PaymentType) {
         _currentPaymentType.postValue(type)
@@ -70,6 +74,7 @@ class OrderViewModel @Inject constructor(
     }
 
     fun createOrder(cartId: String) = launch {
+        if (order.value != null) return@launch
         emitState(UiState.LOADING)
         orderRepository.createOrder(cartId)
             .onSuccess {
@@ -84,18 +89,21 @@ class OrderViewModel @Inject constructor(
     }
 
     fun applyPromotion(promotion: Promotion) = launch {
-        order.value?.let {
-            emitState(UiState.LOADING)
-            orderRepository.updatePromotion(
-                it.orderId,
-                UpsertOrderPromotion(promotionId = promotion.promotionId)
-            )
-                .onSuccess { upsertOrderPromotion ->
-                    _promotion.postValue(promotion)
-                    _finalPrice.postValue(upsertOrderPromotion.finalPrice)
-                }.onError { ex ->
-                    error = SingleEvent(ex.message)
-                }.bindUiState(_uiState)
+        if (currentSelectedPromotionId != promotion.promotionId) {
+            currentSelectedPromotionId = promotion.promotionId
+            order.value?.let {
+                emitState(UiState.LOADING)
+                orderRepository.updatePromotion(
+                    it.orderId,
+                    UpsertOrderPromotion(promotionId = promotion.promotionId)
+                )
+                    .onSuccess { upsertOrderPromotion ->
+                        _promotion.postValue(promotion)
+                        _finalPrice.postValue(upsertOrderPromotion.finalPrice)
+                    }.onError { ex ->
+                        error = SingleEvent(ex.message)
+                    }.bindUiState(_uiState)
+            }
         }
     }
 
@@ -141,7 +149,10 @@ class OrderViewModel @Inject constructor(
         }
     }
 
-    fun back() {
-
+    fun back() = launch {
+        order.value?.let {
+            orderRepository.cancelOrderById(it.orderId)
+        }
+        navigator.back()
     }
 }

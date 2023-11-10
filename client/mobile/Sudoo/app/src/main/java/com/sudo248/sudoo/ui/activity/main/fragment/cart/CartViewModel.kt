@@ -1,5 +1,6 @@
 package com.sudo248.sudoo.ui.activity.main.fragment.cart
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavDirections

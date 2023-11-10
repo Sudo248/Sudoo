@@ -116,4 +116,7 @@
     <string name="contact">Liên hệ</string>
     <string name="add_to_cart">Thêm vào giỏ</string>
     <string name="continue_order">Tiếp tục</string>
+    <string name="add_to_cart_success">Đã thêm vào giỏ</string>
+    <string name="payment_success">Thanh toán thành công</string>
+    <string name="payment_fail">Thanh toán thất bại</string>
 </resources>

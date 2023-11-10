@@ -48,12 +48,15 @@ object Constants {
 
         //Người dùng nhấn back từ trang thanh toán thành công khi thanh toán qua thẻ khi url
         // có chứa: cancel.sdk.merchantbackapp
+        //Để có action này trả về từ sdk, từ đầu return url cần redirect về URL: http://cancel.sdk.merchantbackapp
         const val ACTION_WEB_BACK = "WebBackAction"
 
-        //giao dịch thanh toán bị failed
+        // kết quả thanh toán không thành công từ phương thức ATM,Tài khoản, thẻ quốc tế
+        // Để có action này trả về từ sdk, từ đầu return url cần redirect về URL: http://fail.sdk.merchantbackapp
         const val ACTION_FAILED = "FaildBackAction"
 
-        //thanh toán thành công trên webview
+        // kết quả thanh toán thành công từ phương thức ATM,Tài khoản, thẻ quốc tế hoặc scanQR.
+        // Để có action này trả về từ sdk, từ đầu return url cần redirect về URL: http://success.sdk.merchantbackapp
         const val ACTION_SUCCESS = "SuccessBackAction"
     }
 

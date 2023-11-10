@@ -6,6 +6,7 @@ import com.sudo248.base_android.base.BaseFragment
 import com.sudo248.base_android.ktx.gone
 import com.sudo248.base_android.utils.DialogUtils
 import com.sudo248.sudoo.databinding.FragmentPromotionBinding
+import com.sudo248.sudoo.ui.activity.main.MainActivity
 import com.sudo248.sudoo.ui.activity.main.adapter.PromotionAdapter
 import com.sudo248.sudoo.ui.ktx.showErrorDialog
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,15 +18,17 @@ class PromotionFragment : BaseFragment<FragmentPromotionBinding, PromotionViewMo
     override val enableStateScreen: Boolean
         get() = true
 
-    private val adapter: PromotionAdapter by lazy {
-        PromotionAdapter{
-            viewModel.selectedPromotion = it
-        }
-    }
+    private lateinit var adapter: PromotionAdapter
 
     override fun initView() {
+        viewModel.selectedPromotionId = args.selectedPromotionId
         if (!args.forChoosePromotion) {
             binding.txtAgree.gone()
+        } else {
+            (activity as MainActivity).goneBottomNav()
+        }
+        adapter = PromotionAdapter(viewModel.selectedPromotionId) {
+            viewModel.selectedPromotion = it
         }
         binding.rcvPromotion.adapter = adapter
         binding.txtAgree.setOnClickListener {
@@ -34,6 +37,7 @@ class PromotionFragment : BaseFragment<FragmentPromotionBinding, PromotionViewMo
         binding.refresh.setOnRefreshListener {
             viewModel.getAllPromotion()
         }
+        viewModel.getPromotions()
     }
 
     override fun observer() {
