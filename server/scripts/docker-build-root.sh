@@ -1,6 +1,6 @@
 admin="sudo248dev"
-root="$admin/sudoo:0.0.1"
-nginx="$admin/sudoo-nginx:0.0.1"
+root="$admin/sudoo"
+nginx="$admin/sudoo-nginx"
 
 docker rmi -f root nginx
 
