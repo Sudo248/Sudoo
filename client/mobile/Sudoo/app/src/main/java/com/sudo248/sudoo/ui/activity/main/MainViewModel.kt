@@ -14,6 +14,7 @@ import com.sudo248.sudoo.domain.common.Constants
 import com.sudo248.sudoo.domain.repository.CartRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.lang.NullPointerException
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -88,11 +89,10 @@ class MainViewModel @Inject constructor(
     }
 
     fun getItemInCart() = launch {
-        cartRepository.countItemInCart()
+        cartRepository.countItemInActiveCart()
             .onSuccess {
                 _countCartItem.postValue(it)
-            }
-            .onError {
+            }.onError {
                 _countCartItem.postValue(0)
             }
     }
