@@ -5,5 +5,20 @@ public enum OrderStatus {
     TAKE_ORDER,
     SHIPPING,
     RECEIVED,
-    CANCELED
+    CANCELED;
+
+    public static OrderStatus fromValue(String value) {
+        switch (value.toLowerCase()) {
+            case "prepare":
+                return PREPARE;
+            case "take_order":
+                return TAKE_ORDER;
+            case "shipping":
+                return SHIPPING;
+            case "received":
+                return RECEIVED;
+            default:
+                return CANCELED;
+        }
+    }
 }

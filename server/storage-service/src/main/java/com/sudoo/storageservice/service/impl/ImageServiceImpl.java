@@ -2,9 +2,12 @@ package com.sudoo.storageservice.service.impl;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import com.flickr4java.flickr.Flickr;
-import com.flickr4java.flickr.REST;
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.BlobId;
+import com.google.cloud.storage.BlobInfo;
+import com.google.cloud.storage.Storage;
 import com.sudo248.domain.base.BaseResponse;
+import com.sudoo.storageservice.config.StorageSource;
 import com.sudoo.storageservice.controller.dto.ImageDto;
 import com.sudoo.storageservice.service.ImageService;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,39 +31,43 @@ public class ImageServiceImpl implements ImageService {
     @Value("${store.image.path}")
     private String storeImagePath;
 
-    @Value("${flickr.apiKey}")
-    private String flickrApiKey;
+    @Value("${gcp.bucket.name}")
+    private String bucketName;
 
-    @Value("${flickr.secret}")
-    private String flickrSecret;
+    @Value("${gcp.bucket.image.dir}")
+    private String imageDir;
 
     private final Cloudinary cloudinary;
 
-    public ImageServiceImpl(Cloudinary cloudinary) {
+    private final Storage storage;
+
+    public ImageServiceImpl(Cloudinary cloudinary, Storage storage) {
         this.cloudinary = cloudinary;
+        this.storage = storage;
     }
 
     @Override
-    public ResponseEntity<BaseResponse<?>> storeImage(MultipartFile image, String source) {
+    public ResponseEntity<BaseResponse<?>> storeImage(MultipartFile image, StorageSource source) {
         return handleException(() -> {
             String imageName = image.getOriginalFilename();
             try {
-                if (source.equals("cloudinary")) {
-                    imageName = uploadImageCloudinary(image);
-                } else {
-                    imageName = storeImageOnServer(image);
+                switch (source) {
+                    case GOOGLE_STORAGE:
+                        imageName = uploadImageToGoogleCloud(image);
+                        break;
+                    case CLOUDINARY:
+                        imageName = uploadImageCloudinary(image);
+                        break;
+                    default:
+                        imageName = storeImageOnServer(image);
                 }
+
             } catch (IOException ioe) {
                 throw new IOException("Could not save image file: " + imageName, ioe);
             }
             ImageDto imageDto = new ImageDto(imageName);
             return BaseResponse.ok(imageDto);
         });
-    }
-
-    private String uploadImageToFlickr() {
-        Flickr flickr = new Flickr(flickrApiKey, flickrSecret, new REST());
-        return "";
     }
 
     private String storeImageOnServer(MultipartFile image) throws IOException {
@@ -79,6 +86,14 @@ public class ImageServiceImpl implements ImageService {
                 "folder","Soc"
         ));
         return (String)result.get("secure_url");
+    }
+
+    private String uploadImageToGoogleCloud(MultipartFile image) throws IOException {
+        String imageName = imageDir + "/" + System.currentTimeMillis() + "_" + getImageName(Objects.requireNonNull(image.getOriginalFilename()));
+        BlobId blobId = BlobId.of(bucketName, imageName);
+        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(image.getContentType()).build();
+        Blob blob = storage.create(blobInfo, image.getBytes());
+        return "https://storage.googleapis.com/" + bucketName + "/" + imageName;
     }
 
     private String getImageName(String originalFileName) {

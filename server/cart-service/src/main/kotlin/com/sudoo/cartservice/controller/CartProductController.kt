@@ -29,4 +29,10 @@ class CartProductController(val cartService: CartService) : BaseController() {
         cartService.deleteCartProduct(cartId, cartProductId)
     }
 
+    @GetMapping("/internal/{cartId}/products")
+    suspend fun getCartProductByCartId(
+        @PathVariable("cartId") cartId: String,
+    ): ResponseEntity<BaseResponse<*>> = handle {
+        cartService.getCartProductsByCartId(cartId)
+    }
 }

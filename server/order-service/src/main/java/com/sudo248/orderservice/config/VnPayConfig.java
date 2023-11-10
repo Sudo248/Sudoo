@@ -19,7 +19,13 @@ public class VnPayConfig {
     public static final String vnp_CurrCode = "VND";
     public static final String vnp_Locale = "vn";
 
-    public static final String vnp_ReturnUrl = "https://sudo248.github.io/SOC-Service-oriented/hdv/payment_successful.html";
+    public static final String vnp_SuccessUrl = "http://success.sdk.merchantbackapp/";
+
+    public static final String vnp_FailUrl = "http://fail.sdk.merchantbackapp/";
+
+    public static final String vnp_ReturnUrl = "http://success.sdk.merchantbackapp/";
+//    public static final String vnp_ReturnUrl = "http://fail.sdk.merchantbackapp/";
+//    public static final String vnp_ReturnUrl = "https://sudo248.github.io/SOC-Service-oriented/hdv/payment_successful.html";
 //    public static final String vnp_ReturnUrl = "https://sudo.eastasia.cloudapp.azure.com/api/v1/payment/vnpay/return-vnpay";
 
     public static String hashAllFields(Map fields) {

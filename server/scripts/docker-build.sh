@@ -1,26 +1,22 @@
 strings=(
-  soc:0.0.1
-  soc-registry:0.0.1
+  registry:0.0.1
   api-gateway:0.0.1
   auth-service:0.0.1
-  discovery-service:0.0.1
-  payment-service:0.0.1
+  product-service:0.0.1
   user-service:0.0.1
   cart-service:0.0.1
-  invoice-service:0.0.1
-  promotion-service:0.0.1
-  image-service:0.0.1
+  order-service:0.0.1
+  storage-service:0.0.1
   notification-service:0.0.1
-  chat-service:0.0.1
 )
 admin="sudo248dev/"
 # shellcheck disable=SC2046
 docker rm -f $(docker container ps -a -q)
+
 for i in "${strings[@]}"; do
   docker rmi "$admin$i"
 done
 
-docker build -t "${admin}soc:0.0.1" .
 count=0
 for i in "${strings[@]}"; do
   image="${admin}$i"

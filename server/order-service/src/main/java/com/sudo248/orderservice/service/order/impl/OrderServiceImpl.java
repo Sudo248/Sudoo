@@ -22,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -64,8 +65,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDto> getOrdersByUserId(String userId) throws ApiException {
-        return orderRepository.getOrdersByUserId(userId).stream().map(
+    public List<OrderDto> getOrdersByUserId(String userId, String statusValue) throws ApiException {
+        List<Order> orders;
+        if (statusValue.isBlank()) {
+            orders = orderRepository.getOrdersByUserId(userId);
+        } else {
+            orders = orderRepository.getOrdersByUserIdAndStatus(userId, OrderStatus.fromValue(statusValue));
+        }
+        return orders.stream().map(
                 (e) -> {
                     try {
                         return toDto(e);
@@ -88,7 +95,8 @@ public class OrderServiceImpl implements OrderService {
                 .orderId(Utils.createIdOrElse(upsertOrderDto.getOrderId()))
                 .status(OrderStatus.PREPARE)
                 .cartId(upsertOrderDto.getCartId())
-                .userId(userId);
+                .userId(userId)
+                .createdAt(LocalDateTime.now());
 
         CartDto cart = getProcessingCart(userId);
         UserDto user = getUserById(userId);
@@ -124,6 +132,7 @@ public class OrderServiceImpl implements OrderService {
                 .totalShipmentPrice(order.getTotalShipmentPrice())
                 .totalPromotionPrice(order.getTotalPromotionPrice())
                 .finalPrice(order.getFinalPrice())
+                .createdAt(order.getCreatedAt())
                 .orderSuppliers(order.getOrderSuppliers().stream().map(this::toOrderSupplierDto).collect(Collectors.toList()))
                 .build();
 
@@ -136,9 +145,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public boolean cancelOrderByUser(String orderId) {
-        final Order order = orderRepository.getReferenceById(orderId);
-        cartService.deleteProcessingCart(order.getUserId());
+    public boolean cancelOrderByUser(String orderId) throws ApiException {
+        final Optional<Order> order = orderRepository.findById(orderId);
+        if (order.isEmpty()) throw new ApiException(HttpStatus.NOT_FOUND, "Not found order " + orderId);
+        cartService.deleteProcessingCart(order.get().getUserId());
         orderRepository.deleteById(orderId);
         return false;
     }
@@ -157,6 +167,7 @@ public class OrderServiceImpl implements OrderService {
                 .totalShipmentPrice(order.getTotalShipmentPrice())
                 .totalPromotionPrice(order.getTotalPromotionPrice())
                 .finalPrice(order.getFinalPrice())
+                .createdAt(order.getCreatedAt())
                 .orderSuppliers(order.getOrderSuppliers().stream().map(this::toOrderSupplierDto).collect(Collectors.toList()))
                 .build();
 
@@ -205,7 +216,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public UpsertOrderPromotionDto updateOrderPromotion(String orderId, UpsertOrderPromotionDto upsertOrderPromotionDto) throws ApiException {
         PromotionDto promotionDto = getPromotionById(upsertOrderPromotionDto.getPromotionId());
-        Order order = orderRepository.getReferenceById(orderId);
+        Optional<Order> _order = orderRepository.findById(orderId);
+        if (_order.isEmpty()) throw new ApiException(HttpStatus.NOT_FOUND, "Not found order" + orderId);
+        final Order order = _order.get();
         if (StringUtils.isNullOrEmpty(upsertOrderPromotionDto.getOrderSupplierId())) {
             order.setPromotionId(upsertOrderPromotionDto.getPromotionId());
         } else {

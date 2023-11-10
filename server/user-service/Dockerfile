@@ -1,4 +1,4 @@
-FROM sudo248dev/soc:0.0.1
+FROM sudo248dev/sudoo:0.0.1
 
 WORKDIR /app
 

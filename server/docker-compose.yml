@@ -1,5 +1,12 @@
 version: '3'
 services:
+  nginx-proxy:
+    image: nginx
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+
   db-service:
     platform: linux/x86_64
     image: mysql:8.0.32-debian
@@ -50,16 +57,16 @@ services:
     ports:
       - "9030:9030"
 
-  image-service:
-    image: sudo248dev/image-service:0.0.1
-    container_name: image-service
-    hostname: image-service
+  storge-service:
+    image: sudo248dev/storage-service:0.0.1
+    container_name: storage-service
+    hostname: storage-service
     depends_on:
       - registry
     networks:
       - sudoo-network
     volumes:
-      - ./image-service/uploads/images:/app/image-service/uploads/images
+      - ./storage-service/uploads/:/app/image-service/uploads/
 
   auth-service:
     image: sudo248dev/auth-service:0.0.1
@@ -76,16 +83,6 @@ services:
     image: sudo248dev/product-service:0.0.1
     container_name: product-service
     hostname: product-service
-    depends_on:
-      - registry
-      - db-service
-    networks:
-      - sudoo-network
-
-  payment-service:
-    image: sudo248dev/payment-service:0.0.1
-    container_name: payment-service
-    hostname: payment-service
     depends_on:
       - registry
       - db-service
@@ -112,20 +109,10 @@ services:
     networks:
       - sudoo-network
 
-  invoice-service:
-    image: sudo248dev/invoice-service:0.0.1
-    container_name: invoice-service
-    hostname: invoice-service
-    depends_on:
-      - registry
-      - db-service
-    networks:
-      - sudoo-network
-
-  promotion-service:
-    image: sudo248dev/promotion-service:0.0.1
-    container_name: promotion-service
-    hostname: promotion-service
+  order-service:
+    image: sudo248dev/order-service:0.0.1
+    container_name: order-service
+    hostname: order-service
     depends_on:
       - registry
       - db-service
@@ -136,15 +123,6 @@ services:
     image: sudo248dev/notification-service:0.0.1
     container_name: notification-service
     hostname: notification-service
-    depends_on:
-      - registry
-    networks:
-      - sudoo-network
-
-  chat-service:
-    image: sudo248dev/chat-service:0.0.1
-    container_name: chat-service
-    hostname: chat-service
     depends_on:
       - registry
     networks:

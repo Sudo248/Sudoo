@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 @RequestMapping("/payment/vnpay")
@@ -19,7 +20,7 @@ public class VnPayReturnController {
     }
 
     @GetMapping("/return-vnpay")
-    public String returnVnPay(
+    public RedirectView returnVnPay(
         @RequestParam(value = "vnp_TmnCode", required = false) String vnp_TmnCode,
         @RequestParam(value = "vnp_Amount", required = false) long vnp_Amount,
         @RequestParam(value = "vnp_BankCode", required = false) String vnp_BankCode,
