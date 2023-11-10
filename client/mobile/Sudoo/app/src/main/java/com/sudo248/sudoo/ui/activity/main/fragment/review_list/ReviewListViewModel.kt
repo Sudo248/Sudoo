@@ -36,6 +36,8 @@ class ReviewListViewModel @Inject constructor(
 
     private var currentTab: ReviewListTab = ReviewListTab.NOT_YET_REVIEW
 
+    var isAfterPaymentArg = false
+
     val reviewedAdapter: ReviewAdapter = ReviewAdapter(
         ReviewListTab.REVIEWED,
         onLoadMore = object : LoadMoreListener {
@@ -130,6 +132,10 @@ class ReviewListViewModel @Inject constructor(
     }
 
     fun back() {
-        navigator.back()
+        if (isAfterPaymentArg) {
+            navigator.navigateOffAll(ReviewListFragmentDirections.actionReviewListFragmentToDiscoveryFragment())
+        } else {
+            navigator.back()
+        }
     }
 }

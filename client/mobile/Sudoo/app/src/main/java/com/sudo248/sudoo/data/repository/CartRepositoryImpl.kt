@@ -32,8 +32,8 @@ class CartRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getItemInCart(): DataState<Int, Exception> = stateOn(ioDispatcher) {
-        val response = handleResponse(cartService.getItemInCart())
+    override suspend fun countItemInCart(): DataState<Int, Exception> = stateOn(ioDispatcher) {
+        val response = handleResponse(cartService.countItemInCart())
         if (response.isSuccess) {
             response.data()
         } else {

@@ -93,6 +93,11 @@
             android:name="forChoosePromotion"
             android:defaultValue="false"
             app:argType="boolean" />
+        <argument
+            android:name="selectedPromotionId"
+            android:defaultValue="null"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/chatFragment"
@@ -121,6 +126,14 @@
         <action
             android:id="@+id/action_reviewListFragment_to_reviewFragment"
             app:destination="@id/reviewFragment" />
+        <action
+            android:id="@+id/action_reviewListFragment_to_discoveryFragment"
+            app:destination="@id/discoveryFragment" />
+
+        <argument
+            android:name="isAfterPayment"
+            android:defaultValue="false"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/orderFragment"
@@ -134,5 +147,11 @@
         <action
             android:id="@+id/action_orderFragment_to_promotionFragment"
             app:destination="@id/promotionFragment" />
+        <action
+            android:id="@+id/action_orderFragment_to_reviewListFragment"
+            app:destination="@id/reviewListFragment" />
+        <action
+            android:id="@+id/action_orderFragment_to_discoveryFragment"
+            app:destination="@id/discoveryFragment" />
     </fragment>
 </navigation>

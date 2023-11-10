@@ -26,7 +26,7 @@ class PaymentRepositoryImpl @Inject constructor(
             orderId = payment.orderId,
             orderType = payment.orderType,
             amount = payment.amount,
-            timeZone = TimeZone.getDefault()
+            timeZoneId = TimeZone.getDefault().id
         )
         val response = handleResponse(paymentService.pay(request))
         if (response.isSuccess) {

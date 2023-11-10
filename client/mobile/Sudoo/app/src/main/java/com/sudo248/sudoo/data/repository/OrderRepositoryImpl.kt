@@ -59,4 +59,15 @@ class OrderRepositoryImpl @Inject constructor(
             throw response.error().errorBody()
         }
     }
+
+    override suspend fun cancelOrderById(orderId: String): DataState<Boolean, Exception> = stateOn(ioDispatcher) {
+        val response = handleResponse(
+            orderService.cancelOrderById(orderId)
+        )
+        if (response.isSuccess) {
+            true
+        } else {
+            throw response.error().errorBody()
+        }
+    }
 }

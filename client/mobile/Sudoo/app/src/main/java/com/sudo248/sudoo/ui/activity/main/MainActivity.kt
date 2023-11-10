@@ -67,7 +67,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), ViewCon
         R.id.searchFragment,
         R.id.chatFragment,
         R.id.reviewListFragment,
-        R.id.reviewFragment
+        R.id.reviewFragment,
+        R.id.orderFragment
     )
 
     private val listener = NavController.OnDestinationChangedListener { _, destination, _ ->
@@ -134,13 +135,13 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), ViewCon
         }
     }
 
-    private fun showBottomNav() {
+    fun showBottomNav() {
         if (binding.bottomNav.isGone) {
             binding.bottomNav.visible()
         }
     }
 
-    private fun goneBottomNav() {
+    fun goneBottomNav() {
         if (binding.bottomNav.isVisible) {
             binding.bottomNav.gone()
         }

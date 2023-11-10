@@ -3,6 +3,7 @@ package com.sudo248.sudoo.ui.activity.main.fragment.product_detail
 import android.content.Intent
 import android.graphics.Paint
 import android.net.Uri
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -13,10 +14,8 @@ import com.facebook.FacebookException
 import com.facebook.share.Sharer
 import com.facebook.share.model.ShareLinkContent
 import com.google.android.material.badge.BadgeDrawable
-import com.google.android.material.badge.BadgeDrawable.BadgeGravity
 import com.google.android.material.badge.BadgeUtils
 import com.sudo248.base_android.base.BaseFragment
-import com.sudo248.base_android.ktx.gone
 import com.sudo248.base_android.ktx.invisible
 import com.sudo248.base_android.ktx.visible
 import com.sudo248.base_android.utils.DialogUtils
@@ -197,5 +196,9 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
     override fun openContact(url: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         startActivity(intent)
+    }
+
+    override fun toast(id: Int, duration: Int) {
+        Toast.makeText(requireContext(), getString(id), duration).show()
     }
 }

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -22,7 +23,6 @@ import com.sudo248.sudoo.domain.entity.order.Order
 import com.sudo248.sudoo.domain.entity.promotion.Promotion
 import com.sudo248.sudoo.ui.activity.main.MainActivity
 import com.sudo248.sudoo.ui.activity.main.adapter.OrderAdapter
-import com.sudo248.sudoo.ui.activity.payment.fragment.PaymentFragmentDirections
 import com.sudo248.sudoo.ui.ktx.showErrorDialog
 import com.sudo248.sudoo.ui.util.Utils
 import com.vnpay.authentication.VNP_AuthenticationActivity
@@ -37,6 +37,10 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>(), View
 
     override val enableStateScreen: Boolean = true
 
+    companion object {
+        var actionVnPaySdk: String? = null
+    }
+
     private val adapter: OrderAdapter by lazy { OrderAdapter() }
 
     override fun initView() {
@@ -45,6 +49,9 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>(), View
         binding.rcvOrderSupplier.adapter = adapter
         viewModel.createOrder(args.cartId)
         setupOnClickListener()
+        actionVnPaySdk?.let {
+            processActionFromVnPaySdk(it)
+        }
     }
 
     private fun setupOnClickListener() {
@@ -53,17 +60,21 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>(), View
                 showDialogChoosePaymentType()
             }
             constrainVoucherPayment.setOnClickListener {
-                navigateForResult(PaymentFragmentDirections.actionPaymentFragmentToPromotionFragment(), Constants.Key.PROMOTION, object :
-                    ResultCallback {
-                    override fun onResult(key: String, data: Bundle?) {
-                        data?.let {
-                            it.getSerializable(Constants.Key.PROMOTION)?.let { _promotion ->
-                                val promotion = _promotion as Promotion
-                                this@OrderFragment.viewModel.applyPromotion(promotion)
+                navigateForResult(
+                    OrderFragmentDirections.actionOrderFragmentToPromotionFragment(
+                        selectedPromotionId = this@OrderFragment.viewModel.currentSelectedPromotionId,
+                        forChoosePromotion = true
+                    ), Constants.Key.PROMOTION, object :
+                        ResultCallback {
+                        override fun onResult(key: String, data: Bundle?) {
+                            data?.let {
+                                it.getSerializable(Constants.Key.PROMOTION)?.let { result ->
+                                    val promotion = result as Promotion
+                                    this@OrderFragment.viewModel.applyPromotion(promotion)
+                                }
                             }
                         }
-                    }
-                })
+                    })
             }
         }
     }
@@ -74,12 +85,14 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>(), View
         }
 
         viewModel.promotion.observe(viewLifecycleOwner) {
-            binding.txtTotalPromotionPrice.text = it?.let {
+            if (it != null) {
                 if (it.name.isNotEmpty()) {
                     binding.txtVoucher.text = it.name
                 }
-                "-${Utils.formatVnCurrency(it.value)}"
-            } ?: Utils.formatVnCurrency(0.0)
+                binding.txtTotalPromotionPrice.text = "-${Utils.formatVnCurrency(it.value)}"
+            } else {
+                binding.txtTotalPromotionPrice.text = Utils.formatVnCurrency(0.0)
+            }
         }
 
         viewModel.finalPrice.observe(viewLifecycleOwner) {
@@ -124,7 +137,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>(), View
         dialogBinding.lifecycleOwner = this
         dialogBinding.viewModel = viewModel
         dialogBinding.txtAgree.setOnClickListener {
-            dialog.hide()
+            dialog.dismiss()
         }
         dialog.setCancelable(false)
         dialog.showWithTransparentBackground()
@@ -168,25 +181,35 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>(), View
     private fun setupSdkCompletedCallback() {
         VNP_AuthenticationActivity.setSdkCompletedCallback {
             Log.d("Sudoo", "VNPaySdkCompletedCallback: $it")
-            when (it) {
-                Constants.Payment.ACTION_APP_BACK -> {
-                    onVnPaySdkActionAppBack()
-                }
-                Constants.Payment.ACTION_CALL_MOBILE_BANKING_APP -> {
-                    onVnPaySdkActionCallMobileBankingApp()
-                }
-                Constants.Payment.ACTION_WEB_BACK -> {
-                    onVnPaySdkActionWebBack()
-                }
-                Constants.Payment.ACTION_FAILED -> {
-                    onVnPaySdkActionFailed()
-                }
-                Constants.Payment.ACTION_SUCCESS -> {
-                    onVnPaySdkActionSuccess()
-                }
-                else -> {
-                    onVnPaySdkActionFailed()
-                }
+            actionVnPaySdk = it
+        }
+    }
+
+    private fun processActionFromVnPaySdk(action: String) {
+        Log.d("Sudoo", "processActionFromVnPaySdk: $action")
+        when (action) {
+            Constants.Payment.ACTION_APP_BACK -> {
+                onVnPaySdkActionAppBack()
+            }
+
+            Constants.Payment.ACTION_CALL_MOBILE_BANKING_APP -> {
+                onVnPaySdkActionCallMobileBankingApp()
+            }
+
+            Constants.Payment.ACTION_WEB_BACK -> {
+                onVnPaySdkActionWebBack()
+            }
+
+            Constants.Payment.ACTION_FAILED -> {
+                onVnPaySdkActionFailed()
+            }
+
+            Constants.Payment.ACTION_SUCCESS -> {
+                onVnPaySdkActionSuccess()
+            }
+
+            else -> {
+                toast(action)
             }
         }
     }
@@ -195,7 +218,6 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>(), View
         val intent = Intent(requireContext(), MainActivity::class.java)
         intent.putExtra(Constants.Key.SCREEN, Constants.Screen.DISCOVERY)
         startActivity(intent)
-        activity?.finish()
     }
 
     private fun onVnPaySdkActionCallMobileBankingApp() {
@@ -207,10 +229,16 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>(), View
     }
 
     private fun onVnPaySdkActionFailed() {
-//        finish()
+        toast(R.string.payment_fail)
+        //
     }
 
     private fun onVnPaySdkActionSuccess() {
-        activity?.finish()
+        toast(R.string.payment_success)
+        navigateOff(OrderFragmentDirections.actionOrderFragmentToReviewListFragment(isAfterPayment = true))
+    }
+
+    private fun toast(@StringRes id: Int) {
+        Toast.makeText(requireContext(), getString(id), Toast.LENGTH_SHORT).show()
     }
 }

@@ -12,6 +12,7 @@ import com.sudo248.sudoo.data.dto.order.UpsertOrderPromotionDto
 import com.sudo248.sudoo.domain.common.Constants
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
@@ -34,4 +35,6 @@ interface OrderService {
         @Body upsertOrderPromotionDto: UpsertOrderPromotionDto
     ): Response<BaseResponse<UpsertOrderPromotionDto>>
 
+    @DELETE("orders/{orderId}/cancel")
+    suspend fun cancelOrderById(@Path("orderId") orderId: String): Response<BaseResponse<*>>
 }

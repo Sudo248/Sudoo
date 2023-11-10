@@ -7,12 +7,13 @@ import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.Priority
 import com.sudo248.base_android.base.BaseViewModel
+import com.sudo248.base_android.ktx.onError
+import com.sudo248.base_android.ktx.onSuccess
 import com.sudo248.base_android.navigation.IntentDirections
 import com.sudo248.sudoo.domain.common.Constants
 import com.sudo248.sudoo.domain.repository.CartRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.lang.NullPointerException
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -87,13 +88,13 @@ class MainViewModel @Inject constructor(
     }
 
     fun getItemInCart() = launch {
-//        cartRepository.getCountCartItem()
-//            .onSuccess {
-//                _countCartItem.postValue(it)
-//            }
-//            .onError {
-//                _countCartItem.postValue(0)
-//            }
+        cartRepository.countItemInCart()
+            .onSuccess {
+                _countCartItem.postValue(it)
+            }
+            .onError {
+                _countCartItem.postValue(0)
+            }
     }
 
     override fun onCleared() {
