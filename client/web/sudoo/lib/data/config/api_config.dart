@@ -1,8 +1,8 @@
 abstract class ApiConfig {
-  static const String host = "http://192.168.1.243";
-  static const String port = "9030";
+  static const String host = "http://service.sudoo.id.vn";
+  static const String port = "8080";
   static const String portStorage = "8085";
-  static const String baseUrl = "$host:$port/api/v1";
+  static const String baseUrl = "$host/api/v1";
   static const String baseUrlStorage = "$host:$portStorage/api/v1";
   static const int timeout = 20000;
   static const String tokenType = "Bearer";
