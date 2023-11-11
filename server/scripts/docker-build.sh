@@ -22,7 +22,7 @@ for i in "${strings[@]}"; do
   image="${admin}$i"
   folder=$(echo $i | cut -d':' -f 1)
   echo "Build docker image: $i context: $folder"
-  docker build -t "${image}" "${folder}"
+  docker build -t "${image}" "../${folder}"
   ((count=count+1))
 done
 echo "Total build $count docker image"

@@ -12,13 +12,16 @@
 
     <modules>
 
+        <module>domain</module>
+
         <!--    port: 8761 -->
         <module>registry</module>
 
-        <!--    port: 9030    -->
+        <!--    port: 8080    -->
         <module>api-gateway</module>
 
-        <module>domain</module>
+        <!--    port: 8081    -->
+        <module>user-service</module>
 
         <!--    port: 8082    -->
         <module>auth-service</module>
@@ -26,26 +29,16 @@
         <!--    port: 8083    -->
         <module>product-service</module>
 
-        <!--    port: 8085    -->
-        <module>storage-service</module>
-
-
-        <!--    port: 8086    -->
-        <module>payment-service</module>
-
-        <!--    port: 8084    -->
-        <module>user-service</module>
-
-        <!--&lt;!&ndash;    port: 8087&ndash;&gt;-->
+        <!--    port: 8084-->
         <module>cart-service</module>
 
-        <!--    port: 8088-->
+        <!--    port: 8085-->
         <module>order-service</module>
 
-        <!--&lt;!&ndash;    port: 8089&ndash;&gt;-->
-        <!--        <module>promotion-service</module>-->
+        <!--    port: 8086    -->
+        <module>storage-service</module>
 
-        <!--    port: 8090-->
+        <!--    port: 8087-->
         <module>notification-service</module>
 
     </modules>
