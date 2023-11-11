@@ -2,9 +2,9 @@ FROM sudo248dev/sudoo
 
 WORKDIR /app
 
-ENV JAR_FILE=user-service-0.0.1.jar
+ENV JAR_FILE=auth-service-0.0.1.jar
 ENV APP=/app/$JAR_FILE
-ENV PORT=8081
+ENV PORT=8082
 
 COPY target/$JAR_FILE $APP
 EXPOSE $PORT

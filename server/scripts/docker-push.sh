@@ -1,13 +1,13 @@
 strings=(
-  sudo248dev/registry:0.0.1
-  sudo248dev/api-gateway:0.0.1
-  sudo248dev/storage-service:0.0.1
-  sudo248dev/auth-service:0.0.1
-  sudo248dev/product-service:0.0.1
-  sudo248dev/user-service:0.0.1
-  sudo248dev/cart-service:0.0.1
-  sudo248dev/order-service:0.0.1
-  sudo248dev/notification-service:0.0.1
+  sudo248dev/sudoo-registry
+  sudo248dev/sudoo-api-gateway
+  sudo248dev/sudoo-storage-service
+  sudo248dev/sudoo-auth-service
+  sudo248dev/sudoo-product-service
+  sudo248dev/sudoo-user-service
+  sudo248dev/sudoo-cart-service
+  sudo248dev/sudoo-order-service
+  sudo248dev/sudoo-notification-service
 )
 for i in "${strings[@]}"; do
   echo "Push docker image $i"

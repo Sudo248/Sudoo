@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.UriUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -89,11 +90,13 @@ public class ImageServiceImpl implements ImageService {
     }
 
     private String uploadImageToGoogleCloud(MultipartFile image) throws IOException {
-        String imageName = imageDir + "/" + System.currentTimeMillis() + "_" + getImageName(Objects.requireNonNull(image.getOriginalFilename()));
+        String storageImageName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
+        String imageName = imageDir + "/" + storageImageName;
         BlobId blobId = BlobId.of(bucketName, imageName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(image.getContentType()).build();
-        Blob blob = storage.create(blobInfo, image.getBytes());
-        return "https://storage.googleapis.com/" + bucketName + "/" + imageName;
+        storage.create(blobInfo, image.getBytes());
+        String encodeImageName = UriUtils.encode(storageImageName, "UTF-8");
+        return "https://storage.googleapis.com/"+ bucketName + "/"+ imageDir + "/" + encodeImageName;
     }
 
     private String getImageName(String originalFileName) {
