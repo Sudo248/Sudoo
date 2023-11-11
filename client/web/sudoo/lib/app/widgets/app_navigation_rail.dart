@@ -72,7 +72,7 @@ class AppNavigationRail extends StatelessWidget {
         label: Text(R.string.createProduct),
       ),
       NavigationRailDestination(
-        icon: const Icon(Icons.info_outline),
+        icon: const Icon(Icons.store_outlined),
         label: Text(R.string.info),
       ),
     ];
@@ -91,6 +91,10 @@ class AppNavigationRail extends StatelessWidget {
       NavigationRailDestination(
         icon: const Icon(Icons.discount_outlined),
         label: Text(R.string.promotions),
+      ),
+      NavigationRailDestination(
+        icon: const Icon(Icons.slideshow_outlined),
+        label: Text(R.string.banner),
       ),
     ];
   }

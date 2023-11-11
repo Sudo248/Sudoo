@@ -291,4 +291,37 @@ class ProductRepositoryImpl with HandleResponse implements ProductRepository {
       return DataState.error(response.getError());
     }
   }
+  
+  @override
+  Future<DataState<File, Exception>> deleteBanner(String bannerId) => deleteImage(bannerId);
+  
+  @override
+  Future<DataState<List<File>, Exception>> getBanners() async {
+    final response = await handleResponse(() => productService.getBanners(),
+        fromJson: (json) => (json as List<dynamic>)
+            .map(
+              (e) => FileDto.fromJson(e as Map<String, dynamic>),
+            )
+            .toList());
+
+    if (response.isSuccess) {
+      final files = response.get() as List<FileDto>;
+      return DataState.success(files.map((e) => e.toFile()).toList());
+    } else {
+      return DataState.error(response.getError());
+    }
+  }
+  
+  @override
+  Future<DataState<File, Exception>> upsertBanner(File banner) async {
+    final response = await handleResponse(
+      () => productService.upsertBanner(FileDto(banner.fileId, banner.ownerId, banner.url)),
+      fromJson: (json) => FileDto.fromJson(json as Map<String, dynamic>),
+    );
+    if (response.isSuccess) {
+      return DataState.success(response.get());
+    } else {
+      return DataState.error(response.getError());
+    }
+  }
 }

@@ -1,3 +1,4 @@
+import 'package:sudoo/app/pages/banner/banner_bloc.dart';
 import 'package:sudoo/app/pages/category/category_bloc.dart';
 import 'package:sudoo/app/pages/dashboard/dashboard_bloc.dart';
 import 'package:sudoo/app/pages/home/home_bloc.dart';
@@ -37,6 +38,8 @@ class AppModule {
     getIt.registerFactory(() => SupplierBloc(getIt.get(), getIt.get(), getIt.get()));
 
     getIt.registerFactory(() => UserBloc(getIt.get(), getIt.get()));
+
+    getIt.registerFactory(() => BannerBloc(getIt.get(), getIt.get()));
 
   }
 }

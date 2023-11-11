@@ -1,6 +1,7 @@
 import 'package:sudoo/data/api/discovery/request/upsert_file_request.dart';
 import 'package:sudoo/data/api/discovery/request/upsert_product_request.dart';
 import 'package:sudoo/data/dto/discovery/category_dto.dart';
+import 'package:sudoo/data/dto/discovery/file_dto.dart';
 import 'package:sudoo/domain/model/discovery/order_by.dart';
 import 'package:sudoo/domain/model/discovery/sort_by.dart';
 import 'package:sudoo/domain/model/discovery/supplier.dart';
@@ -14,6 +15,7 @@ class ProductService {
   static const categories = "$discovery/categories";
   static const images = "$discovery/images";
   static const suppliers = "$discovery/suppliers";
+  static const banners = "$discovery/banners";
   static const promotions = "/promotions";
   static const offsetKey = "offset";
   static const limitKey = "limit";
@@ -104,4 +106,8 @@ class ProductService {
 
   Future deletePromotion(String promotionId) =>
       api.delete("$promotions/$promotionId");
+  
+  Future getBanners() => api.get(banners);
+
+  Future upsertBanner(FileDto banner) => api.post(banners, request: banner);
 }

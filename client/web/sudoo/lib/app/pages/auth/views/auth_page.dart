@@ -8,7 +8,6 @@ import 'package:sudoo/app/pages/auth/views/sign_in_form.dart';
 import 'package:sudoo/app/pages/auth/views/sign_up_form.dart';
 
 import '../../../../resources/R.dart';
-import '../../../routes/app_routes.dart';
 
 class AuthPage extends BasePage<AuthBloc> {
   AuthPage({super.key});

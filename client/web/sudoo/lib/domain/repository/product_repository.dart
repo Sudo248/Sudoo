@@ -5,6 +5,7 @@ import 'package:sudoo/domain/model/discovery/product_info.dart';
 import 'package:sudoo/domain/model/discovery/supplier.dart';
 import 'package:sudoo/domain/model/discovery/upsert_file.dart';
 import 'package:sudoo/domain/model/discovery/upsert_product.dart';
+import 'package:sudoo/domain/model/discovery/file.dart' as domain;
 
 import '../core/data_state.dart';
 import '../model/discovery/category.dart';
@@ -56,4 +57,10 @@ abstract class ProductRepository {
   Future<DataState<Promotion, Exception>> upsertPromotion(Promotion promotion);
 
   Future<DataState<String, Exception>> deletePromotion(String promotionId);
+
+  Future<DataState<List<domain.File>, Exception>> getBanners();
+
+  Future<DataState<domain.File, Exception>> upsertBanner(domain.File banner);
+
+  Future<DataState<domain.File, Exception>> deleteBanner(String bannerId);
 }

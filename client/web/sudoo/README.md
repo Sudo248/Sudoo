@@ -19,5 +19,6 @@ Run command: `flutter pub run build_runner build --delete-conflicting-outputs` t
 code in your Flutter project and generates new code (if necessary) based on the annotations and
 configurations you have defined.
 
-run web:  `flutter run -d chrome --web-port 5555`
+run web:  `flutter run -d chrome --web-port 5000`
 
+deploy web `flutter build web --release`

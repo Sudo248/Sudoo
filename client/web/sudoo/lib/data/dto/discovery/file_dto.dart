@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:sudoo/data/api/base_request.dart';
 import 'package:sudoo/domain/model/discovery/upsert_file.dart';
 
 import '../../../domain/model/discovery/file.dart';
@@ -6,7 +7,7 @@ import '../../../domain/model/discovery/file.dart';
 part 'file_dto.g.dart';
 
 @JsonSerializable()
-class FileDto {
+class FileDto implements BaseRequest{
   @JsonKey(name: "imageId")
   final String fileId;
   final String ownerId;
@@ -17,6 +18,7 @@ class FileDto {
   factory FileDto.fromJson(Map<String, dynamic> json) =>
       _$FileDtoFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$FileDtoToJson(this);
 }
 

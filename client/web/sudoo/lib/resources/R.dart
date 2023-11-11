@@ -51,6 +51,8 @@ class AppString extends R {
 
   String get promotions => "Promotions";
 
+  String get banner => "Banner";
+
   String get listedPrice => "Listed price";
 
   String get price => "Price";
