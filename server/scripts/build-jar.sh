@@ -1,4 +1,5 @@
 strings=(
+  domain
   registry
   api-gateway
   auth-service

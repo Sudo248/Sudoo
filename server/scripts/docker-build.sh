@@ -1,5 +1,5 @@
 strings=(
-  registry
+#  registry
   api-gateway
   auth-service
   product-service
