@@ -10,6 +10,7 @@
         <module name="registry" />
         <module name="auth-service" />
         <module name="cart-service" />
+        <module name="payment-service" />
         <module name="domain" />
         <module name="api-gateway" />
         <module name="product-service" />
@@ -19,9 +20,6 @@
         <module name="notification-service" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="payment-service" target="11" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
