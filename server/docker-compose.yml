@@ -14,8 +14,6 @@ services:
       - MYSQL_DATABASE=sudoo
     networks:
       - sudoo-network
-    ports:
-      - "3309:3306"
 
   cache-service:
     image: redis:alpine3.18
@@ -27,8 +25,6 @@ services:
       - REDIS_PASSWORD=03092001
     networks:
       - sudoo-network
-    ports:
-      - "6379:6379"
 
   registry:
     image: sudo248dev/sudoo-registry
@@ -48,7 +44,7 @@ services:
     networks:
       - sudoo-network
     ports:
-      - "9030:9030"
+      - "8080:8080"
 
   storge-service:
     image: sudo248dev/sudoo-storage-service
@@ -112,14 +108,14 @@ services:
     networks:
       - sudoo-network
 
-  notification-service:
-    image: sudo248dev/sudoo-notification-service
-    container_name: notification-service
-    hostname: notification-service
-    depends_on:
-      - registry
-    networks:
-      - sudoo-network
+#  notification-service:
+#    image: sudo248dev/sudoo-notification-service
+#    container_name: notification-service
+#    hostname: notification-service
+#    depends_on:
+#      - registry
+#    networks:
+#      - sudoo-network
 
 networks:
   sudoo-network:
