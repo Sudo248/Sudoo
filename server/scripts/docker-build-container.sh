@@ -1,13 +1,11 @@
-admin="sudo248dev/"
-service="payment-service:0.0.1"
+admin="sudo248dev"
+service="storage-service"
 
 # shellcheck disable=SC2046
-#docker rm -f $(docker container ps -a -q)
-docker rmi -f "$admin$service"
+docker rm -f $service
+docker rmi -f "${admin}/sudoo-$service"
 
-echo "Build docker image $service"
+image="${admin}/sudoo-$service"
+echo "Build docker image $image"
 
-image="${admin}$service"
-folder=$(echo $service | cut -d':' -f 1)
-
-docker build -t "${image}" "$folder"
+docker build -t "${image}" "../$service"
