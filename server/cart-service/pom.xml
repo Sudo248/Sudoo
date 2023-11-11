@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.sudoo</groupId>
     <artifactId>cart-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>cart-service</name>
     <description>cart-service</description>
 
@@ -87,7 +87,7 @@
             <artifactId>domain</artifactId>
             <version>0.0.1</version>
             <scope>system</scope>
-            <systemPath>/${project.basedir}/../libs/domain-0.0.1.jar</systemPath>
+            <systemPath>/${project.basedir}/../domain/target/domain-0.0.1.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>jakarta.persistence</groupId>
