@@ -1,18 +1,15 @@
 strings=(
-  domain
-  soc-registry
+  registry
   api-gateway
   auth-service
-  discovery-service
-  payment-service
+  product-service
   user-service
   cart-service
-  invoice-service
-  image-service
-  promotion-service
-  notification-service
-  chat-service
+  order-service
+  storage-service
+#  notification-service
 )
+cd ..
 mvn clean
 
 # shellcheck disable=SC2164
