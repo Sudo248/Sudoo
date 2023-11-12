@@ -111,11 +111,14 @@ class AppString extends R {
   String get length => "Length";
   String get sizeWeight => "Size and Weight";
   String get info => "Info";
+  String get store => "Store";
+  String get stores => "Stores";
   String get dob => "Date of birth";
   String get province => "Province";
   String get district => "District";
   String get ward => "Ward";
   String get address => "Address";
+  String get totalProduct => "Total Product";
 }
 
 class AppColor extends R {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:sudoo/app/base/base_page.dart';
 import 'package:sudoo/app/pages/user/user_bloc.dart';
 import 'package:sudoo/app/widgets/date_time_selector.dart';
@@ -23,12 +22,12 @@ class UserPage extends BasePage<UserBloc> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: GestureDetector(
-          onTap: () => context.pop(),
-          child: const Icon(Icons.arrow_back),
-        ),
-      ),
+      // appBar: AppBar(
+      //   leading: GestureDetector(
+      //     onTap: () => context.pop(),
+      //     child: const Icon(Icons.arrow_back),
+      //   ),
+      // ),
       body: SizedBox(
         width: double.infinity,
         child: SingleChildScrollView(

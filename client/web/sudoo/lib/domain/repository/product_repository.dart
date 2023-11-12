@@ -63,4 +63,6 @@ abstract class ProductRepository {
   Future<DataState<domain.File, Exception>> upsertBanner(domain.File banner);
 
   Future<DataState<domain.File, Exception>> deleteBanner(String bannerId);
+
+  Future<DataState<List<Supplier>, Exception>> getSuppliers();
 }

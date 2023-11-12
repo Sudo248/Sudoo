@@ -76,6 +76,8 @@ class ProductService {
 
   Future getSupplier() => api.get("$suppliers/self");
 
+  Future getSuppliers() => api.get(suppliers);
+
   Future getSupplierProducts(
     int offset,
     int limit, {

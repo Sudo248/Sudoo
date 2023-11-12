@@ -44,6 +44,12 @@ class DashboardPage extends BasePage<DashboardBloc> {
         case 2:
           _dashboardGo(context, AppRoutes.adminPromotions);
           break;
+        case 3:
+          _dashboardGo(context, AppRoutes.adminBanners);
+          break;
+        case 4:
+          _dashboardGo(context, AppRoutes.adminStores);
+          break; 
         default:
           context.go(AppRoutes.home);
       }
@@ -97,24 +103,24 @@ class DashboardPage extends BasePage<DashboardBloc> {
       backgroundColor: Colors.white,
       centerTitle: true,
       actions: [
-        ValueListenableBuilder(
-          valueListenable: bloc.notificationCount,
-          builder: (context, value, child) => Badge(
-            label: Text(
-              "$value",
-              style: const TextStyle(color: Colors.white),
-            ),
-            isLabelVisible: value > 0,
-            child: child,
-          ),
-          child: Icon(
-            Icons.notifications,
-            color: R.color.primaryColor,
-          ),
-        ),
-        const SizedBox(
-          width: 30,
-        ),
+        // ValueListenableBuilder(
+        //   valueListenable: bloc.notificationCount,
+        //   builder: (context, value, child) => Badge(
+        //     label: Text(
+        //       "$value",
+        //       style: const TextStyle(color: Colors.white),
+        //     ),
+        //     isLabelVisible: value > 0,
+        //     child: child,
+        //   ),
+        //   child: Icon(
+        //     Icons.notifications,
+        //     color: R.color.primaryColor,
+        //   ),
+        // ),
+        // const SizedBox(
+        //   width: 30,
+        // ),
         ValueListenableBuilder(
             valueListenable: bloc.user,
             builder: (context, value, child) {
@@ -176,22 +182,22 @@ class DashboardPage extends BasePage<DashboardBloc> {
           width: 20,
         ),
       ],
-      title: SearchBar(
-        leading: const Icon(Icons.search),
-        constraints: const BoxConstraints(
-          minWidth: 300,
-          maxWidth: 500,
-        ),
-        backgroundColor: MaterialStateProperty.all(Colors.grey[300]),
-        hintText: "Search",
-        elevation: MaterialStateProperty.all(0),
-        shape: MaterialStateProperty.all(
-          const ContinuousRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-          ),
-        ),
-        controller: bloc.searchController,
-      ),
+      // title: SearchBar(
+      //   leading: const Icon(Icons.search),
+      //   constraints: const BoxConstraints(
+      //     minWidth: 300,
+      //     maxWidth: 500,
+      //   ),
+      //   backgroundColor: MaterialStateProperty.all(Colors.grey[300]),
+      //   hintText: "Search",
+      //   elevation: MaterialStateProperty.all(0),
+      //   shape: MaterialStateProperty.all(
+      //     const ContinuousRectangleBorder(
+      //       borderRadius: BorderRadius.all(Radius.circular(20)),
+      //     ),
+      //   ),
+      //   controller: bloc.searchController,
+      // ),
       bottom: const PreferredSize(
         preferredSize: Size.fromHeight(0),
         child: Divider(

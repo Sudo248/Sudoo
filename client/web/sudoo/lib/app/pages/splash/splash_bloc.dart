@@ -35,7 +35,7 @@ class SplashBloc extends BaseBloc {
 
   Future<void> refreshToken() async {
     loadingController.showLoading();
-    await Future.delayed(const Duration(seconds: 2));
+    final startTime = DateTime.now().millisecond;
     try {
       final result = await authRepository.refreshToken();
       if (result.isSuccess) {
@@ -45,18 +45,29 @@ class SplashBloc extends BaseBloc {
           final resultSupplier = await productRepository.getSupplier();
           if (!resultSupplier.isSuccess) {
             SupplierBloc.isRegistered = false;
+            await deplayFrom(startTime: startTime);
+            loadingController.hideLoading();
             _navigateToDashboard.call(AppRoutes.supplier);
             return;
           }
         }
+        await deplayFrom(startTime: startTime);
+        loadingController.hideLoading();
         _navigateToDashboard.call(AppRoutes.home);
       } else {
+        await deplayFrom(startTime: startTime);
+        loadingController.hideLoading();
         _navigateToAuth();
       }
     } on Exception catch(_) {
+      loadingController.hideLoading();
       _navigateToAuth();
     }
-    loadingController.hideLoading();
   }
 
+  Future<void> deplayFrom({required int startTime, int delay = 2}) {
+    final currentTime = DateTime.now().millisecond;
+    if (currentTime - startTime >= delay) return Future.value();
+    return Future.delayed(Duration(milliseconds: delay - (currentTime - startTime)));
+  }
 }

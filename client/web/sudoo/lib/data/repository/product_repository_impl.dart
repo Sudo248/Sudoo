@@ -31,8 +31,9 @@ class ProductRepositoryImpl with HandleResponse implements ProductRepository {
 
   @override
   Future<DataState<String, Exception>> deleteProduct(String productId) async {
-    final response =
-        await handleResponse(() => productService.deleteProduct(productId), fromJson: (json) => json as String?);
+    final response = await handleResponse(
+        () => productService.deleteProduct(productId),
+        fromJson: (json) => json as String?);
     if (response.isSuccess) {
       return DataState.success(response.get() ?? "");
     } else {
@@ -101,18 +102,22 @@ class ProductRepositoryImpl with HandleResponse implements ProductRepository {
   ) async {
     final response = await handleResponse(
       () => productService.upsertProduct(product.toUpsertProductRequest()),
-      fromJson: (json) => UpsertProductDto.fromJson(json as Map<String, dynamic>),
+      fromJson: (json) =>
+          UpsertProductDto.fromJson(json as Map<String, dynamic>),
     );
     if (response.isSuccess) {
-      return DataState.success((response.get() as UpsertProductDto).toUpsertProduct());
+      return DataState.success(
+          (response.get() as UpsertProductDto).toUpsertProduct());
     } else {
       return DataState.error(response.getError());
     }
   }
 
   @override
-  Future<DataState<List<Category>, Exception>> getCategories(String productId) async {
-    final response = await handleResponse(() => productService.getCategoriesByProductId(productId),
+  Future<DataState<List<Category>, Exception>> getCategories(
+      String productId) async {
+    final response = await handleResponse(
+        () => productService.getCategoriesByProductId(productId),
         fromJson: (json) => (json as List<dynamic>)
             .map(
               (e) => CategoryDto.fromJson(e as Map<String, dynamic>),
@@ -128,10 +133,13 @@ class ProductRepositoryImpl with HandleResponse implements ProductRepository {
   }
 
   @override
-  Future<DataState<CategoryProduct, Exception>> deleteCategoryOfProduct(CategoryProduct categoryProduct) async {
+  Future<DataState<CategoryProduct, Exception>> deleteCategoryOfProduct(
+      CategoryProduct categoryProduct) async {
     final response = await handleResponse(
-        () => productService.deleteCategoryToProduct(categoryProduct.productId, categoryProduct.categoryId),
-        fromJson: (json) => CategoryProductDto.fromJson(json as Map<String, dynamic>));
+        () => productService.deleteCategoryToProduct(
+            categoryProduct.productId, categoryProduct.categoryId),
+        fromJson: (json) =>
+            CategoryProductDto.fromJson(json as Map<String, dynamic>));
 
     if (response.isSuccess) {
       final categoryProductDto = response.get() as CategoryProductDto;
@@ -142,10 +150,13 @@ class ProductRepositoryImpl with HandleResponse implements ProductRepository {
   }
 
   @override
-  Future<DataState<CategoryProduct, Exception>> upsertCategoryToProduct(CategoryProduct categoryProduct) async {
+  Future<DataState<CategoryProduct, Exception>> upsertCategoryToProduct(
+      CategoryProduct categoryProduct) async {
     final response = await handleResponse(
-        () => productService.upsertCategoryToProduct(categoryProduct.productId, categoryProduct.categoryId),
-        fromJson: (json) => CategoryProductDto.fromJson(json as Map<String, dynamic>));
+        () => productService.upsertCategoryToProduct(
+            categoryProduct.productId, categoryProduct.categoryId),
+        fromJson: (json) =>
+            CategoryProductDto.fromJson(json as Map<String, dynamic>));
 
     if (response.isSuccess) {
       final categoryProductDto = response.get() as CategoryProductDto;
@@ -201,7 +212,8 @@ class ProductRepositoryImpl with HandleResponse implements ProductRepository {
   }
 
   @override
-  Future<DataState<Supplier, Exception>> upsertSupplier(Supplier supplier) async {
+  Future<DataState<Supplier, Exception>> upsertSupplier(
+      Supplier supplier) async {
     final response = await handleResponse(
       () => productService.upsertSupplier(supplier),
       fromJson: (json) => Supplier.fromJson(json as Map<String, dynamic>),
@@ -214,7 +226,8 @@ class ProductRepositoryImpl with HandleResponse implements ProductRepository {
   }
 
   @override
-  Future<DataState<String, Exception>> deletePromotion(String promotionId) async {
+  Future<DataState<String, Exception>> deletePromotion(
+      String promotionId) async {
     final response = await handleResponse(
       () => productService.deletePromotion(promotionId),
       fromJson: (json) => json,
@@ -227,7 +240,8 @@ class ProductRepositoryImpl with HandleResponse implements ProductRepository {
   }
 
   @override
-  Future<DataState<Promotion, Exception>> upsertPromotion(Promotion promotion) async {
+  Future<DataState<Promotion, Exception>> upsertPromotion(
+      Promotion promotion) async {
     final response = await handleResponse(
       () => productService.upsertPromotion(promotion),
       fromJson: (json) => Promotion.fromJson(json as Map<String, dynamic>),
@@ -255,28 +269,31 @@ class ProductRepositoryImpl with HandleResponse implements ProductRepository {
       return DataState.error(response.getError());
     }
   }
-  
+
   @override
-  Future<DataState<ProductInfo, Exception>> getProductInfo(String productId) async {
+  Future<DataState<ProductInfo, Exception>> getProductInfo(
+      String productId) async {
     final response = await handleResponse(
       () => productService.getProductInfo(productId),
       fromJson: (json) => ProductInfoDto.fromJson(json as Map<String, dynamic>),
     );
 
     if (response.isSuccess) {
-      return DataState.success((response.get() as ProductInfoDto).toProductInfo());
+      return DataState.success(
+          (response.get() as ProductInfoDto).toProductInfo());
     } else {
       return DataState.error(response.getError());
     }
   }
 
   @override
-  Future<DataState<ProductPagination<ProductInfo>, Exception>> getSupplierProducts(int offset, int limit) async {
+  Future<DataState<ProductPagination<ProductInfo>, Exception>>
+      getSupplierProducts(int offset, int limit) async {
     final response = await handleResponse(
-          () => productService.getSupplierProducts(offset, limit),
+      () => productService.getSupplierProducts(offset, limit),
       fromJson: (json) => ProductPaginationDto.fromJson(
         json as Map<String, dynamic>,
-            (json) => ProductInfoDto.fromJson(json as Map<String, dynamic>),
+        (json) => ProductInfoDto.fromJson(json as Map<String, dynamic>),
       ),
     );
 
@@ -291,10 +308,11 @@ class ProductRepositoryImpl with HandleResponse implements ProductRepository {
       return DataState.error(response.getError());
     }
   }
-  
+
   @override
-  Future<DataState<File, Exception>> deleteBanner(String bannerId) => deleteImage(bannerId);
-  
+  Future<DataState<File, Exception>> deleteBanner(String bannerId) =>
+      deleteImage(bannerId);
+
   @override
   Future<DataState<List<File>, Exception>> getBanners() async {
     final response = await handleResponse(() => productService.getBanners(),
@@ -311,16 +329,37 @@ class ProductRepositoryImpl with HandleResponse implements ProductRepository {
       return DataState.error(response.getError());
     }
   }
-  
+
   @override
   Future<DataState<File, Exception>> upsertBanner(File banner) async {
     final response = await handleResponse(
-      () => productService.upsertBanner(FileDto(banner.fileId, banner.ownerId, banner.url)),
+      () => productService
+          .upsertBanner(FileDto(banner.fileId, banner.ownerId, banner.url)),
       fromJson: (json) => FileDto.fromJson(json as Map<String, dynamic>),
     );
     if (response.isSuccess) {
       return DataState.success(response.get());
     } else {
+      return DataState.error(response.getError());
+    }
+  }
+
+  @override
+  Future<DataState<List<Supplier>, Exception>> getSuppliers() async {
+    final response = await handleResponse(() => productService.getSuppliers(),
+        fromJson: (json) => (json as List<dynamic>)
+            .map(
+              (e) => Supplier.fromJson(e as Map<String, dynamic>),
+            )
+            .toList());
+
+    if (response.isSuccess) {
+      return DataState.success(response.get() as List<Supplier>);
+    } else {
+      final error = response.getError();
+      if (error is ApiException && error.statusCode == 404) {
+        return DataState.error(const NotFound());
+      }
       return DataState.error(response.getError());
     }
   }

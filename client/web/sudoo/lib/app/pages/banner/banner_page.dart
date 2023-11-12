@@ -6,7 +6,6 @@ import 'package:sudoo/domain/model/discovery/file.dart';
 import 'package:sudoo/extensions/list_ext.dart';
 import 'package:sudoo/utils/logger.dart';
 
-import '../../../domain/common/Constants.dart';
 import '../../widgets/online_image.dart';
 
 class BannerPage extends BasePage<BannerBloc> {
@@ -21,44 +20,39 @@ class BannerPage extends BasePage<BannerBloc> {
       valueListenable: bloc.banners,
       builder: (context, images, child) {
         return Container(
-          width: double.infinity,
-          constraints: const BoxConstraints(
-            minHeight: 210,
-            maxHeight: 630,
-          ),
           padding: const EdgeInsets.all(20),
-          child: images.isEmpty
-              ? const Center(
-                  child: SizedBox.square(
-                    dimension: 35,
-                    child: CircularProgressIndicator(),
-                  ),
-                )
-              : _buildListImage(context, images),
+          child: _buildListImage(context, images, child!),
         );
       },
+      child: _buildAddImageButton(),
     );
   }
 
-  Widget _buildListImage(BuildContext context, List<File>? images) {
-    final List<Widget> imageWidgets =
-        images.orEmpty.map<Widget>((image) => _buildImageItem(image)).toList();
-    if (images == null || images.length < Constants.maxBanner) {
-      imageWidgets.add(_buildAddImageButton());
-    }
-    return Wrap(
-      spacing: 8,
-      runSpacing: 10,
-      children: imageWidgets,
-    );
+  Widget _buildListImage(BuildContext context, List<File> images, Widget addImage) {
+    
+    return GridView.builder(
+        padding: const EdgeInsets.all(20),
+        itemCount: images.length + 1,
+        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 400,
+          mainAxisSpacing: 50,
+          crossAxisSpacing: 50,
+          childAspectRatio: 5 / 3,
+        ),
+        itemBuilder: (context, index) {
+          if (index < images.length) {
+            return _buildImageItem(images[index]);
+          } else {
+            return addImage;
+          }
+        },
+      );
   }
 
   Widget _buildAddImageButton() {
     return GestureDetector(
       onTap: pickImage,
       child: Container(
-        width: 150,
-        height: 200,
         padding: const EdgeInsets.all(10.0),
         decoration: BoxDecoration(
           color: Colors.grey,
@@ -94,8 +88,6 @@ class BannerPage extends BasePage<BannerBloc> {
       children: [
         OnlineImage(
           image.url,
-          width: 150,
-          height: 200,
         ),
         Positioned(
           right: 3,

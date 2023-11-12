@@ -11,7 +11,7 @@ class OnlineImage extends StatelessWidget {
   Widget build(BuildContext context) {
     String imageUrl = src;
     if (!src.startsWith("http")) {
-      imageUrl = "${ApiConfig.baseUrl}/storage/images/$src";
+      imageUrl = "${ApiConfig.storageImageUrl}/$src";
     }
     return Image.network(
       imageUrl,

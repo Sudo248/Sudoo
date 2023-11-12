@@ -26,12 +26,24 @@ class ProductListPage extends BasePage<ProductListBloc> {
             builder: (context, value, child) {
               return Align(
                 alignment: Alignment.topLeft,
-                child: Text(
-                  "Total: $value",
-                  style: R.style.h5.copyWith(
-                    color: Colors.red,
-                  ),
+                child: RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: "Total: ",
+                      style: R.style.h5.copyWith(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextSpan(
+                        text: "$value",
+                        style: R.style.h5.copyWith(
+                          color: Colors.black,
+                        ))
+                  ],
                 ),
+              ),
               );
             },
           ),

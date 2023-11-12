@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sudoo/app/pages/banner/banner_page.dart';
 import 'package:sudoo/app/pages/category/category_page.dart';
 import 'package:sudoo/app/pages/dashboard/dashboard_page.dart';
 import 'package:sudoo/app/pages/promotion/promotion_page.dart';
+import 'package:sudoo/app/pages/stores/stores_page.dart';
 import 'package:sudoo/app/pages/supplier/supplier_page.dart';
 import 'package:sudoo/app/pages/user/user_page.dart';
 import 'package:sudoo/extensions/string_ext.dart';
@@ -114,6 +116,18 @@ class AppRouter {
         path: AppRoutes.adminPromotions,
         builder: (context, state) => PromotionPage(),
       ),
+      GoRoute(
+        parentNavigatorKey: _dashboardNavigatorKey,
+        name: AppRoutes.adminBanners,
+        path: AppRoutes.adminBanners,
+        builder: (context, state) => BannerPage(),
+      ),
+      GoRoute(
+        parentNavigatorKey: _dashboardNavigatorKey,
+        name: AppRoutes.adminStores,
+        path: AppRoutes.adminStores,
+        builder: (context, state) => StoresPage(),
+      ),
     ];
   }
 
@@ -125,8 +139,15 @@ class AppRouter {
         case AppRoutes.adminCategories:
           index = 1;
           break;
-        case AppRoutes.createProduct:
+        case AppRoutes.adminPromotions:
           index = 2;
+          break;
+        case AppRoutes.adminBanners:
+          index = 3;
+          break;
+        case AppRoutes.adminStores:
+          index = 4;
+          break;
         default:
           index = 0;
           break;
@@ -160,7 +181,6 @@ class AppRouter {
 }
 
 class DashboardGoRouterObserver extends NavigatorObserver {
-
   @override
   void didPop(Route route, Route? previousRoute) {
     final routeName = route.settings.name;

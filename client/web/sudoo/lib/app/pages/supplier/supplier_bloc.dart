@@ -72,8 +72,6 @@ class SupplierBloc extends BaseBloc implements ChooseAddressCallback {
     if (result.isSuccess) {
       showInputPhoneNumber.value = false;
       setSupplier(result.get());
-    } else {
-      showErrorMessage(result.getError());
     }
     loadingController.hideLoading();
   }
@@ -149,6 +147,7 @@ class SupplierBloc extends BaseBloc implements ChooseAddressCallback {
     supplier!.brand = brandController.text;
     supplier!.phoneNumber = phoneNumberController.text;
     supplier!.address.address = addressController.text;
+    supplier!.contactUrl = contactUrlController.text;
     return supplier!;
   }
 
