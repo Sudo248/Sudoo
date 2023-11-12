@@ -4,18 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="72cbe6d0-83b5-4e93-ba3c-2789b9cf0780" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/nginx/conf/sudoo.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cart-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/cart-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nginx/conf/nginx.conf" beforeDir="false" afterPath="$PROJECT_DIR$/nginx/conf/nginx.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/deploy.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/deploy.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/docker-build-root.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/docker-build-root.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/docker-pull.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/docker-pull.sh" afterDir="false" />
-    </list>
+    <list default="true" id="72cbe6d0-83b5-4e93-ba3c-2789b9cf0780" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
