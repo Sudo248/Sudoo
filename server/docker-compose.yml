@@ -9,6 +9,7 @@ services:
       - 3306
     volumes:
       - ./database:/docker-entrypoint-initdb.d
+      - ./mysql:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=03092001
       - MYSQL_DATABASE=sudoo
@@ -123,4 +124,6 @@ networks:
 
 volumes:
   database:
+    external: true
+  mysql:
     external: true
