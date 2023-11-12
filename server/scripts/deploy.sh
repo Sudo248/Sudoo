@@ -21,7 +21,7 @@ chmod +x ./docker-pull.sh
 ./docker-pull.sh
 
 # run nginx
-docker run -d -p 80:80 -v /home/Sudoo/web:/app/web --restart always --name sudoo-nginx sudo248dev/sudoo-nginx
+docker run -d -p 80:80 -v /Users/leduong/Sudo248/Sudoo/client/web/sudoo/build/web:/app/web --add-host=host.docker.internal:host-gateway --name sudoo-nginx sudo248dev/sudoo-nginx
 
 wget https://raw.githubusercontent.com/Sudo248/Sudoo/be-dev/server/docker-compose.yml
 
