@@ -56,7 +56,7 @@ class _SignInFormState extends State<SignInForm> {
             height: 30,
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 50),
+            padding: const EdgeInsets.symmetric(horizontal: 30),
             child: EmailFormField(
               controller: widget.bloc.emailController,
               validator: widget.bloc.emailValidator,
@@ -68,7 +68,7 @@ class _SignInFormState extends State<SignInForm> {
             height: 30,
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 50),
+            padding: const EdgeInsets.symmetric(horizontal: 30),
             child: PasswordFormField(
               controller: widget.bloc.passwordController,
               validator: widget.bloc.passwordValidator,
@@ -76,12 +76,12 @@ class _SignInFormState extends State<SignInForm> {
             ),
           ),
           const SizedBox(
-            height: 50,
+            height: 20,
           ),
           TextButton(
             style: ButtonStyle(
               padding: MaterialStateProperty.all(
-                const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
               ),
               backgroundColor: MaterialStateProperty.all(R.color.primaryColor),
             ),
@@ -92,7 +92,7 @@ class _SignInFormState extends State<SignInForm> {
             ),
           ),
           const SizedBox(
-            height: 50,
+            height: 30,
           ),
           Row(
             children: <Widget>[

@@ -23,10 +23,10 @@ class CategoryPage extends BasePage<CategoryBloc> {
         itemCount: value.length + 1,
         padding: const EdgeInsets.all(20),
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 200,
-          mainAxisSpacing: 50,
-          crossAxisSpacing: 50,
-          childAspectRatio: 3 / 4,
+          maxCrossAxisExtent: 180,
+          mainAxisSpacing: 30,
+          crossAxisSpacing: 30,
+          childAspectRatio: 3 / 3.5,
         ),
         itemBuilder: (context, index) {
           if (index < value.length) {

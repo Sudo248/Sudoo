@@ -5,7 +5,6 @@ abstract class R {
   static AppColor color = AppColor();
   static AppTheme theme = AppTheme();
   static AppDrawable drawable = AppDrawable();
-  static AppFont font = AppFont();
   static AppStyle style = AppStyle();
   static AppButtonStyle buttonStyle = AppButtonStyle();
 }
@@ -135,17 +134,12 @@ class AppColor extends R {
   Color get backgroundMenuColor => const Color(0xFFE4EAF3);
 }
 
-class AppFont extends R {
-  String get raleWay => "Raleway";
-}
-
 class AppTheme extends R {
   ThemeData get appTheme => ThemeData(
         useMaterial3: true,
         primaryColor: R.color.primaryColor,
         primaryColorDark: R.color.primaryColorDark,
         primaryColorLight: R.color.primaryColorLight,
-        fontFamily: R.font.raleWay,
       );
 }
 

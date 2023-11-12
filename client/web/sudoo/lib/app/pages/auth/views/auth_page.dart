@@ -20,15 +20,20 @@ class AuthPage extends BasePage<AuthBloc> {
     bloc.setOnNavigationToDashBoard((path) {
       context.go(path);
     });
-    final size = MediaQuery.sizeOf(context);
     return Scaffold(
       backgroundColor: R.color.primaryColor,
       body: Center(
         child: Container(
+          constraints: const BoxConstraints(
+            minWidth: 350,
+            maxWidth: 450,
+            minHeight: 500,
+            maxHeight: 700
+          ),
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(16),
             boxShadow: const <BoxShadow>[
               BoxShadow(
                 color: Colors.grey,
@@ -37,9 +42,8 @@ class AuthPage extends BasePage<AuthBloc> {
               ),
             ],
           ),
-          height: size.height * 0.7,
-          width: size.width * 0.25,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               const FlutterLogo(),
               const SizedBox(

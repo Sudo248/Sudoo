@@ -41,9 +41,9 @@ class EditPromotionDialog extends StatelessWidget {
         padding: const EdgeInsets.all(15.0),
         constraints: const BoxConstraints(
           minWidth: 300,
-          minHeight: 300 * 1.7,
-          maxWidth: 350,
-          maxHeight: 350 * 1.7,
+          maxWidth: 450,
+          minHeight: 300 * 1.5,
+          maxHeight: 450 * 1.5,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -128,7 +128,6 @@ class EditPromotionDialog extends StatelessWidget {
               "Value",
               valueController..text = promotion.value.toStringAsFixed(1),
               maxLines: 1,
-              maxLength: 5,
               keyboardType: TextInputType.number,
               suffixText: "đ",
               suffixStyle: style.copyWith(fontWeight: FontWeight.bold),
@@ -218,6 +217,7 @@ class EditPromotionDialog extends StatelessWidget {
           suffixText: suffixText,
           suffixStyle: suffixStyle,
           border: const OutlineInputBorder(),
+          contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
           counterText: "",
         ),
       ),
