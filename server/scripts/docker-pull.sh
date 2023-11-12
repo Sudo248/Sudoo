@@ -1,5 +1,5 @@
 strings=(
-  sudo248dev/sudoo-nginx
+#  sudo248dev/sudoo-nginx
   sudo248dev/sudoo-registry
   sudo248dev/sudoo-api-gateway
   sudo248dev/sudoo-storage-service
