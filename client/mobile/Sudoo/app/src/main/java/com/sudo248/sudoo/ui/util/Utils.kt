@@ -92,9 +92,8 @@ object Utils {
         return LocalDate.parse(date, dateFormat)
     }
 
-    fun formatReceivedDate(time: Long): String {
-        val date = localDateFrom(time)
-        return dateFormat.format(date)
+    fun formatReceivedDate(date: LocalDateTime): String {
+        return dateFormat.format(date.atZone(zoneId))
     }
 
     fun localDateFrom(time: Long): LocalDate {

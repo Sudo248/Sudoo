@@ -37,6 +37,7 @@ fun OrderSupplierDto.toOrderSupplier(): OrderSupplier {
         promotion = promotion?.toPromotion(),
         shipment = shipment,
         totalPrice = totalPrice,
+        expectedReceiveDateTime = expectedReceiveDateTime,
         orderCartProducts = orderCartProducts.map {
             it.toOrderCartProduct()
         }
