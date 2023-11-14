@@ -21,7 +21,7 @@ class OrderAdapter : BaseListAdapter<OrderSupplier, OrderAdapter.OrderSupplierVi
                     txtShipmentPrice.text = Utils.formatVnCurrency(item.shipment.shipmentPrice)
                     txtReceivedDate.text = itemView.context.getString(
                         R.string.received_date,
-                        Utils.formatReceivedDate(System.currentTimeMillis() + item.shipment.deliveryTime)
+                        Utils.formatReceivedDate(item.expectedReceiveDateTime)
                     )
                 }
                 totalPrice.apply {
