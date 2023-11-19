@@ -28,10 +28,11 @@ class ProductServiceImpl(
         return response.data ?: throw NotFoundException("Not found product $productId")
     }
 
-    override suspend fun getListOrderProductInfoByIds(productIds: List<String>): List<OrderProductInfoDto> {
+    override suspend fun getListOrderProductInfoByIds(productIds: List<String>, supplierId: String?): List<OrderProductInfoDto> {
         val response = try{
+            val uri = "/list?orderInfo=true"
             client.post()
-                .uri("/list?orderInfo=true")
+                .uri(supplierId?.let { "$uri&supplierId=$it" } ?: uri)
                 .bodyValue(productIds)
                 .retrieve()
                 .awaitBodyOrNull<BaseResponse<List<OrderProductInfoDto>>>()

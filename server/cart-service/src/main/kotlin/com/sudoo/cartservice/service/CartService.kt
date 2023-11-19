@@ -20,9 +20,9 @@ interface CartService {
     suspend fun getActiveCart(userId: String): CartDto
     suspend fun getCartById(cartId: String): CartDto
 
-    suspend fun getOrderCartById(cartId: String): OrderCartDto
+    suspend fun getOrderCartById(cartId: String, supplierId: String? = null): OrderCartDto
     suspend fun getCartProducts(cartId: String): List<CartProductDto>
-    suspend fun getOrderCartProducts(cartId: String): List<OrderCartProductDto>
+    suspend fun getOrderCartProducts(cartId: String, supplierId: String? = null): List<OrderCartProductDto>
 
     //---CartProductInActiveCart-------------
 

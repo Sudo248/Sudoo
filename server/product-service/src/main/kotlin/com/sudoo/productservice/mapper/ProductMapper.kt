@@ -9,13 +9,14 @@ import com.sudoo.productservice.model.ProductExtras
 import com.sudoo.productservice.model.ProductInfo
 import java.time.LocalDateTime
 
-fun UpsertProductDto.toProduct(supplierId: String, brand: String, createAt: LocalDateTime? = null): Product {
+fun UpsertProductDto.toProduct(supplierId: String, createAt: LocalDateTime? = null): Product {
     return Product(
         productId = IdentifyCreator.createOrElse(productId),
         supplierId = supplierId,
-        sku = IdentifyCreator.genProductSkuOrElse(sku, brand = brand, nameProduct = name!!),
+        sku = IdentifyCreator.genProductSkuOrElse(sku, brand = brand!!, nameProduct = name!!),
         name = name,
         description = description!!,
+        brand = brand,
         price = price ?: listedPrice!!,
         listedPrice = listedPrice!!,
         amount = amount!!,
@@ -43,6 +44,7 @@ fun UpsertProductDto.combineProduct(product: Product): Product {
         sku = sku ?: product.sku,
         name = name ?: product.name,
         description = description ?: product.description,
+        brand = brand ?: product.brand,
         price = price ?: product.price,
         listedPrice = listedPrice ?: product.listedPrice,
         amount = amount ?: product.amount,
@@ -77,6 +79,7 @@ fun Product.toProductDto(supplierInfo: SupplierInfoDto, extras: ProductExtrasDto
         sku = sku,
         name = name,
         description = description,
+        brand = brand,
         price = price,
         listedPrice = listedPrice,
         amount = amount,

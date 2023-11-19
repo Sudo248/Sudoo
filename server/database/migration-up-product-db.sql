@@ -1,4 +1,5 @@
-USE `product-db`;
+USE
+`product-db`;
 
 DROP TABLE IF EXISTS `suppliers`;
 CREATE TABLE `suppliers`
@@ -9,7 +10,6 @@ CREATE TABLE `suppliers`
     `address_id`  CHAR(32)     NOT NULL,
     `name`        VARCHAR(255) NOT NULL,
     `avatar`      VARCHAR(255),
-    `brand`       VARCHAR(255),
     `contact_url` VARCHAR(255),
     `rate`        FLOAT4   DEFAULT 0.0,
     `create_at`   DATETIME DEFAULT CURRENT_TIMESTAMP
@@ -24,6 +24,7 @@ CREATE TABLE `products`
     `sku`                 CHAR(15)     NOT NULL UNIQUE,
     `name`                VARCHAR(255) NOT NULL,
     `description`         TEXT,
+    `brand`               VARCHAR(255),
     `price`               FLOAT4,
     `listed_price`        FLOAT4,
     `amount`              INT4         NOT NULL,
@@ -40,8 +41,8 @@ CREATE TABLE `products`
     `width`               INT4,
     `created_at`          DATETIME              DEFAULT CURRENT_TIMESTAMP,
 
-    INDEX id_index (product_id),
-    INDEX sku_index (sku),
+    INDEX                 id_index (product_id),
+    INDEX                 sku_index (sku),
 
     FOREIGN KEY (supplier_id) REFERENCES suppliers (supplier_id) ON DELETE CASCADE
 
@@ -56,7 +57,7 @@ CREATE TABLE `product_extras`
     `enable_ar_viewer` BOOLEAN DEFAULT FALSE,
     `source`           VARCHAR(255),
 
-    INDEX id_index (product_id),
+    INDEX              id_index (product_id),
 
     FOREIGN KEY (product_id) REFERENCES products (product_id) ON DELETE CASCADE
 ) CHARACTER SET = utf8mb4
@@ -95,7 +96,7 @@ CREATE TABLE `users_products`
     `updated_at`      DATETIME DEFAULT CURRENT_TIMESTAMP,
     `created_at`      DATETIME DEFAULT CURRENT_TIMESTAMP,
 
-    INDEX product_id_index (product_id),
+    INDEX             product_id_index (product_id),
 
     FOREIGN KEY (product_id) REFERENCES products (product_id) ON DELETE CASCADE
 
@@ -109,7 +110,7 @@ CREATE TABLE `images`
     `owner_id` CHAR(32)     NOT NULL,
     `url`      VARCHAR(255) NOT NULL,
 
-    INDEX owner_id_index (owner_id)
+    INDEX      owner_id_index (owner_id)
 
 ) CHARACTER SET = utf8mb4
     COMMENT = 'Store all images';

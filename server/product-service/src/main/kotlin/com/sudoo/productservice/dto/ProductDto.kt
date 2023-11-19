@@ -8,6 +8,7 @@ data class ProductDto(
     val sku: String? = null,
     val name: String,
     val description: String,
+    val brand: String,
     val price: Float,
     val listedPrice: Float,
     val amount: Int,

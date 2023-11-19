@@ -9,6 +9,7 @@ import com.sudoo.cartservice.repository.CartRepository
 import com.sudoo.cartservice.repository.entity.*
 import com.sudoo.cartservice.service.CartService
 import com.sudoo.cartservice.service.ProductService
+import com.sudoo.domain.exception.BadRequestException
 import com.sudoo.domain.exception.NotFoundException
 import com.sudoo.domain.utils.IdentifyCreator
 import kotlinx.coroutines.*
@@ -43,7 +44,8 @@ class CartServiceImpl(
 
             for (cartProduct in cartProducts) {
                 cartDto.totalAmount += cartProduct.quantity
-                cartDto.totalPrice += (cartProduct.product?.price ?: 0.0f) * (cartProduct.quantity)
+                cartDto.totalPrice += if (cartProduct.totalPrice > 0) cartProduct.totalPrice else ((cartProduct.product?.price
+                    ?: 0.0f) * (cartProduct.quantity)).toDouble()
             }
 
             cartDto
@@ -77,8 +79,8 @@ class CartServiceImpl(
     }
 
     override suspend fun createCartByStatus(userId: String, status: String): CartDto {
-        val processingCarts = cartRepository.findCartByUserIdAndStatus(userId,CartStatus.PROCESSING.value).toList()
-        for(cart in processingCarts){
+        val processingCarts = cartRepository.findCartByUserIdAndStatus(userId, CartStatus.PROCESSING.value).toList()
+        for (cart in processingCarts) {
             cartRepository.deleteById(cart.cartId)
         }
         val cart = Cart(
@@ -116,9 +118,9 @@ class CartServiceImpl(
         )
     }
 
-    override suspend fun getOrderCartById(cartId: String): OrderCartDto {
+    override suspend fun getOrderCartById(cartId: String, supplierId: String?): OrderCartDto {
         val cart = cartRepository.findById(cartId) ?: throw NotFoundException("Not found cart $cartId")
-        val cartProducts = getOrderCartProducts(cart.cartId)
+        val cartProducts = getOrderCartProducts(cart.cartId, supplierId)
         val orderCartDto = OrderCartDto(
             userId = cart.userId,
             cartId = cart.cartId,
@@ -137,6 +139,7 @@ class CartServiceImpl(
         return orderCartDto
     }
 
+
     override suspend fun getCartProducts(cartId: String): List<CartProductDto> {
         val cartProducts: MutableList<CartProductDto> = mutableListOf()
         val cartProductsOfCart = cartProductRepository.findCartProductByCartId(cartId).toList()
@@ -146,17 +149,22 @@ class CartServiceImpl(
         return cartProducts.toList()
     }
 
-    override suspend fun getOrderCartProducts(cartId: String): List<OrderCartProductDto> {
-        val cartProducts: MutableList<OrderCartProductDto> = mutableListOf()
+    override suspend fun getOrderCartProducts(cartId: String, supplierId: String?): List<OrderCartProductDto> {
         val cartProductsOfCart = cartProductRepository.findCartProductByCartId(cartId).toList()
-        val listOrderProductInfo = productService.getListOrderProductInfoByIds(cartProductsOfCart.map { it.productId })
-        for (cartProduct in cartProductsOfCart) {
-            cartProducts.add(cartProduct.toOrderCartProductDto(listOrderProductInfo.first { it.productId == cartProduct.productId }))
+        // get product by ids and filter by supplier => maybe length of listOrderProductInfo less than length of cartProductsOfCart
+        val listOrderProductInfo =
+            productService.getListOrderProductInfoByIds(cartProductsOfCart.map { it.productId }, supplierId)
+        return listOrderProductInfo.map { orderProductInfo ->
+            cartProductsOfCart.first {
+                it.productId == orderProductInfo.productId
+            }.toOrderCartProductDto(orderProductInfo)
         }
-        return cartProducts.toList()
     }
 
-    override suspend fun updateProductInActiveCart(userId: String, upsertCartProductDto: UpsertCartProductDto): CartDto =
+    override suspend fun updateProductInActiveCart(
+        userId: String,
+        upsertCartProductDto: UpsertCartProductDto
+    ): CartDto =
         coroutineScope {
 //            if (upsertCartProductDto.cartProductId == null) throw BadRequestException("Require cart product id")
             val activeCart = getActiveCart(userId)
@@ -180,6 +188,7 @@ class CartServiceImpl(
             val productInfo = deferred[1] as ProductInfoDto
 
             if (cartProduct == null) {
+                if (upsertCartProductDto.quantity > productInfo.amount) throw BadRequestException("Not enough product. Total product: ${productInfo.amount}")
                 val newCartProduct = upsertCartProductDto.toCartProduct(activeCart.cartId)
                 activeCart.totalPrice += newCartProduct.quantity * productInfo.price
                 activeCart.totalAmount += newCartProduct.quantity
@@ -194,6 +203,7 @@ class CartServiceImpl(
                 )
             } else {
                 cartProduct.quantity += upsertCartProductDto.quantity
+                if (cartProduct.quantity > productInfo.amount) throw BadRequestException("Not enough product. Total product: ${productInfo.amount}")
                 activeCart.totalPrice += upsertCartProductDto.quantity * productInfo.price
                 activeCart.totalAmount += upsertCartProductDto.quantity
 
@@ -243,7 +253,9 @@ class CartServiceImpl(
     }
 
     override suspend fun getProcessingCart(userId: String): OrderCartDto {
-        val processingCart = cartRepository.findCartByUserIdAndStatus(userId,CartStatus.PROCESSING.value).toList()[0]
+        val processingCarts = cartRepository.findCartByUserIdAndStatus(userId, CartStatus.PROCESSING.value).toList()
+            .takeIf { it.isNotEmpty() } ?: throw NotFoundException("Not found processing cart for user $userId")
+        val processingCart = processingCarts.first()
         val cartProducts = getOrderCartProducts(processingCart.cartId)
         val orderCartDto = OrderCartDto(
             userId = processingCart.userId,
@@ -268,7 +280,7 @@ class CartServiceImpl(
             val cartProductOfProcessingCart = CartProductDto(
                 cartProductId = IdentifyCreator.create(),
                 cartId = processingCart.cartId,
-                totalPrice = cartProduct.totalPrice,
+                totalPrice = ((cartProduct.product?.price ?: 0.0f) * cartProduct.quantity).toDouble(),
                 quantity = cartProduct.quantity,
                 product = cartProduct.product
             )
@@ -276,7 +288,7 @@ class CartServiceImpl(
             cartProductsOfProcessingCart.add(
                 cartProductOfProcessingCart
             )
-            processingCart.totalPrice += (cartProduct.product?.price ?: 0.0f) * cartProduct.quantity
+            processingCart.totalPrice += cartProductOfProcessingCart.totalPrice
         }
 
         processingCart.totalAmount = cartProducts.size
@@ -302,7 +314,7 @@ class CartServiceImpl(
         }
     }
 
-    override suspend fun checkoutProcessingCart(userId: String) = coroutineScope{
+    override suspend fun checkoutProcessingCart(userId: String) = coroutineScope {
         val processingCart = try {
             cartRepository.findCartByUserIdAndStatus(userId, CartStatus.PROCESSING.value).toList()[0]
         } catch (e: Exception) {

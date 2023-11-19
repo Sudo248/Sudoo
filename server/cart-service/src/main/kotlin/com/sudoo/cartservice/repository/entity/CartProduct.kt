@@ -37,6 +37,7 @@ fun CartProduct.toCartProductDto(product:ProductInfoDto): CartProductDto {
         cartProductId = this.cartProductId,
         cartId = this.cartId,
         quantity = this.quantity,
+        totalPrice = (product.price * this.quantity).toDouble(),
         product = product
     )
 }

@@ -7,17 +7,24 @@ import com.sudo248.domain.util.Utils;
 import com.sudo248.orderservice.controller.order.dto.UpsertOrderDto;
 import com.sudo248.orderservice.controller.order.dto.OrderDto;
 import com.sudo248.orderservice.controller.order.dto.UpsertOrderPromotionDto;
-import com.sudo248.orderservice.repository.entity.order.Order;
-import com.sudo248.orderservice.repository.entity.order.OrderStatus;
+import com.sudo248.orderservice.repository.entity.order.StatisticRevenueCondition;
 import com.sudo248.orderservice.service.order.OrderService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
+    final String patternDate = "^\\d{1,2}/\\d{1,2}/\\d{4}";
+    final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private final OrderService orderService;
 
     public OrderController(OrderService orderService) {
@@ -37,11 +44,10 @@ public class OrderController {
 
     @GetMapping
     public ResponseEntity<BaseResponse<?>> getOrderByUserId(
-            @RequestHeader(Constants.HEADER_USER_ID) String userId,
-            @RequestParam(value = "status", required = false, defaultValue = "") String status
+            @RequestHeader(Constants.HEADER_USER_ID) String userId
     ) {
         return Utils.handleException(() -> {
-            List<OrderDto> list = orderService.getOrdersByUserId(userId, status);
+            List<OrderDto> list = orderService.getOrdersByUserId(userId);
             return BaseResponse.ok(list);
         });
     }
@@ -103,6 +109,28 @@ public class OrderController {
         return Utils.handleException(() -> {
             orderService.updateOrderPayment(orderId, paymentId);
             return BaseResponse.ok(true);
+        });
+    }
+
+    // statistic
+    @GetMapping("/statistic/revenue")
+    ResponseEntity<BaseResponse<?>> getRevenueFromTo(
+            @RequestHeader(Constants.HEADER_USER_ID) String userId,
+            @RequestParam(value = "key", required = false, defaultValue = "") String key,
+            @RequestParam(value = "from") String from,
+            @RequestParam(value = "to") String to
+    ) {
+        return Utils.handleException(() -> {
+            if (Pattern.matches(patternDate, from) && Pattern.matches(patternDate, to)) {
+                return BaseResponse.ok(orderService.statisticRevenue(
+                        userId,
+                        StatisticRevenueCondition.fromString(key),
+                        LocalDate.parse(from, formatter),
+                        LocalDate.parse(to, formatter)
+                ));
+            } else {
+                throw new ApiException(HttpStatus.BAD_REQUEST, "Wrong format date");
+            }
         });
     }
 }

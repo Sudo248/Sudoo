@@ -25,9 +25,6 @@ data class Supplier(
     @Column("avatar")
     val avatar: String,
 
-    @Column("brand")
-    val brand: String,
-
     @Column("address_id")
     var addressId: String,
 

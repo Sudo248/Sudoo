@@ -7,7 +7,6 @@ data class SupplierDto(
     val ghnShopId: Int,
     val name: String,
     val avatar: String,
-    val brand: String,
     val contactUrl: String,
     val totalProducts: Int = 0,
     val rate: Float = 0.0f,

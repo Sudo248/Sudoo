@@ -7,6 +7,7 @@ data class UpsertProductDto(
     val sku: String? = null,
     val name: String? = null,
     val description: String? = null,
+    val brand: String? = null,
     val price: Float? = null,
     val listedPrice: Float? = null,
     val amount: Int? = null,

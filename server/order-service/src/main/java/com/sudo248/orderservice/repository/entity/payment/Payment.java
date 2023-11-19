@@ -4,6 +4,7 @@ import com.sudo248.orderservice.repository.entity.order.Order;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -34,6 +35,12 @@ public class Payment {
 
     @Column(name = "status")
     private PaymentStatus status;
+
+    @Column(name = "zone_id")
+    private String zoneId;
+
+    @Column(name = "payment_date_time")
+    private LocalDateTime paymentDateTime;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "payment")
     private Order order;
