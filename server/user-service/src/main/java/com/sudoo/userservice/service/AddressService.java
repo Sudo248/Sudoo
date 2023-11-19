@@ -7,7 +7,6 @@ import com.sudoo.userservice.repository.entitity.Address;
 public interface AddressService {
 
     AddressDto postAddress(AddressDto addressDto);
-
     AddressDto getAddress(String addressId);
     void deleteAddress(String addressId);
     AddressDto putAddress(AddressDto addressDto) throws ApiException;

@@ -55,11 +55,6 @@ public class Order {
     public double calculateTotalPromotionPrice(PromotionDto promotionDto, List<PromotionDto> supplierPromotion) {
         if (promotionDto != null) {
             this.totalPromotionPrice = promotionDto.getValue();
-        } else {
-            this.totalPromotionPrice = 0.0;
-        }
-        if (supplierPromotion != null && !supplierPromotion.isEmpty()) {
-            this.totalPromotionPrice += supplierPromotion.stream().map(PromotionDto::getValue).reduce(0.0, Double::sum);
         }
         return this.totalPromotionPrice;
     }

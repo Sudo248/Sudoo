@@ -12,7 +12,7 @@ import java.util.List;
 public class CartDto {
     private String cartId;
     private Double totalPrice;
-    private int totalAmount;
+    private int quantity;
     private String status;
     private List<OrderCartProductDto> cartProducts;
 }

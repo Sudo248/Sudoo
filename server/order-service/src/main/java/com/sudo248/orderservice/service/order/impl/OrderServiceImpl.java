@@ -242,7 +242,6 @@ public class OrderServiceImpl implements OrderService {
                 order.getTotalPromotionPrice(),
                 order.getFinalPrice()
         );
-
     }
 
     private Map<String, Object> getUpdateOrderMap(Order order) {

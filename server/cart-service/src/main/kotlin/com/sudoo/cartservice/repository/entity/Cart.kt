@@ -16,8 +16,8 @@ data class Cart(
     @Column("total_price")
     var totalPrice: Double = 0.0,
 
-    @Column("total_amount")
-    var totalAmount: Int = 0,
+    @Column("quantity")
+    var quantity: Int = 0,
 
     @Column("user_id")
     var userId: String = "",
@@ -39,7 +39,7 @@ fun Cart.toCartDto(): CartDto {
     return CartDto(
         cartId = this.cartId,
         totalPrice = this.totalPrice,
-        totalAmount = this.totalAmount,
+        quantity = this.quantity,
         status = this.status
     )
 }
