@@ -37,13 +37,13 @@ class CartServiceImpl(
                 userId = cart.userId,
                 cartId = cart.cartId,
                 totalPrice = 0.0,
-                totalAmount = 0,
+                quantity = 0,
                 status = cart.status,
                 cartProducts = cartProducts
             )
 
             for (cartProduct in cartProducts) {
-                cartDto.totalAmount += cartProduct.quantity
+                    cartDto.quantity += cartProduct.quantity
                 cartDto.totalPrice += if (cartProduct.totalPrice > 0) cartProduct.totalPrice else ((cartProduct.product?.price
                     ?: 0.0f) * (cartProduct.quantity)).toDouble()
             }
@@ -59,7 +59,7 @@ class CartServiceImpl(
         val cart = Cart(
             cartId = IdentifyCreator.create(),
             userId = userId,
-            totalAmount = 0,
+            quantity = 0,
             totalPrice = 0.0,
             status = CartStatus.ACTIVE.value,
         ).apply { isNewCart = true }
@@ -86,7 +86,7 @@ class CartServiceImpl(
         val cart = Cart(
             cartId = IdentifyCreator.create(),
             userId = userId,
-            totalAmount = 0,
+            quantity = 0,
             totalPrice = 0.0,
             status = when (status) {
                 CartStatus.ACTIVE.value -> CartStatus.ACTIVE.value
@@ -101,18 +101,18 @@ class CartServiceImpl(
     override suspend fun getCartById(cartId: String): CartDto {
         val cart = cartRepository.findById(cartId) ?: throw NotFoundException("Not found cart $cartId")
         val totalPrice = 0.0
-        var totalAmount = 0
+        var quantity = 0
         val cartProducts: List<CartProductDto> = getCartProducts(cartId)
         if (cart.cartProducts.isNotEmpty()) {
             for (cartProduct in cart.cartProducts) {
-                totalAmount += cartProduct.quantity
+                quantity += cartProduct.quantity
             }
         }
         return CartDto(
             userId = cart.userId,
             cartId = cart.cartId,
             totalPrice = totalPrice,
-            totalAmount = totalAmount,
+            quantity = quantity,
             status = cart.status,
             cartProducts = cartProducts
         )
@@ -125,13 +125,13 @@ class CartServiceImpl(
             userId = cart.userId,
             cartId = cart.cartId,
             totalPrice = 0.0,
-            totalAmount = 0,
+            quantity = 0,
             status = cart.status,
             cartProducts = cartProducts
         )
 
         for (cartProduct in cartProducts) {
-            orderCartDto.totalAmount += cartProduct.quantity
+            orderCartDto.quantity += cartProduct.quantity
             orderCartDto.totalPrice += (cartProduct.product?.price ?: 0.0f) * (cartProduct.quantity)
         }
 
@@ -191,7 +191,7 @@ class CartServiceImpl(
                 if (upsertCartProductDto.quantity > productInfo.amount) throw BadRequestException("Not enough product. Total product: ${productInfo.amount}")
                 val newCartProduct = upsertCartProductDto.toCartProduct(activeCart.cartId)
                 activeCart.totalPrice += newCartProduct.quantity * productInfo.price
-                activeCart.totalAmount += newCartProduct.quantity
+                activeCart.quantity += newCartProduct.quantity
 
                 joinAll(
                     launch {
@@ -205,7 +205,7 @@ class CartServiceImpl(
                 cartProduct.quantity += upsertCartProductDto.quantity
                 if (cartProduct.quantity > productInfo.amount) throw BadRequestException("Not enough product. Total product: ${productInfo.amount}")
                 activeCart.totalPrice += upsertCartProductDto.quantity * productInfo.price
-                activeCart.totalAmount += upsertCartProductDto.quantity
+                activeCart.quantity += upsertCartProductDto.quantity
 
                 if (cartProduct.quantity >= 0) {
                     joinAll(
@@ -222,7 +222,7 @@ class CartServiceImpl(
             CartDto(
                 cartId = activeCart.cartId,
                 totalPrice = activeCart.totalPrice,
-                totalAmount = activeCart.totalAmount,
+                quantity = activeCart.quantity,
                 status = activeCart.status,
                 cartProducts = getCartProducts(activeCart.cartId)
             )
@@ -246,7 +246,7 @@ class CartServiceImpl(
 
         cartProductRepository.deleteById(cartProductId)
 
-        cart.totalAmount -= cartProduct.quantity
+        cart.quantity -= cartProduct.quantity
         cart.totalPrice -= (cartProduct.quantity * productInfo.price)
         cartRepository.save(cart)
         true
@@ -261,13 +261,13 @@ class CartServiceImpl(
             userId = processingCart.userId,
             cartId = processingCart.cartId,
             totalPrice = 0.0,
-            totalAmount = 0,
+            quantity = 0,
             status = processingCart.status,
             cartProducts = cartProducts
         )
 
         for (cartProduct in cartProducts) {
-            orderCartDto.totalAmount += cartProduct.quantity
+            orderCartDto.quantity += cartProduct.quantity
             orderCartDto.totalPrice += (cartProduct.product?.price ?: 0.0f) * (cartProduct.quantity)
         }
         return orderCartDto
@@ -291,7 +291,7 @@ class CartServiceImpl(
             processingCart.totalPrice += cartProductOfProcessingCart.totalPrice
         }
 
-        processingCart.totalAmount = cartProducts.size
+        processingCart.quantity = cartProducts.size
         processingCart.cartProducts = cartProductsOfProcessingCart
         cartRepository.save(processingCart.toCart())
 
