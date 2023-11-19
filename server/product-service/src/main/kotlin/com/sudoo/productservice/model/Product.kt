@@ -25,6 +25,9 @@ data class Product(
     @Column("description")
     val description: String,
 
+    @Column("brand")
+    var brand: String = "",
+
     @Column("price")
     val price: Float,
 
@@ -75,9 +78,6 @@ data class Product(
     val createdAt: LocalDateTime,
 
     ) : Persistable<String> {
-
-    @Transient
-    var brand: String = ""
 
     @Transient
     var images: List<Image>? = null

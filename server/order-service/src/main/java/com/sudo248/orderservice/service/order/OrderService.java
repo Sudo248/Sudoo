@@ -1,19 +1,18 @@
 package com.sudo248.orderservice.service.order;
 
 import com.sudo248.domain.exception.ApiException;
-import com.sudo248.orderservice.controller.order.dto.OrderSupplierDto;
-import com.sudo248.orderservice.controller.order.dto.UpsertOrderDto;
-import com.sudo248.orderservice.controller.order.dto.OrderDto;
-import com.sudo248.orderservice.controller.order.dto.UpsertOrderPromotionDto;
+import com.sudo248.orderservice.controller.order.dto.*;
 import com.sudo248.orderservice.repository.entity.order.Order;
 import com.sudo248.orderservice.repository.entity.order.OrderStatus;
 import com.sudo248.orderservice.repository.entity.order.OrderSupplier;
+import com.sudo248.orderservice.repository.entity.order.StatisticRevenueCondition;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
 public interface OrderService {
-    List<OrderDto> getOrdersByUserId(String userId, String statusValue) throws ApiException;
+    List<OrderDto> getOrdersByUserId(String userId) throws ApiException;
     OrderDto getOrderById(String orderId) throws ApiException;
     OrderDto createOrder(String userId, UpsertOrderDto upsertOrderDto) throws ApiException;
     boolean deleteOrder(String orderId);
@@ -29,4 +28,14 @@ public interface OrderService {
     UpsertOrderPromotionDto updateOrderPromotion(String orderId, UpsertOrderPromotionDto upsertOrderPromotionDto) throws ApiException;
 
     void updateOrderPayment(String invoiceId, String paymentId);
+
+    OrderDto getOrderByOrderSupplierIdAndSupplierFromUserId(String orderSupplierId, String userId) throws  ApiException;
+
+    List<OrderSupplierInfoDto> getListOrderSupplierInfoFromUserId(String userId, OrderStatus status) throws  ApiException;
+
+    List<OrderUserInfoDto> getListOrderUserInfoByUserId(String userId, OrderStatus status) throws ApiException;
+
+    Map<String, Object> patchOrderSupplier(String orderSupplierId, PatchOrderSupplierDto patchOrderSupplierDto) throws ApiException;
+
+    RevenueStatisticData statisticRevenue(String userId, StatisticRevenueCondition condition, LocalDate from, LocalDate to);
 }

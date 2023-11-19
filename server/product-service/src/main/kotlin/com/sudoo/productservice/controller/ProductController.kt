@@ -71,10 +71,11 @@ class ProductController(
     @PostMapping("/list")
     suspend fun getListProductInfoByIds(
         @RequestParam("orderInfo", required = false, defaultValue = "false") orderInfo: Boolean,
+        @RequestParam("supplierId", required = false) supplierId: String? = null,
         @RequestBody ids: List<String>,
     ): ResponseEntity<BaseResponse<*>> = handle {
         if (orderInfo) {
-            productService.getListOrderProductInfoByIds(ids)
+            productService.getListOrderProductInfoByIds(ids, supplierId)
         } else {
             productService.getListProductInfoByIds(ids)
         }

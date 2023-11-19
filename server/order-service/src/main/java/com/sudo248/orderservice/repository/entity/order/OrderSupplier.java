@@ -5,6 +5,7 @@ import com.sudo248.orderservice.controller.order.dto.SupplierInfoDto;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
@@ -32,6 +33,12 @@ public class OrderSupplier {
 
     @Column(name = "total_price")
     private double totalPrice;
+
+    @Column(name = "status")
+    private OrderStatus status;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
     @Embedded
     private Shipment shipment;

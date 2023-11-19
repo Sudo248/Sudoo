@@ -15,6 +15,7 @@ import com.sudoo.productservice.service.ProductService
 import com.sudoo.productservice.service.SupplierService
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.count
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import org.springframework.stereotype.Service
@@ -58,7 +59,7 @@ class ProductServiceImpl(
             val createAt =
                 if (productDto.productId.isNullOrEmpty()) null else productRepository.findById(productDto.productId)?.createdAt
             val product =
-                productDto.toProduct(supplierId = supplier.supplierId, brand = supplier.brand, createAt = createAt)
+                productDto.toProduct(supplierId = supplier.supplierId, createAt = createAt)
             productRepository.save(product)
             launch {
                 productExtrasRepository.save(
@@ -134,7 +135,6 @@ class ProductServiceImpl(
         })
             .map { product ->
                 async {
-                    product.brand = supplierRepository.getBrand(product.supplierId)
                     product.images = listOf(imageRepository.getFirstByOwnerId(product.productId).url)
                     product.toProductInfoDto()
                 }
@@ -156,7 +156,6 @@ class ProductServiceImpl(
                 productRepository.getProductInfoWithOffset(offset = offsetRequest.offset, limit = offsetRequest.limit)
                     .map { product ->
                         async {
-                            product.brand = supplierRepository.getBrand(product.supplierId)
                             product.images = listOf(imageRepository.getFirstByOwnerId(product.productId).url)
                             product.toProductInfoDto()
                         }
@@ -200,7 +199,6 @@ class ProductServiceImpl(
                 }
                 ).map { productInfo ->
                 async {
-                    productInfo.brand = supplierRepository.getBrand(productInfo.supplierId)
                     productInfo.images = listOf(imageRepository.getFirstByOwnerId(productInfo.productId).url)
                     productInfo.toProductInfoDto()
                 }
@@ -238,7 +236,6 @@ class ProductServiceImpl(
                 }
                 ).map { product ->
                 async {
-                    product.brand = supplierRepository.getBrand(supplierId)
                     product.images = listOf(imageRepository.getFirstByOwnerId(product.productId).url)
                     product.toProductInfoDto()
                 }
@@ -289,9 +286,6 @@ class ProductServiceImpl(
         val productInfo =
             productRepository.getProductInfoById(productId) ?: throw NotFoundException("Not found product $productId")
         joinAll(
-            launch {
-                productInfo.brand = supplierRepository.getBrand(productInfo.supplierId)
-            },
             launch {
                 productInfo.images = listOf(imageRepository.getFirstByOwnerId(productInfo.productId).url)
             }
@@ -349,17 +343,18 @@ class ProductServiceImpl(
     override suspend fun getListProductInfoByIds(ids: List<String>): List<ProductInfoDto> = coroutineScope {
         productRepository.getListProductInfoByIds(ids).map { product ->
             async {
-                product.brand = supplierRepository.getBrand(product.supplierId)
                 product.images = listOf(imageRepository.getFirstByOwnerId(product.productId).url)
                 product.toProductInfoDto()
             }
         }.toList().awaitAll()
     }
 
-    override suspend fun getListOrderProductInfoByIds(ids: List<String>): List<OrderProductInfoDto> = coroutineScope {
-        productRepository.getListOrderProductInfoByIds(ids).map { product ->
+    override suspend fun getListOrderProductInfoByIds(ids: List<String>, supplierId: String?): List<OrderProductInfoDto> = coroutineScope {
+        productRepository.getListOrderProductInfoByIds(ids).filter {
+            if (supplierId.isNullOrBlank()) true
+            else it.supplierId == supplierId
+        }.map { product ->
             async {
-                product.brand = supplierRepository.getBrand(product.supplierId)
                 product.images = listOf(imageRepository.getFirstByOwnerId(product.productId).url)
                 product.toOrderProductDto()
             }
@@ -393,7 +388,6 @@ class ProductServiceImpl(
             )
                 .map { product ->
                     async {
-                        product.brand = supplierRepository.getBrand(product.supplierId)
                         product.images = listOf(imageRepository.getFirstByOwnerId(product.productId).url)
                         product.toProductInfoDto()
                     }
@@ -422,7 +416,6 @@ class ProductServiceImpl(
         )
             .map { product ->
                 async {
-                    product.brand = supplierRepository.getBrand(product.supplierId)
                     product.images = listOf(imageRepository.getFirstByOwnerId(product.productId).url)
                     product.toProductInfoDto()
                 }

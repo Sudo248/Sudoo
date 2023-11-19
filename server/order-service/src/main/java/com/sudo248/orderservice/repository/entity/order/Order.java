@@ -30,9 +30,6 @@ public class Order {
     @Column(name = "total_price")
     private Double totalPrice = 0.0;
 
-    @Column(name = "status")
-    private OrderStatus status;
-
     @Column(name = "promotion_id")
     private String promotionId;
 
@@ -47,9 +44,6 @@ public class Order {
 
     @Column(name = "address")
     private String address;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "payment_id")

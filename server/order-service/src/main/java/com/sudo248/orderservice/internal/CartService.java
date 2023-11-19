@@ -20,7 +20,9 @@ public interface CartService {
 
     @GetMapping("/api/v1/carts/{cartId}")
     ResponseEntity<BaseResponse<CartDto>> getCartById(
-            @PathVariable("cartId") String cartId
+            @PathVariable("cartId") String cartId,
+            @RequestParam("orderInfo") boolean orderInfo,
+            @RequestParam("supplierId") String supplierId
     );
 
     @GetMapping("/api/v1/carts/internal/{cartId}/products")

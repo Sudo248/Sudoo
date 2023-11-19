@@ -31,9 +31,10 @@ class CartController(
     @GetMapping("/{cartId}")
     suspend fun getCartById(
         @PathVariable cartId: String,
-        @RequestParam(value = "orderInfo", required = false, defaultValue = "false") orderInfo: Boolean
+        @RequestParam(value = "orderInfo", required = false, defaultValue = "false") orderInfo: Boolean,
+        @RequestParam(value = "supplierId", required = false) supplierId: String? = null,
     ): ResponseEntity<BaseResponse<*>> = handle {
-        if (orderInfo) cartService.getOrderCartById(cartId)
+        if (orderInfo) cartService.getOrderCartById(cartId, supplierId)
         else cartService.getCartById(cartId)
     }
 

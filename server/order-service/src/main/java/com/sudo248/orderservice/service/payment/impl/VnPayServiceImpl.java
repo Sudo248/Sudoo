@@ -29,6 +29,9 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
@@ -75,11 +78,10 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
         return handleException(() -> {
             if (paymentDto.getOrderId() == null) throw new ApiException(HttpStatus.BAD_REQUEST, "Require order id");
             Optional<Order> order = orderRepository.findById(paymentDto.getOrderId());
-            if (order.isEmpty()) throw new ApiException(HttpStatus.NOT_FOUND, "Not found order " + paymentDto.getOrderId());
-            updateOrderStatus(order.get());
+            if (order.isEmpty())
+                throw new ApiException(HttpStatus.NOT_FOUND, "Not found order " + paymentDto.getOrderId());
             Payment payment = toEntity(paymentDto, order.get());
-            order.get().setPayment(payment);
-            paymentRepository.save(payment);
+
             Map<String, String> vnp_Params = new HashMap<>();
             vnp_Params.put("vnp_Version", VnPayConfig.vnp_Version);
             vnp_Params.put("vnp_Command", VnPayConfig.vnp_Command);
@@ -138,6 +140,9 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
             queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
             String paymentUrl = VnPayConfig.vnp_Url + "?" + queryUrl;
 
+            order.get().setPayment(payment);
+            paymentRepository.save(payment);
+            updateOrderStatus(order.get());
             // if dev => create review in payment
             if (isDevProfile()) {
                 upsertUserProduct(userId, order.get().getCartId());
@@ -215,7 +220,9 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
         return new PaymentInfoDto(
                 paymentId,
                 payment.getAmount(),
-                payment.getPaymentType()
+                payment.getPaymentType(),
+                payment.getPaymentDateTime(),
+                payment.getStatus()
         );
     }
 
@@ -224,7 +231,9 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
         return new PaymentInfoDto(
                 payment.getPaymentId(),
                 payment.getAmount(),
-                payment.getPaymentType()
+                payment.getPaymentType(),
+                payment.getPaymentDateTime(),
+                payment.getStatus()
         );
     }
 
@@ -237,11 +246,13 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
         return new Payment(
                 Utils.createIdOrElse(paymentDto.getPaymentId()),
                 paymentDto.getOrderType(),
-                paymentDto.getAmount(),
+                order.getFinalPrice(),
                 paymentDto.getBankCode(),
                 paymentDto.getPaymentType(),
                 paymentDto.getIpAddress(),
                 PaymentStatus.PENDING,
+                paymentDto.getTimeZoneId(),
+                LocalDateTime.now(ZoneId.of(paymentDto.getTimeZoneId())),
                 order
         );
     }
@@ -343,6 +354,7 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
                 vnp_TxnRef,
                 vnp_Amount,
                 vnp_BankCode,
+                vnp_PayDate,
                 vnp_TransactionStatus,
                 vnp_ResponseCode
         );
@@ -359,6 +371,7 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
             String paymentId,
             long amount,
             String bankCode,
+            long vnp_PayDate,
             String paymentStatus,
             String responseCode
     ) {
@@ -399,10 +412,11 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
                             e.printStackTrace();
                         }
                     }
-                    notificationService.sendNotificationPaymentStatus(payment.getOrder().getUserId(), notification);
+//                    notificationService.sendNotificationPaymentStatus(payment.getOrder().getUserId(), notification);
                     if (payment.getBankCode() == null || payment.getBankCode().isEmpty()) {
                         payment.setBankCode(bankCode);
                     }
+                    payment.setPaymentDateTime(Instant.ofEpochMilli(vnp_PayDate).atZone(ZoneId.of(payment.getZoneId())).toLocalDateTime());
                     paymentRepository.save(payment);
                     return new VnPayResponse(
                             "00",

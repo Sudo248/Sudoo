@@ -14,7 +14,10 @@ public interface ProductService {
     @GetMapping("/api/v1/discovery/suppliers/{supplierId}/info")
     BaseResponse<SupplierInfoDto> getSupplierById(@PathVariable("supplierId") String supplierId);
 
-    @GetMapping("api/v1/promotions/{promotionId}")
+    @GetMapping("/api/v1/discovery/suppliers/self/info")
+    BaseResponse<SupplierInfoDto> getSupplierByUserId(@RequestHeader(Constants.HEADER_USER_ID) String userId);
+
+    @GetMapping("/api/v1/promotions/{promotionId}")
     ResponseEntity<BaseResponse<PromotionDto>> getPromotionById(@PathVariable("promotionId") String promotionId);
 
     @PutMapping ("/api/v1/discovery/products/internal/amount")

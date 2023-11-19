@@ -4,6 +4,7 @@ import com.sudoo.domain.exception.NotFoundException
 import com.sudoo.productservice.dto.ImageDto
 import com.sudoo.productservice.mapper.toImage
 import com.sudoo.productservice.mapper.toImageDto
+import com.sudoo.productservice.model.Image
 import com.sudoo.productservice.repository.ImageRepository
 import com.sudoo.productservice.service.ImageService
 import kotlinx.coroutines.flow.map
@@ -45,7 +46,7 @@ class ImageServiceImpl(
     }
 
     override suspend fun upsertBanner(imageDto: ImageDto): ImageDto {
-        val image = imageDto.toImage().copy(ownerId = banner)
+        val image = Image.from(ownerId = banner, url = imageDto.url)
         imageRepository.save(image)
         return image.toImageDto()
     }
