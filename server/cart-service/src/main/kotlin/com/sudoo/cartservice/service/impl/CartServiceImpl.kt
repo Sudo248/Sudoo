@@ -43,7 +43,7 @@ class CartServiceImpl(
             )
 
             for (cartProduct in cartProducts) {
-                    cartDto.quantity += cartProduct.quantity
+                cartDto.quantity += cartProduct.quantity
                 cartDto.totalPrice += if (cartProduct.totalPrice > 0) cartProduct.totalPrice else ((cartProduct.product?.price
                     ?: 0.0f) * (cartProduct.quantity)).toDouble()
             }
@@ -132,10 +132,12 @@ class CartServiceImpl(
 
         for (cartProduct in cartProducts) {
             orderCartDto.quantity += cartProduct.quantity
-            orderCartDto.totalPrice += (cartProduct.product?.price ?: 0.0f) * (cartProduct.quantity)
+            if (cartProduct.purchasePrice == null) {
+                orderCartDto.totalPrice += (cartProduct.product?.price ?: 0.0f) * (cartProduct.quantity)
+            } else {
+                orderCartDto.totalPrice += (cartProduct.purchasePrice * 1.0) * (cartProduct.quantity)
+            }
         }
-
-
         return orderCartDto
     }
 
@@ -320,6 +322,13 @@ class CartServiceImpl(
         } catch (e: Exception) {
             e.printStackTrace()
             throw e
+        }
+
+        val purchaseCartProducts = cartProductRepository.findCartProductByCartId(processingCart.cartId).toList()
+        for(purchaseCartProduct in purchaseCartProducts){
+            val product = productService.getProductInfo(purchaseCartProduct.productId)
+            purchaseCartProduct.purchasePrice = product.price * 1.0
+            cartProductRepository.save(purchaseCartProduct)
         }
 
         processingCart.status = CartStatus.COMPLETED.value

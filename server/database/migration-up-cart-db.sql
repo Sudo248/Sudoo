@@ -6,7 +6,7 @@ CREATE TABLE `cart`
     `cart_id`      CHAR(32) NOT NULL PRIMARY KEY,
     `user_id`      CHAR(32) NOT NULL,
     `total_price`  FLOAT8 DEFAULT 0.0,
-    `total_amount` FLOAT8 DEFAULT 0.0,
+    `quantity` FLOAT8 DEFAULT 0.0,
     `status`       VARCHAR(255)
 ) CHARACTER SET = utf8mb4
     COMMENT = 'Store all carts';
@@ -20,8 +20,10 @@ CREATE TABLE `cart_product`
     `cart_id`         CHAR(32) NOT NULL,
     `product_id`      CHAR(32) NOT NULL,
     `total_price`     FLOAT8 DEFAULT 0.0,
-    `total_amount`    FLOAT8 DEFAULT 0.0,
+    `purchase_price` FLOAT8 DEFAULT 0.0,
+    `quantity`    FLOAT8 DEFAULT 0.0,
     `status`          VARCHAR(255),
+
 
     FOREIGN KEY (cart_id) REFERENCES cart(cart_id) ON DELETE CASCADE
 ) CHARACTER SET = utf8mb4

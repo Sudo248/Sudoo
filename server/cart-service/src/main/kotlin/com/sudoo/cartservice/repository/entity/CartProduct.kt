@@ -22,9 +22,12 @@ data class CartProduct(
     @Column("product_id")
     var productId: String = "",
 
-    @Column("total_amount")
+    @Column("quantity")
     var quantity: Int = 0,
-): Persistable<String> {
+
+    @Column("purchase_price")
+    var purchasePrice: Double? = null,
+) : Persistable<String> {
 
     @Transient
     internal var isNewCartProduct: Boolean = false
@@ -32,20 +35,22 @@ data class CartProduct(
     override fun isNew(): Boolean = isNewCartProduct
 }
 
-fun CartProduct.toCartProductDto(product:ProductInfoDto): CartProductDto {
+fun CartProduct.toCartProductDto(product: ProductInfoDto): CartProductDto {
     return CartProductDto(
         cartProductId = this.cartProductId,
         cartId = this.cartId,
+        purchasePrice = this.purchasePrice,
         quantity = this.quantity,
         totalPrice = (product.price * this.quantity).toDouble(),
         product = product
     )
 }
 
-fun CartProduct.toOrderCartProductDto(product:OrderProductInfoDto): OrderCartProductDto {
+fun CartProduct.toOrderCartProductDto(product: OrderProductInfoDto): OrderCartProductDto {
     return OrderCartProductDto(
         cartProductId = this.cartProductId,
         cartId = this.cartId,
+        purchasePrice = this.purchasePrice,
         quantity = this.quantity,
         totalPrice = this.quantity * product.price * 1.0,
         product = product

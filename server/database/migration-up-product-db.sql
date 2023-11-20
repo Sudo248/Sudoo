@@ -1,5 +1,4 @@
-USE
-`product-db`;
+USE `product-db`;
 
 DROP TABLE IF EXISTS `suppliers`;
 CREATE TABLE `suppliers`

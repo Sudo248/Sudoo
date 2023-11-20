@@ -34,7 +34,7 @@ class CartController(
         @RequestParam(value = "orderInfo", required = false, defaultValue = "false") orderInfo: Boolean,
         @RequestParam(value = "supplierId", required = false) supplierId: String? = null,
     ): ResponseEntity<BaseResponse<*>> = handle {
-        if (orderInfo) cartService.getOrderCartById(cartId, supplierId)
+        if (orderInfo) cartService.getOrderCartById(cartId, supplierId.orEmpty())
         else cartService.getCartById(cartId)
     }
 

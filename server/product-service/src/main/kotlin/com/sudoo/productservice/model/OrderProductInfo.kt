@@ -12,6 +12,8 @@ data class OrderProductInfo(
     val sku: String,
     @Column("name")
     val name: String,
+    @Column("brand")
+    val brand: String,
     @Column("price")
     val price: Float,
     @Column("weight")
@@ -23,8 +25,6 @@ data class OrderProductInfo(
     @Column("width")
     val width: Int,
 ) {
-    @Transient
-    var brand: String = ""
 
     @Transient
     var images: List<String>? = null
