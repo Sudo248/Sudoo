@@ -14,6 +14,7 @@ import com.sudoo.productservice.service.ImageService
 import com.sudoo.productservice.service.ProductService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.util.logging.Logger
 
 @RestController
 @RequestMapping("/discovery/products")
@@ -74,6 +75,7 @@ class ProductController(
         @RequestParam("supplierId", required = false) supplierId: String? = null,
         @RequestBody ids: List<String>,
     ): ResponseEntity<BaseResponse<*>> = handle {
+        com.sudoo.domain.utils.Logger.info("ids: ${ids[0]} supplierId: ${supplierId == null}")
         if (orderInfo) {
             productService.getListOrderProductInfoByIds(ids, supplierId)
         } else {

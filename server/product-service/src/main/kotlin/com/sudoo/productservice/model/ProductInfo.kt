@@ -16,7 +16,7 @@ data class ProductInfo(
     @Column("name")
     val name: String,
     @Column("brand")
-    var brand: String = "",
+    var brand: String,
     @Column("price")
     val price: Float,
     @Column("listed_price")
