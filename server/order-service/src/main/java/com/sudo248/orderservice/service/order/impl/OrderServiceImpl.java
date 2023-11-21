@@ -104,6 +104,8 @@ public class OrderServiceImpl implements OrderService {
         if (!StringUtils.isNullOrEmpty(upsertOrderDto.getPromotionId())) {
             promotionDto = getPromotionById(upsertOrderDto.getPromotionId());
             builder.promotionId(promotionDto.getPromotionId());
+        } else {
+            builder.totalPromotionPrice(0.0);
         }
 
         Order order = builder.build();
