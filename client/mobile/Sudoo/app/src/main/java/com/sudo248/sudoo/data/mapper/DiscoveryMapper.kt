@@ -37,7 +37,10 @@ fun ProductDto.toProduct(): Product {
     return Product(
         productId = productId,
         name = name,
+        supplierId = supplierId,
+
         description = description,
+        brand = brand,
         sku = sku,
         price = price,
         listedPrice = listedPrice,
@@ -117,7 +120,6 @@ fun SupplierInfoDto.toSupplierInfo(): SupplierInfo {
         supplierId = supplierId,
         name = name,
         avatar = avatar,
-        brand = brand,
         contactUrl = contactUrl,
         rate = rate,
         address = address.toAddress()

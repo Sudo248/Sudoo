@@ -11,8 +11,10 @@ import java.time.LocalDateTime
  */
 data class Product(
     val productId: String,
+    val supplierId: String ,
     val name: String,
     val description: String,
+    val brand: String ,
     val sku: String,
     val images: List<String>,
     val price: Double,
@@ -31,4 +33,4 @@ data class Product(
     val extras: ProductExtras,
     val supplier: SupplierInfo? = null,
     val categories: List<CategoryInfo>? = null,
-) :  java.io.Serializable
+) : java.io.Serializable

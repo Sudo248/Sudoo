@@ -10,7 +10,6 @@ data class Order(
     val payment: Payment? = null,
     val promotion: Promotion? = null,
     val user: User,
-    val status: OrderStatus,
     val totalPrice: Double,
     val totalPromotionPrice: Double,
     val totalShipmentPrice: Double,

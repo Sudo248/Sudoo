@@ -1,5 +1,6 @@
 package com.sudo248.sudoo.ui.activity.main.fragment.product_detail
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavDirections
@@ -66,8 +67,10 @@ class ProductDetailViewModel @Inject constructor(
 
     fun getProduct(productId: String) = launch {
         if (_isRefresh.value == false) emitState(UiState.LOADING)
+        Log.i("product: ","1")
         discoveryRepository.getProductDetail(productId)
             .onSuccess {
+                Log.i("product: ","2")
                 _product.postValue(it)
                 it.supplier?.let { supplierInfo ->
                     _supplier.value = supplierInfo
@@ -75,10 +78,13 @@ class ProductDetailViewModel @Inject constructor(
                 getComments(it.productId)
             }
             .onError {
+                Log.i("product: ","${it.message}")
                 error = SingleEvent(it.message)
             }.run {
+                Log.i("product: ","4")
                 if (_isRefresh.value == true) bindUiState(_uiState)
             }
+        Log.i("product: ","5")
         _isRefresh.value = false
     }
 
@@ -120,7 +126,7 @@ class ProductDetailViewModel @Inject constructor(
             cartRepository.addProductToActiveCart(cartProduct)
                 .onSuccess { cart ->
                     viewController?.toast(R.string.add_to_cart_success)
-                    viewController?.setBadgeCart(cart.totalAmount)
+                    viewController?.setBadgeCart(cart.quantity)
                 }
                 .onError {
                     error = SingleEvent(it.message)

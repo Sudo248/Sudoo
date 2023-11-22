@@ -49,6 +49,10 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>(), View
         binding.rcvOrderSupplier.adapter = adapter
         viewModel.createOrder(args.cartId)
         setupOnClickListener()
+    }
+
+    override fun onResume() {
+        super.onResume()
         actionVnPaySdk?.let {
             processActionFromVnPaySdk(it)
         }
@@ -212,6 +216,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>(), View
                 toast(action)
             }
         }
+        actionVnPaySdk = null
     }
 
     private fun onVnPaySdkActionAppBack() {

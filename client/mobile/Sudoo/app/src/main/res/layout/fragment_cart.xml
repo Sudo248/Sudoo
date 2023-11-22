@@ -115,7 +115,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintDimensionRatio="H,375:55"
             app:layout_constraintStart_toStartOf="parent"
-            android:visibility="@{viewModel.cart.totalAmount > 0 ? View.VISIBLE : View.GONE}">
+            android:visibility="@{viewModel.cart.quantity > 0 ? View.VISIBLE : View.GONE}">
 
             <CheckBox
                 android:id="@+id/checkAll"
