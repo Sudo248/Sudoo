@@ -4,8 +4,10 @@ import java.time.LocalDateTime
 
 data class ProductDto(
     val productId: String,
+    val supplierId:String,
     val name: String,
     val description: String,
+    val brand:String,
     val sku: String,
     val price: Double,
     val listedPrice: Double,

@@ -6,7 +6,6 @@ data class SupplierInfoDto(
     val supplierId: String,
     val name: String,
     val avatar: String,
-    val brand: String,
     val contactUrl: String,
     val rate: Float,
     val address: AddressDto

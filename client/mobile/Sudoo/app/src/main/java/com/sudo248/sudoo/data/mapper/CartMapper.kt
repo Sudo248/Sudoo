@@ -42,7 +42,7 @@ fun CartDto.toCart(): Cart {
     return Cart(
         cartId = cartId,
         totalPrice = totalPrice,
-        totalAmount = totalAmount,
+        quantity = quantity,
         status = status,
         cartProducts = cartProducts.map { it.toCartProduct() }
     )

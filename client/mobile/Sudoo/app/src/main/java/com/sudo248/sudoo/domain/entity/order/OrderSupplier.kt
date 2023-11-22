@@ -9,6 +9,7 @@ data class OrderSupplier(
     val orderSupplierId: String,
     val supplier: SupplierInfo,
     val promotion: Promotion?,
+    val status: OrderStatus,
     val shipment: Shipment,
     val totalPrice: Double,
     val expectedReceiveDateTime: LocalDateTime,

@@ -18,7 +18,6 @@ fun OrderDto.toOrder(): Order {
         payment = payment?.toPayment(),
         promotion = promotion?.toPromotion(),
         user = user.toUser(),
-        status = status,
         totalPrice = totalPrice,
         totalPromotionPrice = totalPromotionPrice,
         totalShipmentPrice = totalShipmentPrice,
@@ -36,6 +35,7 @@ fun OrderSupplierDto.toOrderSupplier(): OrderSupplier {
         supplier = supplier.toSupplierInfo(),
         promotion = promotion?.toPromotion(),
         shipment = shipment,
+        status = status,
         totalPrice = totalPrice,
         expectedReceiveDateTime = expectedReceiveDateTime,
         orderCartProducts = orderCartProducts.map {

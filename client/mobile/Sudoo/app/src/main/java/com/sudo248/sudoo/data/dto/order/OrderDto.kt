@@ -11,7 +11,6 @@ data class OrderDto(
     val payment: PaymentDto? = null,
     val promotion: PromotionDto? = null,
     val user: UserDto,
-    val status: OrderStatus,
     val totalPrice: Double,
     val totalPromotionPrice: Double,
     val totalShipmentPrice: Double,

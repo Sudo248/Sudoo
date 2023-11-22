@@ -1,5 +1,6 @@
 package com.sudo248.sudoo.data.repository
 
+import android.util.Log
 import com.sudo248.base_android.core.DataState
 import com.sudo248.base_android.data.api.handleResponse
 import com.sudo248.base_android.ktx.stateOn
@@ -60,8 +61,12 @@ class DiscoveryRepositoryImpl @Inject constructor(
         stateOn(ioDispatcher) {
             val response = handleResponse(discoveryService.getProductDetail(productId))
             if (response.isSuccess) {
+                Log.i("product","6 ${response.data().toString()}")
+
                 response.data().toProduct()
+
             } else {
+                Log.i("product","7")
                 throw response.error().errorBody()
             }
         }

@@ -116,7 +116,7 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
             txtNameSupplier.text = supplier.name
             txtSupplierLocation.text = supplier.address.provinceName
             txtSupplierRate.text = Utils.format(supplier.rate.toDouble(), digit = 1)
-            txtBrand.text = getString(R.string.product_brand, supplier.brand)
+//            txtBrand.text = getString(R.string.product_brand, supplier.brand)
         }
     }
 

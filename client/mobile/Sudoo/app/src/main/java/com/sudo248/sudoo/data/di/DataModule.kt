@@ -77,7 +77,10 @@ object DataModule {
     @Provides
     fun provideOrderService(): OrderService = api {
         converterFactory = GsonConverterFactory.create(
-            GsonBuilder().registerTypeAdapter(LocalDate::class.java, LocalDateConverter()).create()
+            GsonBuilder()
+                .registerTypeAdapter(LocalDate::class.java, LocalDateConverter())
+                .registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeConverter())
+                .create()
         )
     }
 
