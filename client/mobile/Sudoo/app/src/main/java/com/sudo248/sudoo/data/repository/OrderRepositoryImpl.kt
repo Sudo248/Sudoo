@@ -72,7 +72,7 @@ class OrderRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getOrderByStatus(status: String): DataState<OrderUserInfoDto, Exception>  = stateOn(ioDispatcher) {
+    override suspend fun getOrderByStatus(status: String): DataState<List<Order>, Exception>  = stateOn(ioDispatcher) {
         val response = handleResponse(
             orderService.getOrdersByStatus(status)
         )
@@ -81,5 +81,7 @@ class OrderRepositoryImpl @Inject constructor(
         } else {
             throw response.error().errorBody()
         }
+
+//        throw Exception()
     }
 }

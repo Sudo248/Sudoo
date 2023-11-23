@@ -2,9 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
     <data>
-
         <variable
             name="viewModel"
             type="com.sudo248.sudoo.ui.activity.main.fragment.orderstatus.OrderStatusViewModel" />
@@ -24,13 +22,11 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcv_order_status"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <TextView
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/hello_blank_fragment" />
+                tools:listitem="@layout/item_order_status"/>
+
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </FrameLayout>

@@ -20,7 +20,12 @@ class OrderStatusFragment : BaseFragment<FragmentOrderStatusBinding, OrderStatus
     override val viewModel: OrderStatusViewModel by viewModels()
     override fun initView() {
         binding.viewModel = viewModel
+        binding.rcvOrderStatus.setHasFixedSize(true)
         binding.rcvOrderStatus.adapter = viewModel.orderStatusAdapter
+
+        binding.refresh.setOnRefreshListener {
+            viewModel.refresh()
+        }
     }
 
     override fun observer() {

@@ -6,18 +6,18 @@ import com.sudo248.base_android.base.BaseListAdapter
 import com.sudo248.base_android.base.BaseViewHolder
 import com.sudo248.sudoo.data.dto.order.OrderSupplierUserInfoDto
 import com.sudo248.sudoo.databinding.ItemOrderStatusBinding
+import com.sudo248.sudoo.domain.entity.order.Order
+import com.sudo248.sudoo.domain.entity.order.OrderCartProduct
 
 class OrderStatusAdapter(
-    private val orderSuppliers: List<OrderSupplierUserInfoDto>,
     private val onItemClick: (() -> Unit)? = null,
-) : BaseListAdapter<OrderSupplierUserInfoDto, OrderStatusAdapter.OrderStatusViewHolder>() {
+) : BaseListAdapter<OrderCartProduct, OrderStatusAdapter.OrderStatusViewHolder>() {
 
     inner class OrderStatusViewHolder(binding: ItemOrderStatusBinding) :
-        BaseViewHolder<OrderSupplierUserInfoDto, ItemOrderStatusBinding>(binding) {
-        override fun onBind(item: OrderSupplierUserInfoDto) {
+        BaseViewHolder<OrderCartProduct, ItemOrderStatusBinding>(binding) {
+        override fun onBind(item: OrderCartProduct) {
             binding.apply {
-
-
+                this.tvName.text = item.product.name
             }
         }
     }
@@ -31,9 +31,4 @@ class OrderStatusAdapter(
         )
     }
 
-    override fun getItemCount(): Int = orderSuppliers.size
-
-    override fun onBindViewHolder(holder: OrderStatusViewHolder, position: Int) {
-        holder.onBind(orderSuppliers[position])
-    }
 }
