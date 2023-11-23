@@ -4,6 +4,7 @@ import com.sudo248.base_android.core.DataState
 import com.sudo248.base_android.data.api.handleResponse
 import com.sudo248.base_android.ktx.stateOn
 import com.sudo248.sudoo.data.api.order.OrderService
+import com.sudo248.sudoo.data.dto.order.OrderUserInfoDto
 import com.sudo248.sudoo.data.dto.order.UpsertOrderDto
 import com.sudo248.sudoo.data.ktx.data
 import com.sudo248.sudoo.data.ktx.errorBody
@@ -66,6 +67,17 @@ class OrderRepositoryImpl @Inject constructor(
         )
         if (response.isSuccess) {
             true
+        } else {
+            throw response.error().errorBody()
+        }
+    }
+
+    override suspend fun getOrderByStatus(status: String): DataState<OrderUserInfoDto, Exception>  = stateOn(ioDispatcher) {
+        val response = handleResponse(
+            orderService.getOrdersByStatus(status)
+        )
+        if (response.isSuccess) {
+            response.data()
         } else {
             throw response.error().errorBody()
         }

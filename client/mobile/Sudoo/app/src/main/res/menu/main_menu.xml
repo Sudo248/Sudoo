@@ -17,6 +17,12 @@
         android:enabled="true"
         android:title="@string/cart"
         android:icon="@drawable/ic_shopping_cart"/>
+
+    <item
+        android:id="@+id/orderStatusFragment2"
+        android:enabled="true"
+        android:title="order"
+        android:icon="@drawable/ic_order_status"/>
     <item
         android:id="@+id/userFragment"
         android:enabled="true"
