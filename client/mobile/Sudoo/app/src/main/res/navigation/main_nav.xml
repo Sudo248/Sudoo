@@ -19,6 +19,13 @@
     </fragment>
 
     <fragment
+        android:id="@+id/orderStatusFragment2"
+        android:name="com.sudo248.sudoo.ui.activity.main.fragment.orderstatus.OrderStatusFragment"
+        android:label="OrderStatusFragment"
+        tools:layout="@layout/fragment_order_status"
+        />
+
+    <fragment
         android:id="@+id/productDetailFragment"
         android:name="com.sudo248.sudoo.ui.activity.main.fragment.product_detail.ProductDetailFragment"
         android:label="ProductDetailFragment"
@@ -154,4 +161,5 @@
             android:id="@+id/action_orderFragment_to_discoveryFragment"
             app:destination="@id/discoveryFragment" />
     </fragment>
+
 </navigation>
