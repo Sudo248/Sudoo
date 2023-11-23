@@ -1,5 +1,6 @@
 package com.sudo248.sudoo.domain.entity.order
 
+import com.sudo248.base_android.base.ItemDiff
 import com.sudo248.sudoo.domain.entity.payment.Payment
 import com.sudo248.sudoo.domain.entity.promotion.Promotion
 import com.sudo248.sudoo.domain.entity.user.User

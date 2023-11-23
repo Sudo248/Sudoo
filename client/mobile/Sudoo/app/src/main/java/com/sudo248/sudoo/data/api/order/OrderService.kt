@@ -12,6 +12,7 @@ import com.sudo248.sudoo.data.dto.order.OrderDto
 import com.sudo248.sudoo.data.dto.order.OrderUserInfoDto
 import com.sudo248.sudoo.data.dto.order.UpsertOrderPromotionDto
 import com.sudo248.sudoo.domain.common.Constants
+import com.sudo248.sudoo.domain.entity.order.Order
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -42,5 +43,5 @@ interface OrderService {
     suspend fun cancelOrderById(@Path("orderId") orderId: String): Response<BaseResponse<*>>
 
     @GET("orders/order-supplier/users")
-    suspend fun getOrdersByStatus(@Query("status") status :String):Response<BaseResponse<OrderUserInfoDto>>
+    suspend fun getOrdersByStatus(@Query("status") status :String):Response<BaseResponse<List<Order>>>
 }

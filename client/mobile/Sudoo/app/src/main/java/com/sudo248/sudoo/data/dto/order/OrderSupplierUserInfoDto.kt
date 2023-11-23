@@ -17,13 +17,4 @@ data class OrderSupplierUserInfoDto(
     private val expectedReceiveDateTime: LocalDateTime,
     private val totalPrice: Double = 0.0,
     private val orderCartProducts: List<OrderCartProductDto>,
-): ItemDiff {
-    override fun isContentTheSame(other: ItemDiff): Boolean {
-        return other is OrderSupplier && other == this
-    }
-
-    override fun isItemTheSame(other: ItemDiff): Boolean {
-        return other is OrderSupplier && other.orderSupplierId == orderSupplierId
-    }
-
-}
+)

@@ -14,6 +14,6 @@ interface OrderRepository {
     ): DataState<UpsertOrderPromotion, Exception>
 
     suspend fun cancelOrderById(orderId: String): DataState<Boolean, Exception>
-    suspend fun getOrderByStatus(status: String): DataState<OrderUserInfoDto, Exception>
+    suspend fun getOrderByStatus(status: String): DataState<List<Order>, Exception>
 
 }
