@@ -18,6 +18,8 @@ import com.sudo248.sudoo.domain.entity.order.OrderSupplier
 import com.sudo248.sudoo.domain.repository.OrderRepository
 import com.sudo248.sudoo.domain.repository.PaymentRepository
 import com.sudo248.sudoo.ui.activity.main.adapter.OrderStatusAdapter
+import com.sudo248.sudoo.ui.models.order.OrderStatusTab
+import com.sudo248.sudoo.ui.models.review.ReviewListTab
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -41,24 +43,30 @@ class OrderStatusViewModel @Inject constructor(
         refresh()
     }
 
-
     fun refresh() {
         _isRefresh.value = true
-        getOrderSuppliers()
+        onClickTabItem(OrderStatusTab.PREPARE)
     }
 
-    private fun getOrderSuppliers() = launch {
-        orderRepository.getOrderByStatus(OrderStatus.PREPARE.name)
-            .onSuccess {
-                orderStatusAdapter.submitList(it[0].orderSuppliers[0].orderCartProducts)
+    private fun getOrderSuppliers(orderStatusTab: String) = launch {
+        orderRepository.getOrderByStatus(orderStatusTab)
+            .onSuccess {orders ->
+                val orderCartProducts = mutableListOf<OrderCartProduct>()
+                for(order in orders){
+                    for(orderSupplier in order.orderSuppliers){
+                        orderCartProducts.addAll(orderSupplier.orderCartProducts)
+                    }
+                }
+                orderStatusAdapter.submitList(orderCartProducts)
                 _isRefresh.value = false
             }
             .onError {
                 error = SingleEvent(it.message)
                 _isRefresh.value = false
             }.bindUiState(_uiState)
-
     }
 
-
+    fun onClickTabItem(tab: OrderStatusTab = OrderStatusTab.PREPARE) {
+        getOrderSuppliers(tab.name)
+    }
 }
