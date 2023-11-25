@@ -1,5 +1,5 @@
 abstract class ApiConfig {
-  static const String host = "http://192.168.1.242:8080";
+  static const String host = "https://service.sudoo.id.vn";
   static const String port = "8080";
   static const String portStorage = "8085";
   static const String baseUrl = "$host/api/v1";

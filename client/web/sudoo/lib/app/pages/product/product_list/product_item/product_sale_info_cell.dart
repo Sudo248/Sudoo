@@ -87,13 +87,13 @@ class ProductSaleInfoCell extends StatelessWidget {
             ),
             TableRow(
               children: [
-                _buildTitle(R.string.listedPrice, style),
+                _buildTitle(R.string.listedPrice, style, alignment: TableCellVerticalAlignment.top),
                 _buildListedPrice(context, style),
               ],
             ),
             TableRow(
               children: [
-                _buildTitle(R.string.price, style),
+                _buildTitle(R.string.price, style, alignment: TableCellVerticalAlignment.top),
                 _buildPrice(context, style),
               ],
             )
@@ -103,13 +103,16 @@ class ProductSaleInfoCell extends StatelessWidget {
     );
   }
 
-  Widget _buildTitle(String text, TextStyle style) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 15),
-      child: Text(
-        text,
-        style: style.copyWith(
-          fontWeight: FontWeight.bold,
+  Widget _buildTitle(String text, TextStyle style, {TableCellVerticalAlignment? alignment}) {
+    return TableCell(
+      verticalAlignment: alignment,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 15),
+        child: Text(
+          text,
+          style: style.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );

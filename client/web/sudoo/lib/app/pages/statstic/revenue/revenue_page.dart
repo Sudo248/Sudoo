@@ -90,19 +90,22 @@ class StatisticRevenuePage extends BasePage<StatisticRevenueBloc> {
                         const SizedBox(
                           height: 10,
                         ),
-                        RangeTimeBlock(
-                          startDate: bloc.fromDate,
-                          endDate: bloc.toDate,
-                          onSelectedStartTime: (selectedDate) async {
-                            bloc.fromDate.value = selectedDate;
-                          },
-                          onSelectedEndTime: (selectedDate) async {
-                            bloc.toDate.value = selectedDate;
-                          },
-                          firstDate: DateTime(2022),
-                          lastDate: DateTime.now(),
-                          style: style,
-                          type: bloc.currentCondition.value,
+                        ValueListenableBuilder(
+                          valueListenable: bloc.currentCondition,
+                          builder: (context, value, child) => RangeTimeBlock(
+                            startDate: bloc.fromDate,
+                            endDate: bloc.toDate,
+                            onSelectedStartTime: (selectedDate) async {
+                              bloc.fromDate.value = selectedDate;
+                            },
+                            onSelectedEndTime: (selectedDate) async {
+                              bloc.toDate.value = selectedDate;
+                            },
+                            firstDate: DateTime(2022),
+                            lastDate: DateTime.now(),
+                            style: style,
+                            type: value,
+                          ),
                         ),
                         const SizedBox(
                           height: 10,
@@ -156,6 +159,9 @@ class StatisticRevenuePage extends BasePage<StatisticRevenueBloc> {
               ],
             ),
           ),
+        ),
+        const SizedBox(
+          height: 30,
         ),
       ],
     );
@@ -214,8 +220,7 @@ class StatisticRevenuePage extends BasePage<StatisticRevenueBloc> {
               return Transform.rotate(
                 angle: keys.length > 10 ? 45 : 0,
                 alignment: Alignment.centerLeft,
-                child: Text(
-                ),
+                child: Text(keys[value.toInt()]),
               );
             }),
       ),

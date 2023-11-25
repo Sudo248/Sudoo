@@ -168,6 +168,7 @@ class EditPromotionDialog extends StatelessWidget {
                 promotion.totalAmount =
                     double.parse(amountController.text).toInt();
                 promotion.value = double.parse(valueController.text);
+                promotion.enable = enable.value;
                 context.pop();
                 onSubmitPromotion?.call(promotion, image.value);
               },
