@@ -10,4 +10,13 @@ data class UpsertUserProductDto(
     val comment: String? = null,
     var createdAt: LocalDateTime? = null,
     var images: List<String>? = null,
-)
+) {
+    companion object {
+        fun create(userId: String, productId: String): UpsertUserProductDto {
+            return UpsertUserProductDto(
+                productId = productId,
+                userId = userId
+            )
+        }
+    }
+}

@@ -1,6 +1,7 @@
 package com.sudoo.cartservice.service.impl
 
 import com.sudoo.cartservice.controller.dto.ProductInfoDto
+import com.sudoo.cartservice.controller.dto.UpsertListUserProductDto
 import com.sudoo.cartservice.controller.dto.order.OrderProductInfoDto
 import com.sudoo.cartservice.service.ProductService
 import com.sudoo.domain.base.BaseResponse
@@ -36,6 +37,21 @@ class ProductServiceImpl(
                 .bodyValue(productIds)
                 .retrieve()
                 .awaitBodyOrNull<BaseResponse<List<OrderProductInfoDto>>>()
+                ?: throw NotFoundException("Not found product list")
+        }catch (e:Exception){
+            e.printStackTrace()
+            throw e
+        }
+        return response.data?: throw NotFoundException("Not found product list")
+    }
+
+    override suspend fun upsertUserProductByUserAndSupplier(upsertListUserProduct: UpsertListUserProductDto): List<String> {
+        val response = try{
+            client.post()
+                .uri("/internal/user-product/list")
+                .bodyValue(upsertListUserProduct)
+                .retrieve()
+                .awaitBodyOrNull<BaseResponse<List<String>>>()
                 ?: throw NotFoundException("Not found product list")
         }catch (e:Exception){
             e.printStackTrace()

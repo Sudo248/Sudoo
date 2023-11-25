@@ -34,6 +34,9 @@ public class OrderSupplier {
     @Column(name = "total_price")
     private double totalPrice;
 
+    @Column(name = "revenue")
+    private Double revenue;
+
     @Column(name = "status")
     private OrderStatus status;
 

@@ -5,42 +5,34 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="72cbe6d0-83b5-4e93-ba3c-2789b9cf0780" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/controller/order/OrderSupplierController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/controller/order/dto/OrderSupplierDetailDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/controller/order/dto/OrderSupplierInfoDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/controller/order/dto/OrderSupplierUserInfoDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/controller/order/dto/OrderUserInfoDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/controller/order/dto/PatchOrderSupplierDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/controller/order/dto/RevenueStatisticData.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/controller/order/dto/SupplierOrderInfoDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/repository/entity/order/StatisticRevenueCondition.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/controller/dto/UpsertListUserProductDto.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/internal/AccountService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/repository/entity/Role.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/dto/UpsertListUserProductDto.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/controller/CartController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/controller/CartController.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/repository/entity/CartProduct.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/repository/entity/CartProduct.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/kotlin/com/sudoo/authservice/controller/AccountController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/kotlin/com/sudoo/authservice/controller/AccountController.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/kotlin/com/sudoo/authservice/service/AccountService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/kotlin/com/sudoo/authservice/service/AccountService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/kotlin/com/sudoo/authservice/service/impl/AccountServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/kotlin/com/sudoo/authservice/service/impl/AccountServiceImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/kotlin/com/sudoo/authservice/utils/EmailUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/kotlin/com/sudoo/authservice/utils/EmailUtils.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/controller/CartProductController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/controller/CartProductController.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/service/CartService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/service/CartService.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/service/ProductService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/service/ProductService.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/service/impl/CartServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/service/impl/CartServiceImpl.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/service/impl/ProductServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/service/impl/ProductServiceImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/controller/order/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/controller/order/OrderController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/controller/order/OrderSupplierController.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/controller/order/OrderSupplierController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/controller/order/dto/OrderSupplierDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/controller/order/dto/OrderSupplierDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/controller/payment/dto/PaymentInfoDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/controller/payment/dto/PaymentInfoDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/internal/CartService.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/internal/CartService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/internal/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/internal/ProductService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/repository/OrderRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/repository/OrderRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/repository/OrderSupplierRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/repository/OrderSupplierRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/repository/entity/order/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/repository/entity/order/Order.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/repository/entity/order/OrderStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/repository/entity/order/OrderStatus.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/repository/entity/order/OrderSupplier.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/repository/entity/order/OrderSupplier.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/repository/entity/payment/Payment.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/repository/entity/payment/Payment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/service/order/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/service/order/OrderService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/service/order/impl/OrderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/service/order/impl/OrderServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/service/payment/impl/VnPayServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/service/payment/impl/VnPayServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/controller/ProductController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/controller/ProductController.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/ProductService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/ProductService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/impl/ImageServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/impl/ImageServiceImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/impl/ProductServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/impl/ProductServiceImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage-service/src/main/java/com/sudoo/storageservice/controller/ImageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/storage-service/src/main/java/com/sudoo/storageservice/controller/ImageController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/controller/CommentController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/controller/CommentController.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/dto/UpsertUserProductDto.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/dto/UpsertUserProductDto.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/repository/ProductRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/repository/ProductRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/UserProductService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/UserProductService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/impl/UserProductServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/impl/UserProductServiceImpl.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,10 +45,11 @@
         <option value="Kotlin Object" />
         <option value="Kotlin Interface" />
         <option value="Kotlin File" />
-        <option value="Kotlin Class" />
         <option value="Kotlin Data Class" />
         <option value="Enum" />
         <option value="Class" />
+        <option value="Interface" />
+        <option value="Kotlin Class" />
       </list>
     </option>
   </component>
@@ -254,7 +247,15 @@
       <workItem from="1700054070956" duration="4135000" />
       <workItem from="1700105524449" duration="3668000" />
       <workItem from="1700124394308" duration="9221000" />
-      <workItem from="1700229759460" duration="13472000" />
+      <workItem from="1700229759460" duration="19075000" />
+      <workItem from="1700393055680" duration="1041000" />
+      <workItem from="1700477579457" duration="499000" />
+      <workItem from="1700487170824" duration="221000" />
+      <workItem from="1700552744168" duration="34000" />
+      <workItem from="1700583393628" duration="679000" />
+      <workItem from="1700704632169" duration="5971000" />
+      <workItem from="1700792620066" duration="3173000" />
+      <workItem from="1700820044478" duration="3577000" />
     </task>
     <servers />
   </component>
@@ -271,23 +272,18 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/service/payment/impl/VnPayServiceImpl.java</url>
-          <line>82</line>
+          <line>80</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/service/order/impl/OrderServiceImpl.java</url>
-          <line>359</line>
+          <line>369</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/service/order/impl/OrderServiceImpl.java</url>
-          <line>311</line>
+          <line>321</line>
           <option name="timeStamp" value="8" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/service/order/impl/OrderServiceImpl.java</url>
-          <line>388</line>
-          <option name="timeStamp" value="11" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

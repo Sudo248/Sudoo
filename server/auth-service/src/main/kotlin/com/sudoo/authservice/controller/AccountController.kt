@@ -15,6 +15,13 @@ class AccountController(
     private val accountService: AccountService
 ) : BaseController() {
 
+    @GetMapping("/internal/accounts/role")
+    suspend fun getRole(
+        @RequestHeader(Constants.HEADER_USER_ID) userId: String,
+    ): ResponseEntity<BaseResponse<*>> = handle {
+        accountService.getRole(userId)
+    }
+
     @PostMapping("/sign-in")
     suspend fun signIn(@RequestBody body: SignInDto): ResponseEntity<BaseResponse<*>> = handle {
         accountService.signIn(body)

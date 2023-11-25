@@ -4,6 +4,7 @@ import com.sudoo.domain.base.BaseController
 import com.sudoo.domain.base.BaseResponse
 import com.sudoo.domain.base.OffsetRequest
 import com.sudoo.domain.common.Constants
+import com.sudoo.productservice.dto.UpsertListUserProductDto
 import com.sudoo.productservice.dto.UpsertUserProductDto
 import com.sudoo.productservice.service.UserProductService
 import org.springframework.http.ResponseEntity
@@ -22,6 +23,14 @@ class CommentController(
         @RequestBody upsertUserProductDto: UpsertUserProductDto
     ): ResponseEntity<BaseResponse<*>> = handle {
         userProductService.postUserProduct(userId, upsertUserProductDto)
+    }
+
+    // only order service call this api whenever user payment success for product
+    @PostMapping("/internal/user-product/list")
+    suspend fun postListUserProduct(
+        @RequestBody upsertListUserProductDto: UpsertListUserProductDto
+    ): ResponseEntity<BaseResponse<*>> = handle {
+        userProductService.postListUserProduct(upsertListUserProductDto)
     }
 
     // user call this api whenever review product

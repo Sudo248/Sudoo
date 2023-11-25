@@ -55,8 +55,6 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
 
     private final Locale locale = new Locale("vi", "VN");
 
-    private final Executor executor = Executors.newSingleThreadExecutor();
-
     public VnPayServiceImpl(
             PaymentRepository paymentRepository,
             OrderRepository orderRepository,
@@ -143,11 +141,6 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
             order.get().setPayment(payment);
             paymentRepository.save(payment);
             updateOrderStatus(order.get());
-            // if dev => create review in payment
-            if (isDevProfile()) {
-                upsertUserProduct(userId, order.get().getCartId());
-            }
-
             return BaseResponse.ok(toDto(payment, paymentUrl, paymentDto.getTimeZoneId()));
         });
     }
@@ -388,11 +381,6 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
                     if ("00".equals(responseCode)) {
                         payment.setStatus(PaymentStatus.SUCCESS);
 
-                        // if production => only review if pay successful
-                        if (!isDevProfile()) {
-                            upsertUserProduct(payment.getOrder().getUserId(), payment.getOrder().getCartId());
-                        }
-
                         notification = new Notification(
                                 null,
                                 "Thanh toán thành công",
@@ -443,21 +431,5 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
                     "Payment not Found"
             );
         }
-    }
-
-    private void upsertUserProduct(String userId, String cartId) {
-        CompletableFuture.runAsync(() -> {
-            try {
-                getCartProductByCartId(cartId).stream().map((e) ->
-                        productService.upsertUserProduct(
-                                userId,
-                                new UpsertUserProductDto(e.getProductId())
-                        )
-                );
-            } catch (ApiException e) {
-                e.printStackTrace();
-                throw new RuntimeException(e);
-            }
-        }, executor);
     }
 }

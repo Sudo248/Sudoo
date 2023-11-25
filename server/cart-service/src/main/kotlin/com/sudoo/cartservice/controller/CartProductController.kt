@@ -35,4 +35,13 @@ class CartProductController(val cartService: CartService) : BaseController() {
     ): ResponseEntity<BaseResponse<*>> = handle {
         cartService.getCartProductsByCartId(cartId)
     }
+
+    @PostMapping("/internal/{cartId}/user-product")
+    suspend fun upsertUserProductByUserAndSupplier(
+        @PathVariable("cartId") cartId: String,
+        @RequestParam("userId") userId: String,
+        @RequestParam("supplierId") supplierId: String,
+    ): ResponseEntity<BaseResponse<*>> = handle {
+        cartService.upsertUserProductByUserAndSupplier(userId, supplierId, cartId)
+    }
 }

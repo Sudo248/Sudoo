@@ -44,6 +44,20 @@ class UserProductServiceImpl(
         return upsertUserProductDto
     }
 
+    override suspend fun postListUserProduct(upsertListUserProductDto: UpsertListUserProductDto): List<String> = coroutineScope {
+        productService.getListProductInfoByIds(upsertListUserProductDto.productIds).filter { product ->
+            product.supplierId == upsertListUserProductDto.supplierId
+        }.map {
+           async {
+               val upsertUserProduct =
+                   UpsertUserProductDto.create(userId = upsertListUserProductDto.userId, productId = it.productId)
+                       .toUserProduct(upsertListUserProductDto.userId, isReviewed = false)
+               userProductRepository.save(upsertUserProduct)
+               upsertUserProduct.userProductId
+           }
+        }.toList().awaitAll()
+    }
+
     override suspend fun upsertReview(userId: String, upsertUserProductDto: UpsertUserProductDto): UserProductDto =
         coroutineScope {
             if (upsertUserProductDto.userProductId == null) throw BadRequestException("Required review id")

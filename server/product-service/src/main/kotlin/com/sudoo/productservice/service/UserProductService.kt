@@ -7,6 +7,8 @@ interface UserProductService {
 
     suspend fun postUserProduct(userId: String, upsertUserProductDto: UpsertUserProductDto): UpsertUserProductDto
 
+    suspend fun postListUserProduct(upsertListUserProductDto: UpsertListUserProductDto): List<String>
+
     suspend fun upsertReview(userId: String, upsertUserProductDto: UpsertUserProductDto): UserProductDto
 
     suspend fun deleteComment(userProductId: String): String
