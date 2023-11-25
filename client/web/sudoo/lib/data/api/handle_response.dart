@@ -48,7 +48,7 @@ mixin HandleResponse {
     } on ApiException catch (e) {
       return DataState.error<dynamic, ApiException>(e);
     } catch (e) {
-      return DataState.error(Exception("Something wen wrong"));
+      return DataState.error(Exception("Something went wrong"));
     }
   }
 }

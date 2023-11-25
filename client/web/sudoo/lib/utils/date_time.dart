@@ -14,7 +14,7 @@ class DateTimeFormatUtils {
 
   DateTimeFormatUtils._internal();
 
-  String formatDate(DateTime value, {required String format}) {
+  String formatDate(DateTime value, {String format = "dd/MM/yyyy"}) {
     return DateFormat(format).format(value);
   }
 }

@@ -12,10 +12,14 @@ abstract class AppRoutes {
   static const String productDetail = "$dashboard/product-detail";
   static const String createProduct = "$dashboard/create-product";
   static const String supplier = "$dashboard/supplier-info";
+  static const String orders = "$dashboard/orders";
+  static const String orderDetail = "$dashboard/order-detail";
+  static const String statisticRevenue = "$dashboard/statistic/revenue";
 
   // ADMIN
   static const String adminCategories = "$admin$dashboard/categories";
   static const String adminPromotions = "$admin$dashboard/promotions";
   static const String adminBanners = "$admin$dashboard/banner";
   static const String adminStores = "$admin$dashboard/stores";
+  static const String adminOrder = "$admin$dashboard/orders";
 }

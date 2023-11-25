@@ -94,6 +94,14 @@ class AppNavigationRail extends StatelessWidget {
         label: Text(R.string.createProduct),
       ),
       NavigationRailDestination(
+        icon: const Icon(Icons.featured_play_list_outlined),
+        label: Text(R.string.orders),
+      ),
+      NavigationRailDestination(
+        icon: const Icon(Icons.attach_money_outlined),
+        label: Text(R.string.revenue),
+      ),
+      NavigationRailDestination(
         icon: const Icon(Icons.store_outlined),
         label: Text(R.string.store),
       ),

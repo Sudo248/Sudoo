@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:sudoo/app/pages/banner/banner_page.dart';
 import 'package:sudoo/app/pages/category/category_page.dart';
 import 'package:sudoo/app/pages/dashboard/dashboard_page.dart';
+import 'package:sudoo/app/pages/order/order/order_page.dart';
+import 'package:sudoo/app/pages/order/order_list/order_list_page.dart';
 import 'package:sudoo/app/pages/promotion/promotion_page.dart';
 import 'package:sudoo/app/pages/stores/stores_page.dart';
 import 'package:sudoo/app/pages/supplier/supplier_page.dart';
@@ -14,6 +16,7 @@ import '../pages/home/home_page.dart';
 import '../pages/product/product/product_page.dart';
 import '../pages/product/product_list/product_list_page.dart';
 import '../pages/splash/splash_page.dart';
+import '../pages/statstic/revenue/revenue_page.dart';
 import 'app_routes.dart';
 
 class AppRouter {
@@ -92,6 +95,24 @@ class AppRouter {
             ),
           ]),
       GoRoute(
+          parentNavigatorKey: _dashboardNavigatorKey,
+          name: AppRoutes.orders,
+          path: AppRoutes.orders,
+          builder: (context, state) => OrderListPage(),
+          routes: [
+            GoRoute(
+              parentNavigatorKey: _dashboardNavigatorKey,
+              name: AppRoutes.orderDetail,
+              path: ":orderSupplierId",
+              builder: (context, state) {
+                final orderSupplierId = state.pathParameters['orderSupplierId'];
+                return OrderPage(
+                  orderSupplierId: orderSupplierId,
+                );
+              },
+            ),
+          ]),
+      GoRoute(
         parentNavigatorKey: _dashboardNavigatorKey,
         name: AppRoutes.createProduct,
         path: AppRoutes.createProduct,
@@ -102,6 +123,12 @@ class AppRouter {
         name: AppRoutes.supplier,
         path: AppRoutes.supplier,
         builder: (context, state) => SupplierPage(),
+      ),
+      GoRoute(
+        parentNavigatorKey: _dashboardNavigatorKey,
+        name: AppRoutes.statisticRevenue,
+        path: AppRoutes.statisticRevenue,
+        builder: (context, state) => StatisticRevenuePage(),
       ),
       // category
       GoRoute(
@@ -166,8 +193,14 @@ class AppRouter {
         case AppRoutes.createProduct:
           index = 2;
           break;
-        case AppRoutes.supplier:
+        case AppRoutes.orders:
           index = 3;
+          break;
+        case AppRoutes.statisticRevenue:
+          index = 4;
+          break;
+        case AppRoutes.supplier:
+          index = 5;
           break;
         default:
           index = 0;

@@ -58,12 +58,9 @@ class ProductListDataSource extends DataGridSource {
                 ),
               );
             case "action":
-              return Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: ProductActionCell(
-                  product: cell.value,
-                  callback: productActionCallback,
-                ),
+              return ProductActionCell(
+                product: cell.value,
+                callback: productActionCallback,
               );
             default:
               return const SizedBox.shrink();

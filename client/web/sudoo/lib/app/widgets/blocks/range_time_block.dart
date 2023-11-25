@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:sudoo/domain/type_date_picker.dart';
 
 import '../../../resources/R.dart';
 import '../date_time_selector.dart';
@@ -10,6 +11,7 @@ class RangeTimeBlock extends StatelessWidget {
   final TextStyle? style;
   final AsyncValueSetter<DateTime>? onSelectedStartTime, onSelectedEndTime;
   final DateTime? firstDate, lastDate;
+  final TypeDatePicker type;
 
   const RangeTimeBlock({
     super.key,
@@ -20,6 +22,7 @@ class RangeTimeBlock extends StatelessWidget {
     this.onSelectedEndTime,
     this.firstDate,
     this.lastDate,
+    this.type = TypeDatePicker.day,
   });
 
   @override
@@ -42,6 +45,7 @@ class RangeTimeBlock extends StatelessWidget {
               firstDate: firstDate ?? now,
               lastDate: lastDate ?? DateTime(now.year + 1),
               onSelectedDate: onSelectedStartTime,
+              type: type,
             );
           },
         ),
@@ -71,6 +75,7 @@ class RangeTimeBlock extends StatelessWidget {
               firstDate: firstDate ?? now,
               lastDate: lastDate ?? DateTime(now.year + 1),
               onSelectedDate: onSelectedEndTime,
+              type: type,
             );
           },
         ),

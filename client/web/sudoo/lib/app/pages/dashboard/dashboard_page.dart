@@ -67,6 +67,11 @@ class DashboardPage extends BasePage<DashboardBloc> {
           _dashboardGo(context, AppRoutes.createProduct);
           break;
         case 3:
+          _dashboardGo(context, AppRoutes.orders);
+          break;
+        case 4:
+          _dashboardGo(context, AppRoutes.statisticRevenue);
+        case 5:
           _dashboardGo(context, AppRoutes.supplier);
           break;
         default:

@@ -54,6 +54,8 @@ class AppString extends R {
 
   String get listedPrice => "Listed price";
 
+  String get quantity => "Quantity";
+
   String get price => "Price";
 
   String get product => "Product";
@@ -118,6 +120,27 @@ class AppString extends R {
   String get ward => "Ward";
   String get address => "Address";
   String get totalProduct => "Total Product";
+  String get createdAt => "Created at";
+  String get customer => "Customer";
+  String get total => "Total";
+  String get paymentType => "Payment type";
+  String get paymentDateTime => "Payment date";
+  String get deliveryTo => "Delivery to";
+  String get expectedDelivery => "Expected delivery";
+  String get haveNotPayment => "Have not yet payment";
+  String get edit => "Edit";
+  String get detail => "Detail";
+  String get orderDetail => "Order detail";
+  String get orderInfo => "Order information";
+  String get paymentInfo => "Payment information";
+  String get orderStatus => "Order status";
+  String get orders => "Orders";
+  String get revenue => "Revenue";
+  String get deliveryInfo => "Delivery information";
+  String get totalPrincipal => "Total principal";
+  String get discount => "Discount";
+  String get receiver => "Receiver";
+  String get statistic => "Statistic";
 }
 
 class AppColor extends R {
@@ -212,6 +235,7 @@ class AppButtonStyle extends R {
     BorderSide? side,
     OutlinedBorder? shape,
     EdgeInsetsGeometry? padding,
+    Size? size,
   }) {
     return ButtonStyle(
       backgroundColor: MaterialStateProperty.all<Color>(
@@ -230,6 +254,7 @@ class AppButtonStyle extends R {
               borderRadius: BorderRadius.circular(5.0),
             ),
       ),
+      fixedSize:  MaterialStateProperty.all<Size?>(size),
       padding: MaterialStateProperty.all<EdgeInsetsGeometry?>(padding),
     );
   }

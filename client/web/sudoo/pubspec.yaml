@@ -52,7 +52,7 @@ dependencies:
   location: ^5.0.3
 
   # format time
-  intl: ^0.18.1
+  intl: ^0.18.0
 
   # shared preferences
   shared_preferences: ^2.2.0
@@ -81,6 +81,8 @@ dependencies:
   flutter_rating_bar: ^4.0.1
 
   super_banners: ^0.0.1
+
+  month_year_picker: ^0.3.0+1
 
 dev_dependencies:
   flutter_test:

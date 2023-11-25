@@ -3,13 +3,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sudoo/data/api/auth/auth_api_service.dart';
 import 'package:sudoo/data/api/dio_api_service.dart';
 import 'package:sudoo/data/api/discovery/product_api_service.dart';
+import 'package:sudoo/data/api/order/order_api_service.dart';
 import 'package:sudoo/data/api/storage/storage_api_service.dart';
 import 'package:sudoo/data/api/user/user_api_service.dart';
 import 'package:sudoo/data/config/api_config.dart';
 import 'package:sudoo/data/repository/auth_repository_impl.dart';
+import 'package:sudoo/data/repository/order_repository_impl.dart';
 import 'package:sudoo/data/repository/product_repository_impl.dart';
 import 'package:sudoo/domain/repository/auth_repository.dart';
 import 'package:sudoo/domain/repository/category_repository.dart';
+import 'package:sudoo/domain/repository/order_repository.dart';
 import 'package:sudoo/domain/repository/product_repository.dart';
 import 'package:sudoo/domain/repository/storage_repository.dart';
 import 'package:sudoo/domain/repository/user_repository.dart';
@@ -50,6 +53,10 @@ class DataModule {
       () => ProductService(getIt.get()),
     );
 
+    getIt.registerLazySingleton<OrderService>(
+          () => OrderService(getIt.get()),
+    );
+
     getIt.registerLazySingleton<ProductRepository>(
       () => ProductRepositoryImpl(getIt.get()),
     );
@@ -72,6 +79,10 @@ class DataModule {
 
     getIt.registerLazySingleton<UserRepository>(
           () => UserRepositoryImpl(getIt.get()),
+    );
+
+    getIt.registerLazySingleton<OrderRepository>(
+          () => OrderRepositoryImpl(getIt.get()),
     );
   }
 }

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:month_year_picker/month_year_picker.dart';
+import 'package:sudoo/domain/type_date_picker.dart';
 import 'package:sudoo/extensions/date_time_ext.dart';
 
 import '../../resources/R.dart';
+import '../dialog/year_picker_dialog.dart';
 
 class DateTimeSelector extends StatelessWidget {
   final bool isEditable;
@@ -11,6 +14,7 @@ class DateTimeSelector extends StatelessWidget {
   final ValueSetter<DateTime>? onSelectedDate;
   final bool isExpandedIcon;
   final DateTime firstDate, lastDate;
+  final TypeDatePicker type;
 
   const DateTimeSelector({
     super.key,
@@ -22,6 +26,7 @@ class DateTimeSelector extends StatelessWidget {
     this.isEditable = true,
     this.style,
     this.isExpandedIcon = false,
+    this.type = TypeDatePicker.day,
   });
 
   @override
@@ -68,6 +73,7 @@ class DateTimeSelector extends StatelessWidget {
     return GestureDetector(
       onTap: () async {
         final DateTime now = DateTime.now();
+
         final selectedDate = await showDatePicker(
           context: context,
           initialDate: value ?? now,
@@ -83,5 +89,37 @@ class DateTimeSelector extends StatelessWidget {
         color: Colors.grey,
       ),
     );
+  }
+
+  Future<void> selected(BuildContext context) async {
+    final DateTime now = DateTime.now();
+    if (type == TypeDatePicker.day) {
+      final selectedDate = await showDatePicker(
+        context: context,
+        initialDate: value ?? now,
+        firstDate: firstDate,
+        lastDate: lastDate,
+      );
+      if (selectedDate != null) {
+        onSelectedDate?.call(selectedDate);
+      }
+    } else if (type == TypeDatePicker.month) {
+      final selectedDate = await showMonthYearPicker(
+        context: context,
+        initialDate: value ?? now,
+        firstDate: firstDate,
+        lastDate: lastDate,
+      );
+      if (selectedDate != null) {
+        onSelectedDate?.call(selectedDate);
+      }
+    } else {
+      showYearPicker(
+          context: context,
+          initialDate: value ?? now,
+          firstDate: firstDate,
+          lastDate: lastDate,
+          onChanged: (value) => onSelectedDate?.call(value));
+    }
   }
 }

@@ -324,10 +324,8 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
-      return;
     } else {
       showErrorMessage(result.requireError());
-      return Future.error(result.requireError());
     }
   }
 
@@ -403,10 +401,8 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
     final result = await productRepository.upsertProduct(upsertProduct);
     if (result.isSuccess) {
       pop?.call(true);
-      return;
     } else {
       showErrorMessage(result.requireError());
-      return Future.error(result.requireError());
     }
   }
 
