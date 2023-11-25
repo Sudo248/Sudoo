@@ -44,4 +44,11 @@ public interface CartService {
     ResponseEntity<BaseResponse<?>> deleteProcessingCart(
             @RequestHeader(Constants.HEADER_USER_ID) String userId
     );
+
+    @PostMapping("/internal/{cartId}/user-product")
+    ResponseEntity<BaseResponse<List<String>>> upsertUserProductByUserAndSupplier(
+            @PathVariable("cartId") String cartId,
+            @RequestParam("userId")String userId,
+            @RequestParam("supplierId") String supplierId
+    );
 }

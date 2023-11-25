@@ -1,5 +1,8 @@
 package com.sudo248.orderservice.repository.entity.order;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public enum OrderStatus {
     // người bán hàng chuẩn bị đơn hàng.
     PREPARE,
@@ -9,6 +12,8 @@ public enum OrderStatus {
     TAKE_ORDER,
     // Đang vận chuyển đơn hàng.
     SHIPPING,
+    // Shipper đã giao hàng đến khách hàng
+    DELIVERED,
     // User đã nhận được hàng
     RECEIVED,
     // Đơn bị huỷ
@@ -25,6 +30,8 @@ public enum OrderStatus {
                 return TAKE_ORDER;
             case "shipping":
                 return SHIPPING;
+            case "delivered":
+                return DELIVERED;
             case "received":
                 return RECEIVED;
             case "canceled":
@@ -32,5 +39,14 @@ public enum OrderStatus {
             default:
                 return null;
         }
+    }
+
+    public static List<OrderStatus> fromValues(String values) {
+        String[] listValues = values.split(",");
+        List<OrderStatus> result = new ArrayList<>();
+        for(String value : listValues) {
+            result.add(fromValue(value.trim()));
+        }
+        return result;
     }
 }

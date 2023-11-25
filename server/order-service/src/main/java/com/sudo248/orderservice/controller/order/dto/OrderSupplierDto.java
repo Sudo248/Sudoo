@@ -19,6 +19,7 @@ public class OrderSupplierDto {
     private SupplierInfoDto supplier;
     private PromotionDto promotion;
     private double totalPrice;
+    private Double revenue;
     private Shipment shipment;
     private LocalDateTime expectedReceiveDateTime;
     private OrderStatus status;

@@ -33,9 +33,9 @@ public interface OrderService {
 
     List<OrderSupplierInfoDto> getListOrderSupplierInfoFromUserId(String userId, OrderStatus status) throws  ApiException;
 
-    List<OrderUserInfoDto> getListOrderUserInfoByUserId(String userId, OrderStatus status) throws ApiException;
+    List<OrderUserInfoDto> getListOrderUserInfoByUserId(String userId, List<OrderStatus> status) throws ApiException;
 
-    Map<String, Object> patchOrderSupplier(String orderSupplierId, PatchOrderSupplierDto patchOrderSupplierDto) throws ApiException;
+    Map<String, Object> patchOrderSupplier(String userId, String orderSupplierId, PatchOrderSupplierDto patchOrderSupplierDto) throws ApiException;
 
     RevenueStatisticData statisticRevenue(String userId, StatisticRevenueCondition condition, LocalDate from, LocalDate to);
 }

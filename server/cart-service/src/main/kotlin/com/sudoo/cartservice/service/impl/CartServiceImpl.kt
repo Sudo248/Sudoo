@@ -141,6 +141,15 @@ class CartServiceImpl(
         return orderCartDto
     }
 
+    override suspend fun upsertUserProductByUserAndSupplier(userId: String, supplierId: String, cartId: String): List<String> {
+        val cartProductsOfCart = cartProductRepository.findCartProductByCartId(cartId).toList()
+        val listProductId = cartProductsOfCart.map { it.productId }
+        return productService.upsertUserProductByUserAndSupplier(UpsertListUserProductDto(
+            userId = userId,
+            supplierId = supplierId,
+            productIds = listProductId
+        ))
+    }
 
     override suspend fun getCartProducts(cartId: String): List<CartProductDto> {
         val cartProducts: MutableList<CartProductDto> = mutableListOf()

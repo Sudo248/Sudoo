@@ -21,6 +21,9 @@ interface CartService {
     suspend fun getCartById(cartId: String): CartDto
 
     suspend fun getOrderCartById(cartId: String, supplierId: String? = null): OrderCartDto
+
+    suspend fun upsertUserProductByUserAndSupplier(userId: String, supplierId: String, cartId: String): List<String>
+
     suspend fun getCartProducts(cartId: String): List<CartProductDto>
     suspend fun getOrderCartProducts(cartId: String, supplierId: String? = null): List<OrderCartProductDto>
 

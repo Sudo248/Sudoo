@@ -395,4 +395,6 @@ interface ProductRepository : CoroutineCrudRepository<Product, String> {
     """
     )
     fun getListOrderProductInfoByIds(@Param("ids") ids: Collection<String>): Flow<OrderProductInfo>
+
+
 }

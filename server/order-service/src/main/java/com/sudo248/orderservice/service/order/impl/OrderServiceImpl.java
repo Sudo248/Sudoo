@@ -7,11 +7,13 @@ import com.sudo248.orderservice.controller.order.dto.*;
 import com.sudo248.orderservice.controller.order.dto.ghn.*;
 import com.sudo248.orderservice.controller.payment.dto.PaymentInfoDto;
 import com.sudo248.orderservice.external.GHNService;
+import com.sudo248.orderservice.internal.AccountService;
 import com.sudo248.orderservice.internal.CartService;
 import com.sudo248.orderservice.internal.ProductService;
 import com.sudo248.orderservice.internal.UserService;
 import com.sudo248.orderservice.repository.OrderRepository;
 import com.sudo248.orderservice.repository.OrderSupplierRepository;
+import com.sudo248.orderservice.repository.entity.Role;
 import com.sudo248.orderservice.repository.entity.order.*;
 import com.sudo248.orderservice.repository.entity.payment.Payment;
 import com.sudo248.orderservice.service.order.OrderService;
@@ -27,6 +29,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 import static java.util.Map.of;
@@ -49,6 +55,8 @@ public class OrderServiceImpl implements OrderService {
 
     private final ProductService productService;
 
+    private final AccountService accountService;
+
     public OrderServiceImpl(
             OrderRepository orderRepository,
             UserService userService,
@@ -56,8 +64,8 @@ public class OrderServiceImpl implements OrderService {
             PaymentService paymentService,
             OrderSupplierRepository orderSupplierRepository,
             GHNService ghnService,
-            ProductService productService
-    ) {
+            ProductService productService,
+            AccountService accountService) {
         this.orderRepository = orderRepository;
         this.userService = userService;
         this.cartService = cartService;
@@ -65,6 +73,7 @@ public class OrderServiceImpl implements OrderService {
         this.orderSupplierRepository = orderSupplierRepository;
         this.ghnService = ghnService;
         this.productService = productService;
+        this.accountService = accountService;
     }
 
     @Override
@@ -199,6 +208,7 @@ public class OrderServiceImpl implements OrderService {
                 orderSupplier.getSupplier(),
                 promotionDto,
                 orderSupplier.getTotalPrice(),
+                orderSupplier.getRevenue(),
                 orderSupplier.getShipment(),
                 orderSupplier.getCreatedAt().plusSeconds(orderSupplier.getShipment().getDeliveryTime() / 1000),
                 orderSupplier.getStatus(),
@@ -309,7 +319,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderUserInfoDto> getListOrderUserInfoByUserId(String userId, OrderStatus status) throws ApiException {
+    public List<OrderUserInfoDto> getListOrderUserInfoByUserId(String userId, List<OrderStatus> status) throws ApiException {
         List<Order> orders = orderRepository.getOrdersByUserId(userId);
         List<OrderUserInfoDto> orderUserInfoDtos = new ArrayList<>();
         for (Order order : orders) {
@@ -320,7 +330,7 @@ public class OrderServiceImpl implements OrderService {
             final List<OrderSupplier> orderSuppliers;
 
             if (status != null) {
-                orderSuppliers = order.getOrderSuppliers().stream().filter((e) -> e.getStatus() == status).collect(Collectors.toList());
+                orderSuppliers = order.getOrderSuppliers().stream().filter((e) -> status.contains(e.getStatus())).collect(Collectors.toList());
             } else {
                 orderSuppliers = order.getOrderSuppliers();
             }
@@ -357,15 +367,23 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Map<String, Object> patchOrderSupplier(String orderSupplierId, PatchOrderSupplierDto patchOrderSupplierDto) throws ApiException {
+    public Map<String, Object> patchOrderSupplier(String userId, String orderSupplierId, PatchOrderSupplierDto patchOrderSupplierDto) throws ApiException {
         Optional<OrderSupplier> orderSupplierResult = orderSupplierRepository.findById(orderSupplierId);
         if (orderSupplierResult.isEmpty())
             throw new ApiException(HttpStatus.NOT_FOUND, "Not found order supplier " + orderSupplierId);
         OrderSupplier orderSupplier = orderSupplierResult.get();
         Map<String, Object> response = new HashMap<>();
-
         if (patchOrderSupplierDto.getStatus() != null) {
             orderSupplier.setStatus(patchOrderSupplierDto.getStatus());
+            if (patchOrderSupplierDto.getStatus() == OrderStatus.RECEIVED && orderSupplier.getRevenue() == null) {
+                Role role = getRoleByUserId(userId);
+                // only consumer can change status to received
+                if (role == Role.CONSUMER) {
+                    // admin will receive 3% of total price for each order-supplier
+                    orderSupplier.setRevenue(orderSupplier.getTotalPrice() * 0.97);
+                    upsertUserProduct(userId, orderSupplier.getOrder().getCartId(), orderSupplier.getSupplierId());
+                }
+            }
             response.put("status", patchOrderSupplierDto.getStatus());
         }
 
@@ -385,20 +403,29 @@ public class OrderServiceImpl implements OrderService {
         final List<OrderSupplier> orderSuppliers = orderSupplierRepository.getAllBySupplierIdAndCreatedAtBetween(supplier.getSupplierId(), from.atStartOfDay(), to.atTime(LocalTime.MAX));
 //        orderSuppliers.sort(Comparator.comparing(OrderSupplier::getCreatedAt).reversed());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(condition.format);
-        Map<String, Double> response = new HashMap<>();
-        from.datesUntil(to).collect(Collectors.toList()).forEach((e) -> response.put(formatter.format(e), 0.0));
+        Map<LocalDate, Double> response = new HashMap<>();
+        from.datesUntil(to).collect(Collectors.toList()).forEach((e) -> response.put(e, 0.0));
         double total = 0.0;
         for (OrderSupplier orderSupplier : orderSuppliers) {
-            final String key = formatter.format(orderSupplier.getCreatedAt());
-            final double currentValue = response.get(key);
-            response.put(key, currentValue + orderSupplier.getTotalPrice());
-            total += orderSupplier.getTotalPrice();
+            if (orderSupplier.getRevenue() != null && orderSupplier.getRevenue() > 0.0) {
+                final LocalDate key = orderSupplier.getCreatedAt().toLocalDate();
+                final double currentValue = response.get(key);
+                response.put(key, currentValue + orderSupplier.getRevenue());
+                total += orderSupplier.getTotalPrice();
+            }
         }
 
         return RevenueStatisticData.builder()
-                .data(response)
+                .data(response.entrySet().stream().collect(Collectors.toMap((entry) -> formatter.format(entry.getKey()), Map.Entry::getValue)))
                 .total(total)
                 .build();
+    }
+
+    private Role getRoleByUserId(String userId) throws ApiException {
+        var response = accountService.getRoleByUserId(userId);
+        if (response.getStatusCode() != HttpStatus.OK || !response.hasBody())
+            throw new ApiException(HttpStatus.NOT_FOUND, "Not found role user " + userId);
+        return Objects.requireNonNull(response.getBody()).getData();
     }
 
     //Request Detail
@@ -474,6 +501,7 @@ public class OrderServiceImpl implements OrderService {
                     .supplierId(supplierId)
                     .supplier(supplier)
                     .promotionId(null)
+                    .revenue(null)
                     .status(OrderStatus.PREPARE)
                     .cartProducts(cartProducts)
                     .createdAt(createdAt);
@@ -536,5 +564,23 @@ public class OrderServiceImpl implements OrderService {
                 .createdAt(orderSupplier.getCreatedAt())
                 .orderSuppliers(List.of(toOrderSupplierDto(orderSupplier)))
                 .build();
+    }
+
+    private List<CartProductDto> getCartProductByCartId(String cartId) throws ApiException {
+        var response = cartService.getCartProductByCartId(cartId);
+        if (response.getStatusCode() != HttpStatus.OK || !response.hasBody())
+            throw new ApiException(HttpStatus.NOT_FOUND, "Not found cart " + cartId);
+        return Objects.requireNonNull(response.getBody()).getData();
+    }
+
+    // Tạo các đánh giá cho người dùng và sản phẩm.
+    private void upsertUserProduct(String userId, String cartId, String supplierId) throws ApiException {
+        var response = cartService.upsertUserProductByUserAndSupplier(
+                cartId,
+                userId,
+                supplierId
+        );
+        if (response.getStatusCode() != HttpStatus.OK || !response.hasBody())
+            throw new ApiException(HttpStatus.NOT_FOUND, "Something went wrong!!");
     }
 }
