@@ -87,6 +87,15 @@ class ProductPage extends BasePage<ProductBloc> {
                   ),
                 ]),
                 TableRow(children: [
+                  _buildTitle(R.string.brand, style),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5.0),
+                    child: _buildTextFieldBlock(
+                      bloc.brandController,
+                    ),
+                  ),
+                ]),
+                TableRow(children: [
                   _buildTitle(R.string.sellerSKU, style),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 5.0),

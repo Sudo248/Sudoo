@@ -8,6 +8,7 @@ class Product {
   final String productId;
   final String sku;
   final String name;
+  final String brand;
   final String description;
   double price;
   double listedPrice;
@@ -31,6 +32,7 @@ class Product {
     this.productId,
     this.sku,
     this.name,
+      this.brand,
     this.description,
     this.price,
     this.listedPrice,

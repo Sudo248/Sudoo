@@ -33,7 +33,6 @@ class StoreItem extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               ..._buildTextView(R.string.name, store.name, style),
-              ..._buildTextView(R.string.brand, store.brand, style),
               ..._buildTextView(R.string.contactUrl, store.contactUrl, style),
               ..._buildTextView(
                   R.string.address, store.address.fullAddress, style),

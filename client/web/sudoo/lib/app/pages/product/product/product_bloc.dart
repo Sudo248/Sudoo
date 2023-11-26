@@ -32,6 +32,7 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
   Function(bool)? pop;
 
   final TextEditingController nameController = TextEditingController(),
+      brandController = TextEditingController(),
       descriptionController = TextEditingController(),
       skuController = TextEditingController(),
       amountController = TextEditingController(),
@@ -106,6 +107,7 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
     categories.value = product.categories;
     nameController.text = product.name;
     skuController.text = product.sku;
+    brandController.text = product.brand;
     descriptionController.text = product.description;
     priceController.text = product.price.toStringAsFixed(1);
     listedPriceController.text = product.listedPrice.toStringAsFixed(1);
@@ -297,6 +299,7 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
       name: nameController.text,
       sku: skuController.text.isNullOrEmpty ? null : skuController.text,
       description: descriptionController.text,
+      brand: brandController.text,
       listedPrice: double.parse(listedPriceController.text),
       price: double.parse(priceController.text),
       discount: int.parse(discountController.text),

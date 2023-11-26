@@ -6,6 +6,7 @@ class UpsertProduct {
   final String? productId;
   final String? sku;
   final String? name;
+  final String? brand;
   final String? description;
   final double? price;
   final double? listedPrice;
@@ -27,6 +28,7 @@ class UpsertProduct {
     this.productId,
     this.sku,
     this.name,
+    this.brand,
     this.description,
     this.price,
     this.listedPrice,

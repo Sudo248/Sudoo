@@ -11,7 +11,7 @@ class Supplier implements BaseRequest{
   String? phoneNumber;
   String name;
   String avatar;
-  String brand;
+  // String brand;
   String contactUrl;
   int? totalProducts;
   double? rate;
@@ -24,7 +24,7 @@ class Supplier implements BaseRequest{
     this.phoneNumber,
     this.name,
     this.avatar,
-    this.brand,
+    // this.brand,
     this.contactUrl,
     this.totalProducts,
     this.rate,
@@ -40,7 +40,7 @@ class Supplier implements BaseRequest{
       "",
       "",
       "",
-      "",
+      // "",
       0,
       0,
       DateTime.now(),

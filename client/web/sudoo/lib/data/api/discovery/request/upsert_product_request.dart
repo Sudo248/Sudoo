@@ -11,6 +11,7 @@ class UpsertProductRequest extends BaseRequest {
   final String? productId;
   final String? sku;
   final String? name;
+  final String? brand;
   final String? description;
   final double? price;
   final double? listedPrice;
@@ -32,6 +33,7 @@ class UpsertProductRequest extends BaseRequest {
     this.productId,
     this.sku,
     this.name,
+    this.brand,
     this.description,
     this.price,
     this.listedPrice,
@@ -60,6 +62,7 @@ extension Mapper on UpsertProduct {
       productId,
       sku,
       name,
+      brand,
       description,
       price,
       listedPrice,

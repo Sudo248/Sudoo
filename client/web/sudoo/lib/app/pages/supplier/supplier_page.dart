@@ -60,12 +60,6 @@ class SupplierPage extends BasePage<SupplierBloc> {
                     child: _buildPhoneNumberField(),
                   ),
                   ..._buildInputField(
-                    R.string.brand,
-                    bloc.brandController,
-                    maxLines: 1,
-                    maxLength: 10,
-                  ),
-                  ..._buildInputField(
                     R.string.contactUrl,
                     bloc.contactUrlController,
                     maxLines: 1,

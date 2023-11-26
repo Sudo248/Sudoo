@@ -32,7 +32,7 @@ class SupplierBloc extends BaseBloc implements ChooseAddressCallback {
   Supplier? supplier;
   final ValueNotifier<File?> avatar = ValueNotifier(null);
   final TextEditingController nameController = TextEditingController(),
-      brandController = TextEditingController(),
+
       contactUrlController = TextEditingController(),
       provinceController = TextEditingController(),
       districtController = TextEditingController(),
@@ -49,7 +49,6 @@ class SupplierBloc extends BaseBloc implements ChooseAddressCallback {
   @override
   void onDispose() {
     nameController.dispose();
-    brandController.dispose();
     contactUrlController.dispose();
     provinceController.dispose();
     districtController.dispose();
@@ -114,11 +113,6 @@ class SupplierBloc extends BaseBloc implements ChooseAddressCallback {
       return false;
     }
 
-    if (brandController.text.isNullOrEmpty) {
-      showErrorMessage(Exception("Brand's supplier is required"));
-      return false;
-    }
-
     if (provinceController.text.isNullOrEmpty ||
         districtController.text.isNullOrEmpty ||
         wardCodeController.text.isNullOrEmpty ||
@@ -133,7 +127,7 @@ class SupplierBloc extends BaseBloc implements ChooseAddressCallback {
     this.supplier = supplier;
     avatar.value = File.fromUrl(supplier.avatar);
     nameController.text = supplier.name;
-    brandController.text = supplier.brand;
+    // brandController.text = supplier.brand;
     contactUrlController.text = supplier.contactUrl;
     districtController.text = supplier.address.districtName;
     provinceController.text = supplier.address.provinceName;
@@ -144,7 +138,7 @@ class SupplierBloc extends BaseBloc implements ChooseAddressCallback {
   Supplier _getSupplier() {
     supplier ??= Supplier.empty();
     supplier!.name = nameController.text;
-    supplier!.brand = brandController.text;
+    // supplier!.brand = brandController.text;
     supplier!.phoneNumber = phoneNumberController.text;
     supplier!.address.address = addressController.text;
     supplier!.contactUrl = contactUrlController.text;
@@ -173,7 +167,7 @@ class SupplierBloc extends BaseBloc implements ChooseAddressCallback {
   @override
   Future<void> onChooseProvince() async {
     stepChooseAddress.value = ChooseAddressStep.province;
-    if (suggestionProvince == null) {
+    if (suggestionProvince.isNullOrEmpty) {
       suggestion.value = null;
       suggestionProvince = await getSuggestionProvince();
     }
@@ -183,20 +177,20 @@ class SupplierBloc extends BaseBloc implements ChooseAddressCallback {
   @override
   Future<void> onChooseDistrict() async {
     stepChooseAddress.value = ChooseAddressStep.district;
-    if (suggestionDistrict == null) {
-      suggestion.value = null;
+    // if (suggestionDistrict.isNullOrEmpty) {
+    //   suggestion.value = null;
       suggestionDistrict = await getSuggestionDistrict();
-    }
+    // }
     suggestion.value = suggestionDistrict;
   }
 
   @override
   Future<void> onChooseWard() async {
     stepChooseAddress.value = ChooseAddressStep.ward;
-    if (suggestionWard == null) {
-      suggestion.value = null;
+    // if (suggestionWard.isNullOrEmpty) {
+    //   suggestion.value = null;
       suggestionWard = await getSuggestionWard();
-    }
+    // }
     suggestion.value = suggestionWard;
   }
 
