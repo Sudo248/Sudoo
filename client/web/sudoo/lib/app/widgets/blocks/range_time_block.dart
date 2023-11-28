@@ -12,6 +12,7 @@ class RangeTimeBlock extends StatelessWidget {
   final AsyncValueSetter<DateTime>? onSelectedStartTime, onSelectedEndTime;
   final DateTime? firstDate, lastDate;
   final TypeDatePicker type;
+  final bool isStartDateUntilNow;
 
   const RangeTimeBlock({
     super.key,
@@ -22,6 +23,7 @@ class RangeTimeBlock extends StatelessWidget {
     this.onSelectedEndTime,
     this.firstDate,
     this.lastDate,
+    this.isStartDateUntilNow = false,
     this.type = TypeDatePicker.day,
   });
 
@@ -42,8 +44,8 @@ class RangeTimeBlock extends StatelessWidget {
           builder: (context, value, child) {
             return DateTimeSelector(
               value: value,
-              firstDate: firstDate ?? now,
-              lastDate: lastDate ?? DateTime(now.year + 1),
+              firstDate: isStartDateUntilNow ? DateTime(now.year - 1) : firstDate ?? now,
+              lastDate: isStartDateUntilNow ? now : lastDate ?? DateTime(now.year + 1),
               onSelectedDate: onSelectedStartTime,
               type: type,
             );

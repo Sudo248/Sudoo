@@ -83,6 +83,7 @@ class AppString extends R {
   String get images => "Images";
 
   String get name => "Name";
+  String get fullName => "Full name";
 
   String get brand => "Brand";
 
@@ -123,6 +124,8 @@ class AppString extends R {
   String get createdAt => "Created at";
   String get customer => "Customer";
   String get total => "Total";
+  String get totalRevenue => "Total revenue";
+  String get income => "Income";
   String get paymentType => "Payment type";
   String get paymentDateTime => "Payment date";
   String get deliveryTo => "Delivery to";
@@ -141,6 +144,11 @@ class AppString extends R {
   String get discount => "Discount";
   String get receiver => "Receiver";
   String get statistic => "Statistic";
+  String get claim => "Claim";
+  String get claimMoney => "Claim money";
+  String get history => "History";
+  String get numberSerialBank => "Number serial bank";
+  String get transaction => "Transaction";
 }
 
 class AppColor extends R {
@@ -204,10 +212,11 @@ class AppStyle extends R {
 }
 
 class AppDrawable extends R {
-  // static const String _imagePath = "assets/images";
+  static const String _imagePath = "assets/images";
   static const String _iconPath = "assets/icons";
 
-  String get iconLauncher => "$_iconPath/ic_launcher.svg";
+  String iconLauncher = "$_iconPath/ic_launcher.svg";
+  String imgEmptyList = "$_imagePath/img_empty_list.png";
 }
 
 class AppButtonStyle extends R {

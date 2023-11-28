@@ -99,28 +99,27 @@ class OrderPage extends BasePage<OrderBloc> {
                     )
                   : DropdownButton<String>(
                       underline: const SizedBox.shrink(),
+                      value: value.value,
                       selectedItemBuilder: (context) => OrderStatus.values
                           .map(
                             (e) => _buildOrderStatusItem(e),
                           )
                           .toList(),
-                      value: value.value,
                       items: OrderStatus.values
                           .map<DropdownMenuItem<String>>(
                             (e) => DropdownMenuItem<String>(
                               value: e.value,
+                              enabled: OrderStatus.getEnableStaffStatus()
+                                  .contains(e),
                               child: _buildOrderStatusItem(e),
                             ),
                           )
                           .toList(),
-                      onChanged:
-                          OrderStatus.getEnableStaffStatus().contains(value)
-                              ? (value) {
-                                  bloc.onStatusChanged(
-                                    OrderStatus.fromValue(value),
-                                  );
-                                }
-                              : null,
+                      onChanged: (value) {
+                        bloc.onStatusChanged(
+                          OrderStatus.fromValue(value),
+                        );
+                      },
                     ),
             ),
           ],

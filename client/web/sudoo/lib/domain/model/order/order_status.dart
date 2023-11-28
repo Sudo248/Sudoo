@@ -39,12 +39,11 @@ enum OrderStatus {
   }
 
   static List<OrderStatus> getEnableStaffStatus() {
-    /*return [
+    return [
       OrderStatus.prepare,
       OrderStatus.ready,
       OrderStatus.takeOrder,
-    ];*/
-    return values;
+    ];
   }
 
   String getSerialization() {

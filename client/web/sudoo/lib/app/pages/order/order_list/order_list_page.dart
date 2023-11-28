@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:sudoo/app/base/base_page.dart';
 import 'package:sudoo/app/pages/order/order_list/order_list_bloc.dart';
 import 'package:sudoo/app/routes/app_routes.dart';
+import 'package:sudoo/app/widgets/empty_list.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../../resources/R.dart';
@@ -39,6 +40,7 @@ class OrderListPage extends BasePage<OrderListBloc> {
       rowHeight: itemHeight,
       source: bloc.orderListDatSource,
       columns: _columns(size.width),
+      footer: bloc.orderListDatSource.rows.isEmpty ? const EmptyList() : null,
     );
   }
 

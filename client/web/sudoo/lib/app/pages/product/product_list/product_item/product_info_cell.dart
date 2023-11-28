@@ -16,7 +16,7 @@ class ProductInfoCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle style = textStyle ?? R.style.h4_1;
+    final TextStyle style = textStyle ?? R.style.h5;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

@@ -15,6 +15,7 @@ abstract class AppRoutes {
   static const String orders = "$dashboard/orders";
   static const String orderDetail = "$dashboard/order-detail";
   static const String statisticRevenue = "$dashboard/statistic/revenue";
+  static const String historyTransaction = "$dashboard/history/transactions";
 
   // ADMIN
   static const String adminCategories = "$admin$dashboard/categories";

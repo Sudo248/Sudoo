@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sudoo/app/base/base_page.dart';
 import 'package:sudoo/app/pages/stores/store_bloc.dart';
 import 'package:sudoo/app/pages/stores/store_item.dart';
+import 'package:sudoo/app/widgets/empty_list.dart';
 
 import '../../../resources/R.dart';
 
@@ -42,7 +43,7 @@ class StoresPage extends BasePage<StoresBloc> {
             ),
           ),
           Expanded(
-            child: ListView.separated(
+            child: stores.isEmpty ? const EmptyList() : ListView.separated(
               itemBuilder: (context, index) => StoreItem(store: stores[index]),
               separatorBuilder: (context, index) => const SizedBox(
                 width: double.infinity,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sudoo/app/pages/product/product_list/product_list_data_source.dart';
+import 'package:sudoo/app/widgets/empty_list.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../../resources/R.dart';
@@ -35,7 +36,9 @@ class ProductListDataTable extends StatelessWidget {
           // Call the loadMoreRows function to call the
           // DataGridSource.handleLoadMoreRows method. So, additional
           // rows can be added from handleLoadMoreRows method.
-          await loadMoreRows();
+          if (!productDataSource.isLastPage) {
+            await loadMoreRows();
+          }
           return Future<String>.value('Completed');
         }
 
@@ -67,6 +70,7 @@ class ProductListDataTable extends StatelessWidget {
           },
         );
       },
+      footer: productDataSource.rows.isEmpty ? const EmptyList() : null,
       source: productDataSource,
     );
   }
@@ -104,7 +108,7 @@ class ProductListDataTable extends StatelessWidget {
               maxLines: 2,
               style: const TextStyle(
                 color: Colors.black,
-                fontSize: 18,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -124,7 +128,7 @@ class ProductListDataTable extends StatelessWidget {
               textAlign: TextAlign.center,
               style: const TextStyle(
                 color: Colors.black,
-                fontSize: 18,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -143,7 +147,7 @@ class ProductListDataTable extends StatelessWidget {
               maxLines: 2,
               style: const TextStyle(
                 color: Colors.black,
-                fontSize: 18,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),

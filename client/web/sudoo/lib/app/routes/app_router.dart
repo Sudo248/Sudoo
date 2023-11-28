@@ -16,6 +16,7 @@ import '../pages/home/home_page.dart';
 import '../pages/product/product/product_page.dart';
 import '../pages/product/product_list/product_list_page.dart';
 import '../pages/splash/splash_page.dart';
+import '../pages/statstic/history_transaction/history_transaction_page.dart';
 import '../pages/statstic/revenue/revenue_page.dart';
 import 'app_routes.dart';
 
@@ -129,6 +130,12 @@ class AppRouter {
         name: AppRoutes.statisticRevenue,
         path: AppRoutes.statisticRevenue,
         builder: (context, state) => StatisticRevenuePage(),
+      ),
+      GoRoute(
+        parentNavigatorKey: _dashboardNavigatorKey,
+        name: AppRoutes.historyTransaction,
+        path: AppRoutes.historyTransaction,
+        builder: (context, state) => HistoryTransactionPage(),
       ),
       // category
       GoRoute(

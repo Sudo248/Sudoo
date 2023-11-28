@@ -18,7 +18,7 @@ class ProductListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle style = R.style.h4_1;
+    final TextStyle style = R.style.h5;
     return SizedBox(
       width: width ?? double.infinity,
       height: height ?? double.infinity,

@@ -5,6 +5,7 @@ import 'package:sudoo/data/dto/discovery/file_dto.dart';
 import 'package:sudoo/domain/model/discovery/order_by.dart';
 import 'package:sudoo/domain/model/discovery/sort_by.dart';
 import 'package:sudoo/domain/model/discovery/supplier.dart';
+import 'package:sudoo/domain/model/discovery/transaction.dart';
 import 'package:sudoo/domain/model/promotion/promotion.dart';
 
 import '../api_service.dart';
@@ -93,6 +94,12 @@ class ProductService {
           orderByKey: orderBy.value,
         },
       );
+
+  Future getSupplierRevenue() => api.get("$suppliers/self/revenue");
+
+  Future claimSupplierRevenue(Transaction transaction) => api.put("$suppliers/self/transactions", request: transaction);
+
+  Future getHistoryTransaction() => api.get("$suppliers/self/transactions");
 
   // ADMIN
   Future upsertCategory(CategoryDto categoryDto) =>

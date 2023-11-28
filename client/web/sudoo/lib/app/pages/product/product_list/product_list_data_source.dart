@@ -19,6 +19,7 @@ class ProductListDataSource extends DataGridSource {
   final Future<bool> Function(UpsertProduct) patchProduct;
   final List<ProductInfo> products = List.empty(growable: true);
   List<DataGridRow> _dataRows = List.empty();
+  bool isLastPage = false;
 
   ProductListDataSource({
     required this.loadMore,

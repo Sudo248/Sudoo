@@ -13,6 +13,8 @@ import 'package:sudoo/domain/model/discovery/file.dart';
 import 'package:sudoo/domain/model/discovery/product.dart';
 import 'package:sudoo/domain/model/discovery/product_info.dart';
 import 'package:sudoo/domain/model/discovery/supplier.dart';
+import 'package:sudoo/domain/model/discovery/supplier_revenue.dart';
+import 'package:sudoo/domain/model/discovery/transaction.dart';
 import 'package:sudoo/domain/model/discovery/upsert_file.dart';
 import 'package:sudoo/domain/model/discovery/upsert_product.dart';
 import 'package:sudoo/domain/model/promotion/promotion.dart';
@@ -355,6 +357,62 @@ class ProductRepositoryImpl with HandleResponse implements ProductRepository {
 
     if (response.isSuccess) {
       return DataState.success(response.get() as List<Supplier>);
+    } else {
+      final error = response.getError();
+      if (error is ApiException && error.statusCode == 404) {
+        return DataState.error(const NotFound());
+      }
+      return DataState.error(response.getError());
+    }
+  }
+
+  @override
+  Future<DataState<SupplierRevenue, Exception>> claimSupplierRevenue(
+    Transaction transaction,
+  ) async {
+    final response = await handleResponse(
+          () => productService.claimSupplierRevenue(transaction),
+      fromJson: (json) => SupplierRevenue.fromJson(json as Map<String, dynamic>),
+    );
+    if (response.isSuccess) {
+      return DataState.success(response.get());
+    } else {
+      return DataState.error(response.getError());
+    }
+  }
+
+  @override
+  Future<DataState<List<Transaction>, Exception>>
+      getHistoryTransaction() async {
+    final response =
+        await handleResponse(() => productService.getHistoryTransaction(),
+            fromJson: (json) => (json as List<dynamic>)
+                .map(
+                  (e) => Transaction.fromJson(e as Map<String, dynamic>),
+                )
+                .toList());
+
+    if (response.isSuccess) {
+      return DataState.success(response.get() as List<Transaction>);
+    } else {
+      final error = response.getError();
+      if (error is ApiException && error.statusCode == 404) {
+        return DataState.error(const NotFound());
+      }
+      return DataState.error(response.getError());
+    }
+  }
+
+  @override
+  Future<DataState<SupplierRevenue, Exception>> getSupplierRevenue() async {
+    final response = await handleResponse(
+      () => productService.getSupplierRevenue(),
+      fromJson: (json) =>
+          SupplierRevenue.fromJson(json as Map<String, dynamic>),
+    );
+
+    if (response.isSuccess) {
+      return DataState.success(response.get());
     } else {
       final error = response.getError();
       if (error is ApiException && error.statusCode == 404) {

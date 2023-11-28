@@ -35,7 +35,7 @@ class CategoryBloc extends BaseBloc {
       loadingController.hideLoading();
   }
 
-  Future<bool> upsertCategory(Category category, File? image) async {
+  Future<bool> upsertCategory(Category category, [File? image]) async {
     if (category.categoryId.isEmpty && image == null) {
       showErrorMessage(Exception("Require image for category"));
       return Future.value(false);

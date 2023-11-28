@@ -353,6 +353,7 @@ class ProductPage extends BasePage<ProductBloc> {
         RangeTimeBlock(
           startDate: bloc.startDateDiscount,
           endDate: bloc.endDateDiscount,
+          isStartDateUntilNow: true,
           onSelectedStartTime: (selectedDate) async {
             bloc.startDateDiscount.value = selectedDate;
           },

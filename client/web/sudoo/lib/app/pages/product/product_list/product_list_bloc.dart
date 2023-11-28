@@ -71,6 +71,7 @@ class ProductListBloc extends BaseBloc
       totalProducts.value = pagination.pagination.total;
       _offset = pagination.pagination.offset;
       _isLastPage = pagination.products.length < _limit;
+      productDataSource.isLastPage = _isLastPage;
     } else {
       showErrorMessage(result.requireError());
     }

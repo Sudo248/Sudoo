@@ -9,12 +9,15 @@ class CategoryDto implements BaseRequest {
   final String categoryId;
   final String name;
   final String image;
+  @JsonKey(defaultValue: true)
+  final bool enable;
   final int? countProduct;
 
   const CategoryDto(
     this.categoryId,
     this.name,
     this.image,
+    this.enable,
     this.countProduct,
   );
 
@@ -30,6 +33,7 @@ extension Mapper on CategoryDto {
       categoryId,
       name,
       image,
+      enable,
       countProduct: countProduct,
     );
   }
@@ -41,6 +45,7 @@ extension CategoryMapper on Category {
       categoryId,
       name,
       image,
+      enable,
       countProduct,
     );
   }

@@ -16,6 +16,7 @@ import 'package:sudoo/app/services/scaffold_message_service.dart';
 import '../../utils/di.dart';
 import '../pages/auth/auth_bloc.dart';
 import '../pages/order/order/order_bloc.dart';
+import '../pages/statstic/history_transaction/history_transaction_bloc.dart';
 
 class AppModule {
   static Future<void> perform() async {
@@ -51,7 +52,9 @@ class AppModule {
 
     getIt.registerFactory(() => OrderBloc(getIt.get()));
 
-    getIt.registerFactory(() => StatisticRevenueBloc(getIt.get()));
+    getIt.registerFactory(() => StatisticRevenueBloc(getIt.get(), getIt.get()));
+
+    getIt.registerFactory(() => HistoryTransactionBloc(getIt.get()));
 
   }
 }

@@ -15,6 +15,7 @@ import '../../utils/logger.dart';
 class EditCategoryDialog extends StatelessWidget {
   late final Category category;
   final Future<bool> Function(Category, File?)? onSubmitCategory;
+  final ValueNotifier<bool> enable = ValueNotifier(true);
   final ValueNotifier<File?> image = ValueNotifier(null);
   final TextStyle style = R.style.h5.copyWith(color: Colors.black);
   final TextEditingController nameController = TextEditingController();
@@ -23,6 +24,7 @@ class EditCategoryDialog extends StatelessWidget {
     if (category != null) {
       this.category = category;
       image.value = File.fromUrl(category.image);
+      enable.value = category.enable;
     } else {
       this.category = Category.empty();
     }
@@ -128,8 +130,38 @@ class EditCategoryDialog extends StatelessWidget {
                         style: style,
                       )
                     ],
-                  )
+            )
                 : const SizedBox.shrink(),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  "Enable: ",
+                  style: R.style.h5.copyWith(color: Colors.black),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                ValueListenableBuilder(
+                  valueListenable: enable,
+                  builder: (context, value, child) =>
+                      Switch(
+                        value: value,
+                        onChanged: (value) async {
+                          if (value != category.enable) {
+                            category.enable = value;
+                          }
+                        },
+                        thumbColor: MaterialStateProperty.all(Colors.white),
+                        activeTrackColor: Colors.red,
+                        inactiveTrackColor: Colors.grey,
+                      ),
+                )
+              ],
+            ),
             const Expanded(child: SizedBox.shrink()),
             ConfirmButton(
               textPositive: isCreate ? "Create" : "Update",

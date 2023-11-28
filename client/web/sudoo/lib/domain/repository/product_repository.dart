@@ -3,6 +3,8 @@ import 'package:sudoo/domain/model/discovery/file.dart';
 import 'package:sudoo/domain/model/discovery/product.dart';
 import 'package:sudoo/domain/model/discovery/product_info.dart';
 import 'package:sudoo/domain/model/discovery/supplier.dart';
+import 'package:sudoo/domain/model/discovery/supplier_revenue.dart';
+import 'package:sudoo/domain/model/discovery/transaction.dart';
 import 'package:sudoo/domain/model/discovery/upsert_file.dart';
 import 'package:sudoo/domain/model/discovery/upsert_product.dart';
 import 'package:sudoo/domain/model/discovery/file.dart' as domain;
@@ -44,6 +46,12 @@ abstract class ProductRepository {
   Future<DataState<Supplier, Exception>> getSupplier();
 
   Future<DataState<Supplier, Exception>> upsertSupplier(Supplier supplier);
+
+  Future<DataState<SupplierRevenue, Exception>> getSupplierRevenue();
+
+  Future<DataState<SupplierRevenue, Exception>> claimSupplierRevenue(Transaction transaction);
+
+  Future<DataState<List<Transaction>, Exception>> getHistoryTransaction();
 
   Future<DataState<ProductPagination<ProductInfo>, Exception>>
       getSupplierProducts(

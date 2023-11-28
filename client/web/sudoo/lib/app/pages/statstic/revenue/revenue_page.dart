@@ -1,12 +1,15 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sudoo/app/base/base_page.dart';
+import 'package:sudoo/app/dialog/claim_income_dialog.dart';
 import 'package:sudoo/app/pages/statstic/revenue/revenue_bloc.dart';
 import 'package:sudoo/app/widgets/blocks/range_time_block.dart';
 import 'package:sudoo/domain/type_date_picker.dart';
 import 'package:sudoo/extensions/double_ext.dart';
 
 import '../../../../resources/R.dart';
+import '../../../routes/app_routes.dart';
 
 class StatisticRevenuePage extends BasePage<StatisticRevenueBloc> {
   StatisticRevenuePage({super.key});
@@ -34,102 +37,192 @@ class StatisticRevenuePage extends BasePage<StatisticRevenueBloc> {
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(10.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ValueListenableBuilder(
-                      valueListenable: bloc.total,
-                      builder: (context, value, child) => RichText(
-                        text: TextSpan(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  ValueListenableBuilder(
+                    valueListenable: bloc.revenue,
+                    builder: (context, value, child) => Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Column(
                           children: [
-                            TextSpan(
-                              text: "${R.string.total}: ",
-                              style: style.copyWith(
-                                fontSize: 20,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: "${R.string.totalRevenue}: ",
+                                    style: style.copyWith(
+                                      fontSize: 20,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: value.totalRevenue.formatCurrency(),
+                                    style: style.copyWith(
+                                      fontSize: 20,
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
-                            TextSpan(
-                              text: value.formatCurrency(),
-                              style: style.copyWith(
-                                fontSize: 20,
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: "${R.string.income}: ",
+                                    style: style.copyWith(
+                                      fontSize: 20,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: value.income.formatCurrency(),
+                                    style: style.copyWith(
+                                      fontSize: 20,
+                                    ),
+                                  )
+                                ],
                               ),
                             )
                           ],
                         ),
-                      ),
+                        Column(
+                          children: [
+                            FilledButton(
+                              style: R.buttonStyle.filledButtonStyle(),
+                              onPressed: () => _showClaimDialog(context),
+                              child: Text(
+                                R.string.claim,
+                                style: R.style.h5,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            FilledButton(
+                              style: R.buttonStyle.filledButtonStyle(
+                                backgroundColor: Colors.grey,
+                              ),
+                              onPressed: () => onHistory(context),
+                              child: Text(
+                                R.string.history,
+                                style: R.style.h5,
+                              ),
+                            )
+                          ],
+                        )
+                      ],
                     ),
-                    Column(
-                      children: [
-                        ValueListenableBuilder(
-                          valueListenable: bloc.currentCondition,
-                          builder: (context, value, child) =>
-                              DropdownButton<String>(
-                            value: value.value,
-                            items: TypeDatePicker.values
-                                .map<DropdownMenuItem<String>>(
-                                  (e) => DropdownMenuItem(
-                                    value: e.value,
-                                    child: Text(
-                                      e.value,
-                                      style: style,
+                  ),
+                  const Divider(
+                    color: Colors.blueGrey,
+                    height: 10,
+                    thickness: 5,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ValueListenableBuilder(
+                        valueListenable: bloc.total,
+                        builder: (context, value, child) => RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "${R.string.total}: ",
+                                style: style.copyWith(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              TextSpan(
+                                text: value.formatCurrency(),
+                                style: style.copyWith(
+                                  fontSize: 20,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      Column(
+                        children: [
+                          ValueListenableBuilder(
+                            valueListenable: bloc.currentCondition,
+                            builder: (context, value, child) =>
+                                DropdownButton<String>(
+                              underline: const SizedBox.shrink(),
+                              value: value.value,
+                              items: TypeDatePicker.values
+                                  .map<DropdownMenuItem<String>>(
+                                    (e) => DropdownMenuItem(
+                                      value: e.value,
+                                      child: _buildItemCondition(e),
                                     ),
-                                  ),
-                                )
-                                .toList(),
-                            onChanged: (value) => bloc.onChangedCondition(
-                              TypeDatePicker.fromValue(value),
+                                  )
+                                  .toList(),
+                              selectedItemBuilder: (context) =>
+                                  TypeDatePicker.values
+                                      .map<Widget>(
+                                        (e) => _buildItemCondition(e),
+                                      )
+                                      .toList(),
+                              onChanged: (value) => bloc.onChangedCondition(
+                                TypeDatePicker.fromValue(value),
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        ValueListenableBuilder(
-                          valueListenable: bloc.currentCondition,
-                          builder: (context, value, child) => RangeTimeBlock(
-                            startDate: bloc.fromDate,
-                            endDate: bloc.toDate,
-                            onSelectedStartTime: (selectedDate) async {
-                              bloc.fromDate.value = selectedDate;
-                            },
-                            onSelectedEndTime: (selectedDate) async {
-                              bloc.toDate.value = selectedDate;
-                            },
-                            firstDate: DateTime(2022),
-                            lastDate: DateTime.now(),
-                            style: style,
-                            type: value,
+                          const SizedBox(
+                            height: 10,
                           ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        FilledButton(
-                          style: R.buttonStyle.filledButtonStyle(),
-                          onPressed: bloc.onStatistic,
-                          child: Text(
-                            R.string.statistic,
-                            style: R.style.h5,
+                          ValueListenableBuilder(
+                            valueListenable: bloc.currentCondition,
+                            builder: (context, value, child) => RangeTimeBlock(
+                              startDate: bloc.fromDate,
+                              endDate: bloc.toDate,
+                              onSelectedStartTime: (selectedDate) async {
+                                bloc.fromDate.value = selectedDate;
+                              },
+                              onSelectedEndTime: (selectedDate) async {
+                                bloc.toDate.value = selectedDate;
+                              },
+                              firstDate: DateTime(2022),
+                              lastDate: DateTime.now(),
+                              style: style,
+                              type: value,
+                            ),
                           ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  height: 50,
-                ),
-                Expanded(
-                  child: AspectRatio(
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          FilledButton(
+                            style: R.buttonStyle.filledButtonStyle(),
+                            onPressed: bloc.onStatistic,
+                            child: Text(
+                              R.string.statistic,
+                              style: R.style.h5,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  AspectRatio(
                     aspectRatio: 1.5,
                     child: ValueListenableBuilder(
                       valueListenable: bloc.data,
@@ -155,8 +248,8 @@ class StatisticRevenuePage extends BasePage<StatisticRevenueBloc> {
                             ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -252,11 +345,31 @@ class StatisticRevenuePage extends BasePage<StatisticRevenueBloc> {
   FlBorderData get borderData {
     return FlBorderData(
       show: true,
-      border: const Border(
-        left: BorderSide(
-          color: Colors.black,
-        ),
+      border: const Border(left: BorderSide(), bottom: BorderSide()),
+    );
+  }
+
+  Widget _buildItemCondition(TypeDatePicker type) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 25,
+        vertical: 5,
+      ),
+      child: Text(
+        type.value,
+        style: style,
       ),
     );
+  }
+
+  void _showClaimDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => ClaimIncomeDialog(onClaim: bloc.onClaim),
+    );
+  }
+
+  void onHistory(BuildContext context) {
+    context.go(AppRoutes.historyTransaction);
   }
 }

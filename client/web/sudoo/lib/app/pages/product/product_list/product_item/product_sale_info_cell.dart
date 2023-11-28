@@ -64,7 +64,7 @@ class ProductSaleInfoCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextStyle style =
-        textStyle ?? R.style.h4_1.copyWith(color: Colors.black);
+        textStyle ?? R.style.h5.copyWith(color: Colors.black);
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -192,6 +192,7 @@ class ProductSaleInfoCell extends StatelessWidget {
         RangeTimeBlock(
           startDate: startDateDiscount,
           endDate: endDateDiscount,
+          isStartDateUntilNow: true,
           onSelectedStartTime: (selectedDate) async {
             await patchProduct(
               UpsertProduct(

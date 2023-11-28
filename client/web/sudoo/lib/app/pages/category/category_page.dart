@@ -23,7 +23,7 @@ class CategoryPage extends BasePage<CategoryBloc> {
         itemCount: value.length + 1,
         padding: const EdgeInsets.all(20),
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 180,
+          maxCrossAxisExtent: 200,
           mainAxisSpacing: 30,
           crossAxisSpacing: 30,
           childAspectRatio: 3 / 3.5,
@@ -36,6 +36,7 @@ class CategoryPage extends BasePage<CategoryBloc> {
                 context,
                 category: category,
               ),
+              upsertCategory: bloc.upsertCategory,
             );
           } else {
             return child;
