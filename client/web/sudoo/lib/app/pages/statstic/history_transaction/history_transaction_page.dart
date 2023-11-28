@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sudoo/app/base/base_page.dart';
 import 'package:sudoo/app/pages/statstic/history_transaction/history_transaction_bloc.dart';
+import 'package:sudoo/app/widgets/empty_list.dart';
 import 'package:sudoo/extensions/double_ext.dart';
 
 import '../../../../resources/R.dart';
@@ -16,18 +17,20 @@ class HistoryTransactionPage extends BasePage<HistoryTransactionBloc> {
     final TextStyle style = R.style.h5.copyWith(color: Colors.black);
     return ValueListenableBuilder(
       valueListenable: bloc.transactions,
-      builder: (context, value, child) => DataTable(
-        columns: [
-          DataColumn(
-            label: Text(
-              R.string.totalRevenue,
-              style: style.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          DataColumn(
-            label: Text(
+      builder: (context, value, child) => value.isEmpty
+          ? const EmptyList()
+          : DataTable(
+              columns: [
+                DataColumn(
+                  label: Text(
+                    R.string.totalRevenue,
+                    style: style.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                DataColumn(
+                  label: Text(
               R.string.amount,
               style: style.copyWith(
                 fontWeight: FontWeight.bold,

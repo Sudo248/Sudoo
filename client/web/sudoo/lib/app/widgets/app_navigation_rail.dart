@@ -24,10 +24,11 @@ class AppNavigationRail extends StatelessWidget {
         : ValueListenableBuilder(
             valueListenable: AppRouter.indexDashboard,
             builder: (context, selectedIndex, child) => _buildNavigationRail(
-                destinations: _getDashboardDestination(),
-                selectedIndex: selectedIndex,
-                onDestinationChanged: onDestinationChanged,
-                bannerMessage: "STAFF"),
+              destinations: _getDashboardDestination(),
+              selectedIndex: selectedIndex,
+              onDestinationChanged: onDestinationChanged,
+              bannerMessage: "STORE",
+            ),
           );
   }
 
@@ -50,10 +51,12 @@ class AppNavigationRail extends StatelessWidget {
         indicatorColor: R.color.backgroundNavColor,
         useIndicator: true,
         elevation: 5,
-        leading: const Padding(
-          padding: EdgeInsets.symmetric(vertical: 20),
-          child: FlutterLogo(
-            size: 80,
+        leading: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: Image.asset(
+            R.drawable.imgLauncher,
+            width: 80,
+            height: 80,
           ),
         ),
         onDestinationSelected: (value) {

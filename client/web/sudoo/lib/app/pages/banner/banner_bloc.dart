@@ -24,17 +24,21 @@ class BannerBloc extends BaseBloc {
   }
 
   Future<List<domain.File>> getBanners() async {
+    loadingController.showLoading();
     final result = await productRepository.getBanners();
     if (result.isSuccess) {
       banners.value = result.get();
+      loadingController.hideLoading();
       return Future.value(banners.value);
     } else {
       showErrorMessage(result.requireError());
+      loadingController.hideLoading();
       return Future.error(result.requireError());
     }
   }
 
   Future<String> uploadImage(List<int> bytes, {String? imageName}) async {
+    loadingController.showLoading();
     final result = await storageRepository.uploadImageBytes(
       bytes,
       imageName: imageName,
@@ -54,9 +58,12 @@ class BannerBloc extends BaseBloc {
       final currentBanner = banners.value.toList(growable: true);
       currentBanner.add(result.get());
       banners.value = currentBanner;
+      showInfoMessage("Success");
+      loadingController.hideLoading();
       return Future.value(result.get());
     } else {
       showErrorMessage(result.requireError());
+      loadingController.hideLoading();
       return Future.error(result.requireError());
     }
   }
@@ -67,6 +74,7 @@ class BannerBloc extends BaseBloc {
       final currentImages = banners.value;
       currentImages.remove(banner);
       banners.value = currentImages;
+      showInfoMessage("Success");
       return Future.value(result.get());
     } else {
       showErrorMessage(result.requireError());

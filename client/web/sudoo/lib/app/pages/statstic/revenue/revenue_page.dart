@@ -5,6 +5,7 @@ import 'package:sudoo/app/base/base_page.dart';
 import 'package:sudoo/app/dialog/claim_income_dialog.dart';
 import 'package:sudoo/app/pages/statstic/revenue/revenue_bloc.dart';
 import 'package:sudoo/app/widgets/blocks/range_time_block.dart';
+import 'package:sudoo/app/widgets/empty_list.dart';
 import 'package:sudoo/domain/type_date_picker.dart';
 import 'package:sudoo/extensions/double_ext.dart';
 
@@ -27,7 +28,7 @@ class StatisticRevenuePage extends BasePage<StatisticRevenueBloc> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
           child: Text(
-            R.string.orderDetail,
+            R.string.revenue,
             style: style.copyWith(
               fontWeight: FontWeight.bold,
               fontSize: 20,
@@ -37,219 +38,232 @@ class StatisticRevenuePage extends BasePage<StatisticRevenueBloc> {
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(10.0),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  ValueListenableBuilder(
-                    valueListenable: bloc.revenue,
-                    builder: (context, value, child) => Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Column(
-                          children: [
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: "${R.string.totalRevenue}: ",
-                                    style: style.copyWith(
-                                      fontSize: 20,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: value.totalRevenue.formatCurrency(),
-                                    style: style.copyWith(
-                                      fontSize: 20,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: "${R.string.income}: ",
-                                    style: style.copyWith(
-                                      fontSize: 20,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: value.income.formatCurrency(),
-                                    style: style.copyWith(
-                                      fontSize: 20,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            FilledButton(
-                              style: R.buttonStyle.filledButtonStyle(),
-                              onPressed: () => _showClaimDialog(context),
-                              child: Text(
-                                R.string.claim,
-                                style: R.style.h5,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            FilledButton(
-                              style: R.buttonStyle.filledButtonStyle(
-                                backgroundColor: Colors.grey,
-                              ),
-                              onPressed: () => onHistory(context),
-                              child: Text(
-                                R.string.history,
-                                style: R.style.h5,
-                              ),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                  const Divider(
-                    color: Colors.blueGrey,
-                    height: 10,
-                    thickness: 5,
-                  ),
-                  Row(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ValueListenableBuilder(
+                  valueListenable: bloc.revenue,
+                  builder: (context, value, child) => Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      ValueListenableBuilder(
-                        valueListenable: bloc.total,
-                        builder: (context, value, child) => RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: "${R.string.total}: ",
-                                style: style.copyWith(
-                                  fontSize: 20,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: "${R.string.totalRevenue}: ",
+                                  style: style.copyWith(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                              TextSpan(
-                                text: value.formatCurrency(),
-                                style: style.copyWith(
-                                  fontSize: 20,
-                                ),
-                              )
-                            ],
+                                TextSpan(
+                                  text: value.totalRevenue.formatCurrency(),
+                                  style: style.copyWith(
+                                    fontSize: 20,
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
-                        ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: "${R.string.income}: ",
+                                  style: style.copyWith(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: value.income.formatCurrency(),
+                                  style: style.copyWith(
+                                    fontSize: 20,
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
                       ),
                       Column(
                         children: [
-                          ValueListenableBuilder(
-                            valueListenable: bloc.currentCondition,
-                            builder: (context, value, child) =>
-                                DropdownButton<String>(
-                              underline: const SizedBox.shrink(),
-                              value: value.value,
-                              items: TypeDatePicker.values
-                                  .map<DropdownMenuItem<String>>(
-                                    (e) => DropdownMenuItem(
-                                      value: e.value,
-                                      child: _buildItemCondition(e),
-                                    ),
-                                  )
-                                  .toList(),
-                              selectedItemBuilder: (context) =>
-                                  TypeDatePicker.values
-                                      .map<Widget>(
-                                        (e) => _buildItemCondition(e),
-                                      )
-                                      .toList(),
-                              onChanged: (value) => bloc.onChangedCondition(
-                                TypeDatePicker.fromValue(value),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          ValueListenableBuilder(
-                            valueListenable: bloc.currentCondition,
-                            builder: (context, value, child) => RangeTimeBlock(
-                              startDate: bloc.fromDate,
-                              endDate: bloc.toDate,
-                              onSelectedStartTime: (selectedDate) async {
-                                bloc.fromDate.value = selectedDate;
-                              },
-                              onSelectedEndTime: (selectedDate) async {
-                                bloc.toDate.value = selectedDate;
-                              },
-                              firstDate: DateTime(2022),
-                              lastDate: DateTime.now(),
-                              style: style,
-                              type: value,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
                           FilledButton(
                             style: R.buttonStyle.filledButtonStyle(),
-                            onPressed: bloc.onStatistic,
+                            onPressed: () => _showClaimDialog(context),
                             child: Text(
-                              R.string.statistic,
+                              R.string.claim,
                               style: R.style.h5,
                             ),
                           ),
                           const SizedBox(
-                            height: 10,
+                            height: 20,
                           ),
+                          FilledButton(
+                            style: R.buttonStyle.filledButtonStyle(
+                              backgroundColor: Colors.grey,
+                            ),
+                            onPressed: () => onHistory(context),
+                            child: Text(
+                              R.string.history,
+                              style: R.style.h5,
+                            ),
+                          )
                         ],
-                      )
+                      ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  AspectRatio(
-                    aspectRatio: 1.5,
-                    child: ValueListenableBuilder(
-                      valueListenable: bloc.data,
-                      builder: (context, value, child) => value == null
-                          ? const Center(
-                              child: SizedBox.square(
-                                dimension: 30,
-                                child: CircularProgressIndicator(),
+                ),
+                const Divider(
+                  color: Colors.blueGrey,
+                  height: 50,
+                  thickness: 10,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    ValueListenableBuilder(
+                      valueListenable: bloc.total,
+                      builder: (context, value, child) => RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: "${R.string.total}: ",
+                              style: style.copyWith(
+                                fontSize: 20,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            TextSpan(
+                              text: value.formatCurrency(),
+                              style: style.copyWith(
+                                fontSize: 20,
                               ),
                             )
-                          : BarChart(
-                              BarChartData(
-                                gridData: const FlGridData(show: false),
-                                barGroups: getBarGroup(value),
-                                titlesData: getTitle(value.keys.toList()),
-                                alignment: BarChartAlignment.spaceAround,
-                                barTouchData: getBarTouchData(),
-                                borderData: borderData,
-                              ),
-                              swapAnimationDuration:
-                                  const Duration(milliseconds: 500),
-                              swapAnimationCurve: Curves.linear,
-                            ),
+                          ],
+                        ),
+                      ),
                     ),
+                    const Expanded(child: SizedBox.shrink()),
+                    Text(
+                      "${R.string.statisticBy}: ",
+                      style: style.copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    ValueListenableBuilder(
+                      valueListenable: bloc.currentCondition,
+                      builder: (context, value, child) => DecoratedBox(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.grey,
+                          ),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: DropdownButton<String>(
+                          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                          value: value.value,
+                          underline: const SizedBox.shrink(),
+                          items: TypeDatePicker.values
+                              .map<DropdownMenuItem<String>>(
+                                (e) => DropdownMenuItem(
+                                  value: e.value,
+                                  child: _buildItemCondition(e),
+                                ),
+                              )
+                              .toList(),
+                          selectedItemBuilder: (context) =>
+                              TypeDatePicker.values
+                                  .map<Widget>(
+                                    (e) => _buildItemCondition(e),
+                                  )
+                                  .toList(),
+                          onChanged: (value) => bloc.onChangedCondition(
+                            TypeDatePicker.fromValue(value),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 30,
+                    ),
+                    ValueListenableBuilder(
+                      valueListenable: bloc.currentCondition,
+                      builder: (context, value, child) => RangeTimeBlock(
+                        startDate: bloc.fromDate,
+                        endDate: bloc.toDate,
+                        onSelectedStartTime: (selectedDate) async {
+                          bloc.fromDate.value = selectedDate;
+                        },
+                        onSelectedEndTime: (selectedDate) async {
+                          bloc.toDate.value = selectedDate;
+                        },
+                        firstDate: DateTime(2022),
+                        lastDate: DateTime.now(),
+                        style: style,
+                        type: value,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 30,
+                    ),
+                    FilledButton(
+                      style: R.buttonStyle.filledButtonStyle(),
+                      onPressed: bloc.onStatistic,
+                      child: Text(
+                        R.string.statistic,
+                        style: R.style.h5,
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: 50,
+                ),
+                Expanded(
+                  child: ValueListenableBuilder(
+                    valueListenable: bloc.data,
+                    builder: (context, value, child) => value == null
+                        ? const Center(
+                            child: SizedBox.square(
+                              dimension: 30,
+                              child: CircularProgressIndicator(),
+                            ),
+                          )
+                        : value.isEmpty
+                            ? const EmptyList()
+                            : AspectRatio(
+                                aspectRatio: value.length > 10 ? 2 : 1.5,
+                                child: BarChart(
+                                  BarChartData(
+                                    gridData: const FlGridData(show: false),
+                                    barGroups: getBarGroup(value),
+                                    titlesData: getTitle(value.keys.toList()),
+                                    alignment: BarChartAlignment.spaceAround,
+                                    barTouchData: getBarTouchData(),
+                                    borderData: borderData,
+                                  ),
+                                  swapAnimationDuration:
+                                      const Duration(milliseconds: 500),
+                                  swapAnimationCurve: Curves.linear,
+                                ),
+                              ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -294,7 +308,7 @@ class StatisticRevenuePage extends BasePage<StatisticRevenueBloc> {
         drawBelowEverything: true,
         sideTitles: SideTitles(
           showTitles: true,
-          reservedSize: 200,
+          reservedSize: 130,
           getTitlesWidget: (value, meta) {
             return Text(
               value.toStringAsFixed(1),
@@ -351,13 +365,14 @@ class StatisticRevenuePage extends BasePage<StatisticRevenueBloc> {
 
   Widget _buildItemCondition(TypeDatePicker type) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 25,
-        vertical: 5,
-      ),
-      child: Text(
-        type.value,
-        style: style,
+      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          type.value,
+          textAlign: TextAlign.center,
+          style: style.copyWith(fontWeight: FontWeight.bold),
+        ),
       ),
     );
   }

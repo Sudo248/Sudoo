@@ -29,7 +29,6 @@ class BannerPage extends BasePage<BannerBloc> {
   }
 
   Widget _buildListImage(BuildContext context, List<File> images, Widget addImage) {
-    
     return GridView.builder(
         padding: const EdgeInsets.all(20),
         itemCount: images.length + 1,

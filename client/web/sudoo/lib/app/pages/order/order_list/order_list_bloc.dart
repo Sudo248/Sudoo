@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:sudoo/app/base/base_bloc.dart';
 import 'package:sudoo/domain/model/order/order_supplier_info.dart';
 import 'package:sudoo/domain/repository/order_repository.dart';
@@ -10,6 +11,7 @@ class OrderListBloc extends BaseBloc
   final OrderRepository orderRepository;
   late final OrderListDataSource orderListDatSource;
   Function(String)? onClickDetail;
+  final ValueNotifier<int> totalOrders = ValueNotifier(0);
 
   OrderListBloc(this.orderRepository) {
     orderListDatSource = OrderListDataSource(loadMore, this);

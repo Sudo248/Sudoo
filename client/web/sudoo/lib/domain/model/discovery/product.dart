@@ -32,7 +32,7 @@ class Product {
     this.productId,
     this.sku,
     this.name,
-      this.brand,
+    this.brand,
     this.description,
     this.price,
     this.listedPrice,

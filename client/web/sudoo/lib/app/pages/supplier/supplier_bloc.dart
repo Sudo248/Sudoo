@@ -84,6 +84,7 @@ class SupplierBloc extends BaseBloc implements ChooseAddressCallback {
     if (result.isSuccess) {
       isRegistered = true;
       setSupplier(result.get());
+      showInfoMessage("Success");
     } else {
       showErrorMessage(result.getError());
     }

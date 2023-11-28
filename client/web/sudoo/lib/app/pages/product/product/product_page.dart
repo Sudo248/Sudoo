@@ -21,7 +21,7 @@ class ProductPage extends BasePage<ProductBloc> {
   late final TextStyle style;
 
   ProductPage({super.key, this.productId, TextStyle? style}) {
-    this.style = style ?? R.style.h4_1.copyWith(color: Colors.black);
+    this.style = style ?? R.style.h5.copyWith(color: Colors.black);
     bloc.fetchProduct(productId);
   }
 
@@ -52,7 +52,7 @@ class ProductPage extends BasePage<ProductBloc> {
             child: Table(
               columnWidths: const {
                 0: FlexColumnWidth(1),
-                1: FlexColumnWidth(5),
+                1: FlexColumnWidth(6),
               },
               children: [
                 TableRow(children: [

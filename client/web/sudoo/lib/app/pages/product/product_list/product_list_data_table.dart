@@ -24,11 +24,11 @@ class ProductListDataTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
-    final itemHeight = size.height * 0.25;
+    final itemHeight = size.height * 0.23;
     return SfDataGrid(
       headerGridLinesVisibility: GridLinesVisibility.both,
       gridLinesVisibility: GridLinesVisibility.both,
-      headerRowHeight: 80,
+      headerRowHeight: 60,
       rowHeight: itemHeight,
       columns: _columns(size.width),
       loadMoreViewBuilder: (context, loadMoreRows) {
@@ -70,7 +70,6 @@ class ProductListDataTable extends StatelessWidget {
           },
         );
       },
-      footer: productDataSource.rows.isEmpty ? const EmptyList() : null,
       source: productDataSource,
     );
   }

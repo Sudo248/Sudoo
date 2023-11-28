@@ -8,7 +8,6 @@ class SupplierDto {
   final String supplierId;
   final String name;
   final String avatar;
-  final String brand;
   final String contactUrl;
   final int? totalProducts;
   final double? rate;
@@ -17,7 +16,6 @@ class SupplierDto {
     this.supplierId,
     this.name,
     this.avatar,
-    this.brand,
     this.contactUrl,
     this.totalProducts,
     this.rate,
@@ -35,7 +33,6 @@ extension Mapper on SupplierDto {
       supplierId,
       name,
       avatar,
-      brand,
       contactUrl,
       totalProducts,
       rate,

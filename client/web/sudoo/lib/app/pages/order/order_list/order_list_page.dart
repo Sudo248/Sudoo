@@ -33,14 +33,20 @@ class OrderListPage extends BasePage<OrderListBloc> {
 
     final size = MediaQuery.sizeOf(context);
     final itemHeight = size.height * 0.13;
-    return SfDataGrid(
-      headerGridLinesVisibility: GridLinesVisibility.both,
-      gridLinesVisibility: GridLinesVisibility.both,
-      headerRowHeight: 60,
-      rowHeight: itemHeight,
-      source: bloc.orderListDatSource,
-      columns: _columns(size.width),
-      footer: bloc.orderListDatSource.rows.isEmpty ? const EmptyList() : null,
+    return ValueListenableBuilder(
+      valueListenable: bloc.totalOrders,
+      builder: (context, value, child) =>
+          value <= 0 ? const EmptyList() : child!,
+      child: SfDataGrid(
+        headerGridLinesVisibility: GridLinesVisibility.both,
+        gridLinesVisibility: GridLinesVisibility.both,
+        headerRowHeight: 60,
+        rowHeight: itemHeight,
+        source: bloc.orderListDatSource,
+        columns: _columns(size.width),
+        footer: bloc.orderListDatSource.rows.isEmpty ? const EmptyList() : null,
+        footerHeight: 500,
+      ),
     );
   }
 

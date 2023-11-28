@@ -26,7 +26,7 @@ class CategoryPage extends BasePage<CategoryBloc> {
           maxCrossAxisExtent: 200,
           mainAxisSpacing: 30,
           crossAxisSpacing: 30,
-          childAspectRatio: 3 / 3.5,
+          childAspectRatio: 3 / 4,
         ),
         itemBuilder: (context, index) {
           if (index < value.length) {

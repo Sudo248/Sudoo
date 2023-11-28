@@ -1,3 +1,5 @@
+import 'dart:js';
+
 import 'package:flutter/material.dart';
 import 'package:sudoo/app/base/base_bloc.dart';
 import 'package:sudoo/app/widgets/loading_view.dart';

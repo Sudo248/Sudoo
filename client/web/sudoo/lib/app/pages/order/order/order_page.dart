@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sudoo/app/base/base_page.dart';
+import 'package:sudoo/app/dialog/qr_dialog.dart';
 import 'package:sudoo/app/pages/order/order/order_bloc.dart';
 import 'package:sudoo/app/widgets/online_image.dart';
 import 'package:sudoo/domain/model/discovery/order_cart_product.dart';
@@ -8,11 +9,13 @@ import 'package:sudoo/domain/model/order/order_status.dart';
 import 'package:sudoo/domain/model/order/order_supplier.dart';
 import 'package:sudoo/extensions/date_time_ext.dart';
 import 'package:sudoo/extensions/double_ext.dart';
+import 'package:sudoo/extensions/string_ext.dart';
 
 import '../../../../resources/R.dart';
 
 class OrderPage extends BasePage<OrderBloc> {
   final String? orderSupplierId;
+  BuildContext? _currentContext = null;
 
   OrderPage({super.key, required this.orderSupplierId}) {
     if (orderSupplierId != null) {
@@ -26,7 +29,20 @@ class OrderPage extends BasePage<OrderBloc> {
   final TextStyle style = const TextStyle(fontSize: 16, color: Colors.black);
 
   @override
+  void onInit() {
+    bloc.qr.addListener(_showQrDialog);
+    super.onInit();
+  }
+
+  @override
+  void onDispose() {
+    bloc.qr.removeListener(_showQrDialog);
+    super.onDispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    _currentContext = context;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -375,5 +391,17 @@ class OrderPage extends BasePage<OrderBloc> {
         ),
       ),
     );
+  }
+
+  Future<void> _showQrDialog() async {
+    if (_currentContext != null && !bloc.qr.value.isNullOrEmpty) {
+      showDialog(
+        context: _currentContext!,
+        builder: (context) => QrDialog(
+          data: bloc.qr.value!,
+          onDownload: bloc.onDownloadQr,
+        ),
+      );
+    }
   }
 }

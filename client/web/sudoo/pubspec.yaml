@@ -84,6 +84,10 @@ dependencies:
 
   month_year_picker: ^0.3.0+1
 
+  qr_flutter: ^4.1.0
+
+  image_downloader_web: ^2.0.4
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -111,10 +115,10 @@ flutter:
   uses-material-design: true
 
     # To add assets to your application, add an assets section, like this:
-assets:
-#  - assets/
-#  - assets/icons/
-  - assets/images/
+  assets:
+    - assets/
+    - assets/icons/
+    - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

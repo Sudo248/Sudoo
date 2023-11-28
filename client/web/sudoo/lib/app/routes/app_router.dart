@@ -206,6 +206,9 @@ class AppRouter {
         case AppRoutes.statisticRevenue:
           index = 4;
           break;
+        case AppRoutes.historyTransaction:
+          index = 4;
+          break;
         case AppRoutes.supplier:
           index = 5;
           break;

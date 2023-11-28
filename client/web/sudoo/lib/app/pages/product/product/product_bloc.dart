@@ -321,6 +321,7 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
     );
     final result = await productRepository.upsertProduct(upsertProduct);
     if (result.isSuccess) {
+      showInfoMessage("Success");
       clearProduct();
       scrollController.animateTo(
         0.0,
@@ -353,6 +354,7 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
     lengthController.clear();
     images.value = List.empty();
     categories.value = List.empty();
+    brandController.clear();
   }
 
   Future<List<String>> uploadImages() async {

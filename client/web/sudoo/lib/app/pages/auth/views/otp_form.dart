@@ -41,6 +41,7 @@ class OtpForm extends StatelessWidget {
           child: TextFormField(
             controller: bloc.otpController,
             keyboardType: TextInputType.number,
+            maxLength: 6,
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
             ),

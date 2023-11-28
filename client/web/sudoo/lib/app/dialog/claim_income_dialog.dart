@@ -11,6 +11,7 @@ import '../../resources/R.dart';
 class ClaimIncomeDialog extends StatelessWidget {
   final AsyncValueSetter<Transaction>? onClaim;
   final TextEditingController fullNameController = TextEditingController(),
+      bankController = TextEditingController(),
       amountController = TextEditingController(),
       numberSerialBankController = TextEditingController();
   final TextStyle style = R.style.h5.copyWith(color: Colors.black);
@@ -24,9 +25,9 @@ class ClaimIncomeDialog extends StatelessWidget {
         padding: const EdgeInsets.all(15.0),
         constraints: const BoxConstraints(
           minWidth: 300,
-          minHeight: 300 * 1.3,
+          minHeight: 300 * 1.5,
           maxWidth: 350,
-          maxHeight: 350 * 1.3,
+          maxHeight: 350 * 1.5,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -45,11 +46,22 @@ class ClaimIncomeDialog extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-
             ..._buildInputField(
-                R.string.numberSerialBank, numberSerialBankController),
-            ..._buildInputField(R.string.fullName, fullNameController),
-            ..._buildInputField(R.string.amount, amountController),
+              R.string.bank,
+              bankController,
+            ),
+            ..._buildInputField(
+              R.string.numberSerialBank,
+              numberSerialBankController,
+            ),
+            ..._buildInputField(
+              R.string.fullName,
+              fullNameController,
+            ),
+            ..._buildInputField(
+              R.string.amount,
+              amountController,
+            ),
             const Expanded(child: SizedBox.shrink()),
             ConfirmButton(
               textPositive: R.string.claim,
@@ -80,6 +92,8 @@ class ClaimIncomeDialog extends StatelessWidget {
   String _getDescription() {
     return """
     Claim income
+    Bank      : ${bankController.text}
+    Number    : ${numberSerialBankController.text}
     Full name : ${fullNameController.text}
     Amount    : ${double.parse(amountController.text).formatCurrency}
     Created at: ${DateTime.now().formatDateTime}

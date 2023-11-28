@@ -149,6 +149,9 @@ class AppString extends R {
   String get history => "History";
   String get numberSerialBank => "Number serial bank";
   String get transaction => "Transaction";
+  String get bank => "Bank";
+  String get download => "Download";
+  String get statisticBy => "Statistic by";
 }
 
 class AppColor extends R {
@@ -158,7 +161,8 @@ class AppColor extends R {
 
   Color get primaryColorLight => const Color(0xFF9EF5F8);
 
-  Color get backgroundNavColor => const Color(0xFF002B31);
+  // Color get backgroundNavColor => const Color(0xFF002B31);
+  Color get backgroundNavColor => const Color(0xFF033E48);
 
   Color get backgroundAvatarColor => const Color(0x80595959);
 
@@ -215,8 +219,8 @@ class AppDrawable extends R {
   static const String _imagePath = "assets/images";
   static const String _iconPath = "assets/icons";
 
-  String iconLauncher = "$_iconPath/ic_launcher.svg";
   String imgEmptyList = "$_imagePath/img_empty_list.png";
+  String imgLauncher = "$_imagePath/img_launcher.png";
 }
 
 class AppButtonStyle extends R {

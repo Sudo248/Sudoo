@@ -4,7 +4,6 @@ class SupplierInfo {
   final String supplierId;
   final String name;
   final String avatar;
-  final String brand;
   final String contactUrl;
   final int? totalProducts;
   final double? rate;
@@ -14,7 +13,6 @@ class SupplierInfo {
     this.supplierId,
     this.name,
     this.avatar,
-    this.brand,
     this.contactUrl,
     this.totalProducts,
     this.rate, {

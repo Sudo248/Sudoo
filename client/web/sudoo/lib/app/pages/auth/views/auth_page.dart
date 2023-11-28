@@ -45,7 +45,11 @@ class AuthPage extends BasePage<AuthBloc> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const FlutterLogo(),
+              Image.asset(
+                R.drawable.imgLauncher,
+                width: 80,
+                height: 80,
+              ),
               const SizedBox(
                 height: 50,
               ),

@@ -1,3 +1,4 @@
+import 'package:sudoo/data/config/api_config.dart';
 import 'package:sudoo/domain/type_date_picker.dart';
 import 'package:sudoo/extensions/date_time_ext.dart';
 
@@ -9,6 +10,7 @@ class OrderService {
   static const orderSupplier = "$orders/order-supplier";
   static const statistic = "$orders/statistic";
   static const statisticRevenue = "$statistic/revenue";
+  static const orderSupplierUrl = "${ApiConfig.host}$orderSupplier";
 
   final ApiService api;
 

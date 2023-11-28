@@ -340,7 +340,8 @@ class ProductRepositoryImpl with HandleResponse implements ProductRepository {
       fromJson: (json) => FileDto.fromJson(json as Map<String, dynamic>),
     );
     if (response.isSuccess) {
-      return DataState.success(response.get());
+      final fileDto = response.get() as FileDto;
+      return DataState.success(fileDto.toFile());
     } else {
       return DataState.error(response.getError());
     }

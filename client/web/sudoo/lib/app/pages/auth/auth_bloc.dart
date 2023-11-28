@@ -23,7 +23,7 @@ class AuthBloc extends BaseBloc {
       confirmPasswordController = TextEditingController(),
       otpController = TextEditingController();
 
-  final bool enableOtp = false;
+  final bool enableOtp = true;
 
   late Function(String) _navigateToDashboard;
 

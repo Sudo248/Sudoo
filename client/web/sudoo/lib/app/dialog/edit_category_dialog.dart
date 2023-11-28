@@ -39,9 +39,9 @@ class EditCategoryDialog extends StatelessWidget {
         padding: const EdgeInsets.all(15.0),
         constraints: const BoxConstraints(
           minWidth: 300,
-          minHeight: 300 * 1.3,
+          minHeight: 300 * 1.5,
           maxWidth: 350,
-          maxHeight: 350 * 1.3,
+          maxHeight: 350 * 1.5,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
