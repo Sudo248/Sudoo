@@ -3,15 +3,17 @@ USE `product-db`;
 DROP TABLE IF EXISTS `suppliers`;
 CREATE TABLE `suppliers`
 (
-    `supplier_id` CHAR(32)     NOT NULL PRIMARY KEY,
-    `user_id`     CHAR(32)     NOT NULL,
-    `ghn_shop_id` INT          NOT NULL,
-    `address_id`  CHAR(32)     NOT NULL,
-    `name`        VARCHAR(255) NOT NULL,
-    `avatar`      VARCHAR(255),
-    `contact_url` VARCHAR(255),
-    `rate`        FLOAT4   DEFAULT 0.0,
-    `create_at`   DATETIME DEFAULT CURRENT_TIMESTAMP
+    `supplier_id`   CHAR(32)     NOT NULL PRIMARY KEY,
+    `user_id`       CHAR(32)     NOT NULL,
+    `ghn_shop_id`   INT          NOT NULL,
+    `address_id`    CHAR(32)     NOT NULL,
+    `name`          VARCHAR(255) NOT NULL,
+    `avatar`        VARCHAR(255),
+    `contact_url`   VARCHAR(255),
+    `rate`          FLOAT4   DEFAULT 5.0,
+    `total_revenue` FLOAT8   DEFAULT 0.0,
+    `income`        FLOAT8   DEFAULT 0.0,
+    `create_at`     DATETIME DEFAULT CURRENT_TIMESTAMP
 ) CHARACTER SET = utf8mb4
     COMMENT = 'Store all supplier';
 
@@ -28,7 +30,7 @@ CREATE TABLE `products`
     `listed_price`        FLOAT4,
     `amount`              INT4         NOT NULL,
     `sold_amount`         INT4         NOT NULL DEFAULT 0,
-    `rate`                FLOAT4                DEFAULT 0.0,
+    `rate`                FLOAT4                DEFAULT 5.0,
     `total_rate_amount`   INT4,
     `discount`            INT4                  DEFAULT 0,
     `saleable`            BOOLEAN               DEFAULT TRUE,
@@ -67,7 +69,8 @@ CREATE TABLE `categories`
 (
     `category_id` CHAR(32)     NOT NULL PRIMARY KEY,
     `name`        VARCHAR(255) NOT NULL,
-    `image`       VARCHAR(255) NOT NULL
+    `image`       VARCHAR(255) NOT NULL,
+    `enable`      BOOLEAN DEFAULT TRUE
 ) CHARACTER SET = utf8mb4
     COMMENT = 'Store all categories';
 
@@ -89,7 +92,7 @@ CREATE TABLE `users_products`
     `user_product_id` CHAR(32) NOT NULL PRIMARY KEY,
     `product_id`      CHAR(32) NOT NULL,
     `user_id`         CHAR(32) NOT NULL,
-    `rate`            FLOAT4   DEFAULT 0.0,
+    `rate`            FLOAT4   DEFAULT 5.0,
     `is_reviewed`     BOOLEAN  DEFAULT FALSE,
     `comment`         TEXT,
     `updated_at`      DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -127,3 +130,12 @@ CREATE TABLE `promotions`
 ) CHARACTER SET = utf8mb4
     COMMENT = 'Store all promotion';
 
+DROP TABLE IF EXISTS `transactions`;
+CREATE TABLE `transactions`
+(
+    `transaction_id` CHAR(32) NOT NULL PRIMARY KEY,
+    `owner_id`       CHAR(32) NOT NULL,
+    `amount`         FLOAT8,
+    `description`    VARCHAR(255)
+) CHARACTER SET = utf8mb4
+    COMMENT = 'Store all transaction';

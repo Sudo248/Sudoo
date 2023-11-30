@@ -34,6 +34,12 @@ data class Supplier(
     @Column("rate")
     var rate: Float,
 
+    @Column("rate")
+    var totalRevenue: Double = 0.0,
+
+    @Column("rate")
+    var income: Double = 0.0,
+
     @Column("create_at")
     val createAt: LocalDateTime = LocalDateTime.now(),
 ) : Persistable<String> {

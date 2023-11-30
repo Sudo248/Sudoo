@@ -29,10 +29,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 import static java.util.Map.of;
@@ -274,11 +270,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDto getOrderByOrderSupplierIdAndSupplierFromUserId(String orderSupplierId, String userId) throws ApiException {
-        final SupplierInfoDto supplier = productService.getSupplierByUserId(userId).getData();
+    public OrderDto getOrderSupplierById(String orderSupplierId) throws ApiException {
         Optional<OrderSupplier> orderSupplier = orderSupplierRepository.findById(orderSupplierId);
         if (orderSupplier.isEmpty())
             throw new ApiException(HttpStatus.NOT_FOUND, "Not found order supplier " + orderSupplierId);
+        final SupplierInfoDto supplier = productService.getSupplierById(orderSupplier.get().getSupplierId()).getData();
         return getOrderOfSupplier(orderSupplier.get(), supplier);
     }
 
@@ -319,9 +315,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderUserInfoDto> getListOrderUserInfoByUserId(String userId, List<OrderStatus> status) throws ApiException {
+    public List<OrderSupplierUserInfoDto> getListOrderSupplierUserInfoByUserId(String userId, List<OrderStatus> status) throws ApiException {
         List<Order> orders = orderRepository.getOrdersByUserId(userId);
-        List<OrderUserInfoDto> orderUserInfoDtos = new ArrayList<>();
+        List<OrderSupplierUserInfoDto> response = new ArrayList<>();
         for (Order order : orders) {
             final CartDto cart = getOrderCartById(order.getCartId(), "");
             final Map<String, List<OrderCartProductDto>> groupBySupplier = cart.getCartProducts().stream().collect(Collectors.groupingBy(orderCartProductDto ->
@@ -329,41 +325,32 @@ public class OrderServiceImpl implements OrderService {
             ));
             final List<OrderSupplier> orderSuppliers;
 
-            if (status != null) {
+            if (status != null && !status.isEmpty()) {
                 orderSuppliers = order.getOrderSuppliers().stream().filter((e) -> status.contains(e.getStatus())).collect(Collectors.toList());
             } else {
                 orderSuppliers = order.getOrderSuppliers();
             }
             final List<OrderSupplierUserInfoDto> orderSupplierUserInfoDtos = orderSuppliers.stream().map((orderSupplier) -> {
                         final SupplierInfoDto supplier = productService.getSupplierById(orderSupplier.getSupplierId()).getData();
+                        final List<OrderCartProductDto> orderCartProductDtos = groupBySupplier.get(orderSupplier.getSupplierId());
                         return OrderSupplierUserInfoDto.builder()
                                 .orderSupplierId(orderSupplier.getOrderSupplierId())
                                 .supplierId(supplier.getSupplierId())
                                 .supplierName(supplier.getName())
                                 .supplierAvatar(supplier.getAvatar())
-                                .supplierBrand(supplier.getBrand())
                                 .supplierContactUrl(supplier.getContactUrl())
                                 .status(orderSupplier.getStatus())
                                 .expectedReceiveDateTime(orderSupplier.getCreatedAt().plusSeconds(orderSupplier.getShipment().getDeliveryTime() / 1000))
                                 .totalPrice(orderSupplier.getTotalPrice())
-                                .orderCartProducts(groupBySupplier.get(orderSupplier.getSupplierId()))
+                                .totalProduct(orderCartProductDtos.size())
+                                .orderCartProduct(!orderCartProductDtos.isEmpty() ? orderCartProductDtos.get(0) : null)
+                                .createdAt(orderSupplier.getCreatedAt())
                                 .build();
                     }
             ).collect(Collectors.toList());
-            LocalDateTime orderCreatedAt = LocalDateTime.now();
-            if (!orderSuppliers.isEmpty()) {
-                orderCreatedAt = orderSuppliers.get(0).getCreatedAt();
-            }
-            orderUserInfoDtos.add(
-                    OrderUserInfoDto.builder()
-                            .orderId(order.getOrderId())
-                            .finalPrice(order.getFinalPrice())
-                            .createdAt(orderCreatedAt)
-                            .orderSuppliers(orderSupplierUserInfoDtos)
-                            .build()
-            );
+            response.addAll(orderSupplierUserInfoDtos);
         }
-        return orderUserInfoDtos;
+        return response;
     }
 
     @Override
@@ -382,6 +369,7 @@ public class OrderServiceImpl implements OrderService {
                     // admin will receive 3% of total price for each order-supplier
                     orderSupplier.setRevenue(orderSupplier.getTotalPrice() * 0.97);
                     upsertUserProduct(userId, orderSupplier.getOrder().getCartId(), orderSupplier.getSupplierId());
+                    createAddRevenueTransaction(orderSupplierId, orderSupplier.getSupplierId(), orderSupplier.getRevenue());
                 }
             }
             response.put("status", patchOrderSupplierDto.getStatus());
@@ -430,7 +418,7 @@ public class OrderServiceImpl implements OrderService {
 
     //Request Detail
     private PromotionDto getPromotionById(String promotionId) throws ApiException {
-        if (promotionId == null) return new PromotionDto();
+        if (promotionId == null || promotionId.isEmpty()) return null;
         var response = productService.getPromotionById(promotionId);
         if (response.getStatusCode() != HttpStatus.OK || !response.hasBody())
             throw new ApiException(HttpStatus.NOT_FOUND, "Not found promotion " + promotionId);
@@ -560,7 +548,7 @@ public class OrderServiceImpl implements OrderService {
                 .totalPrice(orderSupplier.getTotalPrice())
                 .totalShipmentPrice(orderSupplier.getShipment().getShipmentPrice())
                 .totalPromotionPrice(0.0)
-                .finalPrice(orderSupplier.getTotalPrice())
+                .finalPrice(orderSupplier.getTotalPrice() + orderSupplier.getShipment().getShipmentPrice())
                 .createdAt(orderSupplier.getCreatedAt())
                 .orderSuppliers(List.of(toOrderSupplierDto(orderSupplier)))
                 .build();
@@ -580,6 +568,17 @@ public class OrderServiceImpl implements OrderService {
                 userId,
                 supplierId
         );
+        if (response.getStatusCode() != HttpStatus.OK || !response.hasBody())
+            throw new ApiException(HttpStatus.NOT_FOUND, "Something went wrong!!");
+    }
+
+    private void createAddRevenueTransaction(String orderSupplierId, String supplierId, Double amount) throws ApiException {
+        var transaction = TransactionDto.builder()
+                .ownerId(supplierId)
+                .amount(amount)
+                .description("Revenue for order #"+orderSupplierId)
+                .build();
+        var response = productService.createAddRevenueTransaction(transaction);
         if (response.getStatusCode() != HttpStatus.OK || !response.hasBody())
             throw new ApiException(HttpStatus.NOT_FOUND, "Something went wrong!!");
     }

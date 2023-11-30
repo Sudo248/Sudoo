@@ -54,7 +54,7 @@ class ProductServiceImpl(
         coroutineScope {
             validateUpsertProduct(productDto)
             val supplier =
-                supplierRepository.getByUserId(userId)
+                supplierRepository.findByUserId(userId)
                     ?: throw NotFoundException("Not found supplier of user $userId")
             val createAt =
                 if (productDto.productId.isNullOrEmpty()) null else productRepository.findById(productDto.productId)?.createdAt

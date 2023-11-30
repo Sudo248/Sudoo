@@ -29,11 +29,11 @@ public interface OrderService {
 
     void updateOrderPayment(String invoiceId, String paymentId);
 
-    OrderDto getOrderByOrderSupplierIdAndSupplierFromUserId(String orderSupplierId, String userId) throws  ApiException;
+    OrderDto getOrderSupplierById(String orderSupplierId) throws  ApiException;
 
     List<OrderSupplierInfoDto> getListOrderSupplierInfoFromUserId(String userId, OrderStatus status) throws  ApiException;
 
-    List<OrderUserInfoDto> getListOrderUserInfoByUserId(String userId, List<OrderStatus> status) throws ApiException;
+    List<OrderSupplierUserInfoDto> getListOrderSupplierUserInfoByUserId(String userId, List<OrderStatus> status) throws ApiException;
 
     Map<String, Object> patchOrderSupplier(String userId, String orderSupplierId, PatchOrderSupplierDto patchOrderSupplierDto) throws ApiException;
 

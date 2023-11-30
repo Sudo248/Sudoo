@@ -4,16 +4,12 @@ import com.sudoo.domain.exception.ApiException
 import com.sudoo.domain.exception.BadRequestException
 import com.sudoo.domain.exception.NotFoundException
 import com.sudoo.domain.validator.ProductValidator
-import com.sudoo.productservice.dto.AddressDto
-import com.sudoo.productservice.dto.SupplierDto
-import com.sudoo.productservice.dto.SupplierInfoDto
-import com.sudoo.productservice.dto.UpsertSupplierDto
+import com.sudoo.productservice.dto.*
 import com.sudoo.productservice.dto.ghn.CreateStoreRequest
-import com.sudoo.productservice.mapper.toSupplier
-import com.sudoo.productservice.mapper.toSupplierDto
-import com.sudoo.productservice.mapper.toSupplierInfoDto
+import com.sudoo.productservice.mapper.*
 import com.sudoo.productservice.repository.ProductRepository
 import com.sudoo.productservice.repository.SupplierRepository
+import com.sudoo.productservice.repository.TransactionRepository
 import com.sudoo.productservice.service.GHNService
 import com.sudoo.productservice.service.SupplierService
 import com.sudoo.productservice.service.UserService
@@ -24,13 +20,15 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import kotlin.math.abs
 
 @Service
 class SupplierServiceImpl(
     private val supplierRepository: SupplierRepository,
     private val productRepository: ProductRepository,
     private val userService: UserService,
-    private val ghnService: GHNService
+    private val ghnService: GHNService,
+    private val transactionRepository: TransactionRepository,
 ) : SupplierService {
     override suspend fun getSuppliers(): List<SupplierDto> = coroutineScope {
         val suppliers = supplierRepository.findAll()
@@ -62,7 +60,7 @@ class SupplierServiceImpl(
 
     override suspend fun getSupplierByUserId(userId: String): SupplierDto = coroutineScope {
         val supplier =
-            supplierRepository.getByUserId(userId) ?: throw NotFoundException("Not found supplier of user $userId")
+            supplierRepository.findByUserId(userId) ?: throw NotFoundException("Not found supplier of user $userId")
         val totalProducts = async { productRepository.countBySupplierId(supplier.supplierId).toInt() }
         val address = async { userService.getAddressById(supplier.addressId) }
         supplier.toSupplierDto(totalProducts = totalProducts.await(), address = address.await())
@@ -70,13 +68,12 @@ class SupplierServiceImpl(
 
     override suspend fun getSupplierInfoByUserId(userId: String): SupplierInfoDto {
         val supplier =
-            supplierRepository.getByUserId(userId) ?: throw NotFoundException("Not found supplier of user $userId")
+            supplierRepository.findByUserId(userId) ?: throw NotFoundException("Not found supplier of user $userId")
         val address = userService.getAddressById(supplier.addressId)
         return supplier.toSupplierInfoDto(address = address)
     }
 
     override suspend fun upsertSupplier(userId: String, supplierDto: UpsertSupplierDto): SupplierDto {
-        if (!ProductValidator.validateBrand(supplierDto.brand)) throw BadRequestException("Brand is too short, require at least 3 characters")
         if (supplierDto.address == null) throw BadRequestException("Required address to create store")
         val ghnShopId = if (supplierDto.supplierId.isNullOrEmpty()) {
             if (supplierDto.phoneNumber == null) throw BadRequestException("Required address to create store")
@@ -101,6 +98,9 @@ class SupplierServiceImpl(
                     it.addressId ?: throw ApiException(HttpStatus.BAD_REQUEST, "Error address must be not null")
             }
         } else {
+            val oldSupplier = supplierRepository.findById(supplier.supplierId) ?: throw NotFoundException("Not found supplier ${supplier.supplierId}")
+            supplier.totalRevenue = oldSupplier.totalRevenue
+            supplier.income = oldSupplier.income
             userService.getAddressById(supplier.addressId)
         }
         supplierRepository.save(supplier)
@@ -113,6 +113,42 @@ class SupplierServiceImpl(
 
         supplierRepository.delete(supplier)
         return supplierId
+    }
+
+    override suspend fun createAddRevenueTransaction(transactionDto: TransactionDto): TransactionDto {
+        val supplier = supplierRepository.findById(transactionDto.ownerId) ?: throw NotFoundException("Not found supplier ${transactionDto.ownerId}")
+        val transaction = transactionDto.toTransaction()
+        transactionRepository.save(transaction)
+
+        supplier.totalRevenue += transactionDto.amount
+        supplier.income += transactionDto.amount
+        supplierRepository.save(supplier)
+
+        return transaction.toTransactionDto()
+    }
+
+    override suspend fun createClaimRevenueTransaction(userId: String, transactionDto: TransactionDto): SupplierRevenue {
+        val supplier = supplierRepository.findByUserId(userId) ?: throw NotFoundException("Not found supplier of user $userId")
+        if (abs(transactionDto.amount) > supplier.income) {
+            throw BadRequestException("Not enough income to claim")
+        }
+        transactionDto.amount = -abs(transactionDto.amount)
+        val transaction = transactionDto.toTransaction()
+        transactionRepository.save(transaction)
+        supplier.income += transactionDto.amount
+        supplierRepository.save(supplier)
+        return SupplierRevenue(
+            totalRevenue = supplier.totalRevenue,
+            income = supplier.income
+        )
+    }
+
+    override suspend fun getRevenue(userId: String): SupplierRevenue {
+        val supplier = supplierRepository.findByUserId(userId) ?: throw NotFoundException("Not found supplier $userId")
+        return SupplierRevenue(
+            supplier.totalRevenue,
+            supplier.income,
+        )
     }
 
     private suspend fun saveAddress(address: AddressDto): String {

@@ -172,12 +172,11 @@ class CartServiceImpl(
         }
     }
 
-    override suspend fun updateProductInActiveCart(
+    override suspend fun upsertProductInActiveCart(
         userId: String,
         upsertCartProductDto: UpsertCartProductDto
     ): CartDto =
         coroutineScope {
-//            if (upsertCartProductDto.cartProductId == null) throw BadRequestException("Require cart product id")
             val activeCart = getActiveCart(userId)
             val deferred = awaitAll(
                 async {

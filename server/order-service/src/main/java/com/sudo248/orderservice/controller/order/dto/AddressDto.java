@@ -25,7 +25,5 @@ public class AddressDto {
 
     private String address;
 
-    private Location location;
-
     private String fullAddress;
 }

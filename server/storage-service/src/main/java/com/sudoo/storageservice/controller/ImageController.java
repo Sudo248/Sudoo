@@ -23,7 +23,7 @@ public class ImageController {
     @PostMapping(value = "/upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<BaseResponse<?>> upload(
             @RequestParam(value = "image") MultipartFile image,
-            @RequestParam(value = "source", required = false, defaultValue = "cloudinary") String source
+            @RequestParam(value = "source", required = false, defaultValue = "google-storage") String source
     ) {
         return imageService.storeImage(image, StorageSource.fromValue(source));
     }

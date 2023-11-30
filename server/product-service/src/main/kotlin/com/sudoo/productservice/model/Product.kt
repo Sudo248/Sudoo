@@ -29,7 +29,7 @@ data class Product(
     var brand: String = "",
 
     @Column("price")
-    val price: Float,
+    var price: Float,
 
     @Column("listed_price")
     val listedPrice: Float,
@@ -47,7 +47,7 @@ data class Product(
     var totalRateAmount: Int,
 
     @Column("discount")
-    val discount: Int,
+    var discount: Int,
 
     @Column("start_date_discount")
     val startDateDiscount: LocalDateTime?,

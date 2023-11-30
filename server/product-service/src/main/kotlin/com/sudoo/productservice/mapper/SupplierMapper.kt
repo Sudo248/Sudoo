@@ -3,6 +3,7 @@ package com.sudoo.productservice.mapper
 import com.sudoo.domain.utils.IdentifyCreator
 import com.sudoo.productservice.dto.*
 import com.sudoo.productservice.model.Supplier
+import com.sudoo.productservice.model.Transaction
 import java.time.LocalDateTime
 
 fun Supplier.toSupplierDto(totalProducts: Int, address: AddressDto): SupplierDto {
@@ -45,5 +46,25 @@ fun UpsertSupplierDto.toSupplier(userId: String, ghnShopId: Int): Supplier {
         createAt = createAt ?: LocalDateTime.now()
     ).also {
         it.isNewSupplier = supplierId.isNullOrEmpty()
+    }
+}
+
+fun Transaction.toTransactionDto(): TransactionDto {
+    return TransactionDto(
+        transactionId = transactionId,
+        ownerId = ownerId,
+        amount = amount,
+        description = description,
+    )
+}
+
+fun TransactionDto.toTransaction(): Transaction {
+    return Transaction(
+        transactionId = IdentifyCreator.createOrElse(transactionId),
+        ownerId = ownerId,
+        amount = amount,
+        description = description,
+    ).also {
+        it.isNewTransaction = transactionId.isNullOrEmpty()
     }
 }

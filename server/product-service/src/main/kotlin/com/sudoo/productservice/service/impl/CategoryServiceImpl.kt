@@ -21,9 +21,11 @@ class CategoryServiceImpl(
     private val categoryProductRepository: CategoryProductRepository,
 ) : CategoryService {
     override suspend fun getCategories(select: String): List<CategoryDto> = coroutineScope{
+        // customer get categories
         if (select.isBlank()) {
-            categoryRepository.findAll().map { it.toCategoryDto() }.toList()
+            categoryRepository.findCategoriesByEnable(true).map { it.toCategoryDto() }.toList()
         } else {
+            // admin get categories
             categoryRepository.findAll().map {
                 async {
                     val countProduct = categoryProductRepository.countProductOfCategory(it.categoryId).toInt()

@@ -13,4 +13,5 @@ public class OrderCartProductDto {
     private OrderProductInfoDto product;
     private int quantity;
     private double totalPrice;
+    private Double purchasePrice;
 }

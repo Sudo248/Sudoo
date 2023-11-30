@@ -28,10 +28,9 @@ public class OrderSupplierController {
 
     @GetMapping("/{orderSupplierId}")
     ResponseEntity<BaseResponse<?>> getOrderOfSupplierDetail(
-            @RequestHeader(Constants.HEADER_USER_ID) String userId,
             @PathVariable("orderSupplierId") String orderSupplierId
     ) {
-        return Utils.handleException(() -> BaseResponse.ok(orderService.getOrderByOrderSupplierIdAndSupplierFromUserId(orderSupplierId, userId)));
+        return Utils.handleException(() -> BaseResponse.ok(orderService.getOrderSupplierById(orderSupplierId)));
     }
 
     @GetMapping("/users")
@@ -39,11 +38,11 @@ public class OrderSupplierController {
             @RequestHeader(Constants.HEADER_USER_ID) String userId,
             @RequestParam(value = "status", required = false) String status
     ) {
-        return Utils.handleException(() -> BaseResponse.ok(orderService.getListOrderUserInfoByUserId(userId, OrderStatus.fromValues(status))));
+        return Utils.handleException(() -> BaseResponse.ok(orderService.getListOrderSupplierUserInfoByUserId(userId, OrderStatus.fromValues(status))));
     }
 
     @PatchMapping("/{orderSupplierId}")
-    ResponseEntity<BaseResponse<?>> patchOrderSupplierStatusBySupplierId(
+    ResponseEntity<BaseResponse<?>> patchOrderSupplierStatus(
             @RequestHeader(Constants.HEADER_USER_ID) String userId,
             @PathVariable("orderSupplierId") String orderSupplierId,
             @RequestBody PatchOrderSupplierDto patchOrderSupplierDto
