@@ -65,7 +65,7 @@ public class Order {
     }
 
     public double calculateFinalPrice() {
-        this.finalPrice = totalPrice + totalShipmentPrice - totalPromotionPrice;
+        this.finalPrice = Math.max(totalPrice + totalShipmentPrice - totalPromotionPrice, 0.0);
         return this.finalPrice;
     }
 }

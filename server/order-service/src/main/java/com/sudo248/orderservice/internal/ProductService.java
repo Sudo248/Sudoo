@@ -31,4 +31,10 @@ public interface ProductService {
             @RequestHeader(Constants.HEADER_USER_ID) String userId,
             @RequestBody UpsertUserProductDto upsertUserProductDto
     );
+
+    @PutMapping("/api/v1/suppliers/internal/transactions")
+    ResponseEntity<BaseResponse<?>> createAddRevenueTransaction(
+            @RequestBody TransactionDto transactionDto
+    );
+
 }

@@ -29,7 +29,7 @@ interface CartService {
 
     //---CartProductInActiveCart-------------
 
-    suspend fun updateProductInActiveCart(
+    suspend fun upsertProductInActiveCart(
         userId: String,
         upsertCartProductDto: UpsertCartProductDto
     ): CartDto

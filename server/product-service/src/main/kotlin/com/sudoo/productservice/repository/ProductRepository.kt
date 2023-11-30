@@ -106,6 +106,7 @@ interface ProductRepository : CoroutineCrudRepository<Product, String> {
         products.end_date_discount
         FROM products
         INNER JOIN categories_products
+        ON categories_products.product_id=products.product_id
         WHERE categories_products.category_id = :categoryId
         LIMIT :_limit
         OFFSET :_offset
@@ -134,6 +135,7 @@ interface ProductRepository : CoroutineCrudRepository<Product, String> {
         products.end_date_discount
         FROM products
         INNER JOIN categories_products
+        ON categories_products.product_id=products.product_id
         WHERE categories_products.category_id = :categoryId
         ORDER BY products.rate DESC
         LIMIT :_limit
@@ -163,6 +165,7 @@ interface ProductRepository : CoroutineCrudRepository<Product, String> {
         products.end_date_discount
         FROM products
         INNER JOIN categories_products
+        ON categories_products.product_id=products.product_id
         WHERE categories_products.category_id = :categoryId
         ORDER BY products.rate ASC 
         LIMIT :_limit
@@ -317,6 +320,7 @@ interface ProductRepository : CoroutineCrudRepository<Product, String> {
         SELECT COUNT(products.product_id)
         FROM products
         INNER JOIN categories_products
+        ON categories_products.product_id=products.product_id
         WHERE categories_products.category_id = :categoryId
         AND products.name LIKE :_name
     """
@@ -343,6 +347,7 @@ interface ProductRepository : CoroutineCrudRepository<Product, String> {
         products.end_date_discount
         FROM products
         INNER JOIN categories_products
+        ON categories_products.product_id=products.product_id
         WHERE categories_products.category_id = :categoryId
         AND products.name LIKE :_name
         LIMIT :_limit

@@ -18,6 +18,9 @@ data class Category(
     @Column("image")
     val image: String,
 
+    @Column("enable")
+    val enable: Boolean,
+
 ) : Persistable<String> {
 
     @Transient

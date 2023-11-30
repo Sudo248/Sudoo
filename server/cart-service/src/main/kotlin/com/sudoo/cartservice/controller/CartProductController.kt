@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.*
 @RestController
 class CartProductController(val cartService: CartService) : BaseController() {
     @PostMapping("/product")
-    suspend fun updateProductToActiveCart(
+    suspend fun upsertProductToActiveCart(
         @RequestHeader(Constants.HEADER_USER_ID) userId: String,
         @RequestBody upsertCartProductDto: UpsertCartProductDto
     ): ResponseEntity<BaseResponse<*>> = handle {
-        cartService.updateProductInActiveCart(userId, upsertCartProductDto)
+        cartService.upsertProductInActiveCart(userId, upsertCartProductDto)
     }
 
     //--------------------------------------------------------------------------------------------

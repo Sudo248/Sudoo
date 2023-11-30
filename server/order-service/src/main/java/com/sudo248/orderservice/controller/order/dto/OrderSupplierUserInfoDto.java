@@ -18,10 +18,11 @@ public class OrderSupplierUserInfoDto {
     private String supplierId;
     private String supplierName;
     private String supplierAvatar;
-    private String supplierBrand;
     private String supplierContactUrl;
     private OrderStatus status;
     private LocalDateTime expectedReceiveDateTime;
     private double totalPrice;
-    private List<OrderCartProductDto> orderCartProducts;
+    private LocalDateTime createdAt;
+    private int totalProduct;
+    private OrderCartProductDto orderCartProduct;
 }

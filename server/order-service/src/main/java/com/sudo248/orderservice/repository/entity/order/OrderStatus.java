@@ -14,7 +14,7 @@ public enum OrderStatus {
     SHIPPING,
     // Shipper đã giao hàng đến khách hàng
     DELIVERED,
-    // User đã nhận được hàng
+    // Khách hàng đã nhận được hàng
     RECEIVED,
     // Đơn bị huỷ
     CANCELED;
@@ -42,10 +42,14 @@ public enum OrderStatus {
     }
 
     public static List<OrderStatus> fromValues(String values) {
+        if (values == null || values.isBlank())  return null;
         String[] listValues = values.split(",");
         List<OrderStatus> result = new ArrayList<>();
         for(String value : listValues) {
-            result.add(fromValue(value.trim()));
+            OrderStatus status = fromValue(value.trim());
+            if (status != null) {
+                result.add(status);
+            }
         }
         return result;
     }
