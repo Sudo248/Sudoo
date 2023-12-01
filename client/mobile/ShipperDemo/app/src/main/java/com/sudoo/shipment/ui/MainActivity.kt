@@ -1,12 +1,15 @@
 package com.sudoo.shipment.ui
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import com.sudoo.shipment.R
+import androidx.activity.viewModels
+import com.sudo248.base_android.base.BaseActivity
+import com.sudoo.shipment.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-class MainActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+@AndroidEntryPoint
+class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
+    override val viewModel: MainViewModel by viewModels()
+    override val enableStateScreen: Boolean = true
+    override fun initView() {
+        viewModel.signIn()
     }
 }

@@ -7,19 +7,19 @@ plugins {
 
 android {
     namespace = "com.sudoo.shipment"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.sudoo.shipment"
-        minSdk = 24
-        targetSdk = 33
+        minSdk = 26
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         //buildConfigField("String", "BASE_URL", "\"https://sudo.eastasia.cloudapp.azure.com/api/v1/\"")
-        buildConfigField("String", "BASE_URL", "\"http://192.168.1.133:8080/api/v1/\"")
+        buildConfigField("String", "BASE_URL", "\"http://192.168.1.33:8080/api/v1/\"")
         buildConfigField("String", "USER_NAME", "\"admin\"")
         buildConfigField("String", "PASSWORD", "\"admin\"")
     }
@@ -52,6 +52,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -81,9 +82,7 @@ dependencies {
 
     // glide
     implementation("com.github.bumptech.glide:glide:4.15.0")
-
 }
-
 
 kapt {
     correctErrorTypes=true

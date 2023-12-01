@@ -23,7 +23,6 @@ abstract class BasePageListAdapter<T : Any, VH : BasePageViewHolder<T, *>> :
     }
 
     open val enableLoadMore: Boolean = false
-    open val showLoadingFirstPage: Boolean = false
 
     @LayoutRes
     protected open val layoutLoading: Int = R.layout.item_loading
@@ -38,6 +37,7 @@ abstract class BasePageListAdapter<T : Any, VH : BasePageViewHolder<T, *>> :
 
     protected val thresholdInvisibleItem: Int? = null
 
+    private var isFirstPage = true
     private var isLastPage = false
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
@@ -75,11 +75,12 @@ abstract class BasePageListAdapter<T : Any, VH : BasePageViewHolder<T, *>> :
         if (holder.itemViewType != TYPE_VIEW_LOADING) {
             holder.onBind(getItem(position))
         } else {
-            holder.itemView.isGone = isLastPage
+            holder.itemView.isGone = isLastPage || currentList.isEmpty()
         }
     }
 
     open fun submitData(list: List<T>?, extend: Boolean = false) {
+        if (isFirstPage) isFirstPage = !list.isNullOrEmpty()
         if (extend) {
             val newList = currentList.toMutableList()
             newList.addAll(list ?: emptyList())
@@ -98,10 +99,9 @@ abstract class BasePageListAdapter<T : Any, VH : BasePageViewHolder<T, *>> :
     }
 
     override fun getItemCount(): Int =
-        if (enableLoadMore && (showLoadingFirstPage || currentList.isNotEmpty())) currentList.size + 1 else currentList.size
+        if (enableLoadMore && !isFirstPage) currentList.size + 1 else currentList.size
 
-
-    private fun isLastPosition(position: Int): Boolean = position >= itemCount - 1
+    private fun isLastPosition(position: Int): Boolean = position >= currentList.size
 
     private fun getMethodInflateViewBinding(vhClass: Class<BasePageViewHolder<T, *>>): Method {
         val viewBindingClass =
