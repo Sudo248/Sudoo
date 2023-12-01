@@ -1,6 +1,7 @@
 package com.sudoo.shipment.ui
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -27,10 +28,11 @@ class ScanQrActivity : BaseActivity<ActivityScanQrBinding, ScanQrViewModel>() {
     private var detector: BarcodeDetector? = null
     private var cameraSource: CameraSource? = null
 
+    @SuppressLint("MissingPermission")
     private val launcherPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) {
             if (it) {
-
+                cameraSource?.start(binding.surfaceView.holder)
             }
         }
 
