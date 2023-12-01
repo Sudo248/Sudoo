@@ -21,7 +21,7 @@ class PromotionFragment : BaseFragment<FragmentPromotionBinding, PromotionViewMo
     private lateinit var adapter: PromotionAdapter
 
     override fun initView() {
-        viewModel.selectedPromotionId = args.selectedPromotionId
+        viewModel.selectedPromotionId = null
         if (!args.forChoosePromotion) {
             binding.txtAgree.gone()
         } else {
@@ -36,6 +36,9 @@ class PromotionFragment : BaseFragment<FragmentPromotionBinding, PromotionViewMo
         }
         binding.refresh.setOnRefreshListener {
             viewModel.getAllPromotion()
+        }
+        binding.imgBack.setOnClickListener {
+            back()
         }
         viewModel.getPromotions()
     }

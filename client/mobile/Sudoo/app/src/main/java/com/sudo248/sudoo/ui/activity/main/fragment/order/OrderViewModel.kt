@@ -1,6 +1,5 @@
 package com.sudo248.sudoo.ui.activity.main.fragment.order
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavDirections
@@ -11,12 +10,14 @@ import com.sudo248.base_android.event.SingleEvent
 import com.sudo248.base_android.ktx.bindUiState
 import com.sudo248.base_android.ktx.onError
 import com.sudo248.base_android.ktx.onSuccess
+import com.sudo248.sudoo.data.mapper.toPromotionInfo
 import com.sudo248.sudoo.domain.entity.order.Order
 import com.sudo248.sudoo.domain.entity.order.UpsertOrderPromotion
 import com.sudo248.sudoo.domain.entity.payment.Payment
 import com.sudo248.sudoo.domain.entity.payment.PaymentStatus
 import com.sudo248.sudoo.domain.entity.payment.PaymentType
 import com.sudo248.sudoo.domain.entity.promotion.Promotion
+import com.sudo248.sudoo.domain.entity.promotion.PromotionInfo
 import com.sudo248.sudoo.domain.repository.OrderRepository
 import com.sudo248.sudoo.domain.repository.PaymentRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -41,8 +42,8 @@ class OrderViewModel @Inject constructor(
     private val _order = MutableLiveData<Order>()
     val order: LiveData<Order> = _order
 
-    private val _promotion = MutableLiveData<Promotion?>()
-    val promotion: LiveData<Promotion?> = _promotion
+    private val _promotion = MutableLiveData<PromotionInfo?>()
+    val promotion: LiveData<PromotionInfo?> = _promotion
 
     private val _finalPrice = MutableLiveData<Double>()
     val finalPrice: LiveData<Double> = _finalPrice
@@ -98,7 +99,7 @@ class OrderViewModel @Inject constructor(
                     UpsertOrderPromotion(promotionId = promotion.promotionId)
                 )
                     .onSuccess { upsertOrderPromotion ->
-                        _promotion.postValue(promotion)
+                        _promotion.postValue(promotion.toPromotionInfo())
                         _finalPrice.postValue(upsertOrderPromotion.finalPrice)
                     }.onError { ex ->
                         error = SingleEvent(ex.message)
@@ -135,7 +136,7 @@ class OrderViewModel @Inject constructor(
         setState(UiState.LOADING)
         paymentRepository.payWithVnPay(
             Payment(
-                paymentType = PaymentType.CASH,
+                paymentType = PaymentType.COD,
                 orderId = _order.value!!.orderId,
                 paymentStatus = PaymentStatus.INIT,
                 amount = _order.value!!.finalPrice

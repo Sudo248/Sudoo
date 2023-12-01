@@ -8,6 +8,7 @@ import com.sudo248.sudoo.BuildConfig
 import com.sudo248.sudoo.data.api.BaseResponse
 import com.sudo248.sudoo.data.dto.discovery.CategoryDto
 import com.sudo248.sudoo.data.dto.discovery.CommentListDto
+import com.sudo248.sudoo.data.dto.discovery.ImageDto
 import com.sudo248.sudoo.data.dto.discovery.ProductDto
 import com.sudo248.sudoo.data.dto.discovery.ProductInfoDto
 import com.sudo248.sudoo.data.dto.discovery.ProductListDto
@@ -103,4 +104,7 @@ interface DiscoveryService {
     suspend fun deleteComment(
         @Path("commentId") commentId: String
     ): Response<BaseResponse<Any>>
+
+    @GET("banners")
+    suspend fun getBanner(): Response<BaseResponse<List<ImageDto>>>
 }

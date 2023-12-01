@@ -141,7 +141,7 @@ class ProductDetailViewModel @Inject constructor(
                 amount = 1
             )
         } catch (e: NullPointerException) {
-            error = SingleEvent("Some thing wet wrong")
+            error = SingleEvent("Some thing went wrong")
             setState(UiState.ERROR)
             null
         }
@@ -176,12 +176,7 @@ class ProductDetailViewModel @Inject constructor(
             }
 
         }
-//        navigator.navigateOff(ProductDetailFragmentDirections.actionProductDetailFragmentToCartFragment())
     }
-
-//    private fun getAddCartProducts(): AddCartProducts {
-//        return AddCartProducts(listOf(CartProduct()))
-//    }
 
     fun getDeeplinkToProduction(): String {
         return ""

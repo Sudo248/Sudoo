@@ -7,7 +7,8 @@ data class OrderCartProduct(
     val cartId: String,
     val quantity: Int,
     val totalPrice: Double,
-    val product: OrderProductInfo
+    val product: OrderProductInfo,
+    val purchasePrice: Double? = null,
 ): ItemDiff {
     override fun isContentTheSame(other: ItemDiff): Boolean {
         return other is OrderCartProduct && other == this

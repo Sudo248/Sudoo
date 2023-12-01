@@ -24,28 +24,26 @@
 
         <ImageView
             android:id="@+id/imgLogo"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:src="@drawable/img_logo"
-            app:layout_constraintBottom_toBottomOf="@id/imgHeader"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/ic_launcher_foreground"
             app:layout_constraintEnd_toEndOf="@id/imgHeader"
             app:layout_constraintStart_toStartOf="@id/imgHeader"
             app:layout_constraintTop_toTopOf="@id/imgHeader"
-            app:layout_constraintVertical_bias="0.0" />
+            android:layout_marginTop="20dp"/>
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="35dp"
             android:background="@color/white"
-            app:cardCornerRadius="40dp"
+            app:cardCornerRadius="15dp"
             app:cardElevation="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="100dp"
-            app:layout_constraintVertical_bias="0.1">
+            app:layout_constraintTop_toBottomOf="@id/imgLogo"
+            app:layout_constraintVertical_bias="0.08">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -85,15 +83,5 @@
                     android:layout_marginTop="15dp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/img_footer"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            android:visibility="gone"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

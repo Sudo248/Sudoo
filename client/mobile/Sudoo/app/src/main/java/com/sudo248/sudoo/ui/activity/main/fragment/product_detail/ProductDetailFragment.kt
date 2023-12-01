@@ -102,6 +102,7 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
             setRating(product.rate)
             txtNumberSold.text = Utils.formatSold(product.soldAmount)
             txtDescription.text = product.description
+            txtBrand.text = product.brand
             if (this@ProductDetailFragment.viewModel.canAddToCart()) {
                 binding.txtBuyNow.text = getString(R.string.add_to_cart)
             } else {
@@ -116,7 +117,6 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
             txtNameSupplier.text = supplier.name
             txtSupplierLocation.text = supplier.address.provinceName
             txtSupplierRate.text = Utils.format(supplier.rate.toDouble(), digit = 1)
-//            txtBrand.text = getString(R.string.product_brand, supplier.brand)
         }
     }
 

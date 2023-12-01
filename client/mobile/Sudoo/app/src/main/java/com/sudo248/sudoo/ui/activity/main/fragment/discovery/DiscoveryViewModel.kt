@@ -32,9 +32,10 @@ class DiscoveryViewModel @Inject constructor(
     private val discoveryRepository: DiscoveryRepository
 ) : BaseViewModel<NavDirections>() {
     private var nextOffset: Offset = Offset()
-
     private val _isRefresh = MutableLiveData(false)
     val isRefresh: LiveData<Boolean> = _isRefresh
+    private val _banners = MutableLiveData<List<String>>(listOf())
+    val banners: LiveData<List<String>> = _banners
 
     var error: SingleEvent<String?> = SingleEvent(null)
 
@@ -50,12 +51,20 @@ class DiscoveryViewModel @Inject constructor(
 
     init {
         refresh()
+        getBanners()
     }
 
     fun refresh() {
         _isRefresh.value = true
         getCategories()
         getRecommendProductList()
+    }
+
+    private fun getBanners() = launch {
+        discoveryRepository.getBanners()
+            .onSuccess {
+                _banners.postValue(it)
+            }
     }
 
     private fun getCategories() = launch {

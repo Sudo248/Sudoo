@@ -68,7 +68,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), ViewCon
         R.id.chatFragment,
         R.id.reviewListFragment,
         R.id.reviewFragment,
-        R.id.orderFragment
+        R.id.orderFragment,
+        R.id.orderDetailFragment
     )
 
     private val listener = NavController.OnDestinationChangedListener { _, destination, _ ->

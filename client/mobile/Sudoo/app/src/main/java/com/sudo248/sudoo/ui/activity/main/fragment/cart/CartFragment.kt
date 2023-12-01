@@ -2,16 +2,15 @@ package com.sudo248.sudoo.ui.activity.main.fragment.cart
 
 import androidx.fragment.app.viewModels
 import com.sudo248.base_android.base.BaseFragment
-import com.sudo248.base_android.ktx.createActionIntentDirections
+import com.sudo248.base_android.ktx.gone
+import com.sudo248.base_android.ktx.visible
 import com.sudo248.base_android.utils.DialogUtils
-import com.sudo248.sudoo.R
 import com.sudo248.sudoo.databinding.FragmentCartBinding
-import com.sudo248.sudoo.domain.common.Constants
+import com.sudo248.sudoo.domain.entity.cart.CartProduct
 import com.sudo248.sudoo.ui.activity.main.MainActivity
 import com.sudo248.sudoo.ui.activity.main.adapter.CartAdapter
-import com.sudo248.sudoo.ui.activity.payment.PaymentActivity
 import com.sudo248.sudoo.ui.ktx.showErrorDialog
-import com.sudo248.sudoo.ui.util.Utils
+import com.sudo248.sudoo.ui.util.SudooDialogUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,16 +25,17 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
                 viewModel.updateProduct(it)
             },
             onDeleteItem = { addSupplierProduct ->
-                DialogUtils.showConfirmDialog(
+                SudooDialogUtils.showConfirmDialog(
                     requireContext(),
                     title = "Xóa khỏi giỏ hàng",
                     description = "Bạn có chắc chắn muốn xóa sản phẩm này không?",
-                    positive = "OK",
-                    negative = "Cancel",
                     onPositive = {
                         viewModel.deleteItemFromCart(addSupplierProduct)
                     }
                 )
+            },
+            onCheckedChangeItem = { isChecked, cartProduct ->
+                viewModel.onClickCheckBox(isChecked, cartProduct)
             }
         )
     }
@@ -50,15 +50,31 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
         binding.btnBuyNow.setOnClickListener {
             viewModel.buy()
         }
+
+        binding.txtGoToBuy.setOnClickListener {
+            navigateOffAll(CartFragmentDirections.actionCartFragmentToDiscoveryFragment())
+        }
     }
 
     override fun observer() {
         super.observer()
         viewModel.cart.observe(viewLifecycleOwner) {
             binding.refresh.isRefreshing = false
-            adapter.submitList(it.cartProducts)
+            performCartItem(it.cartProducts)
             setBadgeCart(it.cartProducts.size)
         }
+    }
+
+    private fun performCartItem(items: List<CartProduct>) {
+        if (items.isEmpty()) {
+            binding.constraintCart.gone()
+            binding.lnCartEmpty.visible()
+        } else {
+            binding.constraintCart.visible()
+            binding.lnCartEmpty.gone()
+            adapter.submitList(items)
+        }
+
     }
 
     override fun onStateError() {

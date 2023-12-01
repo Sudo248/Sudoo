@@ -28,7 +28,8 @@
             app:itemIconTint="@drawable/image_selector"
             app:itemTextColor="@drawable/image_selector"
             app:menu="@menu/main_menu"
-            android:background="@color/background"/>
+            android:background="@color/background"
+            app:labelVisibilityMode="labeled" />
 
     </LinearLayout>
 </layout>
