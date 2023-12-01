@@ -7,22 +7,16 @@
         android:icon="@drawable/ic_discovery"/>
 
     <item
-        android:id="@+id/promotionFragment"
-        android:enabled="true"
-        android:title="@string/promotion"
-        android:icon="@drawable/ic_promotion"/>
-
-    <item
         android:id="@+id/cartFragment"
         android:enabled="true"
         android:title="@string/cart"
         android:icon="@drawable/ic_shopping_cart"/>
 
     <item
-        android:id="@+id/orderStatusFragment2"
+        android:id="@+id/orderStatusFragment"
         android:enabled="true"
-        android:title="order"
-        android:icon="@drawable/ic_order_status"/>
+        android:title="@string/order"
+        android:icon="@drawable/ic_order"/>
     <item
         android:id="@+id/userFragment"
         android:enabled="true"

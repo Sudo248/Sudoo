@@ -218,4 +218,16 @@ class DiscoveryRepositoryImpl @Inject constructor(
                 throw response.error().errorBody()
             }
         }
+
+    override suspend fun getBanners(): DataState<List<String>, Exception> =
+        stateOn(ioDispatcher) {
+            val response = handleResponse(
+                discoveryService.getBanner()
+            )
+            if (response.isSuccess) {
+                response.data().map { it.url }
+            } else {
+                throw response.error().errorBody()
+            }
+        }
 }

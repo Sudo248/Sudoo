@@ -11,32 +11,33 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="sign_in">Sign In</string>
-    <string name="sign_up">Sign Up</string>
-    <string name="phone_number">Phone number</string>
-    <string name="password">Password</string>
-    <string name="submit">Submit</string>
-    <string name="confirm_password">Confirm password</string>
-    <string name="invalid_phone_number">Invalid phone number</string>
-    <string name="forgot_password"><u>Forgot password?</u></string>
-    <string name="error">Error</string>
+    <string name="sign_in">Đăng nhập</string>
+    <string name="sign_up">Đăng ký</string>
+    <string name="phone_number">Số điện thoại</string>
+    <string name="password">Mật khẩu</string>
+    <string name="submit">Gửi</string>
+    <string name="confirm_password">Xác nhận mật khẩu</string>
+    <string name="invalid_phone_number">Số điện thoại không khả dụng</string>
+    <string name="forgot_password"><u>Quên mật khẩu?</u></string>
+    <string name="error">Lỗi</string>
     <string name="otp_authen">OTP Authentication</string>
-    <string name="otp_authen_description">We will send the verification code\nto your phone</string>
-    <string name="resend_otp">Resend OTP</string>
-    <string name="not_receive_otp">Not receive otp?</string>
-    <string name="unexpected_error">Unexpected error</string>
-    <string name="discovery">Discovery</string>
-    <string name="promotion">Promotion</string>
-    <string name="order">Order</string>
-    <string name="account">Account</string>
-    <string name="search">Search</string>
-    <string name="categories">Categories</string>
-    <string name="choose_the">Choose the</string>
+    <string name="otp_authen_description">Chúng tôi đã gửi mã xác thực\nđến điện thoại của bạn</string>
+    <string name="resend_otp">Gửi lại OTP</string>
+    <string name="not_receive_otp">Không nhận otp?</string>
+    <string name="unexpected_error">Lỗi không mong muốn</string>
+    <string name="discovery">Khám phá</string>
+    <string name="home">Trang chủ</string>
+    <string name="promotion">Khuyến mại</string>
+    <string name="order">Đơn hàng</string>
+    <string name="account">Tài khoản</string>
+    <string name="search">Tìm kiếm</string>
+    <string name="categories">Danh mục</string>
+    <string name="choose_the">Chọn</string>
     <string name="food_that_you_love">Food that you love</string>
     <string name="image_for_user">image for user</string>
     <string name="image_for_title">image for title</string>
     <string name="distance">%.2fkm</string>
-    <string name="user">User</string>
+    <string name="user">Cá nhân</string>
     <string name="user_title">Cá nhân</string>
     <string name="user_info">Thông tin người dùng</string>
     <string name="label_user_name">Tên đăng nhập</string>
@@ -65,8 +66,10 @@
     <string name="delivery_form">Hình Thức Giao Hàng</string>
     <string name="voucher">Voucher</string>
     <string name="total_money">Tổng tiền hàng:</string>
+    <string name="order_code">Mã đơn hàng</string>
     <string name="choose_or_enter_voucher">Chọn hoặc nhập mã</string>
     <string name="total_delivery">Tổng phí tiền vận chuyển:</string>
+    <string name="delivery_fee">Phí vận chuyển:</string>
     <string name="total_money_format">Tổng tiền (%s sản phẩm):</string>
     <string name="total_payment">Tổng tiền thanh toán:</string>
     <string name="choose_payment_method">Chọn phương thức\nthanh toán</string>
@@ -119,4 +122,33 @@
     <string name="add_to_cart_success">Đã thêm vào giỏ</string>
     <string name="payment_success">Thanh toán thành công</string>
     <string name="payment_fail">Thanh toán thất bại</string>
+    <string name="empty_cart">Bạn chưa có sản phẩm nào trong giỏ</string>
+    <string name="go_to_buy">Mua sắm ngay</string>
+    <string name="payment_result_success_description">Thanh toán thành công\nĐơn hàng của bạn đang được xử lý.</string>
+    <string name="payment_result_fail_description">Thanh toán thất bại\nĐơn hàng của bạn đã bị hủy.</string>
+    <string name="continue_buy">Tiếp tục mua sắm</string>
+    <string name="check_order">Kiểm tra đơn hàng</string>
+    <string name="final_price">Thành tiền:</string>
+    <string name="received_order">Đã nhận được hàng</string>
+    <string name="received_order_description">Vui lòng chỉ nhấn \"Đã nhận được hàng\" khi đơn hàng đã được giao đến bạn và sản phẩm nhận được không có vấn đề nào.</string>
+    <string name="review_description">Thực hiện đánh giá để chúng tôi có thể phục vụ bạn tốt hơn.</string>
+
+    <string name="prepare">Chờ xác nhận</string>
+
+    <string name="ready">Chờ lấy hàng</string>
+
+    <string name="take_order">Chờ giao hàng</string>
+    <string name="shipping">Chờ giao hàng</string>
+    <string name="delivered">Chờ giao hàng</string>
+
+    <string name="received">Đã giao</string>
+
+    <string name="canceled">Đã hủy</string>
+
+    <string name="total_product">%d sản phẩm</string>
+    <string name="order_info">Thông tin đơn hàng</string>
+    <string name="order_time">Thời gian đặt hàng</string>
+    <string name="payment_time">Thời gian thanh toán</string>
+    <string name="received_time">Thời gian nhận hàng</string>
+    <string name="have_not_yet_payment">Chưa thanh toán</string>
 </resources>

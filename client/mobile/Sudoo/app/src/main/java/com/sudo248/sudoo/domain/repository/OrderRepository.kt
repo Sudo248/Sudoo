@@ -1,8 +1,9 @@
 package com.sudo248.sudoo.domain.repository
 
 import com.sudo248.base_android.core.DataState
-import com.sudo248.sudoo.data.dto.order.OrderUserInfoDto
+import com.sudo248.sudoo.data.dto.order.PatchOrderSupplierDto
 import com.sudo248.sudoo.domain.entity.order.Order
+import com.sudo248.sudoo.domain.entity.order.OrderSupplierInfo
 import com.sudo248.sudoo.domain.entity.order.UpsertOrderPromotion
 
 interface OrderRepository {
@@ -14,6 +15,11 @@ interface OrderRepository {
     ): DataState<UpsertOrderPromotion, Exception>
 
     suspend fun cancelOrderById(orderId: String): DataState<Boolean, Exception>
-    suspend fun getOrderByStatus(status: String): DataState<List<Order>, Exception>
+    suspend fun getListOrderSupplierByStatus(status: String): DataState<List<OrderSupplierInfo>, Exception>
+    suspend fun getOrderSupplierDetail(orderSupplierId: String): DataState<Order, Exception>
 
+    suspend fun patchOrderSupplier(
+        orderSupplierId: String,
+        patchOrderSupplier: PatchOrderSupplierDto
+    ): DataState<Boolean, Exception>
 }

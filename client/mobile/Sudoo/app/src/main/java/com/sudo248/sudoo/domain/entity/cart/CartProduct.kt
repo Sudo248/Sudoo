@@ -16,7 +16,7 @@ data class CartProduct(
 
     override fun isItemTheSame(other: ItemDiff): Boolean {
         val cartProduct = other as CartProduct
-        return cartProduct.product?.productId == product?.productId &&
+        return cartProductId == other.cartProductId && cartProduct.product?.productId == product?.productId &&
                 cartProduct.quantity == quantity
     }
 

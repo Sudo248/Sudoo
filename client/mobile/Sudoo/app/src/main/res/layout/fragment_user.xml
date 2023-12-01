@@ -25,6 +25,7 @@
             android:background="@color/background"
             android:clipToPadding="true"
             android:scrollbars="none"
+            android:fillViewport="true"
             tools:context=".fragments.AccountFragment">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -50,7 +51,7 @@
                     android:layout_marginHorizontal="15dp"
                     android:layout_marginTop="15dp"
                     android:elevation="55dp"
-                    app:cardCornerRadius="4dp"
+                    app:cardCornerRadius="5dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txtTitle">
@@ -102,7 +103,8 @@
                             android:id="@+id/txtRole"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_rectangle_conner_20dp"
+                            android:background="@drawable/rectangle_conner_8"
+                            android:backgroundTint="@color/primaryColor"
                             android:paddingHorizontal="14dp"
                             android:paddingVertical="2dp"
                             android:text="@{viewModel.user.role}"
@@ -134,7 +136,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="15dp"
                     android:layout_marginTop="8dp"
-                    app:cardCornerRadius="4dp"
+                    app:cardCornerRadius="5dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cardHeader">
@@ -337,7 +339,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="15dp"
                     android:layout_marginTop="8dp"
-                    app:cardCornerRadius="4dp"
+                    app:cardCornerRadius="5dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cardInfo"

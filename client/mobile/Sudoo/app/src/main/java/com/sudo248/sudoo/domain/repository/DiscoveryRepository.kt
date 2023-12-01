@@ -52,4 +52,6 @@ interface DiscoveryRepository {
     suspend fun upsertReview(upsertReview: UpsertReview): DataState<Review, Exception>
 
     suspend fun deleteComment(commentId: String): DataState<Unit, Exception>
+
+    suspend fun getBanners(): DataState<List<String>, Exception>
 }

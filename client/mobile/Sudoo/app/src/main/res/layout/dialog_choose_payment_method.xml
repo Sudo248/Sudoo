@@ -77,7 +77,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:gravity="center_vertical"
-                android:onClick="@{(v) -> viewModel.onSelectPaymentType(PaymentType.CASH)}"
+                android:onClick="@{(v) -> viewModel.onSelectPaymentType(PaymentType.COD)}"
                 android:paddingHorizontal="15dp"
                 android:paddingVertical="8dp"
                 app:layout_constraintTop_toBottomOf="@id/lnVnPay">
@@ -104,7 +104,7 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@null"
                     android:src="@drawable/ic_check"
-                    android:visibility="@{viewModel.currentPaymentType == PaymentType.CASH ? View.VISIBLE : View.GONE}"
+                    android:visibility="@{viewModel.currentPaymentType == PaymentType.COD ? View.VISIBLE : View.GONE}"
                     app:tint="@color/primaryColor" />
             </LinearLayout>
 

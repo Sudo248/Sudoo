@@ -1,7 +1,5 @@
 package com.sudo248.sudoo.data.dto.payment
 
-import com.sudo248.sudoo.domain.entity.payment.PaymentStatus
-
 data class PaymentDto(
     val paymentId: String = "",
     val paymentUrl: String? = null,

@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.sudo248.sudoo.ui.activity.main.fragment.orderstatus.OrderStatusViewModel" />
+            type="com.sudo248.sudoo.ui.activity.main.fragment.order_list.OrderListViewModel" />
     </data>
 
     <LinearLayout
@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@color/background"
-        tools:context=".ui.activity.main.fragment.orderstatus.OrderStatusFragment">
+        tools:context=".ui.activity.main.fragment.order_list.OrderListFragment">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabOrderStatus"
@@ -21,24 +21,29 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/imgBack"
             app:tabGravity="fill"
-            app:tabMode="fixed"
             app:tabSelectedTextColor="@color/primaryColor"
-            app:tabTextAppearance="@style/standardTabLayout">
+            app:tabTextAppearance="@style/standardTabLayout"
+            app:tabMode="scrollable">
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Prepare" />
+                android:text="@string/prepare" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Shiping" />
+                android:text="@string/ready" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Received" />
+                android:text="@string/take_order" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/delivered" />
         </com.google.android.material.tabs.TabLayout>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -48,19 +53,7 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcv_order_status_prepare"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:listitem="@layout/item_order_status"/>
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcv_order_status_shipping"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:listitem="@layout/item_order_status"/>
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcv_order_status_received"
+                android:id="@+id/rcvOrders"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

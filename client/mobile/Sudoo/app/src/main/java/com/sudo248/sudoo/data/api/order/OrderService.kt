@@ -1,18 +1,17 @@
 package com.sudo248.sudoo.data.api.order
 
-import com.google.android.gms.common.internal.safeparcel.SafeParcelable.Param
 import com.sudo248.base_android_annotation.apiservice.ApiService
 import com.sudo248.base_android_annotation.apiservice.EnableAuthentication
 import com.sudo248.base_android_annotation.apiservice.logging_level.Level
 import com.sudo248.base_android_annotation.apiservice.logging_level.LoggingLever
 import com.sudo248.sudoo.BuildConfig
 import com.sudo248.sudoo.data.api.BaseResponse
-import com.sudo248.sudoo.data.dto.order.UpsertOrderDto
 import com.sudo248.sudoo.data.dto.order.OrderDto
-import com.sudo248.sudoo.data.dto.order.OrderUserInfoDto
+import com.sudo248.sudoo.data.dto.order.PatchOrderSupplierDto
+import com.sudo248.sudoo.data.dto.order.UpsertOrderDto
 import com.sudo248.sudoo.data.dto.order.UpsertOrderPromotionDto
 import com.sudo248.sudoo.domain.common.Constants
-import com.sudo248.sudoo.domain.entity.order.Order
+import com.sudo248.sudoo.domain.entity.order.OrderSupplierInfo
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -43,5 +42,14 @@ interface OrderService {
     suspend fun cancelOrderById(@Path("orderId") orderId: String): Response<BaseResponse<*>>
 
     @GET("orders/order-supplier/users")
-    suspend fun getOrdersByStatus(@Query("status") status :String):Response<BaseResponse<List<Order>>>
+    suspend fun getListOrderSupplierByStatus(@Query("status") status: String): Response<BaseResponse<List<OrderSupplierInfo>>>
+
+    @GET("orders/order-supplier/{orderSupplierId}")
+    suspend fun getOrderSupplierDetail(@Path("orderSupplierId") orderSupplierId: String): Response<BaseResponse<OrderDto>>
+
+    @PATCH("orders/order-supplier/{orderSupplierId}")
+    suspend fun patchOrderSupplier(
+        @Path("orderSupplierId") orderSupplierId: String,
+        @Body patchOrderSupplier: PatchOrderSupplierDto
+    ): Response<BaseResponse<*>>
 }

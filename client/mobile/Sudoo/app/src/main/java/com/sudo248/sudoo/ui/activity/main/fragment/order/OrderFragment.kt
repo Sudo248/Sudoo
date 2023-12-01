@@ -230,17 +230,17 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>(), View
     }
 
     private fun onVnPaySdkActionWebBack() {
-
+//        navigateOff(OrderFragmentDirections.actionOrderFragmentToPaymentResultFragment(paymentResultSuccess = false))
     }
 
     private fun onVnPaySdkActionFailed() {
         toast(R.string.payment_fail)
-        //
+        navigateOff(OrderFragmentDirections.actionOrderFragmentToPaymentResultFragment(paymentResultSuccess = false))
     }
 
     private fun onVnPaySdkActionSuccess() {
         toast(R.string.payment_success)
-        navigateOff(OrderFragmentDirections.actionOrderFragmentToReviewListFragment(isAfterPayment = true))
+        navigateOff(OrderFragmentDirections.actionOrderFragmentToPaymentResultFragment(paymentResultSuccess = true))
     }
 
     private fun toast(@StringRes id: Int) {

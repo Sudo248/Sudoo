@@ -1,7 +1,5 @@
 package com.sudo248.sudoo.domain.entity.order
 
-import java.time.LocalDateTime
-
 data class OrderProductInfo(
     val productId: String,
     val supplierId: String,

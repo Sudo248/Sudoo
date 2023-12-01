@@ -1,6 +1,5 @@
 package com.sudo248.sudoo.ui.activity.main.fragment.cart
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavDirections
@@ -13,8 +12,8 @@ import com.sudo248.base_android.ktx.onSuccess
 import com.sudo248.sudoo.domain.entity.cart.AddCartProduct
 import com.sudo248.sudoo.domain.entity.cart.AddCartProducts
 import com.sudo248.sudoo.domain.entity.cart.Cart
+import com.sudo248.sudoo.domain.entity.cart.CartProduct
 import com.sudo248.sudoo.domain.repository.CartRepository
-import com.sudo248.sudoo.domain.repository.OrderRepository
 import com.sudo248.sudoo.ui.util.Utils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -28,8 +27,10 @@ class CartViewModel @Inject constructor(
     private val _cart = MutableLiveData<Cart>()
     val cart: LiveData<Cart> = _cart
 
-    private val _totalPrice = MutableLiveData<String>()
+    private val _totalPrice = MutableLiveData(Utils.formatVnCurrency(0.0))
     val totalPrice: LiveData<String> = _totalPrice
+
+    private val selectedCartProducts: MutableList<CartProduct> = mutableListOf()
 
     var error: SingleEvent<String?> = SingleEvent(null)
 
@@ -83,6 +84,14 @@ class CartViewModel @Inject constructor(
 
     private fun updateTotalPrice(cart: Cart) {
         _totalPrice.postValue(Utils.formatVnCurrency(cart.totalPrice))
+    }
+
+    fun onClickCheckBox(isChecked: Boolean, cartProduct: CartProduct) {
+        if (isChecked && !selectedCartProducts.contains(cartProduct)) {
+            selectedCartProducts.add(cartProduct)
+        } else {
+            selectedCartProducts.remove(cartProduct)
+        }
     }
 
     private fun getAddCartProducts(): AddCartProducts {
