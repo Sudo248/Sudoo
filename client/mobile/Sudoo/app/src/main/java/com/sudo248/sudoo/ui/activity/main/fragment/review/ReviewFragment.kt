@@ -19,6 +19,7 @@ import com.sudo248.sudoo.ui.ktx.showErrorDialog
 import com.sudo248.sudoo.ui.models.comment.RatingDescription
 import com.sudo248.sudoo.ui.uimodel.adapter.loadImage
 import com.sudo248.sudoo.ui.util.FileUtils
+import com.sudo248.sudoo.ui.util.Utils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,17 +29,19 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding, ReviewViewModel>(), V
     private val args: ReviewFragmentArgs by navArgs()
     override fun initView() {
         viewModel.setViewController(this)
+        viewModel.setActivityViewModel(mainViewModel)
         setProduct(args.review.productInfo)
         setupRating()
     }
 
     private fun setupRating() {
-        binding.rating.setOnRatingBarChangeListener { _, value, b ->
+        binding.rating.setOnRatingBarChangeListener { _, value, _ ->
             val ratingDescription = RatingDescription.from(value)
             binding.txtRatingDescription.apply {
                 setText(ratingDescription.description)
                 setTextColor(ContextCompat.getColor(requireContext(), ratingDescription.color))
             }
+            binding.txtRatingValue.text = Utils.format(value.toDouble(), 1)
         }
     }
 
