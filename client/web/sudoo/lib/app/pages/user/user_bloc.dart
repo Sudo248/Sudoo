@@ -70,6 +70,7 @@ class UserBloc extends BaseBloc implements ChooseAddressCallback {
     final result = await userRepository.updateUser(user);
     if (result.isSuccess) {
       setUser(result.get());
+      showInfoMessage("Success");
     } else {
       showErrorMessage(result.getError());
     }

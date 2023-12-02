@@ -94,48 +94,89 @@ class OrderPage extends BasePage<OrderBloc> {
       children: [
         Row(
           children: [
-            Text(
-              orderSupplier.orderSupplierId,
-              style: style.copyWith(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
+            RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: "${R.string.orderId}: ",
+                    style: style.copyWith(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: Colors.black,
+                    ),
+                  ),
+                  TextSpan(
+                    text: "#${orderSupplier.orderSupplierId}",
+                    style: style.copyWith(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: Colors.blue,
+                    ),
+                  )
+                ]
               ),
             ),
             const SizedBox(
-              width: 20,
+              width: 30,
             ),
             ValueListenableBuilder(
               valueListenable: bloc.orderStatus,
-              builder: (context, value, child) => value == null
+              builder: (context, value, child) =>
+              value == null
                   ? const Center(
                       child: SizedBox.square(
                         dimension: 30,
                         child: CircularProgressIndicator(),
                       ),
                     )
-                  : DropdownButton<String>(
-                      underline: const SizedBox.shrink(),
-                      value: value.value,
-                      selectedItemBuilder: (context) => OrderStatus.values
-                          .map(
-                            (e) => _buildOrderStatusItem(e),
-                          )
-                          .toList(),
-                      items: OrderStatus.values
-                          .map<DropdownMenuItem<String>>(
-                            (e) => DropdownMenuItem<String>(
-                              value: e.value,
-                              enabled: OrderStatus.getEnableStaffStatus()
-                                  .contains(e),
-                              child: _buildOrderStatusItem(e),
-                            ),
-                          )
-                          .toList(),
-                      onChanged: (value) {
-                        bloc.onStatusChanged(
-                          OrderStatus.fromValue(value),
-                        );
-                      },
+                  : DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: value.color,
+                        borderRadius: BorderRadius.circular(3),
+                      ),
+                      child: DropdownButton<String>(
+                        underline: const SizedBox.shrink(),
+                        iconEnabledColor: Colors.white,
+                        value: value.value,
+                        selectedItemBuilder: (context) => OrderStatus.values
+                            .map(
+                              (e) => Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 25, vertical: 5),
+                                child: Center(
+                                  child: Text(
+                                    e.value,
+                                    style: style.copyWith(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                            .toList(),
+                        items: OrderStatus.values
+                            .map<DropdownMenuItem<String>>(
+                              (e) =>
+                                  OrderStatus.getEnableStaffStatus().contains(e)
+                                      ? DropdownMenuItem<String>(
+                                          enabled: value.index < e.index,
+                                          value: e.value,
+                                          child: _buildOrderStatusItem(e),
+                                        )
+                                      : DropdownMenuItem(
+                                          value: e.value,
+                                          enabled: false,
+                                          child: const SizedBox.shrink(),
+                                        ),
+                            )
+                            .toList(),
+                        onChanged: (value) {
+                          bloc.onStatusChanged(
+                            OrderStatus.fromValue(value),
+                          );
+                        },
+                      ),
                     ),
             ),
           ],
@@ -151,9 +192,9 @@ class OrderPage extends BasePage<OrderBloc> {
             2: FlexColumnWidth(1.5),
             3: FlexColumnWidth(1.5),
           },
-          border: TableBorder.all(
-            color: Colors.grey,
-          ),
+          // border: TableBorder.all(
+          //   color: Colors.grey,
+          // ),
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
           children: [
             _buildTableTitle(),
@@ -318,9 +359,14 @@ class OrderPage extends BasePage<OrderBloc> {
                 orderCartProduct.product.images.first,
                 width: rowHeight * 0.9,
                 height: rowHeight * 0.9,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(3),
+                  border: Border.all(color: Colors.grey, width: 0.3),
+                ),
+                fit: BoxFit.contain,
               ),
               const SizedBox(
-                width: 5,
+                width: 10,
               ),
               Text(
                 "[${orderCartProduct.product.sku}] ${orderCartProduct.product.name}",
@@ -333,26 +379,35 @@ class OrderPage extends BasePage<OrderBloc> {
         ),
         SizedBox(
           height: rowHeight,
-          child: Text(
-            orderCartProduct.quantity.toString(),
-            style: style,
-            maxLines: 1,
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              orderCartProduct.quantity.toString(),
+              style: style,
+              maxLines: 1,
+            ),
           ),
         ),
         SizedBox(
           height: rowHeight,
-          child: Text(
-            orderCartProduct.product.price.formatCurrency(),
-            style: style,
-            maxLines: 1,
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              orderCartProduct.product.price.formatCurrency(),
+              style: style,
+              maxLines: 1,
+            ),
           ),
         ),
         SizedBox(
           height: rowHeight,
-          child: Text(
-            orderCartProduct.totalPrice.formatCurrency(),
-            style: style,
-            maxLines: 1,
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              orderCartProduct.totalPrice.formatCurrency(),
+              style: style,
+              maxLines: 1,
+            ),
           ),
         ),
       ],

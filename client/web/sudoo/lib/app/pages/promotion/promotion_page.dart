@@ -53,7 +53,7 @@ class PromotionPage extends BasePage<PromotionBloc> {
         padding: const EdgeInsets.all(10.0),
         decoration: BoxDecoration(
           color: Colors.grey,
-          borderRadius: BorderRadius.circular(15.0),
+          borderRadius: BorderRadius.circular(10.0),
         ),
         child: const Center(
           child: Icon(

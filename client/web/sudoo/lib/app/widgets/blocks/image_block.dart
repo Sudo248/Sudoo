@@ -60,7 +60,7 @@ class ImageBlock extends StatelessWidget {
         padding: const EdgeInsets.all(10.0),
         decoration: BoxDecoration(
           color: Colors.grey,
-          borderRadius: BorderRadius.circular(15.0),
+          borderRadius: BorderRadius.circular(5.0),
         ),
         child: const Column(
           mainAxisSize: MainAxisSize.min,
@@ -101,31 +101,40 @@ class ImageBlock extends StatelessWidget {
   }
 
   Widget _buildImageItem(domain.File image) {
-    return Stack(
-      children: [
-        image.bytes != null
-            ? Image.memory(
-                Uint8List.fromList(image.bytes!),
-                width: 150,
-                height: 200,
-                fit: BoxFit.cover,
-              )
-            : OnlineImage(
-                image.url,
-                width: 150,
-                height: 200,
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        border: Border.all(color: Colors.grey, width: 0.5),
+      ),
+      child: Stack(
+        children: [
+          image.bytes != null
+              ? Image.memory(
+                  Uint8List.fromList(image.bytes!),
+                  width: 150,
+                  height: 200,
+                  fit: BoxFit.cover,
+                )
+              : OnlineImage(
+                  image.url,
+                  width: 150,
+                  height: 200,
+                ),
+          Positioned(
+            right: 3,
+            top: 3,
+            child: GestureDetector(
+              onTap: () {
+                deleteImage(image);
+              },
+              child: const Icon(
+                Icons.cancel,
+                color: Colors.grey,
               ),
-        Positioned(
-          right: 3,
-          top: 3,
-          child: GestureDetector(
-            onTap: () {
-              deleteImage(image);
-            },
-            child: const Icon(Icons.cancel),
-          ),
-        )
-      ],
+            ),
+          )
+        ],
+      ),
     );
   }
 

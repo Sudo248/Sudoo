@@ -55,7 +55,7 @@ class BannerPage extends BasePage<BannerBloc> {
         padding: const EdgeInsets.all(10.0),
         decoration: BoxDecoration(
           color: Colors.grey,
-          borderRadius: BorderRadius.circular(15.0),
+          borderRadius: BorderRadius.circular(10.0),
         ),
         child: const Column(
           mainAxisSize: MainAxisSize.min,
@@ -83,22 +83,31 @@ class BannerPage extends BasePage<BannerBloc> {
   }
 
   Widget _buildImageItem(File image) {
-    return Stack(
-      children: [
-        OnlineImage(
-          image.url,
-        ),
-        Positioned(
-          right: 3,
-          top: 3,
-          child: GestureDetector(
-            onTap: () {
-              bloc.deleteBanner(image);
-            },
-            child: const Icon(Icons.cancel),
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: Colors.grey, width: 0.5),
+      ),
+      child: Stack(
+        children: [
+          OnlineImage(
+            image.url,
           ),
-        )
-      ],
+          Positioned(
+            right: 3,
+            top: 3,
+            child: GestureDetector(
+              onTap: () {
+                bloc.deleteBanner(image);
+              },
+              child: const Icon(
+                Icons.cancel,
+                color: Colors.grey,
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 

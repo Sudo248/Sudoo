@@ -12,7 +12,7 @@ class Order {
   final String orderId;
   final String cartId;
   final Payment payment;
-  final PromotionInfo promotion;
+  final PromotionInfo? promotion;
   final User user;
   final String address;
   final double totalPrice;

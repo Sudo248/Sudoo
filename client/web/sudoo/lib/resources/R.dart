@@ -152,6 +152,8 @@ class AppString extends R {
   String get bank => "Bank";
   String get download => "Download";
   String get statisticBy => "Statistic by";
+  String get cantRevertStatus => "Statistic by";
+  String get orderId => "Order code";
 }
 
 class AppColor extends R {

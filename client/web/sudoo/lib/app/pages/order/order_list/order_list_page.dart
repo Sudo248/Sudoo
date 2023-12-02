@@ -27,6 +27,9 @@ class OrderListPage extends BasePage<OrderListBloc> {
   bool get enableStatePage => true;
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
     bloc.onClickDetail = (orderSupplierId) =>
         context.push("${AppRoutes.orders}/$orderSupplierId");
@@ -44,8 +47,6 @@ class OrderListPage extends BasePage<OrderListBloc> {
         rowHeight: itemHeight,
         source: bloc.orderListDatSource,
         columns: _columns(size.width),
-        footer: bloc.orderListDatSource.rows.isEmpty ? const EmptyList() : null,
-        footerHeight: 500,
       ),
     );
   }

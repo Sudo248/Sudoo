@@ -1,7 +1,7 @@
 import '../api/order/order_api_service.dart';
 
 abstract class ApiConfig {
-  static const String host = "http://192.168.1.197:$port";
+  static const String host = "http://192.168.1.33:$port";
   static const String port = "8080";
   static const String portStorage = "8085";
   static const String baseUrl = "$host/api/v1";

@@ -10,6 +10,8 @@ enum OrderStatus {
   takeOrder("Take order", Colors.blueGrey),
   @JsonValue("SHIPPING")
   shipping("Shipping", Colors.blue),
+  @JsonValue("DELIVERED")
+  delivered("Delivered", Colors.teal),
   @JsonValue("RECEIVED")
   received("Received", Colors.green),
   @JsonValue("CANCELED")
@@ -27,10 +29,12 @@ enum OrderStatus {
         return OrderStatus.prepare;
       case "READY":
         return ready;
-      case "TAKE_ORDER":
+      case "TAKE ORDER":
         return takeOrder;
       case "SHIPPING":
         return shipping;
+      case "DELIVERED":
+        return delivered;
       case "RECEIVED":
         return received;
       default:
@@ -56,6 +60,8 @@ enum OrderStatus {
         return "TAKE_ORDER";
       case shipping:
         return "SHIPPING";
+      case delivered:
+        return "DELIVERED";
       case received:
         return "RECEIVED";
       default:

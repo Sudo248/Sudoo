@@ -32,6 +32,8 @@ class AppModule {
 
     getIt.registerLazySingleton(() => ProductListBloc(getIt.get(), getIt.get()));
 
+    getIt.registerLazySingleton(() => OrderListBloc(getIt.get()));
+
     getIt.registerFactory(() => ProductBloc(getIt.get(), getIt.get(), getIt.get()));
 
     getIt.registerFactory(() => HomeBloc(getIt.get()));
@@ -47,8 +49,6 @@ class AppModule {
     getIt.registerFactory(() => BannerBloc(getIt.get(), getIt.get()));
 
     getIt.registerFactory(() => StoresBloc(getIt.get()));
-
-    getIt.registerFactory(() => OrderListBloc(getIt.get()));
 
     getIt.registerFactory(() => OrderBloc(getIt.get()));
 

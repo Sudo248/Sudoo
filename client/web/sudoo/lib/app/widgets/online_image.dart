@@ -5,7 +5,10 @@ class OnlineImage extends StatelessWidget {
   final String src;
   final double? width, height;
   final BoxFit? fit;
-  const OnlineImage(this.src, {super.key, this.height, this.width, this.fit});
+  final Decoration? decoration;
+
+  const OnlineImage(this.src,
+      {super.key, this.height, this.width, this.fit, this.decoration});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +16,8 @@ class OnlineImage extends StatelessWidget {
     if (!src.startsWith("http")) {
       imageUrl = "${ApiConfig.storageImageUrl}/$src";
     }
-    return Image.network(
+
+    final image = Image.network(
       imageUrl,
       height: height,
       width: width,
@@ -32,7 +36,14 @@ class OnlineImage extends StatelessWidget {
           size: width != null ? width! / 2 : null,
         ),
       ),
-      fit: fit ?? BoxFit.cover,
+      fit: fit ?? BoxFit.contain,
     );
+
+    return decoration != null
+        ? DecoratedBox(
+            decoration: decoration!,
+            child: image,
+          )
+        : image;
   }
 }

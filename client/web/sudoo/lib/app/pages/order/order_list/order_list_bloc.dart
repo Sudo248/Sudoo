@@ -21,7 +21,8 @@ class OrderListBloc extends BaseBloc
 
   @override
   void onDispose() {
-    orderListDatSource.dispose();
+    // should dispose
+    // orderListDatSource.dispose();
   }
 
   @override
@@ -34,6 +35,7 @@ class OrderListBloc extends BaseBloc
   Future<List<OrderSupplierInfo>> getListOrderSupplier() async {
     final result = await orderRepository.getListOrderSupplier();
     if (result.isSuccess) {
+      totalOrders.value = result.get().length;
       orderListDatSource.setOrders(result.get());
       return Future.value(result.get());
     } else {
