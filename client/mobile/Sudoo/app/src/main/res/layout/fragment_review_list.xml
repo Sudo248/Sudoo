@@ -91,7 +91,7 @@
                     android:background="@color/background"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/item_reviewed"
+                    tools:listitem="@layout/item_not_yet_review"
                     android:visibility="visible"/>
             </FrameLayout>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

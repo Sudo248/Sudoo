@@ -32,6 +32,10 @@ class ReviewViewModel @Inject constructor(
         this.viewController = viewController
     }
 
+    fun setActivityViewModel(mainViewModel: MainViewModel) {
+        this.parentViewModel = mainViewModel
+    }
+
     fun upsertReview() = launch {
         viewController?.getUpsertReview()?.let { upserReview ->
             emitState(UiState.LOADING)

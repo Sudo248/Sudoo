@@ -37,16 +37,23 @@
         app:layout_constraintTop_toTopOf="@id/txtSupplierName"
         tools:text="Prepare" />
 
-    <ImageView
-        android:id="@+id/imgProduct"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardProduct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:scaleType="fitCenter"
         android:background="@drawable/bg_rectangle_stroke_1"
+        app:cardCornerRadius="5dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtSupplierName"
-        tools:src="@tools:sample/avatars" />
+        app:layout_constraintTop_toBottomOf="@id/txtSupplierName">
+
+        <ImageView
+            android:id="@+id/imgProduct"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="fitCenter"
+            tools:src="@tools:sample/avatars" />
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/txtNameProduct"
@@ -58,8 +65,8 @@
         android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/imgProduct"
-        app:layout_constraintTop_toTopOf="@id/imgProduct"
+        app:layout_constraintStart_toEndOf="@id/cardProduct"
+        app:layout_constraintTop_toTopOf="@id/cardProduct"
         tools:text="Le Hong Duong" />
 
     <TextView
@@ -79,7 +86,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/primaryColor"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imgProduct"
+        app:layout_constraintBottom_toBottomOf="@+id/cardProduct"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txtQuantity"
         tools:text="30.000đ" />
@@ -88,7 +95,7 @@
         android:id="@+id/vDivider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        app:layout_constraintTop_toBottomOf="@id/imgProduct"
+        app:layout_constraintTop_toBottomOf="@id/cardProduct"
         android:layout_marginTop="8dp"
         android:background="@color/gray_B3"/>
 
