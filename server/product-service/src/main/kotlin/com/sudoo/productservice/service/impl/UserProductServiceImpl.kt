@@ -22,6 +22,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.count
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import org.springframework.stereotype.Service
@@ -32,6 +33,7 @@ class UserProductServiceImpl(
     private val userProductRepository: UserProductRepository,
     private val imageRepository: ImageRepository,
     private val productService: ProductService,
+    private val productRepository: ProductRepository,
     private val userService: UserService,
 ) : UserProductService {
     override suspend fun postUserProduct(
@@ -45,7 +47,7 @@ class UserProductServiceImpl(
     }
 
     override suspend fun postListUserProduct(upsertListUserProductDto: UpsertListUserProductDto): List<String> = coroutineScope {
-        productService.getListProductInfoByIds(upsertListUserProductDto.productIds).filter { product ->
+        productRepository.getListProductInfoByIds(upsertListUserProductDto.productIds).filter { product ->
             product.supplierId == upsertListUserProductDto.supplierId
         }.map {
            async {
