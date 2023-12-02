@@ -7,7 +7,7 @@ import com.sudo248.orderservice.controller.order.dto.*;
 import com.sudo248.orderservice.controller.order.dto.ghn.*;
 import com.sudo248.orderservice.controller.payment.dto.PaymentInfoDto;
 import com.sudo248.orderservice.external.GHNService;
-import com.sudo248.orderservice.internal.AccountService;
+import com.sudo248.orderservice.internal.AuthService;
 import com.sudo248.orderservice.internal.CartService;
 import com.sudo248.orderservice.internal.ProductService;
 import com.sudo248.orderservice.internal.UserService;
@@ -51,7 +51,7 @@ public class OrderServiceImpl implements OrderService {
 
     private final ProductService productService;
 
-    private final AccountService accountService;
+    private final AuthService authService;
 
     public OrderServiceImpl(
             OrderRepository orderRepository,
@@ -61,7 +61,7 @@ public class OrderServiceImpl implements OrderService {
             OrderSupplierRepository orderSupplierRepository,
             GHNService ghnService,
             ProductService productService,
-            AccountService accountService) {
+            AuthService authService) {
         this.orderRepository = orderRepository;
         this.userService = userService;
         this.cartService = cartService;
@@ -69,7 +69,7 @@ public class OrderServiceImpl implements OrderService {
         this.orderSupplierRepository = orderSupplierRepository;
         this.ghnService = ghnService;
         this.productService = productService;
-        this.accountService = accountService;
+        this.authService = authService;
     }
 
     @Override
@@ -410,7 +410,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private Role getRoleByUserId(String userId) throws ApiException {
-        var response = accountService.getRoleByUserId(userId);
+        var response = authService.getRoleByUserId(userId);
         if (response.getStatusCode() != HttpStatus.OK || !response.hasBody())
             throw new ApiException(HttpStatus.NOT_FOUND, "Not found role user " + userId);
         return Objects.requireNonNull(response.getBody()).getData();

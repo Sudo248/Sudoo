@@ -377,7 +377,7 @@ interface ProductRepository : CoroutineCrudRepository<Product, String> {
         products.start_date_discount,
         products.end_date_discount
         FROM products 
-        WHERE products.product_id IN :ids
+        WHERE products.product_id IN (:ids)
     """
     )
     fun getListProductInfoByIds(@Param("ids") ids: Collection<String>): Flow<ProductInfo>

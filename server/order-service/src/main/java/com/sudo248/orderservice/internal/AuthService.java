@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 
-@FeignClient(value = "account-service")
+@FeignClient(value = "auth-service")
 @Service
-public interface AccountService {
+public interface AuthService {
     @GetMapping("/api/v1/auth/internal/accounts/role")
     ResponseEntity<BaseResponse<Role>> getRoleByUserId(@RequestHeader(Constants.HEADER_USER_ID) String userId);
 }

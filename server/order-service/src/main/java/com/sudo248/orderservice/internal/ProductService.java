@@ -32,7 +32,7 @@ public interface ProductService {
             @RequestBody UpsertUserProductDto upsertUserProductDto
     );
 
-    @PutMapping("/api/v1/suppliers/internal/transactions")
+    @PutMapping("/api/v1/discovery/suppliers/internal/transactions")
     ResponseEntity<BaseResponse<?>> createAddRevenueTransaction(
             @RequestBody TransactionDto transactionDto
     );
