@@ -9,7 +9,9 @@ import com.sudoo.shipment.Constants
 import com.sudoo.shipment.R
 import com.sudoo.shipment.databinding.ActivityOrderDetailBinding
 import com.sudoo.shipment.model.OrderStatus
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class OrderDetailActivity : BaseActivity<ActivityOrderDetailBinding, OrderDetailViewModel>() {
     override val viewModel: OrderDetailViewModel by viewModels()
     override val enableStateScreen: Boolean = true
@@ -48,12 +50,18 @@ class OrderDetailActivity : BaseActivity<ActivityOrderDetailBinding, OrderDetail
                     lnPaymentMethod.visible()
                     txtPaymentMethod.text = it.payment.paymentType
                     txtPaymentTime.text = Utils.formatDateTime(it.payment.paymentDateTime)
+                    txtReceiveMoney.text = Utils.formatVnCurrency(
+                        if (it.payment.paymentType.lowercase() == "cod")
+                            it.finalPrice
+                        else 0.0
+                    )
                 } else {
                     txtPaymentMethod.text = getString(R.string.have_not_yet_payment)
                     constrainPaymentTime.gone()
                     lnPaymentMethod.gone()
                 }
                 txtOrderId.text = "#${orderSupplier.orderSupplierId}"
+                txtOrderStatus.text = getString(orderSupplier.status.displayValue)
                 txtOrderTime.text = Utils.formatDateTime(it.createdAt)
                 if (orderSupplier.shipment.receivedDateTime != null) {
                     constrainReceivedTime.visible()

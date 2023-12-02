@@ -22,6 +22,7 @@ object Constants {
         const val PROMOTION = "PROMOTION"
         const val SCREEN = "SCREEN"
         const val FCM_TOKEN = "FCM_TOKEN"
+        const val NEED_RELOAD = "NEED_RELOAD"
     }
     object Screen {
         const val DISCOVERY = "DISCOVERY"

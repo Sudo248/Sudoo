@@ -32,9 +32,9 @@ class ReviewAdapter(
         viewType: Int
     ): BasePageViewHolder<Review, *> {
         return if (tab == ReviewListTab.REVIEWED) {
-            ReviewedViewHolder(ItemReviewedBinding.inflate(layoutInflater))
+            ReviewedViewHolder(ItemReviewedBinding.inflate(layoutInflater, parent, false))
         } else {
-            NotYetReviewViewHolder(ItemNotYetReviewBinding.inflate(layoutInflater))
+            NotYetReviewViewHolder(ItemNotYetReviewBinding.inflate(layoutInflater, parent, false))
         }
     }
 

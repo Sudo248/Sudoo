@@ -10,6 +10,7 @@ import com.sudo248.base_android.base.BaseFragment
 import com.sudo248.base_android.ktx.gone
 import com.sudo248.base_android.ktx.visible
 import com.sudo248.base_android.utils.DialogUtils
+import com.sudo248.base_android.utils.KeyBoardUtils
 import com.sudo248.sudoo.R
 import com.sudo248.sudoo.databinding.FragmentReviewBinding
 import com.sudo248.sudoo.domain.entity.discovery.ProductInfo
@@ -28,6 +29,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding, ReviewViewModel>(), V
     private val mainViewModel: MainViewModel by activityViewModels()
     private val args: ReviewFragmentArgs by navArgs()
     override fun initView() {
+        binding.viewModel = viewModel
         viewModel.setViewController(this)
         viewModel.setActivityViewModel(mainViewModel)
         setProduct(args.review.productInfo)
@@ -91,5 +93,9 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding, ReviewViewModel>(), V
             rate = binding.rating.rating,
             comment = binding.txtComment.text.toString()
         )
+    }
+
+    override fun hideKeyboardIdNeeded() {
+        KeyBoardUtils.hide(requireActivity())
     }
 }

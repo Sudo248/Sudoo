@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ShipperDemo</string>
+    <string name="app_name">GHNShipper</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_order_detail">OrderDetailActivity</string>
@@ -9,13 +9,14 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string name="error">Lỗi</string>
+    <string name="order_status">Trạng thái đơn hàng</string>
 
     <string name="prepare">Chờ xác nhận</string>
 
-    <string name="ready">Chờ lấy hàng</string>
+    <string name="ready">Sẵn sàng lấy hàng</string>
 
-    <string name="take_order">Chờ giao hàng</string>
-    <string name="shipping">Chờ giao hàng</string>
+    <string name="take_order">Đang giao hàng</string>
+    <string name="shipping">Đang giao hàng</string>
     <string name="delivered">Chờ giao hàng</string>
 
     <string name="received">Đã giao</string>
@@ -39,6 +40,7 @@
     <string name="total_price">Tổng tiền: %s</string>
     <string name="total_money">Tổng tiền hàng:</string>
     <string name="final_price">Thành tiền:</string>
+    <string name="receive_money">Thu hộ:</string>
     <string name="payment_method">Phương thức thanh toán</string>
     <string name="review">Đánh giá</string>
     <string name="received_order">Đã nhận đơn hàng</string>
