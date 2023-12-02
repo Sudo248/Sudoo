@@ -8,7 +8,7 @@ enum class OrderStatus(val value: String, @StringRes val displayValue: Int) {
     READY("ready", R.string.ready),
     TAKE_ORDER("take_order", R.string.take_order),
     SHIPPING("shipping", R.string.shipping),
-    DELIVERED("delivered", R.string.delivered),
+    DELIVERED("delivered", R.string.received),
     RECEIVED("received", R.string.received),
     CANCELED("canceled", R.string.canceled);
 }

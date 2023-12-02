@@ -7,7 +7,9 @@ import com.sudo248.base_android.ktx.createActionIntentDirections
 import com.sudo248.base_android.ktx.onError
 import com.sudo248.base_android.ktx.onSuccess
 import com.sudo248.base_android.navigation.IntentDirections
+import com.sudo248.base_android.utils.SharedPreferenceUtils
 import com.sudoo.shipment.BuildConfig
+import com.sudoo.shipment.Constants
 import com.sudoo.shipment.api.AuthService
 import com.sudoo.shipment.api.request.AccountRequest
 import dagger.hilt.android.HiltAndroidApp
@@ -31,6 +33,7 @@ class MainViewModel @Inject constructor(
             )
         )
             .onSuccess {
+                SharedPreferenceUtils.putString(Constants.TOKEN, it.data!!.token)
                 navigator.navigateOff(ScanQrActivity::class.createActionIntentDirections())
             }
             .onError {

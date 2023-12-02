@@ -7,4 +7,5 @@ interface ViewController {
     fun toast(message: String)
     fun getPathImageFromUri(uri: Uri): String
     fun getUpsertReview(): UpsertReview
+    fun hideKeyboardIdNeeded()
 }

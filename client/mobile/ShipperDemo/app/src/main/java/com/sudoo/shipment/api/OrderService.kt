@@ -19,7 +19,7 @@ import retrofit2.http.Path
 @EnableAuthentication(Constants.TOKEN)
 @LoggingLever(level = Level.BODY)
 interface OrderService {
-    @GET("orders/{orderId}")
+    @GET("orders/order-supplier/{orderId}")
     suspend fun getOrderById(@Path("orderId") orderId: String): Response<BaseResponse<Order>>
 
     @PATCH("orders/order-supplier/{orderSupplierId}")

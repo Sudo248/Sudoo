@@ -8,6 +8,7 @@ import com.sudo248.base_android.event.SingleEvent
 import com.sudo248.base_android.ktx.bindUiState
 import com.sudo248.base_android.ktx.onError
 import com.sudo248.base_android.ktx.onSuccess
+import com.sudo248.sudoo.domain.common.Constants
 import com.sudo248.sudoo.domain.repository.DiscoveryRepository
 import com.sudo248.sudoo.domain.repository.ImageRepository
 import com.sudo248.sudoo.ui.activity.main.MainViewModel
@@ -37,6 +38,7 @@ class ReviewViewModel @Inject constructor(
     }
 
     fun upsertReview() = launch {
+        viewController?.hideKeyboardIdNeeded()
         viewController?.getUpsertReview()?.let { upserReview ->
             emitState(UiState.LOADING)
             parentViewModel.imageUri.value?.let {
@@ -49,7 +51,6 @@ class ReviewViewModel @Inject constructor(
             discoveryRepository.upsertReview(upserReview)
                 .onSuccess {
                     parentViewModel.setImageUri(null)
-
                     navigator.back(BundleKeys.REVIEW_FRAGMENT_KEY, Bundle().apply {
                         putBoolean(BundleKeys.NEED_RELOAD, true)
                     })

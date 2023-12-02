@@ -2,8 +2,10 @@ package com.sudo248.sudoo.ui.activity.main.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isGone
 import com.sudo248.base_android.base.BaseListAdapter
 import com.sudo248.base_android.base.BaseViewHolder
+import com.sudo248.base_android.ktx.gone
 import com.sudo248.sudoo.databinding.ItemCommentBinding
 import com.sudo248.sudoo.domain.entity.discovery.Comment
 import com.sudo248.sudoo.ui.uimodel.adapter.loadImage
@@ -23,6 +25,7 @@ class CommentAdapter : BaseListAdapter<Comment, CommentAdapter.CommentViewHolder
                 rating.rating = item.rate
                 txtComment.text = item.comment
                 txtCommentTime.text = Utils.formatDateTime(item.createdAt)
+                binding.imgComment.isGone = item.images.isNullOrEmpty()
             }
         }
 
