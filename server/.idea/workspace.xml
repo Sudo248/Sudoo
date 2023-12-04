@@ -5,15 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="72cbe6d0-83b5-4e93-ba3c-2789b9cf0780" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/dto/Gender.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/dto/UserProductEmbededDto.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/config/InternalServiceConfig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/config/InternalServiceConfig.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/service/impl/ProductServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/service/impl/ProductServiceImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/internal/AccountService.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/internal/AuthService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/internal/CartService.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/internal/CartService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/internal/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/internal/ProductService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/service/order/impl/OrderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/service/order/impl/OrderServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/repository/ProductRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/repository/ProductRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/impl/UserProductServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/impl/UserProductServiceImpl.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,10 +21,11 @@
         <option value="Kotlin File" />
         <option value="Enum" />
         <option value="Interface" />
-        <option value="Kotlin Data Class" />
         <option value="Kotlin Interface" />
         <option value="Class" />
         <option value="Kotlin Class" />
+        <option value="Kotlin Data Class" />
+        <option value="Kotlin Enum" />
       </list>
     </option>
   </component>
@@ -242,7 +237,8 @@
       <workItem from="1701095385026" duration="827000" />
       <workItem from="1701097663953" duration="21380000" />
       <workItem from="1701226092590" duration="17770000" />
-      <workItem from="1701440781281" duration="5684000" />
+      <workItem from="1701440781281" duration="8837000" />
+      <workItem from="1701625121502" duration="721000" />
     </task>
     <servers />
   </component>
