@@ -50,6 +50,7 @@ class CategoryItem extends StatelessWidget {
               category.name,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
+              softWrap: true,
               style: R.style.h5.copyWith(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,

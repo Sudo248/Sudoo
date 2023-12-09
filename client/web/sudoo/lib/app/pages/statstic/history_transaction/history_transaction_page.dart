@@ -23,7 +23,7 @@ class HistoryTransactionPage extends BasePage<HistoryTransactionBloc> {
               columns: [
                 DataColumn(
                   label: Text(
-                    R.string.totalRevenue,
+                    R.string.transaction,
                     style: style.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -53,14 +53,17 @@ class HistoryTransactionPage extends BasePage<HistoryTransactionBloc> {
                   DataCell(
                     ConstrainedBox(
                       constraints: const BoxConstraints(
-                        minWidth: 100,
-                        maxWidth: 150,
-                      ),
-                      child: Text(
-                        "#${transaction.transactionId}",
-                        style: style.copyWith(color: Colors.blue),
-                      ),
-                    ),
+                              minWidth: 100,
+                              maxWidth: 150,
+                            ),
+                            child: Text(
+                              "#${transaction.transactionId}",
+                              style: style.copyWith(
+                                color: Colors.blue,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
                   ),
                   DataCell(
                     ConstrainedBox(
@@ -70,11 +73,12 @@ class HistoryTransactionPage extends BasePage<HistoryTransactionBloc> {
                       ),
                       child: Text(
                         transaction.amount.formatCurrency(),
-                        style: style.copyWith(
-                            color: transaction.amount.isNegative
-                                ? Colors.red
-                                : Colors.green),
-                      ),
+                              style: style.copyWith(
+                                color: transaction.amount.isNegative
+                                    ? Colors.red
+                                    : Colors.green,
+                              ),
+                            ),
                     ),
                   ),
                   DataCell(
