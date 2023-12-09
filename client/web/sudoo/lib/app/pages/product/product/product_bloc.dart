@@ -383,6 +383,8 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
     }
     final upsertProduct = UpsertProduct(
       productId: productId,
+      sku: skuController.text,
+      brand: brandController.text,
       name: nameController.text,
       description: descriptionController.text,
       listedPrice: double.parse(listedPriceController.text),
