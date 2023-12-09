@@ -4,11 +4,11 @@
 
     <uses-feature
         android:name="android.hardware.camera"
-        android:required="true" />
+        android:required="false" />
 
     <uses-feature
         android:name="android.hardware.camera.ar"
-        android:required="true"/>
+        android:required="false"/>
 
     <uses-permission android:name="android.permission.CAMERA"/>
 

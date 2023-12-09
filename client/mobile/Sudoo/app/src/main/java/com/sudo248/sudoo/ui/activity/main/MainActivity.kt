@@ -1,5 +1,6 @@
 package com.sudo248.sudoo.ui.activity.main
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -148,11 +149,19 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), ViewCon
     }
 
     override fun pickImage() {
-        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE) {
+            if (it) {
+                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            }
+        }
     }
 
     override fun takeImage(uri: Uri) {
-        takeImage.launch(uri)
+        requestPermission(Manifest.permission.CAMERA) {
+            if (it) {
+                takeImage.launch(uri)
+            }
+        }
     }
 
     override fun createTempPictureUri(): Uri {

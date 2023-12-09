@@ -1,6 +1,5 @@
 package com.sudo248.sudoo.ui.activity.main.fragment.product_detail
 
-import android.util.Log
 import android.Manifest
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,7 +12,6 @@ import com.sudo248.base_android.ktx.createActionIntentDirections
 import com.sudo248.base_android.ktx.onError
 import com.sudo248.base_android.ktx.onSuccess
 import com.sudo248.sudoo.R
-import com.sudo248.sudoo.domain.entity.cart.AddCartProduct
 import com.sudo248.sudoo.domain.entity.cart.AddCartProduct
 import com.sudo248.sudoo.domain.entity.discovery.Offset
 import com.sudo248.sudoo.domain.entity.discovery.Product

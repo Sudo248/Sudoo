@@ -68,6 +68,10 @@ class MainViewModel @Inject constructor(
         return tmpImageUri
     }
 
+    fun requestPermission(permission: String, callback: (Boolean) -> Unit) {
+        viewController?.requestPermission(permission, callback)
+    }
+
     fun getCurrentLocation() = launch {
         Constants.location = _getCurrentLocation()
     }
