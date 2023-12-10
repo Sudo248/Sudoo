@@ -28,6 +28,7 @@ class OrderListFragment : BaseFragment<FragmentOrderStatusBinding, OrderListView
     }
 
     private fun setupTabLayout() {
+        binding.tabOrderStatus.getTabAt(viewModel.currentTab.ordinal)?.select()
         binding.tabOrderStatus.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.let {

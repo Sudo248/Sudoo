@@ -6,6 +6,6 @@ import android.widget.EditText
 
 fun EditText.requestFocusAndKeyBoard() {
     requestFocus()
-    val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+    val imm = context.getSystemService(InputMethodManager::class.java)
     imm?.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
 }

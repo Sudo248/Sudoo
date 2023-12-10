@@ -70,7 +70,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), ViewCon
         R.id.reviewListFragment,
         R.id.reviewFragment,
         R.id.orderFragment,
-        R.id.orderDetailFragment
+        R.id.orderDetailFragment,
+        R.id.paymentResultFragment
     )
 
     private val listener = NavController.OnDestinationChangedListener { _, destination, _ ->

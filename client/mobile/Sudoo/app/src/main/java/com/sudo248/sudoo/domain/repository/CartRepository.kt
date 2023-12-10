@@ -13,6 +13,6 @@ interface CartRepository {
     //--------
     suspend fun addProductToActiveCart(upsertCartProduct: AddCartProduct): DataState<Cart,Exception>
     suspend fun getActiveCart(): DataState<Cart,Exception>
-
     suspend fun createProcessingCart(addCartProducts: AddCartProducts): DataState<Cart,Exception>
+    suspend fun deleteProductInCart(cartId: String, productId: String): DataState<Cart, Exception>
 }

@@ -17,22 +17,6 @@ import retrofit2.http.*
 @EnableAuthentication(Constants.Key.TOKEN)
 @LoggingLever(level = Level.BODY)
 interface CartService {
-    @POST("product")
-    suspend fun addProductToCart(@Body addCartProductDto: AddCartProductDto): Response<BaseResponse<CartDto>>
-
-    @PUT("{cartId}/item")
-    suspend fun updateSupplierProduct(
-        @Path("cartId") cartId: String,
-        @Body addCartProductDto: List<AddCartProductDto>
-    ): Response<BaseResponse<CartDto>>
-
-    @DELETE("{cartId}/item")
-    suspend fun deleteSupplierProduct(
-        @Path("cartId") cartId: String,
-        @Query("supplierId") supplierId: String,
-        @Query("productId") productId: String
-    ): Response<BaseResponse<CartDto>>
-
     @GET("active/count-item")
     suspend fun countItemInActiveCart(): Response<BaseResponse<Int>>
 
@@ -40,12 +24,15 @@ interface CartService {
     @GET("active")
     suspend fun getActiveCart():Response<BaseResponse<CartDto>>
 
-    @GET("/api/v1/carts/")
-    suspend fun getCartByStatus():Response<BaseResponse<CartDto>>
-
     @POST("product")
     suspend fun updateProductToActiveCart(@Body upsertCartProductDto: AddCartProductDto):Response<BaseResponse<CartDto>>
 
     @POST("processing")
     suspend fun createProcessingCartWithProduct(@Body cartProductsDto: CartProductsDto):Response<BaseResponse<CartDto>>
+
+    @DELETE("product")
+    suspend fun deleteProductInCart(
+        @Query("cartId") cartId: String,
+        @Query("productId") productId: String
+    ): Response<BaseResponse<CartDto>>
 }

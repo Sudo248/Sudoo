@@ -23,6 +23,8 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(
     private val discoveryRepository: DiscoveryRepository
 ) : BaseViewModel<NavDirections>() {
+    private var viewController: ViewController? = null
+
     private val _isEmptyProduct = MutableLiveData(false)
     val isEmptyProduct: LiveData<Boolean> = _isEmptyProduct
 
@@ -45,16 +47,24 @@ class SearchViewModel @Inject constructor(
 
     private var jobSearch: Job? = null
 
+    fun setViewController(viewController: ViewController) {
+        this.viewController = viewController
+    }
+
     fun search(name: String) {
         jobSearch?.cancel()
         jobSearch = launch {
             delay(200)
             currentSearchName = name
-            performProductListByCategoryIdAndName(
-                categoryId = categoryId,
-                name = currentSearchName,
-                isLoadMore = false,
-            )
+            if (currentSearchName.isEmpty() && categoryId.isNullOrEmpty()) {
+
+            } else {
+                performProductListByCategoryIdAndName(
+                    categoryId = categoryId,
+                    name = currentSearchName,
+                    isLoadMore = false,
+                )
+            }
         }
     }
 
@@ -97,14 +107,17 @@ class SearchViewModel @Inject constructor(
             offset = nextOffset
         )
             .onSuccess {
+                _isEmptyProduct.postValue(it.pagination.total == 0)
                 if (it.products.size < nextOffset.limit) {
                     productInfoAdapter.isLastPage(true)
                 } else {
                     nextOffset.offset = it.pagination.offset
                 }
                 productInfoAdapter.submitData(it.products, extend = isLoadMore)
+                if (!isLoadMore) viewController?.requestScrollToPosition(0)
             }
             .onError {
+                _isEmptyProduct.postValue(productInfoAdapter.currentList.isEmpty())
                 error = SingleEvent(it.message)
             }.bindUiState(_uiState)
         if (_isRefresh.value == true) _isRefresh.value = false
@@ -122,12 +135,17 @@ class SearchViewModel @Inject constructor(
         navigateToProductDetail(item.productId)
     }
 
-    fun navigateToProductDetail(productId: String) {
+    private fun navigateToProductDetail(productId: String) {
         navigator.navigateTo(
             SearchFragmentDirections.actionSearchFragmentToProductDetailFragment(
                 productId
             )
         )
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewController = null
     }
 
 }

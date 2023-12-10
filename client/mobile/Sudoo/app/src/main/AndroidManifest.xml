@@ -46,13 +46,6 @@
             android:value="@string/facebook_client_token" />
 
         <activity
-            android:name=".ui.activity.payment.PaymentActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name=".ui.activity.otp.OtpActivity"
             android:exported="true">
             <meta-data

@@ -74,13 +74,8 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/img_empty_list"
                 android:visibility="gone"
+                android:scaleType="fitStart"
                 app:layout_constraintTop_toBottomOf="@id/search"/>
         </FrameLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-
-
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

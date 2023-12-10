@@ -154,4 +154,5 @@
     <string name="require_device">Sceneform yêu cầu OpenGL ES %s hoặc cao hơn</string>
     <string name="device_not_supported">Thiết bị không hỗ trợ</string>
     <string name="initializing">Đang khởi tạo…</string>
+    <string name="cancel">Hủy</string>
 </resources>

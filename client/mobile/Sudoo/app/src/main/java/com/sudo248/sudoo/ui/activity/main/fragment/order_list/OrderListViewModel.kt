@@ -27,7 +27,10 @@ class OrderListViewModel @Inject constructor(
 
     var error: SingleEvent<String?> = SingleEvent(null)
 
-    private var currentTab: OrderStatusTab = OrderStatusTab.PREPARE
+    var currentTab: OrderStatusTab = OrderStatusTab.PREPARE
+
+    private val _isEmptyOrder = MutableLiveData(false)
+    val isEmptyOrder: LiveData<Boolean> = _isEmptyOrder
 
     private val orders = hashMapOf<OrderStatusTab, List<OrderSupplierInfo>?>(
         Pair(OrderStatusTab.PREPARE, null),
@@ -65,14 +68,17 @@ class OrderListViewModel @Inject constructor(
                 .onSuccess { orderSupplier ->
                     orders[currentTab] = orderSupplier
                     orderListAdapter.submitList(orders[currentTab])
+                    _isEmptyOrder.postValue(orders[currentTab].isNullOrEmpty())
                     _isRefresh.value = false
                 }
                 .onError {
+                    _isEmptyOrder.postValue(true)
                     error = SingleEvent(it.message)
                     _isRefresh.value = false
                 }
         } else {
             orderListAdapter.submitList(orders[currentTab])
+            _isEmptyOrder.postValue(orders[currentTab].isNullOrEmpty())
         }
     }
 

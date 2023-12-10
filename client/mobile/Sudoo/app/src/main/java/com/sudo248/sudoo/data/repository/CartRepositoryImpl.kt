@@ -69,4 +69,17 @@ class CartRepositoryImpl @Inject constructor(
             throw response.error().errorBody()
         }
     }
+
+    override suspend fun deleteProductInCart(
+        cartId: String,
+        productId: String
+    ): DataState<Cart, Exception> = stateOn(ioDispatcher) {
+        val response =
+            handleResponse(cartService.deleteProductInCart(cartId = cartId, productId = productId))
+        if (response.isSuccess) {
+            response.data().toCart()
+        } else {
+            throw response.error().errorBody()
+        }
+    }
 }
