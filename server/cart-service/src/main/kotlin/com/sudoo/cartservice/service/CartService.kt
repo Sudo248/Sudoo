@@ -35,9 +35,10 @@ interface CartService {
     ): CartDto
 
     suspend fun deleteCartProduct(
+        userId: String,
         cartId: String,
-        cartProductId: String,
-    ): Boolean
+        productId: String,
+    ): CartDto
 
 
     //---Processing Cart-------------

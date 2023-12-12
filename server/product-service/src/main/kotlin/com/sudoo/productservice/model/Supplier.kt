@@ -34,10 +34,10 @@ data class Supplier(
     @Column("rate")
     var rate: Float,
 
-    @Column("rate")
+    @Column("total_revenue")
     var totalRevenue: Double = 0.0,
 
-    @Column("rate")
+    @Column("income")
     var income: Double = 0.0,
 
     @Column("create_at")
