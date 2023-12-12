@@ -238,14 +238,14 @@ class CartServiceImpl(
             )
         }
 
-    override suspend fun deleteCartProduct(cartId: String, cartProductId: String): Boolean = coroutineScope {
+    override suspend fun deleteCartProduct(userId: String, cartId: String, productId: String): CartDto = coroutineScope {
         val deferred = awaitAll(
             async {
                 cartRepository.findById(cartId) ?: throw NotFoundException("Not found cart $cartId")
             },
             async {
-                cartProductRepository.findById(cartProductId) ?: throw NotFoundException(
-                    "Not found cart product $cartProductId"
+                cartProductRepository.findCartProductByCartIdAndProductId(cartId, productId) ?: throw NotFoundException(
+                    "Not found cart product $productId in cart"
                 )
             },
         )
@@ -254,12 +254,12 @@ class CartServiceImpl(
         val cartProduct = deferred[1] as CartProduct
         val productInfo = productService.getProductInfo(cartProduct.productId)
 
-        cartProductRepository.deleteById(cartProductId)
+        cartProductRepository.deleteById(cartProduct.cartProductId)
 
         cart.quantity -= cartProduct.quantity
         cart.totalPrice -= (cartProduct.quantity * productInfo.price)
         cartRepository.save(cart)
-        true
+        getActiveCart(userId = userId)
     }
 
     override suspend fun getProcessingCart(userId: String): OrderCartDto {
