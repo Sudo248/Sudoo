@@ -35,7 +35,7 @@ ratings = pd.DataFrame(list(sudoo.user_product.find()))
 """PREPROCESSING"""
 
 # map gender to int
-gender_map = {'FEMALE':0, 'MALE':1}
+gender_map = {'FEMALE':0, 'MALE':1, 'OTHER': 2}
 users['gender'] = users['gender'].map(gender_map)
 
 # calculate age
@@ -87,7 +87,7 @@ for i in range(len(users)):
 # create product index map
 product_index_map = {}
 for i in range(len(products)):
-  k = {products.iloc[i]['product_id']: users.iloc[i]['_id']}
+  k = {products.iloc[i]['product_id']: products.iloc[i]['_id']}
   product_index_map.update(k)
 
 # map user and product index to ratings
@@ -122,7 +122,7 @@ category_embedding = Embedding(input_dim=category_size, output_dim=5, name = "Ca
 category_vec = Flatten(name = "Flatten-Category")(category_embedding)
 
 
-# Creating user_inf path
+# Creating user_info path
 user_info_input = Input(shape = (2,), name = "User-Info-Input")
 user_info_vec = Flatten(name = "Flatten-User-Info")(user_info_input)
 
@@ -152,7 +152,7 @@ history = model.fit(
     ],
     train.rating,  # Đầu ra (rating)
     epochs=18,  # Số lần lặp qua toàn bộ tập dữ liệu
-    verbose=1  # Hiển thị quá trình đào tạo (1: hiển thị, 0: không hiển thị)
+    verbose=0  # Hiển thị quá trình đào tạo (1: hiển thị, 0: không hiển thị)
 )
 
 # test model
@@ -185,12 +185,17 @@ currentVersion = '0.0.0'
 nextVersion = '0.0.0'
 if infomation == None:
     infomation = {
-        'storage': 'gs://sudoo-buckets/models',
+        'storageUrl': 'https://storage.googleapis.com/sudoo-buckets/models',
+        'recommendServiceUrl': 'http://localhost:5000/api/v1/update-model',
         'versions': [
             {
                 'version': currentVersion,
                 'evaluate': evaluate,
-                'build_at': datetime.now()
+                'build_at': datetime.now(),
+                'user_size': user_size,
+                'product_size': product_size,
+                'category_size': category_size,
+                'rating_size': len(ratings)
             }
         ]
     }
@@ -201,14 +206,18 @@ else:
     versions.append({
         'version': nextVersion,
         'evaluate': evaluate,
-        'build_at': datetime.now()
+        'build_at': datetime.now(),
+        'user_size': user_size,
+        'product_size': product_size,
+        'category_size': category_size,
+        'rating_size': len(ratings)
     })
     infomation['versions'] = versions
 
 prediction.update_one({'_id': _id}, {'$set': infomation}, upsert=True)
 
 # save model
-model_name = f'Sudoo_Neural_Collaborative_filterling_{nextVersion}.keras'
+model_name = f'Sudoo_Neural_Collaborative_filtering_{nextVersion}.keras'
 model.save(model_name)
 
 # upload to google storage
@@ -260,6 +269,21 @@ client = storage.Client(credentials=credentials, project='sudoo-404614')
 bucket = client.get_bucket('sudoo-buckets')
 blob = bucket.blob(f'models/{model_name}')
 blob.upload_from_filename(model_name)
-
+print(f"Upload model {model_name} success!!!")
 if os.path.exists(model_name):
   os.remove(model_name)
+  print("Remove local model")
+
+# notify to flask server
+import requests
+try:
+  recommendServiceUrl = infomation['recommendServiceUrl']
+  body = {
+      'version': infomation['versions'][-1],
+      'model_name': model_name,
+      'download_model_url': f"{infomation['storageUrl']}/{model_name}"
+  }
+  requests.post(f'{recommendServiceUrl}/update-model', json = body)
+  print('Notify recommend server successful!!!')
+except:
+  print("Something went wrong")

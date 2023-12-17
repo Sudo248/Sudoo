@@ -10,23 +10,57 @@ class PredictionService:
         self.products = products
     
     def predict(self, userId: str, offset: int, limit: int):
-
-        return "123"
+        prediction = self.prediction.find_one({'user_id': userId})
+        recommend_products = []
+        if prediction == None:
+            recommend_products = modelPredict(userId)
+            self.prediction.insert_one({'_id': user_id, 'user_id': user_id, 'recommend': recommend_products})
+        elif: len(recommend_products) == 0:
+            recommend_products = modelPredict(userId)
+            self.prediction.update_one({'user_id': userId}, {'$set': {'recommend': recommend_products}}, upsert=True)
+        else:
+            recommend_products = prediction['recommend']
+        length = len(recommend_products)
+        if length == 0 or offset >= length:
+            return []
+        elif offset+limit >= length:
+            return recommend_products[offset:]
+        else :
+            return recommend_products[offset, offset+limit]
 
     def modelPredict(self, userId: str):
         model = load_model('../model.keras')
-        userInfo = getUserInfo(userId)
+        products = getProducts()
+        users = getUserInfo(userId, len(products))
+        predict_ratings = model.predict([
+            [
+                np.array(users['_id']),
+                np.array(products['_id'])
+            ],
+            np.array([np.array(val) for val in users['user_info']]),
+            np.array([np.array(val) for val in products['product_info']])
+        ])
+        recommend_products = np.array([array[0] for array in predict_ratings])[::-1].argsort()
+        product_map = {}
+        for i in len(products):
+            product_map[products.iloc[i]['_id']] = products.iloc[i]['product_id']
 
+        return mapProduct(recommend_products, product_map)
+
+    def mapProduct(self, recommend_products, product_map):
+        def f(index):
+            return product_map[index]
+        return list(map(f, recommend_products))
     
-    def getUserInfo(self, userId):
+    def getUsers(self, userId: str, size: int):
         user = users.find_one({'user_id': userId})
         age = datetime.now().year - user['dob'].year
         gender = 0
         if user['gender'] == 'MALE':
             gender = 1
-        return [gender, age]
+        return pd.DataFrame.from_records([{'_id': user._id, 'user_info': [gender,age]}] * size)
     
-    def getProductInfo(self):
+    def getProducts(self):
         products = pd.DataFrame(list(self.products.find()))
         # get all categories
         categories = set()
@@ -35,13 +69,15 @@ class PredictionService:
         categories = list(categories)
         category_index_map = {category_id:index for index, category_id in enumerate(categories)}
         product_feature = np.zeros((len(products), len(categories)))
-        product_category_map = {}
+        result = pb.DataFrame()
         for i in range(len(products)):
             # điền thể loại cho sản phẩm thứ i
             for category in products.iloc[i]['categories']:
                 category_index = category_index_map[category]
                 product_feature[i, category_index] = 1
-            k = {products.iloc[i]['product_id']: product_feature[i]}
-            product_category_map.update(k)
+            result._append({'_id': products.iloc[i]['_id'], 'product_id': products.iloc[i]['product_id'], 'product_info': product_feature[i]}, ignore_index = True)
+        return result
+    
+        
         
 
