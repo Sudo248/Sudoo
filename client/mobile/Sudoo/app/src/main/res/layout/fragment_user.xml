@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.sudo248.sudoo.ui.util.Utils" />
+        <import type="android.view.View" />
+
+        <import type="com.sudo248.sudoo.domain.entity.auth.Role" />
+
+        <variable
+            name="viewModel"
+            type="com.sudo248.sudoo.ui.activity.main.fragment.user.UserViewModel" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background"
+            android:clipToPadding="true"
+            android:scrollbars="none"
+            android:fillViewport="true"
+            tools:context=".fragments.AccountFragment">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/txtTitle"
+                    style="@style/textTitleMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:gravity="center_vertical"
+                    android:paddingStart="15dp"
+                    android:text="@string/user_title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginTop="15dp"
+                    android:elevation="55dp"
+                    app:cardCornerRadius="5dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txtTitle">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white"
+                        android:paddingHorizontal="15dp"
+                        android:paddingTop="15dp"
+                        android:paddingBottom="35dp">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/cardImageUser"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:cardCornerRadius="50dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageView
+                                android:id="@+id/imgUserAvatar"
+                                android:layout_width="80dp"
+                                android:layout_height="80dp"
+                                android:scaleType="centerCrop"
+                                app:imageUrl="@{viewModel.user.avatar}"
+                                tools:background="@drawable/user_image" />
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <TextView
+                            android:id="@+id/txtName"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="15dp"
+                            android:ellipsize="end"
+                            android:maxLines="2"
+                            android:text="@{viewModel.user.fullName}"
+                            android:textColor="@color/black"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toTopOf="@id/txtRole"
+                            app:layout_constraintEnd_toStartOf="@+id/imgSettings"
+                            app:layout_constraintStart_toEndOf="@+id/cardImageUser"
+                            app:layout_constraintTop_toTopOf="@+id/cardImageUser"
+                            tools:text="DuongLH" />
+
+                        <TextView
+                            android:id="@+id/txtRole"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rectangle_conner_8"
+                            android:backgroundTint="@color/primaryColor"
+                            android:paddingHorizontal="14dp"
+                            android:paddingVertical="2dp"
+                            android:text="@{viewModel.user.role}"
+                            android:textColor="@color/white"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/cardImageUser"
+                            app:layout_constraintEnd_toEndOf="@+id/txtName"
+                            app:layout_constraintHorizontal_bias="0"
+                            app:layout_constraintStart_toStartOf="@+id/txtName"
+                            app:layout_constraintTop_toBottomOf="@+id/txtName"
+                            tools:text="Thành viên" />
+
+                        <ImageView
+                            android:id="@+id/imgSettings"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="@{(v) -> viewModel.navigateToEditFragment()}"
+                            android:padding="5dp"
+                            android:src="@drawable/ic_settings"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:tint="@color/primaryColor" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardInfo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginTop="8dp"
+                    app:cardCornerRadius="5dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cardHeader">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:elevation="10dp"
+                        android:padding="15dp">
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guidelineCenterHorizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.6" />
+
+                        <TextView
+                            android:id="@+id/titleInformationUser"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/user_info"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/txtUserName"
+                            style="@style/TextMedium"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginEnd="15dp"
+                            android:singleLine="true"
+                            android:text="@{viewModel.user.fullName}"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="@id/guidelineCenterHorizontal"
+                            app:layout_constraintTop_toBottomOf="@+id/titleInformationUser"
+                            tools:text="DuongLh" />
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:text="@string/full_name"
+                            app:layout_constraintBottom_toBottomOf="@+id/txtUserName"
+                            app:layout_constraintEnd_toStartOf="@+id/txtUserName"
+                            app:layout_constraintHorizontal_bias="0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/txtUserName" />
+
+                        <TextView
+                            android:id="@+id/txtGender"
+                            style="@style/TextMedium"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginEnd="15dp"
+                            android:singleLine="true"
+                            android:text="@{viewModel.user.gender}"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="@id/guidelineCenterHorizontal"
+                            app:layout_constraintTop_toBottomOf="@+id/txtUserName"
+                            tools:text="Nam" />
+
+                        <TextView
+                            android:id="@+id/textView6"
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:text="@string/label_dob"
+                            app:layout_constraintBottom_toBottomOf="@+id/txtGender"
+                            app:layout_constraintEnd_toStartOf="@+id/txtGender"
+                            app:layout_constraintHorizontal_bias="0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/txtGender" />
+
+                        <TextView
+                            android:id="@+id/txtDob"
+                            style="@style/TextMedium"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginEnd="15dp"
+                            android:singleLine="true"
+                            android:text="@{viewModel.user.dob}"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="@id/guidelineCenterHorizontal"
+                            app:layout_constraintTop_toBottomOf="@+id/txtGender"
+                            tools:text="03/09/2001" />
+
+                        <TextView
+                            android:id="@+id/txtDobLabel"
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:text="@string/label_gender"
+                            app:layout_constraintBottom_toBottomOf="@+id/txtDob"
+                            app:layout_constraintEnd_toStartOf="@+id/txtDob"
+                            app:layout_constraintHorizontal_bias="0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/txtDob" />
+
+                        <TextView
+                            android:id="@+id/txtPhoneNumber"
+                            style="@style/TextMedium"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginEnd="15dp"
+                            android:singleLine="true"
+                            android:text="@{Utils.INSTANCE.formatHideInfo(viewModel.user.phone, 3)}"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="@id/guidelineCenterHorizontal"
+                            app:layout_constraintTop_toBottomOf="@+id/txtDob"
+                            tools:text="*******270" />
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:text="@string/label_phonenumber"
+                            app:layout_constraintBottom_toBottomOf="@+id/txtPhoneNumber"
+                            app:layout_constraintEnd_toStartOf="@+id/txtPhoneNumber"
+                            app:layout_constraintHorizontal_bias="0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/txtPhoneNumber" />
+
+                        <TextView
+                            android:id="@+id/txtAddress"
+                            style="@style/TextMedium"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginEnd="15dp"
+                            android:layout_marginBottom="15dp"
+                            android:singleLine="true"
+                            android:visibility="@{viewModel.user.address.fullAddress.empty ? View.GONE : View.VISIBLE}"
+                            android:text="@{viewModel.user.address.fullAddress}"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="@id/guidelineCenterHorizontal"
+                            app:layout_constraintTop_toBottomOf="@+id/txtPhoneNumber"
+                            tools:text="Ao Sen" />
+
+                        <TextView
+                            android:id="@+id/textView7"
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:text="@string/label_address"
+                            android:visibility="@{viewModel.user.address.fullAddress.empty ? View.GONE : View.VISIBLE}"
+                            app:layout_constraintBottom_toBottomOf="@+id/txtAddress"
+                            app:layout_constraintEnd_toStartOf="@+id/txtAddress"
+                            app:layout_constraintHorizontal_bias="0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/txtAddress" />
+
+                        <!--                        <TextView-->
+                        <!--                            android:id="@+id/txtIntroduce"-->
+                        <!--                            style="@style/TextMedium"-->
+                        <!--                            android:layout_width="0dp"-->
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            android:layout_marginTop="15dp"-->
+                        <!--                            android:layout_marginEnd="15dp"-->
+                        <!--                            android:layout_marginBottom="15dp"-->
+                        <!--                            android:text="@string/more"-->
+                        <!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+                        <!--                            app:layout_constraintEnd_toEndOf="parent"-->
+                        <!--                            app:layout_constraintStart_toStartOf="@id/guidelineCenterHorizontal"-->
+                        <!--                            app:layout_constraintTop_toBottomOf="@+id/txtAddress" />-->
+
+                        <!--                        <TextView-->
+                        <!--                            style="@style/TextMedium"-->
+                        <!--                            android:layout_width="wrap_content"-->
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            android:layout_marginStart="15dp"-->
+                        <!--                            android:text="@string/label_intro"-->
+                        <!--                            app:layout_constraintBottom_toBottomOf="@+id/txtIntroduce"-->
+                        <!--                            app:layout_constraintEnd_toStartOf="@+id/txtIntroduce"-->
+                        <!--                            app:layout_constraintHorizontal_bias="0"-->
+                        <!--                            app:layout_constraintStart_toStartOf="parent"-->
+                        <!--                            app:layout_constraintTop_toTopOf="@+id/txtIntroduce" />-->
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardAction"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginTop="8dp"
+                    app:cardCornerRadius="5dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cardInfo"
+                    android:onClick="@{(v) -> viewModel.navigateToReviewList()}">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="15dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_circle_start"
+                            app:tint="@color/gray_88" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:text="@string/review"
+                            android:textColor="@color/black"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <Button
+                    android:id="@+id/logOut"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginBottom="50dp"
+                    android:background="@drawable/rectangle_conner_8"
+                    android:onClick="@{(v) -> viewModel.logout()}"
+                    android:text="@string/log_out"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    app:backgroundTint="@color/primaryColor"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cardAction" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+    </FrameLayout>
+</layout>
