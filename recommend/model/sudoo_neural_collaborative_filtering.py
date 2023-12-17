@@ -75,8 +75,10 @@ for i in range(len(products)):
 
 # thêm cột product_info với giá trị mỗi hàng là product_id
 ratings['product_info'] = ratings.loc[:, 'product_id']
+products['product_info'] = products.loc[:,'product_id']
 # map từng sản phẩm với onehot vector thể loại.
 ratings['product_info'] = ratings['product_info'].map(product_category_map)
+products['product_info'] = products['product_info'].map(product_category_map)
 
 # create user index map
 user_index_map = {}
@@ -94,7 +96,7 @@ for i in range(len(products)):
 ratings['user_id'] = ratings['user_id'].map(user_index_map)
 ratings['product_id'] = ratings['product_id'].map(product_index_map)
 
-train, test = train_test_split(ratings, test_size= 0.1, random_state= 42)
+train, test = train_test_split(ratings, test_size= 0.05, random_state= 42)
 
 # get total product size and user size
 product_size = len(products['product_id'].unique())
@@ -221,7 +223,6 @@ model_name = f'Sudoo_Neural_Collaborative_filtering_{nextVersion}.keras'
 model.save(model_name)
 
 # upload to google storage
-
 from gcloud import storage
 from oauth2client.service_account import ServiceAccountCredentials
 
@@ -287,3 +288,31 @@ try:
   print('Notify recommend server successful!!!')
 except:
   print("Something went wrong")
+
+# predict for all user
+def mapProduct(recommend_products, product_map):
+  def f(index):
+    return product_map[index]
+  return list(map(f, recommend_products))
+
+def predict(model, user_id, user_info, products):
+  size = len(products)
+  predict_ratings = model.predict(
+      [
+        [
+            np.array([user_id for i in range(size)]),
+            np.array(list(products['_id']))
+        ],
+        np.array([np.array(list(user_info)) for i in range(size)]),
+        np.array([np.array(val) for val in products['product_info']])
+      ]
+  )
+  recommend_products = np.array([array[0] for array in predict_ratings])[::-1].argsort()
+  product_id_map = {}
+  for i in range(size):
+    product_id_map[products.iloc[i]['_id']] = products.iloc[i]['product_id']
+  return mapProduct(recommend_products, product_id_map)
+
+for i in range(len(users)):
+  recommend_products = predict(model, int(users.iloc[i]['_id']), users.iloc[i]['user_info'], products)
+  sudoo.prediction.update_one({'_id': users.iloc[i]['user_id']}, {'$set': {'user_id': users.iloc[i]['user_id'], 'recommend': recommend_products}}, upsert=True)
