@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_shipment"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/txtShipmentLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/delivery_form"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/color_shipment_stroke"/>
+
+    <View
+        android:id="@+id/viewDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintTop_toBottomOf="@id/txtShipmentLabel"
+        android:background="@color/light_gray"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="10dp"/>
+
+    <TextView
+        android:id="@+id/txtShipmentType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/viewDivider"
+        app:layout_constraintEnd_toStartOf="@id/txtShipmentPrice"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintHorizontal_bias="0"
+        tools:text="Nhanh" />
+
+    <TextView
+        android:id="@+id/txtShipmentPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/txtShipmentType"
+        tools:text="38.000d" />
+
+    <TextView
+        android:id="@+id/txtReceivedDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/txtShipmentType"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Nhan hang vao ngay 20-10"
+        android:textSize="14sp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/gray_88"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
