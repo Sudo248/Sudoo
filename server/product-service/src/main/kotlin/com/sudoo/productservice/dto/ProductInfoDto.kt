@@ -4,6 +4,7 @@ import java.time.LocalDateTime
 
 data class ProductInfoDto(
     val productId: String,
+    val supplierId: String,
     val sku: String,
     val name: String,
     val price: Float,

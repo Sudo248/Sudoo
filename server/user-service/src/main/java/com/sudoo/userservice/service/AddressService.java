@@ -1,15 +1,15 @@
 package com.sudoo.userservice.service;
 
+import com.sudo248.domain.exception.ApiException;
 import com.sudoo.userservice.controller.dto.AddressDto;
 import com.sudoo.userservice.repository.entitity.Address;
-import com.sudoo.userservice.repository.entitity.Location;
 
 public interface AddressService {
-    AddressDto getAddress(String userId);
-    void deleteAddress(String userId);
-    AddressDto putAddress(String userId, AddressDto addressDto);
 
-    Location getLocation(String userId);
+    AddressDto postAddress(AddressDto addressDto);
+    AddressDto getAddress(String addressId);
+    void deleteAddress(String addressId);
+    AddressDto putAddress(AddressDto addressDto) throws ApiException;
 
     AddressDto toDto(Address address);
     Address toEntity(AddressDto addressDto);

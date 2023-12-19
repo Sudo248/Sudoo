@@ -48,6 +48,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>1.18.30</version>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -60,7 +61,7 @@
             <artifactId>domain</artifactId>
             <version>0.0.1</version>
             <scope>system</scope>
-            <systemPath>/Users/leduong/Sudo248/Sudoo/server/libs/domain-0.0.1.jar</systemPath>
+            <systemPath>/${project.basedir}/../libs/domain-0.0.1.jar</systemPath>
         </dependency>
     </dependencies>
     <dependencyManagement>

@@ -1,6 +1,7 @@
 version: '3'
 services:
   db-service:
+    platform: linux/x86_64
     image: mysql:8.0.32-debian
     container_name: db-service
     hostname: db-service
@@ -14,7 +15,7 @@ services:
     networks:
       - sudoo-network
     ports:
-      - "3309:3306"
+      - "3306:3306"
 
   cache-service:
     image: redis:alpine3.18
@@ -30,7 +31,7 @@ services:
       - "6379:6379"
 
   registry:
-    image: sudo248dev/registry:0.0.1
+    image: sudo248dev/sudoo-registry
     container_name: registry
     hostname: registry
     networks:
@@ -39,7 +40,7 @@ services:
       - "8761:8761"
 
   api-gateway:
-    image: sudo248dev/api-gateway:0.0.1
+    image: sudo248dev/sudoo-api-gateway
     container_name: api-gateway
     hostname: api-gateway
     depends_on:
@@ -47,43 +48,34 @@ services:
     networks:
       - sudoo-network
     ports:
-      - "9030:9030"
+      - "8080:8080"
 
-  image-service:
-    image: sudo248dev/image-service:0.0.1
-    container_name: image-service
-    hostname: image-service
+  storge-service:
+    image: sudo248dev/sudoo-storage-service
+    container_name: storage-service
+    hostname: storage-service
     depends_on:
       - registry
     networks:
       - sudoo-network
     volumes:
-      - ./image-service/uploads/images:/app/image-service/uploads/images
+      - ./storage-service/uploads/:/app/image-service/uploads/
 
   auth-service:
-    image: sudo248dev/auth-service:0.0.1
+    image: sudo248dev/sudoo-auth-service
     container_name: auth-service
     hostname: auth-service
     depends_on:
       - registry
       - db-service
+      - user-service
     networks:
       - sudoo-network
 
-  discovery-service:
-    image: sudo248dev/discovery-service:0.0.1
-    container_name: discovery-service
-    hostname: discovery-service
-    depends_on:
-      - registry
-      - db-service
-    networks:
-      - sudoo-network
-
-  payment-service:
-    image: sudo248dev/payment-service:0.0.1
-    container_name: payment-service
-    hostname: payment-service
+  product-service:
+    image: sudo248dev/sudoo-product-service
+    container_name: product-service
+    hostname: product-service
     depends_on:
       - registry
       - db-service
@@ -91,7 +83,7 @@ services:
       - sudoo-network
 
   user-service:
-    image: sudo248dev/user-service:0.0.1
+    image: sudo248dev/sudoo-user-service
     container_name: user-service
     hostname: user-service
     depends_on:
@@ -101,7 +93,7 @@ services:
       - sudoo-network
 
   cart-service:
-    image: sudo248dev/cart-service:0.0.1
+    image: sudo248dev/sudoo-cart-service
     container_name: cart-service
     hostname: cart-service
     depends_on:
@@ -110,39 +102,20 @@ services:
     networks:
       - sudoo-network
 
-  invoice-service:
-    image: sudo248dev/invoice-service:0.0.1
-    container_name: invoice-service
-    hostname: invoice-service
+  order-service:
+    image: sudo248dev/sudoo-order-service
+    container_name: order-service
+    hostname: order-service
     depends_on:
       - registry
       - db-service
     networks:
       - sudoo-network
 
-  promotion-service:
-    image: sudo248dev/promotion-service:0.0.1
-    container_name: promotion-service
-    hostname: promotion-service
-    depends_on:
-      - registry
-      - db-service
-    networks:
-      - sudoo-network
-
-  notification-service:
-    image: sudo248dev/notification-service:0.0.1
-    container_name: notification-service
-    hostname: notification-service
-    depends_on:
-      - registry
-    networks:
-      - sudoo-network
-
-  chat-service:
-    image: sudo248dev/chat-service:0.0.1
-    container_name: chat-service
-    hostname: chat-service
+  recommend-service:
+    image: sudo248dev/sudoo-recommend-service
+    container_name: recommend-service
+    hostname: recommend-service
     depends_on:
       - registry
     networks:
@@ -154,4 +127,6 @@ networks:
 
 volumes:
   database:
+    external: true
+  mysql:
     external: true

@@ -4,6 +4,7 @@ import com.sudoo.domain.exception.NotFoundException
 import com.sudoo.productservice.dto.ImageDto
 import com.sudoo.productservice.mapper.toImage
 import com.sudoo.productservice.mapper.toImageDto
+import com.sudoo.productservice.model.Image
 import com.sudoo.productservice.repository.ImageRepository
 import com.sudoo.productservice.service.ImageService
 import kotlinx.coroutines.flow.map
@@ -14,6 +15,9 @@ import org.springframework.stereotype.Service
 class ImageServiceImpl(
     private val imageRepository: ImageRepository,
 ) : ImageService {
+
+    private val banner = "banner"
+
     override suspend fun getImageByOwnerId(ownerId: String): List<ImageDto> {
         return imageRepository.getAllByOwnerId(ownerId).map {
             it.toImageDto()
@@ -34,6 +38,16 @@ class ImageServiceImpl(
     override suspend fun deleteImage(imageId: String): ImageDto {
         val image = imageRepository.findById(imageId) ?: throw NotFoundException("Not found image $imageId")
         imageRepository.delete(image)
+        return image.toImageDto()
+    }
+
+    override suspend fun getBanners(): List<ImageDto> {
+        return imageRepository.getAllByOwnerId(banner).map { it.toImageDto() }.toList()
+    }
+
+    override suspend fun upsertBanner(imageDto: ImageDto): ImageDto {
+        val image = Image.from(ownerId = banner, url = imageDto.url)
+        imageRepository.save(image)
         return image.toImageDto()
     }
 }

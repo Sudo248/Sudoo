@@ -6,6 +6,13 @@ import 'package:sudoo/app/pages/product/product_list/product_list_data_table.dar
 import '../../../../resources/R.dart';
 
 class ProductListPage extends BasePage<ProductListBloc> {
+
+  @override
+  bool get enableStatePage => true;
+
+  @override
+  bool get wantKeepAlive => true;
+
   ProductListPage({super.key});
 
   @override

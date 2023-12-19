@@ -1,11 +1,13 @@
 package com.sudoo.userservice.service.impl;
 
+import com.sudo248.domain.exception.ApiException;
+import com.sudo248.domain.util.Utils;
 import com.sudoo.userservice.controller.dto.AddressDto;
 import com.sudoo.userservice.repository.AddressRepository;
 import com.sudoo.userservice.repository.entitity.Address;
-import com.sudoo.userservice.repository.entitity.Location;
 import com.sudoo.userservice.service.AddressService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 @Slf4j
 @Service
@@ -18,22 +20,29 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public AddressDto getAddress(String userId) {
-        Address address = addressRepository.getReferenceById(userId);
+    public AddressDto postAddress(AddressDto addressDto) {
+        Address address = toEntity(addressDto);
+        var savedAddress = addressRepository.save(address);
+        return toDto(savedAddress);
+    }
+
+    @Override
+    public AddressDto getAddress(String addressId) {
+        Address address = addressRepository.getReferenceById(addressId);
         return toDto(address);
     }
 
     @Override
-    public void deleteAddress(String userId) {
-        addressRepository.deleteById(userId);
+    public void deleteAddress(String addressId) {
+        addressRepository.deleteById(addressId);
     }
 
     @Override
-    public AddressDto putAddress(String userId, AddressDto addressDto) {
+    public AddressDto putAddress(AddressDto addressDto) throws ApiException {
         if (addressDto.getAddressId() == null) {
-            addressDto.setAddressId(userId);
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Address id must by not null");
         }
-        Address oldAddress = addressRepository.getReferenceById(userId);
+        Address oldAddress = addressRepository.getReferenceById(addressDto.getAddressId());
         oldAddress.setProvinceID(addressDto.getProvinceID());
         oldAddress.setDistrictID(addressDto.getDistrictID());
         oldAddress.setWardCode(addressDto.getWardCode());
@@ -41,15 +50,8 @@ public class AddressServiceImpl implements AddressService {
         oldAddress.setDistrictName(addressDto.getDistrictName());
         oldAddress.setWardName(addressDto.getWardName());
         oldAddress.setAddress(addressDto.getAddress());
-        oldAddress.setLocation(addressDto.getLocation());
         addressRepository.save(oldAddress);
         return toDto(oldAddress);
-    }
-
-    @Override
-    public Location getLocation(String userId) {
-        Address address = addressRepository.getReferenceById(userId);
-        return address.getLocation();
     }
 
     @Override
@@ -63,7 +65,6 @@ public class AddressServiceImpl implements AddressService {
                 address.getDistrictName(),
                 address.getWardName(),
                 address.getAddress(),
-                address.getLocation(),
                 address.getFullAddress()
         );
     }
@@ -71,15 +72,14 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public Address toEntity(AddressDto addressDto) {
         return new Address(
-                addressDto.getAddressId(),
+                Utils.createIdOrElse(addressDto.getAddressId()),
                 addressDto.getProvinceID(),
                 addressDto.getDistrictID(),
                 addressDto.getWardCode(),
                 addressDto.getProvinceName(),
                 addressDto.getDistrictName(),
                 addressDto.getWardName(),
-                addressDto.getAddress(),
-                addressDto.getLocation()
+                addressDto.getAddress()
         );
     }
 }

@@ -2,23 +2,21 @@ package com.sudoo.userservice.service.impl;
 
 import com.sudo248.domain.exception.ApiException;
 import com.sudo248.domain.util.Utils;
-import com.sudoo.userservice.controller.dto.AddressDto;
-import com.sudoo.userservice.controller.dto.FirebaseUserDto;
-import com.sudoo.userservice.controller.dto.UserDto;
-import com.sudoo.userservice.controller.dto.UserInfoDto;
+import com.sudoo.userservice.controller.dto.*;
 import com.sudoo.userservice.internal.FirebaseService;
+import com.sudoo.userservice.internal.RecommendService;
 import com.sudoo.userservice.repository.UserRepository;
-import com.sudoo.userservice.repository.entitity.Address;
 import com.sudoo.userservice.repository.entitity.User;
 import com.sudoo.userservice.repository.entitity.UserInfo;
+import com.sudoo.userservice.service.AddressService;
 import com.sudoo.userservice.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.Optional;
+import java.util.List;
+import java.util.Locale;
 
 @Slf4j
 @Service
@@ -26,11 +24,14 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    private final FirebaseService firebaseService;
+    private final AddressService addressService;
 
-    public UserServiceImpl(UserRepository userRepository, FirebaseService firebaseService) {
+    private final RecommendService recommendService;
+
+    public UserServiceImpl(UserRepository userRepository, AddressService addressService, RecommendService recommendService) {
         this.userRepository = userRepository;
-        this.firebaseService = firebaseService;
+        this.addressService = addressService;
+        this.recommendService = recommendService;
     }
 
     @Override
@@ -53,13 +54,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto postUser(UserDto userDto) {
         User user = toEntity(userDto);
+        AddressDto addressDto = userDto.getAddress();
+        AddressDto savedAddress = addressService.postAddress(addressDto);
+        user.setAddressId(savedAddress.getAddressId());
         userRepository.save(user);
-//        firebaseService.upsertFirebaseUser(createUserFirebaseFromUser(user));
+        recommendService.upsertUser(createRecommendUser(user));
         return toDto(user);
     }
 
     @Override
-    public UserDto putUser(String userId, UserDto userDto) {
+    public UserDto putUser(String userId, UserDto userDto) throws ApiException {
         userDto.setUserId(userId);
 
         User user = userRepository.getReferenceById(userId);
@@ -71,20 +75,12 @@ public class UserServiceImpl implements UserService {
         user.setGender(userDto.getGender());
 
         AddressDto addressDto = userDto.getAddress();
-
-        Address address = user.getAddress();
-        address.setProvinceID(addressDto.getProvinceID());
-        address.setDistrictID(addressDto.getDistrictID());
-        address.setWardCode(addressDto.getWardCode());
-        address.setProvinceName(addressDto.getProvinceName());
-        address.setDistrictName(addressDto.getDistrictName());
-        address.setWardName(addressDto.getWardName());
-        address.setAddress(addressDto.getAddress());
-        address.setLocation(addressDto.getLocation());
-
-        user.setAddress(address);
+        if (addressDto.getAddressId() == null || addressDto.getAddressId().isEmpty()) {
+            addressDto.setAddressId(user.getAddressId());
+        }
+        addressService.putAddress(addressDto);
         userRepository.save(user);
-        firebaseService.upsertFirebaseUser(createUserFirebaseFromUser(user));
+        recommendService.upsertUser(createRecommendUser(user));
         return toDto(user);
     }
 
@@ -99,19 +95,8 @@ public class UserServiceImpl implements UserService {
         userDto.setAvatar(user.getAvatar());
         userDto.setCover(user.getCover());
         userDto.setGender(user.getGender());
-        Address address = user.getAddress();
-        AddressDto addressDto = new AddressDto(
-                address.getAddressId(),
-                address.getProvinceID(),
-                address.getDistrictID(),
-                address.getWardCode(),
-                address.getProvinceName(),
-                address.getDistrictName(),
-                address.getWardName(),
-                address.getAddress(),
-                address.getLocation(),
-                address.getFullAddress()
-        );
+
+        AddressDto addressDto = addressService.getAddress(user.getAddressId());
         userDto.setAddress(addressDto);
         return userDto;
     }
@@ -128,29 +113,23 @@ public class UserServiceImpl implements UserService {
         user.setCover(userDto.getCover());
         user.setGender(userDto.getGender());
         AddressDto addressDto = userDto.getAddress();
-
-        Address address = new Address(
-                user.getUserId(),
-                addressDto.getProvinceID(),
-                addressDto.getDistrictID(),
-                addressDto.getWardCode(),
-                addressDto.getProvinceName(),
-                addressDto.getDistrictName(),
-                addressDto.getWardName(),
-                addressDto.getAddress(),
-                addressDto.getLocation(),
-                user
-        );
-        user.setAddress(address);
-
         return user;
     }
 
-    private FirebaseUserDto createUserFirebaseFromUser(User user) {
-        return new FirebaseUserDto(
+    @Override
+    public int syncUserToRecommendService() {
+        List<User> users = userRepository.findAll();
+        for (User user : users) {
+            recommendService.upsertUser(createRecommendUser(user));
+        }
+        return users.size();
+    }
+
+    private RecommendUserDto createRecommendUser(User user) {
+        return new RecommendUserDto(
                 user.getUserId(),
-                user.getFullName(),
-                user.getAvatar()
+                user.getDob(),
+                user.getGender().name().toUpperCase(Locale.ENGLISH)
         );
     }
 }

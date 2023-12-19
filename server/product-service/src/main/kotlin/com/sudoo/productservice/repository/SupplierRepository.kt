@@ -10,17 +10,18 @@ import org.springframework.stereotype.Repository
 @Repository
 interface SupplierRepository : CoroutineCrudRepository<Supplier, String> {
      suspend fun findByName(name: String): Flow<Supplier>
-     suspend fun getByUserId(userId: String): Supplier?
+
+     suspend fun findByUserId(userId: String): Supplier?
 
      @Query("""
           SELECT suppliers.supplier_id FROM suppliers WHERE suppliers.user_id = :userId LIMIT 1
      """)
-     suspend fun getSupplierIdByUserId(@Param("userId") userId: String): String
+     suspend fun getSupplierIdByUserId(@Param("userId") userId: String): String?
 
      @Query("""
           SELECT suppliers.brand FROM suppliers WHERE suppliers.user_id = :userId LIMIT 1
      """)
-     suspend fun getBrandByUserId(@Param("userId") userId: String): String
+     suspend fun getBrandByUserId(@Param("userId") userId: String): String?
 
      @Query("""
           SELECT suppliers.brand FROM suppliers WHERE suppliers.supplier_id = :supplierId LIMIT 1     

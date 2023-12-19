@@ -5,7 +5,7 @@ import com.sudoo.authservice.model.Account
 import com.sudoo.domain.utils.IdentifyCreator
 import java.time.LocalDateTime
 
-fun SignUpDto.toModel(): Account {
+fun SignUpDto.toModel(isValidated: Boolean = false): Account {
     return Account(
         userId = IdentifyCreator.create(),
         emailOrPhoneNumber = emailOrPhoneNumber,
@@ -13,6 +13,6 @@ fun SignUpDto.toModel(): Account {
         provider = provider,
         role = role,
         createAt = LocalDateTime.now(),
-        isValidated = false,
+        isValidated = isValidated,
     )
 }

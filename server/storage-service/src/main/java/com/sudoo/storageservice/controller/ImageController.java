@@ -1,6 +1,7 @@
 package com.sudoo.storageservice.controller;
 
 import com.sudo248.domain.base.BaseResponse;
+import com.sudoo.storageservice.config.StorageSource;
 import com.sudoo.storageservice.service.ImageService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,11 +22,9 @@ public class ImageController {
 
     @PostMapping(value = "/upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<BaseResponse<?>> upload(
-            HttpServletRequest request,
             @RequestParam(value = "image") MultipartFile image,
-            @RequestParam(value = "source", required = false, defaultValue = "cloudinary") String source
+            @RequestParam(value = "source", required = false, defaultValue = "google-storage") String source
     ) {
-        request.getHeader("");
-        return imageService.storeImage(image, source);
+        return imageService.storeImage(image, StorageSource.fromValue(source));
     }
 }

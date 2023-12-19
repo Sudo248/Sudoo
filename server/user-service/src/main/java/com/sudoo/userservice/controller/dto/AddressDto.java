@@ -1,6 +1,5 @@
 package com.sudoo.userservice.controller.dto;
 
-import com.sudoo.userservice.repository.entitity.Location;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,8 +23,6 @@ public class AddressDto {
     private String wardName;
 
     private String address;
-
-    private Location location;
 
     private String fullAddress;
 }
