@@ -83,4 +83,9 @@ class CommentController(
             userProductService.getReviewsByUserIdAndReviewed(userId, it,  offsetRequest)
         } ?: userProductService.getReviewsByUserId(userId, offsetRequest)
     }
+
+    @PostMapping("/reviews/sync-to-recommend")
+    suspend fun syncReviewToRecommendService(): ResponseEntity<BaseResponse<*>> = handle {
+        userProductService.syncAllReviewToRecommendService()
+    }
 }

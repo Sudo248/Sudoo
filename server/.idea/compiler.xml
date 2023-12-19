@@ -10,6 +10,7 @@
         <module name="registry" />
         <module name="auth-service" />
         <module name="cart-service" />
+        <module name="payment-service" />
         <module name="domain" />
         <module name="api-gateway" />
         <module name="product-service" />

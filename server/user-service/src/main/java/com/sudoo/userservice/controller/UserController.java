@@ -79,4 +79,9 @@ public class UserController {
             return BaseResponse.ok(_userDto);
         });
     }
+
+    @PostMapping("/sync-to-recommend")
+    public ResponseEntity<BaseResponse<?>> syncUserToRecommend() {
+        return Utils.handleException(() -> BaseResponse.ok(userService.syncUserToRecommendService()));
+    }
 }
