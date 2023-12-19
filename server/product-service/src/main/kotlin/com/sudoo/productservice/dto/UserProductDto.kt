@@ -6,9 +6,10 @@ data class UserProductDto(
     val userProductId: String? = null,
     val productId: String,
     val rate: Float,
-    val isLike: Boolean,
+    val isReviewed: Boolean,
     val comment: String,
-    val createAt: LocalDateTime?,
+    val updatedAt: LocalDateTime?,
+    val createdAt: LocalDateTime?,
     var userInfo: UserInfoDto? = null,
     var images: List<String>? = null,
 )

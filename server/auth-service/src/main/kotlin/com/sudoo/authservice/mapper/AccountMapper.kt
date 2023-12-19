@@ -6,7 +6,7 @@ import com.sudoo.authservice.model.Account
 fun Account.toUserDto(): UserDto {
     return UserDto(
         userId = userId,
-        fullName = emailOrPhoneNumber,
+        fullName = emailOrPhoneNumber.substringBefore("@"),
         emailOrPhoneNumber = emailOrPhoneNumber
     )
 }

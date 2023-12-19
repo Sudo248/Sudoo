@@ -14,8 +14,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class Address {
     @Id
-    @Column(name = "user_id")
-    private String userId;
+    @Column(name = "address_id")
+    private String addressId;
 
     @Column(name = "province_id")
     private int provinceID;
@@ -38,19 +38,11 @@ public class Address {
     @Column(name = "address")
     private String address;
 
-    @Embedded
-    private Location location;
-
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "user_id")
-    private User user;
-
     @Transient
     private String fullAddress;
 
-    public Address(String userId, int provinceID, int districtID, String wardCode, String provinceName, String districtName, String wardName, String address, Location location, User user) {
-        this.userId = userId;
+    public Address(String addressId, int provinceID, int districtID, String wardCode, String provinceName, String districtName, String wardName, String address) {
+        this.addressId = addressId;
         this.provinceID = provinceID;
         this.districtID = districtID;
         this.wardCode = wardCode;
@@ -58,20 +50,6 @@ public class Address {
         this.districtName = districtName;
         this.wardName = wardName;
         this.address = address;
-        this.location = location;
-        this.user = user;
-    }
-
-    public Address(String userId, int provinceID, int districtID, String wardCode, String provinceName, String districtName, String wardName, String address, Location location) {
-        this.userId = userId;
-        this.provinceID = provinceID;
-        this.districtID = districtID;
-        this.wardCode = wardCode;
-        this.provinceName = provinceName;
-        this.districtName = districtName;
-        this.wardName = wardName;
-        this.address = address;
-        this.location = location;
     }
 
     @PostLoad
@@ -80,9 +58,9 @@ public class Address {
     private void setFullAddress() {
         StringBuilder builder = new StringBuilder();
         if (!address.isBlank()) builder.append(address);
-        if (!wardCode.isBlank()) {
+        if (!wardName.isBlank()) {
             if (builder.length() > 0) builder.append(", ");
-            builder.append(wardCode);
+            builder.append(wardName);
         }
         if (!districtName.isBlank()) {
             if (builder.length() > 0) builder.append(", ");
@@ -97,9 +75,5 @@ public class Address {
         } else {
             fullAddress = "";
         }
-    }
-
-    public String getAddressId() {
-        return userId;
     }
 }

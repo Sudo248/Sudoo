@@ -32,17 +32,15 @@
         </dependency>
 
         <dependency>
+            <groupId>com.google.cloud</groupId>
+            <artifactId>spring-cloud-gcp-starter-storage</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
-        <dependency>
-            <groupId>com.flickr4java</groupId>
-            <artifactId>flickr4java</artifactId>
-            <version>3.0.8</version>
-        </dependency>
-
 
         <dependency>
             <groupId>com.cloudinary</groupId>
@@ -55,7 +53,7 @@
             <artifactId>domain</artifactId>
             <version>0.0.1</version>
             <scope>system</scope>
-            <systemPath>/Users/leduong/Sudo248/Sudoo/server/libs/domain-0.0.1.jar</systemPath>
+            <systemPath>/${project.basedir}/../libs/domain-0.0.1.jar</systemPath>
         </dependency>
 
     </dependencies>
@@ -65,6 +63,13 @@
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
                 <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.google.cloud</groupId>
+                <artifactId>spring-cloud-gcp-dependencies</artifactId>
+                <version>4.8.3</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

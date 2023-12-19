@@ -9,7 +9,7 @@ open class ApiException(
     message: String? = null
 ) : Exception(message ?: status.reasonPhrase) {
 
-    fun getResponseEntity() = getResponseEntity(null)
+    fun  getResponseEntity() = getResponseEntity(null)
 
     fun <T> getResponseEntity(body: T? = null): ResponseEntity<BaseResponse<*>> =
         BaseResponse.status(status, message = message, body = body)

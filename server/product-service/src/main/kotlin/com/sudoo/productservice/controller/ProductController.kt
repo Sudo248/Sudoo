@@ -3,16 +3,15 @@ package com.sudoo.productservice.controller
 import com.sudoo.domain.base.BaseController
 import com.sudoo.domain.base.BaseResponse
 import com.sudoo.domain.base.OffsetRequest
+import com.sudoo.domain.base.SortRequest
 import com.sudoo.domain.common.Constants
 import com.sudoo.domain.validator.ProductValidator
 import com.sudoo.productservice.dto.CategoryProductDto
+import com.sudoo.productservice.dto.PatchAmountProductDto
 import com.sudoo.productservice.dto.UpsertProductDto
-import com.sudoo.productservice.dto.UserProductDto
-import com.sudoo.productservice.model.CategoryProduct
 import com.sudoo.productservice.service.CategoryService
 import com.sudoo.productservice.service.ImageService
 import com.sudoo.productservice.service.ProductService
-import com.sudoo.productservice.service.UserProductService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -22,7 +21,6 @@ class ProductController(
     private val productService: ProductService,
     private val imageService: ImageService,
     private val categoryService: CategoryService,
-    private val userProductService: UserProductService
 ) : BaseController() {
 
     @PostMapping
@@ -49,11 +47,39 @@ class ProductController(
 
     @GetMapping
     suspend fun getListProductInfo(
+        @RequestParam("categoryId", required = false, defaultValue = "") categoryId: String?,
+        @RequestParam("name", required = false, defaultValue = "") name: String,
+        @RequestParam("offset", required = false, defaultValue = Constants.DEFAULT_OFFSET) offset: Int,
+        @RequestParam("limit", required = false, defaultValue = Constants.DEFAULT_LIMIT) limit: Int,
+        @RequestParam("sortBy", required = false, defaultValue = "") sortBy: String,
+        @RequestParam("orderBy", required = false, defaultValue = "asc") orderBy: String,
+    ): ResponseEntity<BaseResponse<*>> = handle {
+        val offsetRequest = OffsetRequest(offset, limit)
+        val sortRequest = if (sortBy.isBlank()) null else SortRequest(sortBy, orderBy)
+        productService.getProductInfoByCategoryAndName(categoryId, name, offsetRequest, sortRequest)
+    }
+
+    @GetMapping("/recommend")
+    suspend fun getRecommendListProductInfo(
+        @RequestHeader(Constants.HEADER_USER_ID) userId: String,
         @RequestParam("offset", required = false, defaultValue = Constants.DEFAULT_OFFSET) offset: Int,
         @RequestParam("limit", required = false, defaultValue = Constants.DEFAULT_LIMIT) limit: Int,
     ): ResponseEntity<BaseResponse<*>> = handle {
         val offsetRequest = OffsetRequest(offset, limit)
-        productService.getListProductInfo(offsetRequest)
+        productService.getRecommendListProductInfo(userId, offsetRequest)
+    }
+
+    @PostMapping("/list")
+    suspend fun getListProductInfoByIds(
+        @RequestParam("orderInfo", required = false, defaultValue = "false") orderInfo: Boolean,
+        @RequestParam("supplierId", required = false) supplierId: String? = null,
+        @RequestBody ids: List<String>,
+    ): ResponseEntity<BaseResponse<*>> = handle {
+        if (orderInfo) {
+            productService.getListOrderProductInfoByIds(ids, supplierId)
+        } else {
+            productService.getListProductInfoByIds(ids)
+        }
     }
 
     @GetMapping("/{identify}")
@@ -65,6 +91,14 @@ class ProductController(
         } else {
             productService.getProductDetailById(identify)
         }
+    }
+
+    @GetMapping("/{productId}/info")
+    suspend fun getProductInfo(
+        @PathVariable("productId") productId: String
+    ): ResponseEntity<BaseResponse<*>> = handle {
+        println("productId: $productId")
+        productService.getProductInfoById(productId)
     }
 
     @GetMapping("/sku/{sku}")
@@ -121,34 +155,29 @@ class ProductController(
         productService.deleteProductOfCategory(categoryProduct)
     }
 
-    @PostMapping("/comments")
-    suspend fun upsertComment(
-        @RequestHeader(Constants.HEADER_USER_ID) userId: String,
-        @RequestBody comment: UserProductDto
-    ): ResponseEntity<BaseResponse<*>> = handle {
-        userProductService.upsertComment(userId, comment)
-    }
-
-    @DeleteMapping("/comments/{commentId}")
-    suspend fun deleteComment(
-        @PathVariable("commentId") commentId: String
-    ): ResponseEntity<BaseResponse<*>> = handle {
-        userProductService.deleteComment(commentId)
-    }
-
-    @GetMapping("/{productId}/comments")
-    suspend fun getCommentsByProductId(
-        @PathVariable("productId") productId: String,
+    @GetMapping("/search")
+    suspend fun searchProductByName(
+        @RequestParam("categoryId", required = false, defaultValue = "null") categoryId: String?,
+        @RequestParam("name", required = false, defaultValue = "") name: String,
         @RequestParam("offset", required = false, defaultValue = Constants.DEFAULT_OFFSET) offset: Int,
         @RequestParam("limit", required = false, defaultValue = Constants.DEFAULT_LIMIT) limit: Int,
+        @RequestParam("sortBy", required = false, defaultValue = "") sortBy: String,
+        @RequestParam("orderBy", required = false, defaultValue = "asc") orderBy: String,
+        @RequestParam("saleable", required = false, defaultValue = "") saleable: String,
     ): ResponseEntity<BaseResponse<*>> = handle {
-        userProductService.getCommentsByProductId(productId, OffsetRequest(offset, limit))
+        val offsetRequest = OffsetRequest(offset, limit)
+        productService.getProductInfoByCategoryAndName(categoryId, name, offsetRequest)
     }
 
-    @GetMapping("/headers")
-    suspend fun getHeader(
-        @RequestHeader header: Map<String, *>
-    ): ResponseEntity<BaseResponse<*>> = handle {
-        header
+    @PutMapping("/internal/amount")
+    suspend fun pathAmountPromotion(
+        @RequestBody product: PatchAmountProductDto
+    ) : ResponseEntity<BaseResponse<*>> = handle {
+        productService.patchAmountProduct(product)
+    }
+
+    @PostMapping("/sync-to-recommend")
+    suspend fun syncProductToRecommendService(): ResponseEntity<BaseResponse<*>> = handle {
+        productService.syncAllProductToRecommendService()
     }
 }

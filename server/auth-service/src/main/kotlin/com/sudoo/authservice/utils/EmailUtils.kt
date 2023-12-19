@@ -31,7 +31,7 @@ class EmailUtils(
         val otp = (100000 + Random.Default.nextInt(900000)).toString()
         redis.opsForValue().set(emailOrPhoneNumber, otp, otpTimeout, TimeUnit.MILLISECONDS)
         Logger.info(message = "otp = $otp")
-//        sendOTPEmail(emailOrPhoneNumber, otp)
+        sendOTPEmail(emailOrPhoneNumber, otp)
         return true
     }
 

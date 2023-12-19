@@ -1,6 +1,5 @@
 package com.sudoo.productservice.model
 
-import kotlinx.coroutines.flow.Flow
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.Transient
 import org.springframework.data.domain.Persistable
@@ -26,14 +25,17 @@ data class Product(
     @Column("description")
     val description: String,
 
+    @Column("brand")
+    var brand: String = "",
+
     @Column("price")
-    val price: Float,
+    var price: Float,
 
     @Column("listed_price")
     val listedPrice: Float,
 
     @Column("amount")
-    val amount: Int,
+    var amount: Int,
 
     @Column("sold_amount")
     var soldAmount: Int,
@@ -45,7 +47,7 @@ data class Product(
     var totalRateAmount: Int,
 
     @Column("discount")
-    val discount: Int,
+    var discount: Int,
 
     @Column("start_date_discount")
     val startDateDiscount: LocalDateTime?,
@@ -56,10 +58,26 @@ data class Product(
     @Column("saleable")
     val saleable: Boolean,
 
-) : Persistable<String> {
+    // gram
+    @Column("weight")
+    val weight: Int,
 
-    @Transient
-    var brand: String = ""
+    // cm
+    @Column("height")
+    val height: Int,
+
+    // cm
+    @Column("length")
+    val length: Int,
+
+    // cm
+    @Column("width")
+    val width: Int,
+
+    @Column("created_at")
+    val createdAt: LocalDateTime,
+
+    ) : Persistable<String> {
 
     @Transient
     var images: List<Image>? = null

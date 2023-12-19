@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="72cbe6d0-83b5-4e93-ba3c-2789b9cf0780" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/dto/RecommendListProductDto.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/dto/RecommendProductDto.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/dto/RecommendUserProductDto.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/RecommendService.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/impl/RecommendServiceImpl.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/sudoo/userservice/controller/dto/RecommendUserDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/sudoo/userservice/internal/RecommendService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-gateway/src/main/kotlin/com/sudoo/apigateway/config/SudooServices.kt" beforeDir="false" afterPath="$PROJECT_DIR$/api-gateway/src/main/kotlin/com/sudoo/apigateway/config/SudooServices.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/src/main/kotlin/com/sudoo/domain/common/Constants.kt" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/kotlin/com/sudoo/domain/common/Constants.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#ib_16384_0.dblwr" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#ib_16384_1.dblwr" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_redo/#ib_redo10_tmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_redo/#ib_redo11_tmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_redo/#ib_redo12_tmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_redo/#ib_redo13_tmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_redo/#ib_redo14_tmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_redo/#ib_redo15_tmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_redo/#ib_redo16_tmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_redo/#ib_redo17_tmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_redo/#ib_redo18_tmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_redo/#ib_redo19_tmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_redo/#ib_redo20_tmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_redo/#ib_redo21_tmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_redo/#ib_redo22_tmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_redo/#ib_redo23_tmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_redo/#ib_redo24_tmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_redo/#ib_redo25_tmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_redo/#ib_redo26_tmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_redo/#ib_redo27_tmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_redo/#ib_redo28_tmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_redo/#ib_redo29_tmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_redo/#ib_redo30_tmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_redo/#ib_redo31_tmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_redo/#ib_redo32_tmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_redo/#ib_redo33_tmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_redo/#ib_redo34_tmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_redo/#ib_redo35_tmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_redo/#ib_redo36_tmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_redo/#ib_redo37_tmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_redo/#ib_redo38_tmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_redo/#ib_redo39_tmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_redo/#ib_redo40_tmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_redo/#ib_redo9" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_temp/temp_1.ibt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_temp/temp_10.ibt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_temp/temp_2.ibt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_temp/temp_3.ibt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_temp/temp_4.ibt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_temp/temp_5.ibt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_temp/temp_6.ibt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_temp/temp_7.ibt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_temp/temp_8.ibt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/#innodb_temp/temp_9.ibt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/auth@002ddb/accounts.ibd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/auto.cnf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/binlog.000001" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/binlog.000002" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/binlog.000003" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/binlog.000004" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/binlog.000005" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/binlog.index" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/ca-key.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/ca.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/cart@002ddb/cart.ibd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/cart@002ddb/cart_product.ibd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/client-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/client-key.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/ib_buffer_pool" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/ibdata1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/ibtmp1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/mysql.ibd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/mysql/general_log.CSM" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/mysql/general_log.CSV" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/mysql/general_log_213.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/mysql/slow_log.CSM" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/mysql/slow_log.CSV" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/mysql/slow_log_214.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/order@002ddb/order_supplier.ibd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/order@002ddb/orders.ibd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/order@002ddb/payments.ibd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/accounts_145.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/binary_log_trans_189.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/cond_instances_82.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/data_lock_waits_161.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/data_locks_160.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/error_log_83.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_errors_su_139.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_errors_su_140.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_errors_su_141.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_errors_su_142.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_errors_su_143.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_stages_cu_111.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_stages_hi_112.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_stages_hi_113.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_stages_su_114.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_stages_su_115.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_stages_su_116.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_stages_su_117.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_stages_su_118.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_statement_119.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_statement_120.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_statement_121.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_statement_122.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_statement_123.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_statement_124.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_statement_125.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_statement_126.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_statement_127.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_statement_128.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_statement_129.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_statement_130.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_transacti_131.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_transacti_132.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_transacti_133.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_transacti_134.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_transacti_135.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_transacti_136.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_transacti_137.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_transacti_138.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_waits_cur_84.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_waits_his_85.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_waits_his_86.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_waits_sum_87.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_waits_sum_88.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_waits_sum_89.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_waits_sum_90.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_waits_sum_91.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/events_waits_sum_92.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/file_instances_93.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/file_summary_by__94.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/file_summary_by__95.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/global_status_181.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/global_variables_184.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/host_cache_96.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/hosts_146.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/keyring_componen_191.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/keyring_keys_152.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/log_status_174.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/memory_summary_b_154.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/memory_summary_b_155.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/memory_summary_b_156.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/memory_summary_b_157.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/memory_summary_g_153.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/metadata_locks_159.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/mutex_instances_97.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/objects_summary__98.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/performance_time_99.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/persisted_variab_187.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/prepared_stateme_175.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/processlist_100.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/replication_appl_165.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/replication_appl_166.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/replication_appl_167.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/replication_appl_168.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/replication_appl_170.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/replication_appl_171.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/replication_asyn_172.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/replication_asyn_173.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/replication_conn_162.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/replication_conn_164.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/replication_grou_163.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/replication_grou_169.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/rwlock_instances_101.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/session_account__151.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/session_connect__150.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/session_status_182.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/session_variable_185.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/setup_actors_102.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/setup_consumers_103.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/setup_instrument_104.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/setup_objects_105.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/setup_threads_106.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/socket_instances_147.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/socket_summary_b_148.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/socket_summary_b_149.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/status_by_accoun_177.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/status_by_host_178.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/status_by_thread_179.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/status_by_user_180.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/table_handles_158.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/table_io_waits_s_107.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/table_io_waits_s_108.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/table_lock_waits_109.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/threads_110.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/tls_channel_stat_190.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/user_defined_fun_188.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/user_variables_b_176.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/users_144.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/variables_by_thr_183.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/performance_schema/variables_info_186.sdi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/private_key.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/product@002ddb/categories.ibd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/product@002ddb/categories_products.ibd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/product@002ddb/images.ibd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/product@002ddb/product_extras.ibd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/product@002ddb/products.ibd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/product@002ddb/promotions.ibd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/product@002ddb/suppliers.ibd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/product@002ddb/users_products.ibd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/public_key.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/server-cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/server-key.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/sys/sys_config.ibd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/undo_001" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/undo_002" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/user@002ddb/addresses.ibd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/user@002ddb/users.ibd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/config/InternalServiceConfig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/config/InternalServiceConfig.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/controller/CommentController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/controller/CommentController.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/controller/ProductController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/controller/ProductController.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/mapper/UserProductMapper.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/mapper/UserProductMapper.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/ProductService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/ProductService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/UserProductService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/UserProductService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/impl/ProductServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/impl/ProductServiceImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/impl/UserProductServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/impl/UserProductServiceImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/sudoo/userservice/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/sudoo/userservice/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/sudoo/userservice/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/sudoo/userservice/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/sudoo/userservice/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/sudoo/userservice/service/impl/UserServiceImpl.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Kotlin Object" />
+        <option value="Kotlin File" />
+        <option value="Enum" />
+        <option value="Interface" />
+        <option value="Kotlin Enum" />
+        <option value="Kotlin Interface" />
+        <option value="Kotlin Data Class" />
+        <option value="Kotlin Class" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="2XN5ZXOIK0NhYmiftzEo97NAjEq" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;be-dev&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/leduong/Sudo248/Sudoo/server/storage-service/uploads/images&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.19655173&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="ReactorSettings">
+    <option name="notificationShown" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/storage-service/uploads/images" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/notification-service/src/main/resources" />
+    </key>
+    <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="com.sudoo.productservice.dto" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="SpringBootApplicationConfigurationType" />
+      </set>
+    </option>
+  </component>
+  <component name="RunManager" selected="Spring Boot.ProductServiceApplication">
+    <configuration name="ApiGatewayApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="api-gateway" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sudoo.apigateway.ApiGatewayApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AuthServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="auth-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sudoo.authservice.AuthServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CartServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="cart-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sudoo.cartservice.CartServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="NotificationApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="notification-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sudoo.notification.NotificationApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OrderServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="order-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sudo248.orderservice.OrderServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PaymentServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="payment-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sudoo.paymentservice.PaymentServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ProductServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="product-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sudoo.productservice.ProductServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RegistryApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="registry" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sudoo.registry.RegistryApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StorageServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="storage-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sudoo.storageservice.StorageServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="user-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sudoo.userservice.UserServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
+      <deployment type="docker-compose.yml">
+        <settings />
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration name="docker-compose.yml.cache-service: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="services">
+            <list>
+              <option value="cache-service" />
+            </list>
+          </option>
+          <option name="sourceFilePath" value="docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration name="docker-compose.yml.db-service: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="services">
+            <list>
+              <option value="db-service" />
+            </list>
+          </option>
+          <option name="sourceFilePath" value="docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Docker.docker-compose.yml.cache-service: Compose Deployment" />
+      <item itemvalue="Docker.docker-compose.yml.db-service: Compose Deployment" />
+      <item itemvalue="Spring Boot.ApiGatewayApplication" />
+      <item itemvalue="Spring Boot.AuthServiceApplication" />
+      <item itemvalue="Spring Boot.CartServiceApplication" />
+      <item itemvalue="Spring Boot.NotificationApplication" />
+      <item itemvalue="Spring Boot.OrderServiceApplication" />
+      <item itemvalue="Spring Boot.PaymentServiceApplication" />
+      <item itemvalue="Spring Boot.ProductServiceApplication" />
+      <item itemvalue="Spring Boot.RegistryApplication" />
+      <item itemvalue="Spring Boot.StorageServiceApplication" />
+      <item itemvalue="Spring Boot.UserServiceApplication" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Docker.docker-compose.yml.db-service: Compose Deployment" />
+        <item itemvalue="Docker.docker-compose.yml.cache-service: Compose Deployment" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="72cbe6d0-83b5-4e93-ba3c-2789b9cf0780" name="Changes" comment="" />
+      <created>1698456753998</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1698456753998</updated>
+      <workItem from="1698456755318" duration="28911000" />
+      <workItem from="1698640970304" duration="445000" />
+      <workItem from="1698680488847" duration="22348000" />
+      <workItem from="1699667482102" duration="6733000" />
+      <workItem from="1699677253457" duration="13088000" />
+      <workItem from="1700054070956" duration="4135000" />
+      <workItem from="1700105524449" duration="3668000" />
+      <workItem from="1700124394308" duration="9221000" />
+      <workItem from="1700229759460" duration="19075000" />
+      <workItem from="1700393055680" duration="1041000" />
+      <workItem from="1700477579457" duration="499000" />
+      <workItem from="1700487170824" duration="221000" />
+      <workItem from="1700552744168" duration="34000" />
+      <workItem from="1700583393628" duration="679000" />
+      <workItem from="1700704632169" duration="5971000" />
+      <workItem from="1700792620066" duration="3173000" />
+      <workItem from="1700820044478" duration="3577000" />
+      <workItem from="1700930362710" duration="24603000" />
+      <workItem from="1701051393609" duration="1458000" />
+      <workItem from="1701095385026" duration="827000" />
+      <workItem from="1701097663953" duration="21380000" />
+      <workItem from="1701226092590" duration="17770000" />
+      <workItem from="1701440781281" duration="8837000" />
+      <workItem from="1701625121502" duration="721000" />
+      <workItem from="1702914438472" duration="2466000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/storage-service/src/main/java/com/sudoo/storageservice/service/impl/FileServiceImpl.java</url>
+          <line>96</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/service/payment/impl/VnPayServiceImpl.java</url>
+          <line>80</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/order-service/src/main/java/com/sudo248/orderservice/service/order/impl/OrderServiceImpl.java</url>
+          <line>317</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-function">
+          <url>file://$PROJECT_DIR$/cart-service/src/main/kotlin/com/sudoo/cartservice/controller/CartProductController.kt</url>
+          <line>13</line>
+          <properties class="com.sudoo.cartservice.controller.CartProductController">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/impl/ProductServiceImpl.kt</url>
+          <line>340</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/impl/ProductServiceImpl.kt</url>
+          <line>336</line>
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/impl/ProductServiceImpl.kt</url>
+          <line>332</line>
+          <option name="timeStamp" value="16" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/impl/ProductServiceImpl.kt</url>
+          <line>344</line>
+          <option name="timeStamp" value="17" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

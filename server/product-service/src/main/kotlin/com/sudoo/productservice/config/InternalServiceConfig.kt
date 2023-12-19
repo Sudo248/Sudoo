@@ -16,7 +16,18 @@ class InternalServiceConfig {
     @Qualifier("user-service")
     fun userWebClient(): WebClient {
         return WebClient.builder()
-            .baseUrl("http://user-service:8084/api/v1/users")
+            .baseUrl("http://user-service:8081/api/v1")
+            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+            .build()
+    }
+
+
+    @Bean
+    @Primary
+    @Qualifier("recommend-service")
+    fun recommendWebClient(): WebClient {
+        return WebClient.builder()
+            .baseUrl("http://recommend-service:5000/api/v1")
             .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
             .build()
     }

@@ -15,6 +15,8 @@ abstract class ProductRepository {
 
   Future<DataState<Product, Exception>> getProductDetail(String identify);
 
+  Future<DataState<ProductInfo, Exception>> getProductInfo(String productId);
+
   Future<DataState<UpsertProduct, Exception>> upsertProduct(
       UpsertProduct product);
 

@@ -15,4 +15,6 @@ interface CategoryRepository : CoroutineCrudRepository<Category, String> {
         WHERE categories_products.product_id = :productId;
     """)
     fun getCategoryIdByProductId(@Param("productId") productId: String): Flow<String>
+
+    fun findCategoriesByEnable(enable: Boolean): Flow<Category>
 }

@@ -15,6 +15,8 @@ data class ProductInfo(
     val sku: String,
     @Column("name")
     val name: String,
+    @Column("brand")
+    var brand: String,
     @Column("price")
     val price: Float,
     @Column("listed_price")
@@ -32,8 +34,6 @@ data class ProductInfo(
     @Column("end_date_discount")
     val endDateDiscount: LocalDateTime?,
 ) {
-    @Transient
-    var brand: String = ""
 
     @Transient
     var images: List<String>? = null
