@@ -12,6 +12,7 @@ import com.sudoo.productservice.mapper.*
 import com.sudoo.productservice.model.CategoryProduct
 import com.sudoo.productservice.repository.*
 import com.sudoo.productservice.service.ProductService
+import com.sudoo.productservice.service.RecommendService
 import com.sudoo.productservice.service.SupplierService
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.count
@@ -24,6 +25,7 @@ import kotlin.math.abs
 @Service
 class ProductServiceImpl(
     private val productRepository: ProductRepository,
+    private val recommendService: RecommendService,
     private val supplierRepository: SupplierRepository,
     private val categoryRepository: CategoryRepository,
     private val imageRepository: ImageRepository,
@@ -34,6 +36,7 @@ class ProductServiceImpl(
     override suspend fun addProductToCategory(categoryProductDto: CategoryProductDto): CategoryProductDto {
         val categoryProduct = categoryProductDto.toCategoryProduct()
         categoryProductRepository.save(categoryProduct)
+        recommendService.upsertProduct(categoryProduct.productId)
         return categoryProduct.toCategoryProductDto()
     }
 
@@ -47,6 +50,7 @@ class ProductServiceImpl(
             categoryId = categoryProductDto.categoryId,
             productId = categoryProductDto.productId,
         )
+        recommendService.upsertProduct(categoryProduct.productId)
         return categoryProduct.toCategoryProductDto()
     }
 
@@ -84,7 +88,7 @@ class ProductServiceImpl(
                     }
                 }?.joinAll()
             }
-
+            recommendService.upsertProduct(product.productId)
             productDto.copy(productId = product.productId, sku = product.sku)
         }
 
@@ -148,12 +152,15 @@ class ProductServiceImpl(
         )
     }
 
-    override suspend fun getRecommendListProductInfo(offsetRequest: OffsetRequest): ProductPagination<ProductInfoDto> =
+    override suspend fun getRecommendListProductInfo(
+        userId: String,
+        offsetRequest: OffsetRequest
+    ): ProductPagination<ProductInfoDto> =
         coroutineScope {
-            // TODO: Implement get recommend by AI model here
-            val count = async { productRepository.count() }
+            val recommendProduct = recommendService.getListRecommendProduct(userId, offsetRequest)
+            val count = recommendProduct.total
             val products =
-                productRepository.getProductInfoWithOffset(offset = offsetRequest.offset, limit = offsetRequest.limit)
+                productRepository.getListProductInfoByIds(recommendProduct.products)
                     .map { product ->
                         async {
                             product.images = listOf(imageRepository.getFirstByOwnerId(product.productId).url)
@@ -164,7 +171,7 @@ class ProductServiceImpl(
                 products = products.toList().awaitAll(),
                 pagination = Pagination(
                     offset = Utils.getNexOffset(offsetRequest.offset, products.count()),
-                    total = count.await()
+                    total = count
                 )
             )
         }
@@ -349,7 +356,10 @@ class ProductServiceImpl(
         }.toList().awaitAll()
     }
 
-    override suspend fun getListOrderProductInfoByIds(ids: List<String>, supplierId: String?): List<OrderProductInfoDto> = coroutineScope {
+    override suspend fun getListOrderProductInfoByIds(
+        ids: List<String>,
+        supplierId: String?
+    ): List<OrderProductInfoDto> = coroutineScope {
         productRepository.getListOrderProductInfoByIds(ids).filter {
             if (supplierId.isNullOrBlank()) true
             else it.supplierId == supplierId
@@ -372,6 +382,17 @@ class ProductServiceImpl(
         productRepository.save(product)
         patchProduct.amount = product.amount
         return patchProduct
+    }
+
+    override suspend fun syncAllProductToRecommendService(): Map<String, Any> {
+        productRepository.findAll()
+            .map {
+                recommendService.upsertProduct(it.productId)
+            }
+        return mapOf(
+            "total" to productRepository.count(),
+            "message" to "Wait for sync all product to recommend service"
+        )
     }
 
     suspend fun getProductInfoByName(
@@ -437,5 +458,12 @@ class ProductServiceImpl(
                 productDto.listedPrice
             )
         ) throw BadRequestException("Product's price or listed price must not be null and more than 0")
+    }
+
+    private suspend fun getAllCategoryIdOfProduct(productId: String): List<String> {
+        return categoryProductRepository.getByProductId(productId)
+            .map {
+                it.categoryId
+            }.toList()
     }
 }

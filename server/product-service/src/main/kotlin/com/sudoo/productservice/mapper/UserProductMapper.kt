@@ -34,6 +34,15 @@ fun UserProduct.toUserProductDto(userInfo: UserInfoDto? = null): UserProductDto 
     )
 }
 
+fun UserProduct.toRecommendUserProduct(): RecommendUserProductDto {
+    return RecommendUserProductDto(
+        userProductId = userProductId,
+        userId = userId,
+        productId = productId,
+        rating = rate
+    )
+}
+
 fun UpsertUserProductDto.toUserProduct(userId: String, isReviewed: Boolean): UserProduct {
     return UserProduct(
         userProductId = IdentifyCreator.createOrElse(userProductId),

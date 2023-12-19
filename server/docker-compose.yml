@@ -112,14 +112,14 @@ services:
     networks:
       - sudoo-network
 
-#  notification-service:
-#    image: sudo248dev/sudoo-notification-service
-#    container_name: notification-service
-#    hostname: notification-service
-#    depends_on:
-#      - registry
-#    networks:
-#      - sudoo-network
+  recommend-service:
+    image: sudo248dev/sudoo-recommend-service
+    container_name: recommend-service
+    hostname: recommend-service
+    depends_on:
+      - registry
+    networks:
+      - sudoo-network
 
 networks:
   sudoo-network:

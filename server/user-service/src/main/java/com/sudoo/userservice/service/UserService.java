@@ -12,4 +12,5 @@ public interface UserService {
     UserDto putUser(String userId, UserDto userDto) throws ApiException;
     UserDto toDto(User user);
     User toEntity(UserDto userDto);
+    int syncUserToRecommendService();
 }

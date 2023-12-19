@@ -2,11 +2,9 @@ package com.sudoo.userservice.service.impl;
 
 import com.sudo248.domain.exception.ApiException;
 import com.sudo248.domain.util.Utils;
-import com.sudoo.userservice.controller.dto.AddressDto;
-import com.sudoo.userservice.controller.dto.FirebaseUserDto;
-import com.sudoo.userservice.controller.dto.UserDto;
-import com.sudoo.userservice.controller.dto.UserInfoDto;
+import com.sudoo.userservice.controller.dto.*;
 import com.sudoo.userservice.internal.FirebaseService;
+import com.sudoo.userservice.internal.RecommendService;
 import com.sudoo.userservice.repository.UserRepository;
 import com.sudoo.userservice.repository.entitity.User;
 import com.sudoo.userservice.repository.entitity.UserInfo;
@@ -17,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Locale;
 
 @Slf4j
 @Service
@@ -26,12 +26,12 @@ public class UserServiceImpl implements UserService {
 
     private final AddressService addressService;
 
-    private final FirebaseService firebaseService;
+    private final RecommendService recommendService;
 
-    public UserServiceImpl(UserRepository userRepository, AddressService addressService, FirebaseService firebaseService) {
+    public UserServiceImpl(UserRepository userRepository, AddressService addressService, RecommendService recommendService) {
         this.userRepository = userRepository;
         this.addressService = addressService;
-        this.firebaseService = firebaseService;
+        this.recommendService = recommendService;
     }
 
     @Override
@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
         AddressDto savedAddress = addressService.postAddress(addressDto);
         user.setAddressId(savedAddress.getAddressId());
         userRepository.save(user);
-//        firebaseService.upsertFirebaseUser(createUserFirebaseFromUser(user));
+        recommendService.upsertUser(createRecommendUser(user));
         return toDto(user);
     }
 
@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
         }
         addressService.putAddress(addressDto);
         userRepository.save(user);
-//        firebaseService.upsertFirebaseUser(createUserFirebaseFromUser(user));
+        recommendService.upsertUser(createRecommendUser(user));
         return toDto(user);
     }
 
@@ -116,11 +116,20 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    private FirebaseUserDto createUserFirebaseFromUser(User user) {
-        return new FirebaseUserDto(
+    @Override
+    public int syncUserToRecommendService() {
+        List<User> users = userRepository.findAll();
+        for (User user : users) {
+            recommendService.upsertUser(createRecommendUser(user));
+        }
+        return users.size();
+    }
+
+    private RecommendUserDto createRecommendUser(User user) {
+        return new RecommendUserDto(
                 user.getUserId(),
-                user.getFullName(),
-                user.getAvatar()
+                user.getDob(),
+                user.getGender().name().toUpperCase(Locale.ENGLISH)
         );
     }
 }

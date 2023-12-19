@@ -14,7 +14,7 @@ interface ProductService {
 
     suspend fun getListProductInfo(offsetRequest: OffsetRequest, sortRequest: SortRequest? = null): ProductPagination<ProductInfoDto>
 
-    suspend fun getRecommendListProductInfo(offsetRequest: OffsetRequest): ProductPagination<ProductInfoDto>
+    suspend fun getRecommendListProductInfo(userId: String, offsetRequest: OffsetRequest): ProductPagination<ProductInfoDto>
     suspend fun getListProductInfoByCategory(
         categoryId: String,
         offsetRequest: OffsetRequest,
@@ -49,4 +49,6 @@ interface ProductService {
     suspend fun getListOrderProductInfoByIds(ids: List<String>, supplierId: String?): List<OrderProductInfoDto>
 
     suspend fun patchAmountProduct(patchProduct: PatchAmountProductDto): PatchAmountProductDto
+
+    suspend fun syncAllProductToRecommendService(): Map<String, Any>
 }

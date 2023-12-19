@@ -6,18 +6,12 @@ import com.sudoo.domain.exception.BadRequestException
 import com.sudoo.domain.exception.NotFoundException
 import com.sudoo.domain.utils.Utils
 import com.sudoo.productservice.dto.*
-import com.sudoo.productservice.mapper.combine
-import com.sudoo.productservice.mapper.toReviewDto
-import com.sudoo.productservice.mapper.toUserProduct
-import com.sudoo.productservice.mapper.toUserProductDto
+import com.sudoo.productservice.mapper.*
 import com.sudoo.productservice.model.Image
 import com.sudoo.productservice.repository.ImageRepository
 import com.sudoo.productservice.repository.ProductRepository
 import com.sudoo.productservice.repository.UserProductRepository
-import com.sudoo.productservice.service.CoreService
-import com.sudoo.productservice.service.ProductService
-import com.sudoo.productservice.service.UserProductService
-import com.sudoo.productservice.service.UserService
+import com.sudoo.productservice.service.*
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -35,6 +29,7 @@ class UserProductServiceImpl(
     private val productService: ProductService,
     private val productRepository: ProductRepository,
     private val userService: UserService,
+    private val recommendService: RecommendService
 ) : UserProductService {
     override suspend fun postUserProduct(
         userId: String,
@@ -74,6 +69,7 @@ class UserProductServiceImpl(
                 }
             }?.awaitAll()
             userProductRepository.save(updateUserProduct)
+            recommendService.upsertUserProduct(updateUserProduct.toRecommendUserProduct())
             updateUserProduct.toUserProductDto(userInfo = userService.getUserInfo(userId))
         }
 
@@ -196,6 +192,17 @@ class UserProductServiceImpl(
                 offset = Utils.getNexOffset(offsetRequest.offset, reviews.count()),
                 total = totalCount.await(),
             )
+        )
+    }
+
+    override suspend fun syncAllReviewToRecommendService(): Map<String, Any> {
+        userProductRepository.findAll()
+            .map {
+                recommendService.upsertUserProduct(it.toRecommendUserProduct())
+            }
+        return mapOf(
+            "total" to userProductRepository.count(),
+            "message" to "Wait for sync all review to recommend service"
         )
     }
 

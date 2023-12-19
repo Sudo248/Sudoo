@@ -8,4 +8,5 @@ enum class SudooServices(val id: String, val uri: String, val pattern: Array<Str
     CART_SERVICE("cart-service", "lb://cart-service", arrayOf("/api/v1/carts/**")),
     ORDER_SERVICE("order-service", "lb://order-service", arrayOf("/api/v1/orders/**", "/api/v1/payment/**", "/payment/**")),
     NOTIFICATION_SERVICE("notification-service", "lb://notification-service", arrayOf("/api/v1/notifications/**", "/api/v1/chats/**")),
+    RECOMMEND_SERVICE("recommend-service", "http://recommend-service:5000", arrayOf("/api/v1/recommend/**")),
 }

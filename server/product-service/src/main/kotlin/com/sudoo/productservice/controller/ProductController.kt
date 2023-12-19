@@ -14,7 +14,6 @@ import com.sudoo.productservice.service.ImageService
 import com.sudoo.productservice.service.ProductService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.util.logging.Logger
 
 @RestController
 @RequestMapping("/discovery/products")
@@ -62,11 +61,12 @@ class ProductController(
 
     @GetMapping("/recommend")
     suspend fun getRecommendListProductInfo(
+        @RequestHeader(Constants.HEADER_USER_ID) userId: String,
         @RequestParam("offset", required = false, defaultValue = Constants.DEFAULT_OFFSET) offset: Int,
         @RequestParam("limit", required = false, defaultValue = Constants.DEFAULT_LIMIT) limit: Int,
     ): ResponseEntity<BaseResponse<*>> = handle {
         val offsetRequest = OffsetRequest(offset, limit)
-        productService.getRecommendListProductInfo(offsetRequest)
+        productService.getRecommendListProductInfo(userId, offsetRequest)
     }
 
     @PostMapping("/list")
@@ -176,10 +176,8 @@ class ProductController(
         productService.patchAmountProduct(product)
     }
 
-    @GetMapping("/headers")
-    suspend fun getHeader(
-        @RequestHeader header: Map<String, *>
-    ): ResponseEntity<BaseResponse<*>> = handle {
-        header
+    @PostMapping("/sync-to-recommend")
+    suspend fun syncProductToRecommendService(): ResponseEntity<BaseResponse<*>> = handle {
+        productService.syncAllProductToRecommendService()
     }
 }

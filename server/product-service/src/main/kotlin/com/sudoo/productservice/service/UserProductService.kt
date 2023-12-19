@@ -36,4 +36,6 @@ interface UserProductService {
         isReviewed: Boolean,
         offsetRequest: OffsetRequest
     ): ReviewPagination<ReviewDto>
+
+    suspend fun syncAllReviewToRecommendService(): Map<String, Any>
 }
