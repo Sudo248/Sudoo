@@ -188,7 +188,7 @@ nextVersion = '0.0.0'
 if infomation == None:
     infomation = {
         'storageUrl': 'https://storage.googleapis.com/sudoo-buckets/models',
-        'recommendServiceUrl': 'http://localhost:5000/api/v1/update-model',
+        'recommendServiceUrl': 'http://recommend-service:5000/api/v1/update-model',
         'versions': [
             {
                 'version': currentVersion,

@@ -9,13 +9,20 @@ class PredictionService:
         self.users = users
         self.products = products
     
+    def getAllModelInfo(self):
+        infomation = self.prediction.find_one({'_id': 'prediction-infomation'})
+        if infomation == None:
+            return []
+        else:
+            return list(infomation['versions'])
+    
     def predict(self, userId: str, offset: int, limit: int):
         prediction = self.prediction.find_one({'user_id': userId})
         recommend_products = []
         if prediction == None:
             recommend_products = modelPredict(userId)
             self.prediction.insert_one({'_id': user_id, 'user_id': user_id, 'recommend': recommend_products})
-        elif: len(recommend_products) == 0:
+        elif len(recommend_products) == 0:
             recommend_products = modelPredict(userId)
             self.prediction.update_one({'user_id': userId}, {'$set': {'recommend': recommend_products}}, upsert=True)
         else:

@@ -1,5 +1,143 @@
-version: '3'
+version: '3.9'
 services:
+  registry:
+    image: sudo248dev/sudoo-registry
+    container_name: registry
+    hostname: registry
+    networks:
+      - sudoo-network
+    ports:
+      - "8761:8761"
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role==manager
+
+  api-gateway:
+    image: sudo248dev/sudoo-api-gateway
+    container_name: api-gateway
+    hostname: api-gateway
+    depends_on:
+      - registry
+    networks:
+      - sudoo-network
+    ports:
+      - "8080:8080"
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role==manager
+
+  product-service:
+    image: sudo248dev/sudoo-product-service
+    container_name: product-service
+    hostname: product-service
+    depends_on:
+      - registry
+      - db-service
+    networks:
+      - sudoo-network
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname==sudoo-worker-1
+
+  cache-service:
+    image: redis:alpine3.18
+    container_name: cache-service
+    hostname: cache-service
+    expose:
+      - 6379
+    environment:
+      - REDIS_PASSWORD=03092001
+    networks:
+      - sudoo-network
+    ports:
+      - "6379:6379"
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname==sudoo-worker-1
+
+  order-service:
+    image: sudo248dev/sudoo-order-service
+    container_name: order-service
+    hostname: order-service
+    depends_on:
+      - registry
+      - db-service
+    networks:
+      - sudoo-network
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname==sudoo-worker-1
+
+  auth-service:
+    image: sudo248dev/sudoo-auth-service
+    container_name: auth-service
+    hostname: auth-service
+    depends_on:
+      - registry
+      - db-service
+      - user-service
+    networks:
+      - sudoo-network
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname==sudoo-worker-2
+
+  user-service:
+    image: sudo248dev/sudoo-user-service
+    container_name: user-service
+    hostname: user-service
+    depends_on:
+      - registry
+      - db-service
+    networks:
+      - sudoo-network
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname==sudoo-worker-2
+
+  cart-service:
+    image: sudo248dev/sudoo-cart-service
+    container_name: cart-service
+    hostname: cart-service
+    depends_on:
+      - registry
+      - db-service
+    networks:
+      - sudoo-network
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname==sudoo-worker-2
+
+  recommend-service:
+    image: sudo248dev/sudoo-recommend-service
+    container_name: recommend-service
+    hostname: recommend-service
+    depends_on:
+      - registry
+    networks:
+      - sudoo-network
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname==sudoo-worker-3
+
   db-service:
     platform: linux/x86_64
     image: mysql:8.0.32-debian
@@ -16,41 +154,13 @@ services:
       - sudoo-network
     ports:
       - "3306:3306"
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname==sudoo-worker-3
 
-  cache-service:
-    image: redis:alpine3.18
-    container_name: cache-service
-    hostname: cache-service
-    expose:
-      - 6379
-    environment:
-      - REDIS_PASSWORD=03092001
-    networks:
-      - sudoo-network
-    ports:
-      - "6379:6379"
-
-  registry:
-    image: sudo248dev/sudoo-registry
-    container_name: registry
-    hostname: registry
-    networks:
-      - sudoo-network
-    ports:
-      - "8761:8761"
-
-  api-gateway:
-    image: sudo248dev/sudoo-api-gateway
-    container_name: api-gateway
-    hostname: api-gateway
-    depends_on:
-      - registry
-    networks:
-      - sudoo-network
-    ports:
-      - "8080:8080"
-
-  storge-service:
+  storage-service:
     image: sudo248dev/sudoo-storage-service
     container_name: storage-service
     hostname: storage-service
@@ -60,66 +170,11 @@ services:
       - sudoo-network
     volumes:
       - ./storage-service/uploads/:/app/image-service/uploads/
-
-  auth-service:
-    image: sudo248dev/sudoo-auth-service
-    container_name: auth-service
-    hostname: auth-service
-    depends_on:
-      - registry
-      - db-service
-      - user-service
-    networks:
-      - sudoo-network
-
-  product-service:
-    image: sudo248dev/sudoo-product-service
-    container_name: product-service
-    hostname: product-service
-    depends_on:
-      - registry
-      - db-service
-    networks:
-      - sudoo-network
-
-  user-service:
-    image: sudo248dev/sudoo-user-service
-    container_name: user-service
-    hostname: user-service
-    depends_on:
-      - registry
-      - db-service
-    networks:
-      - sudoo-network
-
-  cart-service:
-    image: sudo248dev/sudoo-cart-service
-    container_name: cart-service
-    hostname: cart-service
-    depends_on:
-      - registry
-      - db-service
-    networks:
-      - sudoo-network
-
-  order-service:
-    image: sudo248dev/sudoo-order-service
-    container_name: order-service
-    hostname: order-service
-    depends_on:
-      - registry
-      - db-service
-    networks:
-      - sudoo-network
-
-  recommend-service:
-    image: sudo248dev/sudoo-recommend-service
-    container_name: recommend-service
-    hostname: recommend-service
-    depends_on:
-      - registry
-    networks:
-      - sudoo-network
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname==sudoo-worker-3
 
 networks:
   sudoo-network:

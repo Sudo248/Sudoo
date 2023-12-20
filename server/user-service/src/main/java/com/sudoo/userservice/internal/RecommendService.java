@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "RecommendService", url = "http://recommend-service:5000/api/v1")
+@FeignClient(name = "Recommend-Service", url = "http://recommend-service:5000/api/v1")
 @Service
 public interface RecommendService {
     @PostMapping("/users")
