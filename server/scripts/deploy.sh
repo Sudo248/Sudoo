@@ -6,7 +6,6 @@ cd Sudoo
 
 wget https://raw.githubusercontent.com/Sudo248/Sudoo/web-dev/client/web/sudoo/deploy/web.zip
 wget https://raw.githubusercontent.com/Sudo248/Sudoo/be-dev/server/database.zip
-wget https://raw.githubusercontent.com/Sudo248/Sudoo/be-dev/server/scripts/docker-remove.sh
 wget https://raw.githubusercontent.com/Sudo248/Sudoo/be-dev/server/nginx/conf/sudoo.conf
 
 unzip web.zip
