@@ -15,10 +15,7 @@ import com.sudoo.productservice.service.*
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.count
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.flow.*
 import org.springframework.stereotype.Service
 
 @Service
@@ -199,7 +196,7 @@ class UserProductServiceImpl(
         userProductRepository.findAll()
             .map {
                 recommendService.upsertUserProduct(it.toRecommendUserProduct())
-            }
+            }.collect()
         return mapOf(
             "total" to userProductRepository.count(),
             "message" to "Wait for sync all review to recommend service"

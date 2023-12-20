@@ -11,7 +11,7 @@ class UserService:
     def upsertUser(self, body):
         user = {
             'user_id': body['userId'],
-            'dob': datetime.datetime.strptime(body['dob'], '%d/%m/%Y'),
+            'dob': datetime.datetime.strptime(body['dob'], '%Y-%m-%d'),
             'gender': body['gender']
         }
         _id = self.users.find_one({'user_id': user['user_id']}, {'_id': 1})
@@ -27,6 +27,13 @@ class UserService:
         else:
             self.users.update_one({'_id' : int(_id)}, { '$set': user }, upsert=True)
         return user
+    
+    def upsertUsers(self, body):
+        users = list(body)
+        response = []
+        for user in users:
+            response.append(upsertUser(user))
+        return response
     
     def getUsers(self):
         return list(self.users.find({}))

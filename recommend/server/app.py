@@ -32,7 +32,8 @@ def userProductController():
 @app.route('/api/v1/users', methods=['POST', 'GET'])
 def productController():
     if request.method == 'POST':
-        return userService.upsertUser(request.get_json())
+        body = request.get_json()
+        return userService.upsertUser(body)
     else:
         return userService.getUsers()
 
@@ -56,6 +57,21 @@ def downloadLatestModel():
     response = requests.get(body['download_model_url'])
     open('model.keras', 'wb').write(response.content)
     return f"Update model {body['model_name']} successful!!!"
+
+@app.route('/api/v1/recommend/versions', methods=['GET'])
+def getAllModelInfo():
+    try:
+        return {
+            'success': True,
+            'message': 'Success',
+            'data': predictionService.getAllModelInfo()
+        }
+    except:
+        return {
+            'success': False,
+            'message': 'Something went wrong',
+            'data': null
+        }
 
 if __name__ == '__main__':
     app.run(debug=True)

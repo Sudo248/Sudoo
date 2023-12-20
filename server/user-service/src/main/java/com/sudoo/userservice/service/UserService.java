@@ -5,6 +5,8 @@ import com.sudoo.userservice.controller.dto.UserDto;
 import com.sudoo.userservice.controller.dto.UserInfoDto;
 import com.sudoo.userservice.repository.entitity.User;
 
+import java.util.Map;
+
 public interface UserService {
     UserDto getUser(String userId);
     UserInfoDto getUserInfo(String userId) throws ApiException;
@@ -12,5 +14,5 @@ public interface UserService {
     UserDto putUser(String userId, UserDto userDto) throws ApiException;
     UserDto toDto(User user);
     User toEntity(UserDto userDto);
-    int syncUserToRecommendService();
+    Map<String, Object> syncUserToRecommendService();
 }

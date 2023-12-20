@@ -1,7 +1,8 @@
-FROM python:3.9-slim-buster
+FROM tensorflow/tensorflow:2.15.0
 
 WORKDIR /app
 
+RUN python -m pip install --ignore-installed blinker
 COPY requirements.txt requirements.txt
 RUN python -m pip install --no-cache-dir -r requirements.txt
 

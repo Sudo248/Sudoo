@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -117,12 +119,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int syncUserToRecommendService() {
+    public Map<String, Object> syncUserToRecommendService() {
         List<User> users = userRepository.findAll();
         for (User user : users) {
             recommendService.upsertUser(createRecommendUser(user));
         }
-        return users.size();
+        return Map.of(
+                "total",  users.size(),
+                "message", "Wait for sync all user to recommend service"
+        );
     }
 
     private RecommendUserDto createRecommendUser(User user) {
