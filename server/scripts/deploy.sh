@@ -1,4 +1,3 @@
-
 # download web from git
 cd /home
 mkdir -p Sudoo

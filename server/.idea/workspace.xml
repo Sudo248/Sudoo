@@ -5,20 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="72cbe6d0-83b5-4e93-ba3c-2789b9cf0780" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../recommend/model/sudoo_neural_collaborative_filtering.py" beforeDir="false" afterPath="$PROJECT_DIR$/../recommend/model/sudoo_neural_collaborative_filtering.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../recommend/server/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/../recommend/server/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../recommend/server/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/../recommend/server/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../recommend/server/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../recommend/server/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../recommend/server/services/prediction_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/../recommend/server/services/prediction_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../recommend/server/services/user_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/../recommend/server/services/user_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/impl/ProductServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/impl/ProductServiceImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/impl/UserProductServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/kotlin/com/sudoo/productservice/service/impl/UserProductServiceImpl.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/deploy.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/deploy.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/sudoo/userservice/internal/RecommendService.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/sudoo/userservice/internal/RecommendService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/sudoo/userservice/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/sudoo/userservice/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/sudoo/userservice/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/sudoo/userservice/service/impl/UserServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -255,7 +242,7 @@
       <workItem from="1701440781281" duration="8837000" />
       <workItem from="1701625121502" duration="721000" />
       <workItem from="1702914438472" duration="2466000" />
-      <workItem from="1703084913582" duration="2186000" />
+      <workItem from="1703084913582" duration="2518000" />
     </task>
     <servers />
   </component>
