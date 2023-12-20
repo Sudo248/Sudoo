@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:image_downloader_web/image_downloader_web.dart';
 import 'package:sudoo/app/base/base_bloc.dart';
+import 'package:sudoo/app/pages/order/order_list/order_list_bloc.dart';
 import 'package:sudoo/data/api/order/order_api_service.dart';
 import 'package:sudoo/domain/common/Constants.dart';
 import 'package:sudoo/domain/model/order/order_status.dart';
 
 import '../../../../domain/model/order/order.dart';
 import '../../../../domain/repository/order_repository.dart';
-import '../../../../resources/R.dart';
 
 class OrderBloc extends BaseBloc {
   final OrderRepository orderRepository;
@@ -68,8 +68,11 @@ class OrderBloc extends BaseBloc {
         status == OrderStatus.ready;
 
     final isSuccess = await patchOrderStatus(status);
-    if (isSuccess && needGenQr) {
-      qr.value = getDetailOrderSupplierUrl();
+    if (isSuccess) {
+      OrderListBloc.updatedOrderStatus = status;
+      if (needGenQr) {
+        qr.value = getDetailOrderSupplierUrl();
+      }
     }
   }
 

@@ -17,6 +17,7 @@ import 'package:sudoo/domain/model/discovery/supplier_revenue.dart';
 import 'package:sudoo/domain/model/discovery/transaction.dart';
 import 'package:sudoo/domain/model/discovery/upsert_file.dart';
 import 'package:sudoo/domain/model/discovery/upsert_product.dart';
+import 'package:sudoo/domain/model/model/model_sync.dart';
 import 'package:sudoo/domain/model/promotion/promotion.dart';
 import 'package:sudoo/domain/repository/product_repository.dart';
 
@@ -419,6 +420,36 @@ class ProductRepositoryImpl with HandleResponse implements ProductRepository {
       if (error is ApiException && error.statusCode == 404) {
         return DataState.error(const NotFound());
       }
+      return DataState.error(response.getError());
+    }
+  }
+
+  @override
+  Future<DataState<ModelSync, Exception>> syncProductToRecommendService() async {
+    final response = await handleResponse(
+          () => productService.syncAllProductToRecommendService(),
+      fromJson: (json) =>
+          ModelSync.fromJson(json as Map<String, dynamic>),
+    );
+
+    if (response.isSuccess) {
+      return DataState.success(response.get());
+    } else {
+      return DataState.error(response.getError());
+    }
+  }
+
+  @override
+  Future<DataState<ModelSync, Exception>> syncReviewToRecommendService() async {
+    final response = await handleResponse(
+          () => productService.syncAllReviewToRecommendService(),
+      fromJson: (json) =>
+          ModelSync.fromJson(json as Map<String, dynamic>),
+    );
+
+    if (response.isSuccess) {
+      return DataState.success(response.get());
+    } else {
       return DataState.error(response.getError());
     }
   }

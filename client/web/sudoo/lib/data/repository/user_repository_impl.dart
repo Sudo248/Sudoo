@@ -1,6 +1,7 @@
 import 'package:sudoo/data/api/handle_response.dart';
 import 'package:sudoo/data/api/user/user_api_service.dart';
 import 'package:sudoo/domain/core/data_state.dart';
+import 'package:sudoo/domain/model/model/model_sync.dart';
 import 'package:sudoo/domain/model/user/address_suggestion.dart';
 import 'package:sudoo/domain/model/user/user.dart';
 import 'package:sudoo/domain/repository/user_repository.dart';
@@ -77,6 +78,20 @@ class UserRepositoryImpl with HandleResponse implements UserRepository {
     final response = await handleResponse(
       () => userService.updateUser(user),
       fromJson: (json) => User.fromJson(json as Map<String, dynamic>),
+    );
+    if (response.isSuccess) {
+      return DataState.success(response.get());
+    } else {
+      return DataState.error(response.getError());
+    }
+  }
+
+  @override
+  Future<DataState<ModelSync, Exception>> syncUserToRecommendService() async {
+    final response = await handleResponse(
+          () => userService.syncAllUserToRecommendService(),
+      fromJson: (json) =>
+          ModelSync.fromJson(json as Map<String, dynamic>),
     );
     if (response.isSuccess) {
       return DataState.success(response.get());

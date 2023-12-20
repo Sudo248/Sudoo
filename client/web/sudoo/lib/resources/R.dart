@@ -114,6 +114,7 @@ class AppString extends R {
   String get sizeWeight => "Size and Weight";
   String get info => "Info";
   String get store => "Store";
+  String get model => "Model";
   String get stores => "Stores";
   String get dob => "Date of birth";
   String get province => "Province";
@@ -154,6 +155,17 @@ class AppString extends R {
   String get statisticBy => "Statistic by";
   String get cantRevertStatus => "Statistic by";
   String get orderId => "Order code";
+  String get version => "Version";
+  String get evaluate => "Evaluate";
+  String get buildAt => "Build at";
+  String get userSize => "User size";
+  String get productSize => "Product size";
+  String get categorySize => "Category size";
+  String get reviewSize => "Review size";
+  String get syncUserDescription => "Sync all current users to recommend service";
+  String get syncProductDescription => "Sync all current products to recommend service";
+  String get syncReviewDescription => "Sync all current reviews to recommend service";
+  String get syncAllDescription => "Sync all current data to recommend service";
 }
 
 class AppColor extends R {

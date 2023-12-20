@@ -17,6 +17,7 @@ class ProductService {
   static const images = "$discovery/images";
   static const suppliers = "$discovery/suppliers";
   static const banners = "$discovery/banners";
+  static const reviews = "$discovery/reviews";
   static const promotions = "/promotions";
   static const offsetKey = "offset";
   static const limitKey = "limit";
@@ -119,4 +120,8 @@ class ProductService {
   Future getBanners() => api.get(banners);
 
   Future upsertBanner(FileDto banner) => api.post(banners, request: banner);
+
+  Future syncAllProductToRecommendService() => api.post("$products/sync-to-recommend");
+
+  Future syncAllReviewToRecommendService() => api.post("$reviews/sync-to-recommend");
 }

@@ -4,16 +4,19 @@ import 'package:sudoo/data/api/auth/auth_api_service.dart';
 import 'package:sudoo/data/api/dio_api_service.dart';
 import 'package:sudoo/data/api/discovery/product_api_service.dart';
 import 'package:sudoo/data/api/order/order_api_service.dart';
+import 'package:sudoo/data/api/recommend/recommend_api_service.dart';
 import 'package:sudoo/data/api/storage/storage_api_service.dart';
 import 'package:sudoo/data/api/user/user_api_service.dart';
 import 'package:sudoo/data/config/api_config.dart';
 import 'package:sudoo/data/repository/auth_repository_impl.dart';
 import 'package:sudoo/data/repository/order_repository_impl.dart';
 import 'package:sudoo/data/repository/product_repository_impl.dart';
+import 'package:sudoo/data/repository/recommend_repository_impl.dart';
 import 'package:sudoo/domain/repository/auth_repository.dart';
 import 'package:sudoo/domain/repository/category_repository.dart';
 import 'package:sudoo/domain/repository/order_repository.dart';
 import 'package:sudoo/domain/repository/product_repository.dart';
+import 'package:sudoo/domain/repository/recommend_repository.dart';
 import 'package:sudoo/domain/repository/storage_repository.dart';
 import 'package:sudoo/domain/repository/user_repository.dart';
 import 'package:sudoo/utils/di.dart';
@@ -57,6 +60,10 @@ class DataModule {
           () => OrderService(getIt.get()),
     );
 
+    getIt.registerLazySingleton<RecommendService>(
+          () => RecommendService(getIt.get()),
+    );
+
     getIt.registerLazySingleton<ProductRepository>(
       () => ProductRepositoryImpl(getIt.get()),
     );
@@ -83,6 +90,10 @@ class DataModule {
 
     getIt.registerLazySingleton<OrderRepository>(
           () => OrderRepositoryImpl(getIt.get()),
+    );
+
+    getIt.registerLazySingleton<RecommendRepository>(
+          () => RecommendRepositoryImpl(getIt.get()),
     );
   }
 }

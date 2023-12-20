@@ -31,8 +31,9 @@ class OrderListPage extends BasePage<OrderListBloc> {
 
   @override
   Widget build(BuildContext context) {
-    bloc.onClickDetail = (orderSupplierId) =>
-        context.push("${AppRoutes.orders}/$orderSupplierId");
+    bloc.onClickDetail = (orderSupplierId) async {
+      return await context.push("${AppRoutes.orders}/$orderSupplierId");
+    };
 
     final size = MediaQuery.sizeOf(context);
     final itemHeight = size.height * 0.13;

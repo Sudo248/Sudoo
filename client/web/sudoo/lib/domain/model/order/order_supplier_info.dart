@@ -12,7 +12,7 @@ class OrderSupplierInfo {
   final String userPhoneNumber;
   final String? paymentType;
   final DateTime? paymentDateTime;
-  final OrderStatus status;
+  OrderStatus status;
   final String address;
   final DateTime expectedReceiveDateTime;
   final double totalPrice;

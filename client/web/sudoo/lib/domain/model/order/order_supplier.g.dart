@@ -41,6 +41,7 @@ const _$OrderStatusEnumMap = {
   OrderStatus.ready: 'READY',
   OrderStatus.takeOrder: 'TAKE_ORDER',
   OrderStatus.shipping: 'SHIPPING',
+  OrderStatus.delivered: 'DELIVERED',
   OrderStatus.received: 'RECEIVED',
   OrderStatus.canceled: 'CANCELED',
 };

@@ -6,6 +6,7 @@ import 'package:sudoo/app/pages/order/order_list/order_list_bloc.dart';
 import 'package:sudoo/app/pages/product/product/product_bloc.dart';
 import 'package:sudoo/app/pages/product/product_list/product_list_bloc.dart';
 import 'package:sudoo/app/pages/promotion/promotion_bloc.dart';
+import 'package:sudoo/app/pages/recommend/model_bloc.dart';
 import 'package:sudoo/app/pages/splash/splash_bloc.dart';
 import 'package:sudoo/app/pages/statstic/revenue/revenue_bloc.dart';
 import 'package:sudoo/app/pages/stores/store_bloc.dart';
@@ -55,6 +56,8 @@ class AppModule {
     getIt.registerFactory(() => StatisticRevenueBloc(getIt.get(), getIt.get()));
 
     getIt.registerFactory(() => HistoryTransactionBloc(getIt.get()));
+
+    getIt.registerFactory(() => ModelBloc(getIt.get(), getIt.get(), getIt.get()));
 
   }
 }

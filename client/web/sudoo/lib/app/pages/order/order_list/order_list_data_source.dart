@@ -6,6 +6,7 @@ import 'package:sudoo/app/pages/order/order_list/order_supplier_item/delivery_in
 import 'package:sudoo/app/pages/order/order_list/order_supplier_item/order_info_cell.dart';
 import 'package:sudoo/app/pages/order/order_list/order_supplier_item/order_status_cell.dart';
 import 'package:sudoo/app/routes/app_router.dart';
+import 'package:sudoo/domain/model/order/order_status.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../../domain/model/order/order_supplier_info.dart';
@@ -115,6 +116,12 @@ class OrderListDataSource extends DataGridSource {
     this.orders.clear();
     this.orders.addAll(orders);
     notifyDataSetChange();
+  }
+
+  void updateOrderStatus(String orderSupplierId, OrderStatus status) {
+    final index = orders.indexWhere((element) => element.orderSupplierId == orderSupplierId);
+    orders[index].status = status;
+    notifyItemChange(index, 2);
   }
 
   void notifyDataSetChange() {

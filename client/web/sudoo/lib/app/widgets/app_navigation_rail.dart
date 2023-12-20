@@ -133,6 +133,10 @@ class AppNavigationRail extends StatelessWidget {
         icon: const Icon(Icons.store_outlined),
         label: Text(R.string.stores),
       ),
+      NavigationRailDestination(
+        icon: const Icon(Icons.model_training),
+        label: Text(R.string.model),
+      ),
     ];
   }
 }

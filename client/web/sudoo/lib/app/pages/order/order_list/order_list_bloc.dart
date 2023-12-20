@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:sudoo/app/base/base_bloc.dart';
+import 'package:sudoo/domain/model/order/order_status.dart';
 import 'package:sudoo/domain/model/order/order_supplier_info.dart';
 import 'package:sudoo/domain/repository/order_repository.dart';
 
@@ -8,9 +9,11 @@ import 'order_list_data_source.dart';
 
 class OrderListBloc extends BaseBloc
     implements OrderSupplierInfoActionCallback {
+  static OrderStatus? updatedOrderStatus = null;
+
   final OrderRepository orderRepository;
   late final OrderListDataSource orderListDatSource;
-  Function(String)? onClickDetail;
+  Future Function(String)? onClickDetail;
   final ValueNotifier<int> totalOrders = ValueNotifier(0);
 
   OrderListBloc(this.orderRepository) {
@@ -46,6 +49,12 @@ class OrderListBloc extends BaseBloc
 
   @override
   Future<void> onOpenDetail(OrderSupplierInfo orderSupplierInfo) async {
-    onClickDetail?.call(orderSupplierInfo.orderSupplierId);
+    await onClickDetail?.call(orderSupplierInfo.orderSupplierId);
+    if (updatedOrderStatus != null) {
+      orderListDatSource.updateOrderStatus(orderSupplierInfo.orderSupplierId, updatedOrderStatus!);
+      updatedOrderStatus = null;
+    }
   }
+
+
 }

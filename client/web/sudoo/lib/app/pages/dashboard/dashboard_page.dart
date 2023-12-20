@@ -49,7 +49,10 @@ class DashboardPage extends BasePage<DashboardBloc> {
           break;
         case 4:
           _dashboardGo(context, AppRoutes.adminStores);
-          break; 
+          break;
+        case 5:
+          _dashboardGo(context, AppRoutes.adminModel);
+          break;
         default:
           context.go(AppRoutes.home);
       }

@@ -6,6 +6,7 @@ import 'package:sudoo/app/pages/dashboard/dashboard_page.dart';
 import 'package:sudoo/app/pages/order/order/order_page.dart';
 import 'package:sudoo/app/pages/order/order_list/order_list_page.dart';
 import 'package:sudoo/app/pages/promotion/promotion_page.dart';
+import 'package:sudoo/app/pages/recommend/model_page.dart';
 import 'package:sudoo/app/pages/stores/stores_page.dart';
 import 'package:sudoo/app/pages/supplier/supplier_page.dart';
 import 'package:sudoo/app/pages/user/user_page.dart';
@@ -162,6 +163,12 @@ class AppRouter {
         path: AppRoutes.adminStores,
         builder: (context, state) => StoresPage(),
       ),
+      GoRoute(
+        parentNavigatorKey: _dashboardNavigatorKey,
+        name: AppRoutes.adminModel,
+        path: AppRoutes.adminModel,
+        builder: (context, state) => ModelPage(),
+      ),
     ];
   }
 
@@ -182,6 +189,9 @@ class AppRouter {
         case AppRoutes.adminStores:
           index = 4;
           break;
+        case AppRoutes.adminModel:
+          index = 5;
+        break;
         default:
           index = 0;
           break;

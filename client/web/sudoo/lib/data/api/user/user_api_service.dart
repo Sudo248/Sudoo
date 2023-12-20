@@ -21,4 +21,6 @@ class UserService {
   Future getSuggestionDistrict(int provinceId) => api.get("$suggestionDistrict/$provinceId");
 
   Future getSuggestionWard(int districtId) => api.get("$suggestionWard/$districtId");
+
+  Future syncAllUserToRecommendService() => api.post("$users/sync-to-recommend");
 }

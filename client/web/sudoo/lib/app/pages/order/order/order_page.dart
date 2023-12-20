@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:sudoo/app/base/base_page.dart';
 import 'package:sudoo/app/dialog/qr_dialog.dart';

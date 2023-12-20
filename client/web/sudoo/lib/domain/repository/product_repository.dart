@@ -12,6 +12,7 @@ import 'package:sudoo/domain/model/discovery/file.dart' as domain;
 import '../core/data_state.dart';
 import '../model/discovery/category.dart';
 import '../model/discovery/product_pagination.dart';
+import '../model/model/model_sync.dart';
 import '../model/promotion/promotion.dart';
 
 abstract class ProductRepository {
@@ -73,4 +74,8 @@ abstract class ProductRepository {
   Future<DataState<domain.File, Exception>> deleteBanner(String bannerId);
 
   Future<DataState<List<Supplier>, Exception>> getSuppliers();
+
+  Future<DataState<ModelSync, Exception>> syncProductToRecommendService();
+
+  Future<DataState<ModelSync, Exception>> syncReviewToRecommendService();
 }

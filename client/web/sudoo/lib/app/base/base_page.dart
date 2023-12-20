@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:flutter/material.dart';
 import 'package:sudoo/app/base/base_bloc.dart';
 import 'package:sudoo/app/widgets/loading_view.dart';
@@ -46,16 +44,16 @@ class _BasePageState extends State<BasePage> with AutomaticKeepAliveClientMixin<
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    Widget content = widget.build(context);
     if (widget.enableStatePage) {
-      return Stack(
+      content = Stack(
         children: [
           widget.build(context),
           LoadingView(controller: widget.bloc.loadingController),
         ],
       );
-    } else {
-      return widget.build(context);
     }
+    return content;
   }
 
   @override

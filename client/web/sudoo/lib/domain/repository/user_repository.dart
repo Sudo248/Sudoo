@@ -1,5 +1,6 @@
 import 'dart:core';
 
+import 'package:sudoo/domain/model/model/model_sync.dart';
 import 'package:sudoo/domain/model/user/user.dart';
 
 import '../core/data_state.dart';
@@ -13,4 +14,5 @@ abstract class UserRepository {
   Future<DataState<List<AddressSuggestion>, Exception>> getSuggestionDistrict(int provinceId);
   Future<DataState<List<AddressSuggestion>, Exception>> getSuggestionWard(int districtId);
 
+  Future<DataState<ModelSync, Exception>> syncUserToRecommendService();
 }
