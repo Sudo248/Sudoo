@@ -139,7 +139,6 @@ services:
           - node.hostname==sudoo-worker-3
 
   db-service:
-    platform: linux/x86_64
     image: mysql:8.0.32-debian
     container_name: db-service
     hostname: db-service
