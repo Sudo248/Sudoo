@@ -4,6 +4,7 @@ import com.sudoo.authservice.dto.ChangePasswordDto
 import com.sudoo.authservice.dto.SignInDto
 import com.sudoo.authservice.dto.SignUpDto
 import com.sudoo.authservice.service.AccountService
+import com.sudoo.authservice.service.AuthConfigService
 import com.sudoo.domain.base.BaseController
 import com.sudoo.domain.base.BaseResponse
 import com.sudoo.domain.common.Constants
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 class AccountController(
+    private val authConfigService: AuthConfigService,
     private val accountService: AccountService
 ) : BaseController() {
 
@@ -20,6 +22,11 @@ class AccountController(
         @RequestHeader(Constants.HEADER_USER_ID) userId: String,
     ): ResponseEntity<BaseResponse<*>> = handle {
         accountService.getRole(userId)
+    }
+
+    @GetMapping("/config")
+    suspend fun getAuthConfig(): ResponseEntity<BaseResponse<*>> = handle {
+        authConfigService.getConfig()
     }
 
     @PostMapping("/sign-in")
@@ -41,8 +48,8 @@ class AccountController(
     }
 
     @GetMapping("/logout")
-    suspend fun logout(@RequestHeader(Constants.HEADER_USER_ID) userId: String): ResponseEntity<BaseResponse<*>> =
-        handle {
+    suspend fun logout(@RequestHeader(Constants.HEADER_USER_ID) userId: String
+    ): ResponseEntity<BaseResponse<*>> = handle {
             accountService.logout(userId)
         }
 }

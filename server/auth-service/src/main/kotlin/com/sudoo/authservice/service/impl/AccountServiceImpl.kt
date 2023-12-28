@@ -13,28 +13,26 @@ import com.sudoo.authservice.model.Account
 import com.sudoo.authservice.model.Role
 import com.sudoo.authservice.repository.AccountRepository
 import com.sudoo.authservice.service.AccountService
+import com.sudoo.authservice.service.AuthConfigService
 import com.sudoo.authservice.service.OtpService
 import com.sudoo.authservice.service.UserService
 import com.sudoo.authservice.utils.TokenUtils
 import com.sudoo.domain.exception.ApiException
 import com.sudoo.domain.exception.CommonException
 import com.sudoo.domain.exception.NotFoundException
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
 class AccountServiceImpl(
+    private val authConfig: AuthConfigService,
     private val accountRepository: AccountRepository,
     private val encoder: PasswordEncoder,
     private val tokenUtils: TokenUtils,
     private val otpService: OtpService,
     private val userService: UserService,
 ) : AccountService {
-
-    @Value("\${otp.enable}")
-    private var enableOtp: Boolean = true
     override suspend fun getRole(userId: String): Role {
         val account = accountRepository.findById(userId) ?: throw NotFoundException("Not found role of user $userId")
         return account.role
@@ -59,6 +57,7 @@ class AccountServiceImpl(
         if (accountRepository.existsByEmailOrPhoneNumber(signUpDto.emailOrPhoneNumber) == 1) {
             throw EmailOrPhoneNumberExistedException()
         }
+        val enableOtp = getEnableOtp()
         val account = signUpDto.toModel(isValidated = !enableOtp)
         if (enableOtp) {
             otpService.generateOtp(signUpDto.emailOrPhoneNumber)
@@ -108,5 +107,9 @@ class AccountServiceImpl(
             e.printStackTrace()
             throw ApiException(HttpStatus.INSUFFICIENT_STORAGE, e.message)
         }
+    }
+
+    private suspend fun getEnableOtp(): Boolean {
+        return authConfig.getConfig().enableOtp
     }
 }
