@@ -24,12 +24,12 @@ wget https://raw.githubusercontent.com/Sudo248/Sudoo/be-dev/server/docker-compos
 
 docker network create --driver=overlay --attachable sudoo-network
 
-scp -r database sudoo-worker-3:~/database
+#scp -r database sudoo-worker-3:~/database
+#
+#mkdir mysql
+#
+#mkdir storage_service_uploads
 
-mkdir mysql
-
-mkdir storage_service_uploads
-
-docker compose -f docker-compose.yml pull
+#docker compose -f docker-compose.yml pull
 
 docker stack deploy -c docker-compose.yml sudoo

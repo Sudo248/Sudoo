@@ -40,7 +40,7 @@ services:
     networks:
       - sudoo-network
     deploy:
-      replicas: 3
+      replicas: 1
       placement:
         constraints:
           - node.hostname==sudoo-worker-1
@@ -73,7 +73,7 @@ services:
     networks:
       - sudoo-network
     deploy:
-      replicas: 3
+      replicas: 1
       placement:
         constraints:
           - node.hostname==sudoo-worker-1
@@ -88,6 +88,8 @@ services:
       - user-service
     networks:
       - sudoo-network
+    environment:
+      - MAIL_PASSWORD=xbkp qzmm ecnf kcwq
     deploy:
       replicas: 1
       placement:
@@ -187,3 +189,5 @@ volumes:
     external: true
   storage_service_uploads:
     external: true
+
+    MinhHD <hdminh5901@gmail.com>
