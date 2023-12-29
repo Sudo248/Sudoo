@@ -73,6 +73,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public OrderConfigDto getOrderConfig() {
+        try {
+            final String enableStaffFullControlOrderStatusValue = System.getenv("ENABLE_STAFF_FULL_CONTROL_ORDER_STATUS");
+            return new OrderConfigDto(
+                    Boolean.parseBoolean(enableStaffFullControlOrderStatusValue)
+            );
+        } catch (Exception e) {
+            return new OrderConfigDto(false);
+        }
+    }
+
+    @Override
     public List<OrderDto> getOrdersByUserId(String userId) throws ApiException {
         List<Order> orders = orderRepository.getOrdersByUserId(userId);
         return orders.stream().filter((e) -> e.getPayment() != null).map(

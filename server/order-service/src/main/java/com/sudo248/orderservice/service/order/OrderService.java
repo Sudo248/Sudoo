@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface OrderService {
+
+    OrderConfigDto getOrderConfig();
+
     List<OrderDto> getOrdersByUserId(String userId) throws ApiException;
     OrderDto getOrderById(String orderId) throws ApiException;
     OrderDto createOrder(String userId, UpsertOrderDto upsertOrderDto) throws ApiException;

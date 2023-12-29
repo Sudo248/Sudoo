@@ -13,6 +13,7 @@ services:
       placement:
         constraints:
           - node.role==manager
+    restart: always
 
   api-gateway:
     image: sudo248dev/sudoo-api-gateway
@@ -29,6 +30,7 @@ services:
       placement:
         constraints:
           - node.role==manager
+    restart: always
 
   product-service:
     image: sudo248dev/sudoo-product-service
@@ -44,6 +46,7 @@ services:
       placement:
         constraints:
           - node.hostname==sudoo-worker-1
+    restart: always
 
   cache-service:
     image: redis:alpine3.18
@@ -62,6 +65,7 @@ services:
       placement:
         constraints:
           - node.hostname==sudoo-worker-1
+    restart: always
 
   order-service:
     image: sudo248dev/sudoo-order-service
@@ -77,6 +81,7 @@ services:
       placement:
         constraints:
           - node.hostname==sudoo-worker-1
+    restart: always
 
   auth-service:
     image: sudo248dev/sudoo-auth-service
@@ -95,6 +100,7 @@ services:
       placement:
         constraints:
           - node.hostname==sudoo-worker-2
+    restart: always
 
   user-service:
     image: sudo248dev/sudoo-user-service
@@ -110,6 +116,7 @@ services:
       placement:
         constraints:
           - node.hostname==sudoo-worker-2
+    restart: always
 
   cart-service:
     image: sudo248dev/sudoo-cart-service
@@ -125,6 +132,7 @@ services:
       placement:
         constraints:
           - node.hostname==sudoo-worker-2
+    restart: always
 
   recommend-service:
     image: sudo248dev/sudoo-recommend-service
@@ -139,6 +147,7 @@ services:
       placement:
         constraints:
           - node.hostname==sudoo-worker-3
+    restart: always
 
   db-service:
     image: mysql:8.0.32-debian
@@ -161,6 +170,7 @@ services:
       placement:
         constraints:
           - node.hostname==sudoo-worker-3
+    restart: always
 
   storage-service:
     image: sudo248dev/sudoo-storage-service
@@ -177,6 +187,7 @@ services:
       placement:
         constraints:
           - node.hostname==sudoo-worker-3
+    restart: always
 
 networks:
   sudoo-network:
@@ -189,5 +200,3 @@ volumes:
     external: true
   storage_service_uploads:
     external: true
-
-    MinhHD <hdminh5901@gmail.com>

@@ -31,6 +31,11 @@ public class OrderController {
         this.orderService = orderService;
     }
 
+    @GetMapping("/config")
+    public ResponseEntity<BaseResponse<?>> getOrderConfig() {
+      return Utils.handleException(() -> BaseResponse.ok(orderService.getOrderConfig()));
+    }
+
     @PostMapping
     public ResponseEntity<BaseResponse<?>> createOrder(
             @RequestHeader(Constants.HEADER_USER_ID) String userId,
