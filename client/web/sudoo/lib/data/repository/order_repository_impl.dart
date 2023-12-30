@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sudoo/data/api/handle_response.dart';
 import 'package:sudoo/data/api/order/order_api_service.dart';
+import 'package:sudoo/domain/common/Constants.dart';
 import 'package:sudoo/domain/core/data_state.dart';
 import 'package:sudoo/domain/model/order/order_config.dart';
 import 'package:sudoo/domain/model/order/order_status.dart';
@@ -87,7 +88,7 @@ class OrderRepositoryImpl with HandleResponse implements OrderRepository {
   Future<DataState<OrderConfig, Exception>> getConfig() async {
     final int counter = pref.getInt(PrefKeys.counter) ?? 0;
     OrderConfig? config = _getLocalConfig();
-    if (counter % 2 == 0 || config == null) {
+    if (counter % Constants.timesRefreshConfig == 0 || config == null) {
       final response = await handleResponse(() => orderService.getOrderConfig(),
           fromJson: (json) =>
               OrderConfig.fromJson(json as Map<String, dynamic>));

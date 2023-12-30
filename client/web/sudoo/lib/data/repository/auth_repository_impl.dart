@@ -15,6 +15,7 @@ import 'package:sudoo/domain/model/auth/verify_otp.dart';
 import 'package:sudoo/domain/repository/auth_repository.dart';
 import 'package:sudoo/extensions/string_ext.dart';
 
+import '../../domain/common/Constants.dart';
 import '../../domain/model/auth/token.dart';
 
 class AuthRepositoryImpl with HandleResponse implements AuthRepository {
@@ -116,7 +117,7 @@ class AuthRepositoryImpl with HandleResponse implements AuthRepository {
   Future<DataState<AuthConfig, Exception>> getConfig() async {
     final int counter = pref.getInt(PrefKeys.counter) ?? 0;
     AuthConfig? config = _getLocalConfig();
-    if (counter % 2 == 0 || config == null) {
+    if (counter % Constants.timesRefreshConfig == 0 || config == null) {
       final response = await handleResponse(
         () => authApiService.getAuthConfig(),
         fromJson: (json) => AuthConfig.fromJson(json as Map<String, dynamic>),

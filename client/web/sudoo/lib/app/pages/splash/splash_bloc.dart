@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sudoo/app/base/base_bloc.dart';
 import 'package:sudoo/data/config/pref_keys.dart';
+import 'package:sudoo/domain/common/Constants.dart';
 import 'package:sudoo/domain/repository/auth_repository.dart';
 import 'package:sudoo/domain/repository/order_repository.dart';
 import 'package:sudoo/domain/repository/product_repository.dart';
@@ -39,7 +40,7 @@ class SplashBloc extends BaseBloc {
   @override
   void onInit() {
     int? counter = pref.getInt(PrefKeys.counter);
-    if (counter == null || counter % 2 == 0) {
+    if (counter == null || (counter > 0 && counter % Constants.timesRefreshConfig == 0)) {
       counter = 0;
     } else {
       counter += 1;
