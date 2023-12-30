@@ -89,7 +89,7 @@ class DataModule {
     );
 
     getIt.registerLazySingleton<OrderRepository>(
-          () => OrderRepositoryImpl(getIt.get()),
+          () => OrderRepositoryImpl(getIt.get(), getIt.get()),
     );
 
     getIt.registerLazySingleton<RecommendRepository>(

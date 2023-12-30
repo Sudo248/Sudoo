@@ -1,5 +1,3 @@
-import '../api/order/order_api_service.dart';
-
 abstract class ApiConfig {
   static const String host = "https://service.sudoo.id.vn";
   static const String port = "8080";
@@ -13,6 +11,5 @@ abstract class ApiConfig {
   static const String image = "image";
   static const String file = "file";
   static const String storageImageUrl = "https://storage.googleapis.com/sudoo-buckets/images";
-  // for Minh to config if he don't want many site
   static const bool useAdminSite = true;
 }

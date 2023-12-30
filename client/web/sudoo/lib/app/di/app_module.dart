@@ -25,7 +25,7 @@ class AppModule {
     getIt.registerLazySingleton<ScaffoldMessengerService>(
         () => ScaffoldMessengerService());
 
-    getIt.registerFactory(() => SplashBloc(getIt.get(), getIt.get()));
+    getIt.registerFactory(() => SplashBloc(getIt.get(), getIt.get(), getIt.get(), getIt.get()));
 
     getIt.registerFactory(() => AuthBloc(getIt.get(), getIt.get()));
 
@@ -51,7 +51,7 @@ class AppModule {
 
     getIt.registerFactory(() => StoresBloc(getIt.get()));
 
-    getIt.registerFactory(() => OrderBloc(getIt.get()));
+    getIt.registerFactory(() => OrderBloc(getIt.get(), getIt.get()));
 
     getIt.registerFactory(() => StatisticRevenueBloc(getIt.get(), getIt.get()));
 

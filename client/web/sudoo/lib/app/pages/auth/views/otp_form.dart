@@ -19,19 +19,21 @@ class OtpForm extends StatelessWidget {
       children: [
         Text(
           R.string.otpAuthentication,
-          style: R.style.h3.copyWith(
+          style: R.style.h4_1.copyWith(
             color: Colors.black,
             fontWeight: FontWeight.bold,
           ),
+          textAlign: TextAlign.center,
         ),
         const SizedBox(
           height: 20,
         ),
         Text(
           R.string.otpDescription,
-          style: R.style.h3.copyWith(
+          style: R.style.h5.copyWith(
             color: Colors.black,
           ),
+          textAlign: TextAlign.center,
         ),
         const SizedBox(
           height: 30,

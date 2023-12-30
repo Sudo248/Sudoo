@@ -7,6 +7,7 @@ import '../api_service.dart';
 
 class OrderService {
   static const orders = "/orders";
+  static const orderConfig = "$orders/config";
   static const orderSupplier = "$orders/order-supplier";
   static const statistic = "$orders/statistic";
   static const statisticRevenue = "$statistic/revenue";
@@ -15,6 +16,8 @@ class OrderService {
   final ApiService api;
 
   const OrderService(this.api);
+
+  Future getOrderConfig() => api.get(orderConfig);
 
   Future getListOrderSupplier() => api.get(orderSupplier);
 

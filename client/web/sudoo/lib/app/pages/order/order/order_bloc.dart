@@ -14,8 +14,10 @@ class OrderBloc extends BaseBloc {
   final ValueNotifier<Order?> order = ValueNotifier(null);
   final ValueNotifier<OrderStatus?> orderStatus = ValueNotifier(null);
   final ValueNotifier<String?> qr = ValueNotifier(null);
+  final List<OrderStatus> enableStatus = List.empty(growable: true);
+  final OrderListBloc _orderListBloc;
 
-  OrderBloc(this.orderRepository);
+  OrderBloc(this.orderRepository, this._orderListBloc);
 
   @override
   void onDispose() {
@@ -26,7 +28,7 @@ class OrderBloc extends BaseBloc {
 
   @override
   void onInit() {
-    // TODO: implement onInit
+    getEnableListStatus();
   }
 
   Future<void> fetchOrderSupplier(String orderSupplierId) async {
@@ -69,7 +71,7 @@ class OrderBloc extends BaseBloc {
 
     final isSuccess = await patchOrderStatus(status);
     if (isSuccess) {
-      OrderListBloc.updatedOrderStatus = status;
+      _orderListBloc.updateOrderStatus(order.value!.orderSuppliers.first.orderSupplierId, status);
       if (needGenQr) {
         qr.value = getDetailOrderSupplierUrl();
       }
@@ -82,27 +84,6 @@ class OrderBloc extends BaseBloc {
 
   Future<void> onDownloadQr(GlobalKey qrKey) async {
     try {
-      // RenderRepaintBoundary boundary =
-      //     qrKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
-      // var image = await boundary.toImage(pixelRatio: 3.0);
-      // final whitePaint = Paint()..color = Colors.white;
-      // final recorder = PictureRecorder();
-      // final canvas = Canvas(recorder,
-      //     Rect.fromLTWH(0, 0, image.width.toDouble(), image.height.toDouble()));
-      // canvas.drawRect(
-      //     Rect.fromLTWH(0, 0, image.width.toDouble(), image.height.toDouble()),
-      //     whitePaint);
-      // canvas.drawImage(image, Offset.zero, Paint());
-      // final picture = recorder.endRecording();
-      // final img = await picture.toImage(image.width, image.height);
-      // ByteData? byteData = await img.toByteData(format: ImageByteFormat.png);
-      // Uint8List pngBytes = byteData!.buffer.asUint8List();
-      //
-      // String fileName = "Order_#${qr.value.orEmpty}.png";
-      // await WebImageDownloader.downloadImageFromUInt8List(
-      //     uInt8List: pngBytes, name: fileName, imageType: ImageType.png);
-      // showInfoMessage("Download success");
-
       await WebImageDownloader.downloadImageFromWeb(
         "${Constants.createQrUrl}${qr.value}",
         name: "Order_#${order.value!.orderSuppliers.first.orderSupplierId}.png",
@@ -111,6 +92,15 @@ class OrderBloc extends BaseBloc {
       showInfoMessage("Download success");
     } catch (e) {
       print(e);
+    }
+  }
+
+  Future<void> getEnableListStatus() async {
+    final enableAllStatus = (await orderRepository.getConfig()).get().enableAllStatus;
+    if (enableAllStatus) {
+      enableStatus.addAll(OrderStatus.values);
+    } else {
+      enableStatus.addAll(OrderStatus.getEnableStaffStatus());
     }
   }
 }

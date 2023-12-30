@@ -1,3 +1,4 @@
+import 'package:sudoo/domain/model/order/order_config.dart';
 import 'package:sudoo/domain/model/order/order_supplier_info.dart';
 import 'package:sudoo/domain/type_date_picker.dart';
 
@@ -6,6 +7,8 @@ import '../model/order/order.dart';
 import '../model/order/order_status.dart';
 
 abstract class OrderRepository {
+  Future<DataState<OrderConfig, Exception>> getConfig();
+
   Future<DataState<List<OrderSupplierInfo>, Exception>> getListOrderSupplier();
 
   Future<DataState<Order, Exception>> getOrderSupplier(String orderSupplierId);

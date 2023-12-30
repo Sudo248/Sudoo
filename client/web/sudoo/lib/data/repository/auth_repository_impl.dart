@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sudoo/data/api/auth/auth_api_service.dart';
 import 'package:sudoo/data/api/auth/request/account_request.dart';
@@ -8,6 +10,7 @@ import 'package:sudoo/data/config/pref_keys.dart';
 import 'package:sudoo/data/dto/auth/token_dto.dart';
 import 'package:sudoo/domain/core/data_state.dart';
 import 'package:sudoo/domain/model/auth/account.dart';
+import 'package:sudoo/domain/model/auth/auth_config.dart';
 import 'package:sudoo/domain/model/auth/verify_otp.dart';
 import 'package:sudoo/domain/repository/auth_repository.dart';
 import 'package:sudoo/extensions/string_ext.dart';
@@ -21,16 +24,14 @@ class AuthRepositoryImpl with HandleResponse implements AuthRepository {
   const AuthRepositoryImpl(this.authApiService, {required this.pref});
 
   @override
-  Future<DataState<dynamic, Exception>> changePassword(
-    String oldPassword,
-    String newPassword,
-  ) async {
+  Future<DataState<dynamic, Exception>> changePassword(String oldPassword,
+      String newPassword,) async {
     final request = ChangePasswordRequest(
       oldPassword: oldPassword,
       newPassword: newPassword,
     );
     final response = await handleResponse(
-      () => authApiService.changePassword(request),
+          () => authApiService.changePassword(request),
     );
     return response;
   }
@@ -47,7 +48,7 @@ class AuthRepositoryImpl with HandleResponse implements AuthRepository {
       password: account.password,
     );
     final response = await handleResponse(
-      () => authApiService.signIn(request),
+          () => authApiService.signIn(request),
       fromJson: (json) => TokenDto.fromJson(json as Map<String, dynamic>),
     );
     if (response.isSuccess) {
@@ -59,7 +60,6 @@ class AuthRepositoryImpl with HandleResponse implements AuthRepository {
     } else {
       return DataState.error(response.getError());
     }
-
   }
 
   @override
@@ -69,7 +69,7 @@ class AuthRepositoryImpl with HandleResponse implements AuthRepository {
       password: account.password,
     );
     final response = await handleResponse(
-      () => authApiService.signUp(request),
+          () => authApiService.signUp(request),
     );
     return response;
   }
@@ -77,9 +77,9 @@ class AuthRepositoryImpl with HandleResponse implements AuthRepository {
   @override
   Future<DataState<Token, Exception>> submitOtp(VerifyOtp verifyOtp) async {
     final request =
-        VerifyOtpRequest(verifyOtp.emailOrPhoneNumber, verifyOtp.otp);
+    VerifyOtpRequest(verifyOtp.emailOrPhoneNumber, verifyOtp.otp);
     final response = await handleResponse(
-        () => authApiService.verifyOtp(request),
+            () => authApiService.verifyOtp(request),
         fromJson: (json) => TokenDto.fromJson(json as Map<String, dynamic>));
     if (response.isSuccess) {
       final TokenDto token = response.get();
@@ -99,7 +99,7 @@ class AuthRepositoryImpl with HandleResponse implements AuthRepository {
       return DataState.error(Exception());
     }
     final response = await handleResponse(
-        () => authApiService.refreshToken(refreshToken!),
+            () => authApiService.refreshToken(refreshToken!),
         fromJson: (json) => TokenDto.fromJson(json as Map<String, dynamic>));
     if (response.isSuccess) {
       final TokenDto token = response.get();
@@ -110,5 +110,39 @@ class AuthRepositoryImpl with HandleResponse implements AuthRepository {
     } else {
       return DataState.error(response.getError());
     }
+  }
+
+  @override
+  Future<DataState<AuthConfig, Exception>> getConfig() async {
+    final int counter = pref.getInt(PrefKeys.counter) ?? 0;
+    AuthConfig? config = _getLocalConfig();
+    if (counter % 2 == 0 || config == null) {
+      final response = await handleResponse(
+        () => authApiService.getAuthConfig(),
+        fromJson: (json) => AuthConfig.fromJson(json as Map<String, dynamic>),
+      );
+      if (response.isSuccess) {
+        config = response.get();
+        _saveAuthConfig(config!);
+        return DataState.success(config);
+      } else {
+        return DataState.success(AuthConfig(false));
+      }
+    } else {
+      return DataState.success(config);
+    }
+  }
+
+  AuthConfig? _getLocalConfig() {
+    final stringConfig = pref.getString(PrefKeys.authConfig);
+    if (stringConfig == null) return null;
+    final jsonConfig = json.decode(stringConfig);
+    return AuthConfig.fromJson(jsonConfig as Map<String, dynamic>);
+  }
+
+  void _saveAuthConfig(AuthConfig config) {
+    Map<String, dynamic> map = config.toJson();
+    final stringConfig = json.encode(map);
+    pref.setString(PrefKeys.authConfig, stringConfig);
   }
 }

@@ -9,7 +9,6 @@ import 'order_list_data_source.dart';
 
 class OrderListBloc extends BaseBloc
     implements OrderSupplierInfoActionCallback {
-  static OrderStatus? updatedOrderStatus = null;
 
   final OrderRepository orderRepository;
   late final OrderListDataSource orderListDatSource;
@@ -47,14 +46,12 @@ class OrderListBloc extends BaseBloc
     }
   }
 
-  @override
-  Future<void> onOpenDetail(OrderSupplierInfo orderSupplierInfo) async {
-    await onClickDetail?.call(orderSupplierInfo.orderSupplierId);
-    if (updatedOrderStatus != null) {
-      orderListDatSource.updateOrderStatus(orderSupplierInfo.orderSupplierId, updatedOrderStatus!);
-      updatedOrderStatus = null;
-    }
+  void updateOrderStatus(String orderSupplierId, OrderStatus status) {
+    orderListDatSource.updateOrderStatus(orderSupplierId, status);
   }
 
-
+  @override
+  Future<void> onOpenDetail(OrderSupplierInfo orderSupplierInfo) async {
+    onClickDetail?.call(orderSupplierInfo.orderSupplierId);
+  }
 }

@@ -23,7 +23,7 @@ class AuthBloc extends BaseBloc {
       confirmPasswordController = TextEditingController(),
       otpController = TextEditingController();
 
-  final bool enableOtp = true;
+  bool? _enableOtp;
 
   late Function(String) _navigateToDashboard;
 
@@ -34,7 +34,9 @@ class AuthBloc extends BaseBloc {
   }
 
   @override
-  void onInit() {}
+  void onInit() {
+    enableOtp();
+  }
 
   String? emailValidator(String? email) {
     if (Validator.isAdmin(emailController.text) ||
@@ -107,7 +109,7 @@ class AuthBloc extends BaseBloc {
       loadingController.hideLoading();
       if (result.isSuccess) {
         showInfoMessage("Sign up is successful");
-        if (enableOtp) {
+        if (await enableOtp()) {
           form.value = AuthForm.otpForm;
         } else {
           navigateToSignInForm();
@@ -135,6 +137,11 @@ class AuthBloc extends BaseBloc {
     } else {
       showErrorMessage(result.requireError());
     }
+  }
+
+  Future<bool> enableOtp() async {
+    _enableOtp ??= (await authRepository.getConfig()).get().enableOtp;
+    return _enableOtp!;
   }
 
   @override

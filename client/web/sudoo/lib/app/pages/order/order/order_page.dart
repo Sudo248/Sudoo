@@ -17,7 +17,7 @@ import '../../../../resources/R.dart';
 
 class OrderPage extends BasePage<OrderBloc> {
   final String? orderSupplierId;
-  BuildContext? _currentContext = null;
+  BuildContext? _currentContext;
 
   OrderPage({super.key, required this.orderSupplierId}) {
     if (orderSupplierId != null) {
@@ -160,7 +160,7 @@ class OrderPage extends BasePage<OrderBloc> {
                         items: OrderStatus.values
                             .map<DropdownMenuItem<String>>(
                               (e) =>
-                                  OrderStatus.getEnableStaffStatus().contains(e)
+                                  bloc.enableStatus.contains(e)
                                       ? DropdownMenuItem<String>(
                                           enabled: value.index < e.index,
                                           value: e.value,

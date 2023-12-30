@@ -5,6 +5,7 @@ import 'package:sudoo/data/api/auth/request/verify_otp_request.dart';
 
 class AuthApiService {
   static const auth = "/auth";
+  static const configPath = "$auth/config";
   static const signInPath = "$auth/sign-in";
   static const signUpPath = "$auth/sign-up";
   static const refreshTokenPath = "$auth/refresh-token";
@@ -16,6 +17,8 @@ class AuthApiService {
   final ApiService api;
 
   const AuthApiService(this.api);
+
+  Future getAuthConfig() => api.get(configPath);
 
   Future signIn(AccountRequest request) =>
       api.post(signInPath, request: request);
