@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.sudoo.cartservice.CartServiceApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.001 s - in com.sudoo.cartservice.CartServiceApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.152 s - in com.sudoo.cartservice.CartServiceApplicationTests
