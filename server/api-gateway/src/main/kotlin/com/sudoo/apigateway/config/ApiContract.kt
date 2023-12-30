@@ -16,6 +16,7 @@ internal enum class ApiContract(val paths: List<String>) {
             "/static",
             "/templates",
             "/share",
+            "/auth/config"
         )
     ),
     INTERNAL_API_ENDPOINTS(listOf("/internal")),
