@@ -20,39 +20,51 @@ class PredictionService:
         prediction = self.prediction.find_one({'user_id': userId})
         recommend_products = []
         if prediction == None:
-            recommend_products = modelPredict(userId)
+            recommend_products = self.modelPredict(userId)
             self.prediction.insert_one({'_id': user_id, 'user_id': user_id, 'recommend': recommend_products})
-        elif len(recommend_products) == 0:
-            recommend_products = modelPredict(userId)
+        elif len(prediction['recommend']) == 0:
+            recommend_products = self.modelPredict(userId)
             self.prediction.update_one({'user_id': userId}, {'$set': {'recommend': recommend_products}}, upsert=True)
         else:
             recommend_products = prediction['recommend']
+
+        if len(recommend_products) == 0:
+            recommend_products = list(self.products.find({}))
+        
         length = len(recommend_products)
+        products = []
         if length == 0 or offset >= length:
-            return []
+            products = []
         elif offset+limit >= length:
-            return recommend_products[offset:]
+            products = recommend_products[offset:]
         else :
-            return recommend_products[offset, offset+limit]
+            products = recommend_products[offset, offset+limit]
+        return {
+            "total": len(products),
+            "products": products
+        }
 
     def modelPredict(self, userId: str):
-        model = load_model('../model.keras')
-        products = getProducts()
-        users = getUserInfo(userId, len(products))
-        predict_ratings = model.predict([
-            [
-                np.array(users['_id']),
-                np.array(products['_id'])
-            ],
-            np.array([np.array(val) for val in users['user_info']]),
-            np.array([np.array(val) for val in products['product_info']])
-        ])
-        recommend_products = np.array([array[0] for array in predict_ratings])[::-1].argsort()
-        product_map = {}
-        for i in len(products):
-            product_map[products.iloc[i]['_id']] = products.iloc[i]['product_id']
+        try:
+            model = load_model('../model.keras')
+            products = getProducts()
+            users = getUserInfo(userId, len(products))
+            predict_ratings = model.predict([
+                [
+                    np.array(users['_id']),
+                    np.array(products['_id'])
+                ],
+                np.array([np.array(val) for val in users['user_info']]),
+                np.array([np.array(val) for val in products['product_info']])
+            ])
+            recommend_products = np.array([array[0] for array in predict_ratings])[::-1].argsort()
+            product_map = {}
+            for i in len(products):
+                product_map[products.iloc[i]['_id']] = products.iloc[i]['product_id']
 
-        return mapProduct(recommend_products, product_map)
+            return mapProduct(recommend_products, product_map)
+        except:
+            return []
 
     def mapProduct(self, recommend_products, product_map):
         def f(index):
