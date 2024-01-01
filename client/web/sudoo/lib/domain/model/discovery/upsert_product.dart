@@ -18,10 +18,10 @@ class UpsertProduct {
   final bool? saleable;
   final List<UpsertFile>? images;
   final List<String>? categoryIds;
-  final int weight;
-  final int height;
-  final int width;
-  final int length;
+  final double weight;
+  final double height;
+  final double width;
+  final double length;
   final Extras? extras;
 
   const UpsertProduct({

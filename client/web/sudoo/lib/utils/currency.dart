@@ -1,7 +1,6 @@
 import 'package:intl/intl.dart';
 
 class CurrencyFormatUtils {
-
   static CurrencyFormatUtils? _instance;
 
   static CurrencyFormatUtils get() {
@@ -20,6 +19,11 @@ class CurrencyFormatUtils {
     decimalDigits: 0,
   );
 
+  final NumberFormat decimal = NumberFormat.decimalPatternDigits(
+    locale: 'vi-VN',
+    decimalDigits: 0,
+  );
+
   String format(double value) {
     return currencyFormat.format(value);
   }
@@ -31,7 +35,15 @@ class CurrencyFormatUtils {
   String formatWithDecimalDigits(double value, int decimalDigits) {
     return NumberFormat.simpleCurrency(
       locale: "vi-VN",
-      decimalDigits: 0,
+      decimalDigits: decimalDigits,
     ).format(value);
+  }
+
+  String formatCurrencyValue(double value) {
+    return decimal.format(value);
+  }
+
+  num parserCurrencyValue(String text) {
+    return decimal.parse(text);
   }
 }

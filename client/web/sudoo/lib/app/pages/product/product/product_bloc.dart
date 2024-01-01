@@ -13,6 +13,7 @@ import 'package:sudoo/domain/model/discovery/file.dart' as domain;
 import 'package:sudoo/domain/model/discovery/upsert_file.dart';
 import 'package:sudoo/domain/repository/product_repository.dart';
 import 'package:sudoo/domain/repository/storage_repository.dart';
+import 'package:sudoo/extensions/double_ext.dart';
 import 'package:sudoo/extensions/list_ext.dart';
 import 'package:sudoo/extensions/string_ext.dart';
 
@@ -109,16 +110,16 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
     skuController.text = product.sku;
     brandController.text = product.brand;
     descriptionController.text = product.description;
-    priceController.text = product.price.toStringAsFixed(1);
-    listedPriceController.text = product.listedPrice.toStringAsFixed(1);
+    priceController.text = product.price.formatCurrencyValue();
+    listedPriceController.text = product.listedPrice.formatCurrencyValue();
     discountController.text = product.discount.toString();
     startDateDiscount.value = product.startDateDiscount;
     endDateDiscount.value = product.endDateDiscount;
     amountController.text = product.amount.toString();
-    weightController.text = product.weight.toString();
-    heightController.text = product.height.toString();
-    widthController.text = product.width.toString();
-    lengthController.text = product.length.toString();
+    weightController.text = product.weight.toStringAsFixed(2);
+    heightController.text = product.height.toStringAsFixed(2);
+    widthController.text = product.width.toStringAsFixed(2);
+    lengthController.text = product.length.toStringAsFixed(2);
     enable3DViewer.value = product.extras?.enable3DViewer ?? false;
     enableArViewer.value = product.extras?.enableArViewer ?? false;
     sourceViewer.value = domain.File.fromUrl(product.extras?.source);
@@ -300,17 +301,17 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
       sku: skuController.text.isNullOrEmpty ? null : skuController.text,
       description: descriptionController.text,
       brand: brandController.text,
-      listedPrice: double.parse(listedPriceController.text),
-      price: double.parse(priceController.text),
+      listedPrice: listedPriceController.text.parserCurrencyValue(),
+      price: priceController.text.parserCurrencyValue(),
       discount: int.parse(discountController.text),
       startDateDiscount: startDateDiscount.value,
       endDateDiscount: endDateDiscount.value,
       amount: int.parse(amountController.text),
       saleable: saleable.value,
-      weight: double.parse(weightController.text).toInt(),
-      height: double.parse(heightController.text).toInt(),
-      width: double.parse(widthController.text).toInt(),
-      length: double.parse(lengthController.text).toInt(),
+      weight: double.parse(weightController.text),
+      height: double.parse(heightController.text),
+      width: double.parse(widthController.text),
+      length: double.parse(lengthController.text),
       images: images.map((e) => UpsertFile(url: e)).toList(),
       categoryIds: categories.value!.map((e) => e.categoryId).toList(),
       extras: Extras(
@@ -387,17 +388,17 @@ class ProductBloc extends BaseBloc implements CategoryCallback, ImageCallback {
       brand: brandController.text,
       name: nameController.text,
       description: descriptionController.text,
-      listedPrice: double.parse(listedPriceController.text),
-      price: double.parse(priceController.text),
+      listedPrice: listedPriceController.text.parserCurrencyValue(),
+      price: priceController.text.parserCurrencyValue(),
       discount: int.parse(discountController.text),
       startDateDiscount: startDateDiscount.value,
       endDateDiscount: endDateDiscount.value,
       amount: int.parse(amountController.text),
       saleable: saleable.value,
-      weight: int.parse(weightController.text),
-      height: int.parse(heightController.text),
-      width: int.parse(widthController.text),
-      length: int.parse(lengthController.text),
+      weight: double.parse(weightController.text),
+      height: double.parse(heightController.text),
+      width: double.parse(widthController.text),
+      length: double.parse(lengthController.text),
       extras: Extras(
         enable3DViewer: enable3DViewer.value,
         enableArViewer: enableArViewer.value,

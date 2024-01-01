@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sudoo/app/widgets/confirm_button.dart';
 import 'package:sudoo/domain/model/discovery/price.dart';
+import 'package:sudoo/extensions/double_ext.dart';
+import 'package:sudoo/extensions/string_ext.dart';
+import 'package:sudoo/utils/currency_value_text_input_formatter.dart';
 
 import '../../resources/R.dart';
 import '../../utils/logger.dart';
@@ -24,8 +27,8 @@ class EditPriceDialog extends StatelessWidget {
     this.onPositive,
   }) {
     listedPriceController =
-        TextEditingController(text: price.listedPrice.toString());
-    priceController = TextEditingController(text: price.price.toString());
+        TextEditingController(text: price.listedPrice.formatCurrencyValue());
+    priceController = TextEditingController(text: price.price.formatCurrencyValue());
     discountController = TextEditingController(text: price.discount.toString());
   }
 
@@ -70,8 +73,8 @@ class EditPriceDialog extends StatelessWidget {
             ConfirmButton(
               onPositive: () {
                 final Price newPrice = Price(
-                  price: double.parse(priceController.text),
-                  listedPrice: double.parse(listedPriceController.text),
+                  price: priceController.text.parserCurrencyValue(),
+                  listedPrice: listedPriceController.text.parserCurrencyValue(),
                   discount: int.parse(discountController.text),
                 );
                 onPositive?.call(newPrice);
@@ -112,6 +115,10 @@ class EditPriceDialog extends StatelessWidget {
         ),
         style: style,
         keyboardType: TextInputType.number,
+        maxLength: 11,
+        inputFormatters: [
+          CurrencyValueTextInputFormatter()
+        ],
         onChanged: onListedPriceChange,
       ),
     );
@@ -137,6 +144,10 @@ class EditPriceDialog extends StatelessWidget {
                 ),
                 style: style,
                 keyboardType: TextInputType.number,
+                maxLength: 11,
+                inputFormatters: [
+                  CurrencyValueTextInputFormatter()
+                ],
                 onChanged: onPriceChange,
               ),
             ),
@@ -176,10 +187,10 @@ class EditPriceDialog extends StatelessWidget {
     if (debounce?.isActive ?? false) debounce?.cancel();
     debounce = Timer(const Duration(milliseconds: 500), () {
       try {
-        final listedPrice = double.parse(value);
+        final listedPrice = value.parserCurrencyValue();
         priceController.text =
             (listedPrice * (100 - int.parse(discountController.text)) / 100)
-                .toString();
+                .formatCurrencyValue();
       } on Exception catch (e) {
         Logger.error(message: e.toString());
       }
@@ -190,8 +201,8 @@ class EditPriceDialog extends StatelessWidget {
     if (debounce?.isActive ?? false) debounce?.cancel();
     debounce = Timer(const Duration(milliseconds: 500), () {
       try {
-        final price = double.parse(value);
-        final listedPrice = double.parse(listedPriceController.text);
+        final price = value.parserCurrencyValue();
+        final listedPrice = listedPriceController.text.parserCurrencyValue();
         discountController.text =
             (price / listedPrice * 100).toInt().toString();
       } on Exception catch (e) {
@@ -204,9 +215,9 @@ class EditPriceDialog extends StatelessWidget {
     if (debounce?.isActive ?? false) debounce?.cancel();
     debounce = Timer(const Duration(milliseconds: 500), () {
       try {
-        final listedPrice = double.parse(listedPriceController.text);
+        final listedPrice = listedPriceController.text.parserCurrencyValue();
         priceController.text =
-            (listedPrice * ((100 - int.parse(value)) / 100)).toString();
+            (listedPrice * ((100 - int.parse(value)) / 100)).formatCurrencyValue();
       } on Exception catch (e) {
         Logger.error(message: e.toString());
       }

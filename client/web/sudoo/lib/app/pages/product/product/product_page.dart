@@ -8,6 +8,9 @@ import 'package:sudoo/app/widgets/blocks/category_block.dart';
 import 'package:sudoo/app/widgets/blocks/extras_block.dart';
 import 'package:sudoo/app/widgets/blocks/image_block.dart';
 import 'package:sudoo/app/widgets/blocks/size_weight_block.dart';
+import 'package:sudoo/extensions/double_ext.dart';
+import 'package:sudoo/extensions/string_ext.dart';
+import 'package:sudoo/utils/currency_value_text_input_formatter.dart';
 
 import '../../../../resources/R.dart';
 import '../../../../utils/logger.dart';
@@ -281,9 +284,12 @@ class ProductPage extends BasePage<ProductBloc> {
             border: const OutlineInputBorder(),
             counterText: "",
           ),
-          maxLength: 9,
+          maxLength: 11,
           style: style,
           keyboardType: TextInputType.number,
+          inputFormatters: [
+            CurrencyValueTextInputFormatter()
+          ],
           onChanged: onListedPriceChange,
         ),
       ],
@@ -311,9 +317,12 @@ class ProductPage extends BasePage<ProductBloc> {
                 border: const OutlineInputBorder(),
                 counterText: "",
               ),
-              maxLength: 10,
+              maxLength: 11,
               style: style,
               keyboardType: TextInputType.number,
+              inputFormatters: [
+                CurrencyValueTextInputFormatter()
+              ],
               onChanged: onPriceChange,
             ),
             const SizedBox(
@@ -369,11 +378,11 @@ class ProductPage extends BasePage<ProductBloc> {
     if (bloc.debounce?.isActive ?? false) bloc.debounce?.cancel();
     bloc.debounce = Timer(const Duration(milliseconds: 500), () {
       try {
-        final listedPrice = double.parse(value);
+        final listedPrice = value.parserCurrencyValue();
         bloc.priceController.text = (listedPrice *
                 (100 - int.parse(bloc.discountController.text)) /
                 100)
-            .toString();
+            .formatCurrencyValue();
       } on Exception catch (e) {
         Logger.error(message: e.toString());
       }
@@ -384,8 +393,8 @@ class ProductPage extends BasePage<ProductBloc> {
     if (bloc.debounce?.isActive ?? false) bloc.debounce?.cancel();
     bloc.debounce = Timer(const Duration(milliseconds: 500), () {
       try {
-        final price = double.parse(value);
-        final listedPrice = double.parse(bloc.listedPriceController.text);
+        final price = value.parserCurrencyValue();
+        final listedPrice = bloc.listedPriceController.text.parserCurrencyValue();
         bloc.discountController.text =
             (100 - (price / listedPrice * 100)).toInt().toString();
       } on Exception catch (e) {
@@ -398,9 +407,9 @@ class ProductPage extends BasePage<ProductBloc> {
     if (bloc.debounce?.isActive ?? false) bloc.debounce?.cancel();
     bloc.debounce = Timer(const Duration(milliseconds: 500), () {
       try {
-        final listedPrice = double.parse(bloc.listedPriceController.text);
+        final listedPrice = bloc.listedPriceController.text.parserCurrencyValue();
         bloc.priceController.text =
-            (listedPrice * ((100 - int.parse(value)) / 100)).toString();
+            (listedPrice * ((100 - int.parse(value)) / 100)).formatCurrencyValue();
       } on Exception catch (e) {
         Logger.error(message: e.toString());
       }

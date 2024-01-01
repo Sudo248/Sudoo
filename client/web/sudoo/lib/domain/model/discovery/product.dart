@@ -19,10 +19,10 @@ class Product {
   final DateTime? startDateDiscount;
   DateTime? endDateDiscount;
   bool saleable;
-  final int weight;
-  final int height;
-  final int width;
-  final int length;
+  final double weight;
+  final double height;
+  final double width;
+  final double length;
   final List<File> images;
   final SupplierInfo supplier;
   final List<Category> categories;

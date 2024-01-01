@@ -15,4 +15,10 @@ extension StringExt on String? {
     if (isNullOrEmpty) return 0;
     return int.parse(this!.replaceAll("%", ""));
   }
+
+  double parserCurrencyValue() {
+    return isNullOrEmpty
+        ? 0.0
+        : CurrencyFormatUtils.get().parserCurrencyValue(this!) as double;
+  }
 }
