@@ -60,19 +60,19 @@ data class Product(
 
     // gram
     @Column("weight")
-    val weight: Int,
+    val weight: Float,
 
     // cm
     @Column("height")
-    val height: Int,
+    val height: Float,
 
     // cm
     @Column("length")
-    val length: Int,
+    val length: Float,
 
     // cm
     @Column("width")
-    val width: Int,
+    val width: Float,
 
     @Column("created_at")
     val createdAt: LocalDateTime,

@@ -17,8 +17,8 @@ public class OrderProductInfoDto {
     private Float price;
     private String brand;
     private List<String> images;
-    private int weight;
-    private int height;
-    private int length;
-    private int width;
+    private float weight;
+    private float height;
+    private float length;
+    private float width;
 }

@@ -17,13 +17,13 @@ data class OrderProductInfo(
     @Column("price")
     val price: Float,
     @Column("weight")
-    val weight: Int,
+    val weight: Float,
     @Column("height")
-    val height: Int,
+    val height: Float,
     @Column("length")
-    val length: Int,
+    val length: Float,
     @Column("width")
-    val width: Int,
+    val width: Float,
 ) {
 
     @Transient

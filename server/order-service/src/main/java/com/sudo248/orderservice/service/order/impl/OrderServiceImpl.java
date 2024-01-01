@@ -507,8 +507,8 @@ public class OrderServiceImpl implements OrderService {
                     .createdAt(createdAt);
 
             // Length is same for an product
-            int totalLength = cartProducts.get(0).getProduct().getLength();
-            int totalWeight = 0, totalWidth = 0, totalHeight = 0;
+            float totalLength = cartProducts.get(0).getProduct().getLength();
+            float totalWeight = 0.0f, totalWidth = 0.0f, totalHeight = 0.0f;
             double totalPrice = 0.0;
             for (OrderCartProductDto cartProduct : cartProducts) {
                 totalPrice += cartProduct.getTotalPrice();
@@ -522,10 +522,10 @@ public class OrderServiceImpl implements OrderService {
                     .fromWardCode(supplier.getAddress().getWardCode())
                     .toDistrictId(user.getAddress().getDistrictID())
                     .toWardCode(user.getAddress().getWardCode())
-                    .weight(totalWeight)
-                    .length(totalLength)
-                    .width(totalWidth)
-                    .height(totalHeight)
+                    .weight((int)totalWeight)
+                    .length((int)totalLength)
+                    .width((int)totalWidth)
+                    .height((int)totalHeight)
                     .build();
 
             final CalculateExpectedTimeRequest calculateExpectedTimeRequest = CalculateExpectedTimeRequest.builder()
