@@ -19,10 +19,10 @@ class UpsertProductDto {
   final DateTime? startDateDiscount;
   final DateTime? endDateDiscount;
   final bool saleable;
-  final int weight;
-  final int height;
-  final int width;
-  final int length;
+  final double weight;
+  final double height;
+  final double width;
+  final double length;
   final List<FileDto>? images;
   final List<String>? categoryIds;
   final ExtrasDto? extras;
