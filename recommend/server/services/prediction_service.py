@@ -29,7 +29,7 @@ class PredictionService:
             recommend_products = prediction['recommend']
 
         if len(recommend_products) == 0:
-            recommend_products = list(self.products.find({}))
+            recommend_products = list(map(lambda product: product['product_id'], self.products.find({})))
         
         length = len(recommend_products)
         products = []

@@ -14,8 +14,8 @@ class UserService:
             'dob': datetime.datetime.strptime(body['dob'], '%Y-%m-%d'),
             'gender': body['gender']
         }
-        _id = self.users.find_one({'user_id': user['user_id']}, {'_id': 1})
-        if _id == None:
+        currentUser = self.users.find_one({'user_id': user['user_id']})
+        if currentUser == None:
             userCounter = self.counter.find_one({'collection': 'user'}, {'counter': 1})
             if userCounter == None:
                 userCounter = 0
@@ -25,7 +25,7 @@ class UserService:
                 self.counter.update_one({'collection': 'user'}, {'$set': {'counter': userCounter}})
             self.users.update_one({'_id' : int(userCounter)}, { '$set': user }, upsert=True)
         else:
-            self.users.update_one({'_id' : int(_id)}, { '$set': user }, upsert=True)
+            self.users.update_one({'_id' : int(currentUser['_id'])}, { '$set': user }, upsert=True)
         return user
     
     def upsertUsers(self, body):
