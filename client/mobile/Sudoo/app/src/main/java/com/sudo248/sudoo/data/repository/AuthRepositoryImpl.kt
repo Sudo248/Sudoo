@@ -1,6 +1,7 @@
 package com.sudo248.sudoo.data.repository
 
 import android.util.Log
+import com.google.gson.Gson
 import com.sudo248.base_android.core.DataState
 import com.sudo248.base_android.data.api.handleResponse
 import com.sudo248.base_android.ktx.state
@@ -15,6 +16,7 @@ import com.sudo248.sudoo.data.ktx.errorBody
 import com.sudo248.sudoo.data.mapper.toToken
 import com.sudo248.sudoo.domain.common.Constants
 import com.sudo248.sudoo.domain.entity.auth.Account
+import com.sudo248.sudoo.domain.entity.auth.AuthConfig
 import com.sudo248.sudoo.domain.entity.auth.Token
 import com.sudo248.sudoo.domain.repository.AuthRepository
 import kotlinx.coroutines.CoroutineDispatcher
@@ -35,6 +37,24 @@ class AuthRepositoryImpl @Inject constructor(
     private val notificationService: NotificationService,
     private val ioDispatcher: CoroutineDispatcher
 ) : AuthRepository {
+    private val gson = Gson()
+    override suspend fun getAuthConfig(): DataState<AuthConfig, Exception> = stateOn(ioDispatcher) {
+        val counter = SharedPreferenceUtils.getInt(Constants.Key.COUNTER, 0)
+        val localConfig = getLocalConfig()
+        if (counter % Constants.TIMES_REFRESH_CONFIG == 0 || localConfig == null) {
+            val response = handleResponse(authService.getAuthConfig())
+            if (response.isSuccess) {
+                response.get().data!!.also {
+                    saveLocalConfig(it)
+                }
+            } else {
+                AuthConfig(enableOtp = false)
+            }
+        } else {
+            localConfig
+        }
+    }
+
     override suspend fun refreshToken(): DataState<Token, Exception> = stateOn(ioDispatcher) {
         val refreshToken = SharedPreferenceUtils.withApplicationSharedPreference().getString(Constants.Key.REFRESH_TOKEN, "")
         if (refreshToken.isEmpty()) {
@@ -73,9 +93,9 @@ class AuthRepositoryImpl @Inject constructor(
             val response = handleResponse(authService.signIn(request))
             if (response.isSuccess) {
                 val data = response.get().data!!
-                data.userId?.let {
+                /*data.userId?.let {
                     SharedPreferenceUtils.putString(Constants.Key.USER_ID, it)
-                }
+                }*/
                 val token = data.toToken()
                 saveToken(token)
                 token
@@ -93,9 +113,9 @@ class AuthRepositoryImpl @Inject constructor(
             )
             val response = handleResponse(authService.signUp(request))
             if (response.isSuccess) {
-                response.get().data?.let {
+                /*response.get().data?.let {
                     SharedPreferenceUtils.putString(Constants.Key.USER_ID, it)
-                }
+                }*/
             } else {
                 throw response.error().errorBody()
             }
@@ -141,5 +161,16 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun logout(): DataState<Unit, Exception> = stateOn(ioDispatcher) {
         authService.logout()
+    }
+
+    private suspend fun getLocalConfig(): AuthConfig? {
+        val stringConfig = SharedPreferenceUtils.getStringAsync(Constants.Key.AUTH_CONFIG)
+        if (stringConfig.isEmpty()) return null
+        return gson.fromJson(stringConfig, AuthConfig::class.java)
+    }
+
+    private suspend fun saveLocalConfig(config: AuthConfig) {
+        val stringConfig = gson.toJson(config)
+        SharedPreferenceUtils.putStringAsync(Constants.Key.AUTH_CONFIG, stringConfig)
     }
 }

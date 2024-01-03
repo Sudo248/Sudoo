@@ -12,6 +12,7 @@ object Constants {
     const val PATTERN_OTP = "(|^)\\d{6}"
     const val UNKNOWN_ERROR = "Unknown error"
     const val DEFAULT_LIMIT = 10
+    const val TIMES_REFRESH_CONFIG = 3
 
     object Key {
         const val PHONE_NUMBER = "PHONE_NUMBER"
@@ -23,6 +24,8 @@ object Constants {
         const val SCREEN = "SCREEN"
         const val FCM_TOKEN = "FCM_TOKEN"
         const val NEED_RELOAD = "NEED_RELOAD"
+        const val COUNTER = "COUNTER"
+        const val AUTH_CONFIG = "AUTH_CONFIG"
     }
     object Screen {
         const val DISCOVERY = "DISCOVERY"

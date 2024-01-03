@@ -2,6 +2,7 @@ package com.sudo248.sudoo.domain.repository
 
 import com.sudo248.base_android.core.DataState
 import com.sudo248.sudoo.domain.entity.auth.Account
+import com.sudo248.sudoo.domain.entity.auth.AuthConfig
 import com.sudo248.sudoo.domain.entity.auth.Token
 
 
@@ -12,6 +13,7 @@ import com.sudo248.sudoo.domain.entity.auth.Token
  * @since 23:47 - 04/03/2023
  */
 interface AuthRepository {
+    suspend fun getAuthConfig(): DataState<AuthConfig, Exception>
     suspend fun refreshToken(): DataState<Token, Exception>
     suspend fun saveToken(token: Token): DataState<Unit, Exception>
     suspend fun signIn(account: Account): DataState<Token, Exception>

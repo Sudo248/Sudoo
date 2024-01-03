@@ -6,15 +6,18 @@ import androidx.navigation.NavDirections
 import com.sudo248.base_android.base.BaseViewModel
 import com.sudo248.base_android.core.UiState
 import com.sudo248.base_android.ktx.createActionIntentDirections
-import com.sudo248.base_android.ktx.onState
-import com.sudo248.sudoo.BuildConfig
+import com.sudo248.base_android.ktx.onError
+import com.sudo248.base_android.ktx.onSuccess
 import com.sudo248.sudoo.domain.common.Constants
+import com.sudo248.sudoo.domain.entity.auth.AuthConfig
 import com.sudo248.sudoo.domain.repository.AuthRepository
 import com.sudo248.sudoo.ui.activity.auth.AuthViewModel
 import com.sudo248.sudoo.ui.activity.otp.OtpActivity
 import com.sudo248.sudoo.ui.mapper.toAccount
 import com.sudo248.sudoo.ui.uimodel.AccountUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,6 +34,7 @@ class SignUpViewModel @Inject constructor(
 ) : BaseViewModel<NavDirections>() {
     private var parentViewModel: AuthViewModel? = null
 
+    private var authConfig: Deferred<AuthConfig> = async { authRepository.getAuthConfig().get() }
     val accountUiModel: AccountUiModel = AccountUiModel()
     val confirmPassword: MutableLiveData<String> = MutableLiveData()
 
@@ -46,10 +50,10 @@ class SignUpViewModel @Inject constructor(
     fun signUp() = launch {
         parentViewModel?.setState(UiState.LOADING)
         val account = accountUiModel.toAccount()
-        authRepository.signUp(account).onState(
-            onSuccess = {
+        authRepository.signUp(account)
+            .onSuccess {
                 parentViewModel?.setState(UiState.SUCCESS)
-                if (BuildConfig.ENABLE_OTP) {
+                if (authConfig.await().enableOtp) {
                     parentViewModel?.navigator()
                         ?.navigateTo(OtpActivity::class.createActionIntentDirections {
                             putExtra(Constants.Key.PHONE_NUMBER, account.phoneNumber)
@@ -57,14 +61,13 @@ class SignUpViewModel @Inject constructor(
                 } else {
                     gotoSignIn()
                 }
-            },
-            onError = {
+            }
+            .onError {
                 _error.postValue(it.message)
                 accountUiModel.password.set("")
                 confirmPassword.postValue("")
                 parentViewModel?.setState(UiState.ERROR)
             }
-        )
     }
 
     fun onConfirmPasswordTextChange(text: CharSequence) {

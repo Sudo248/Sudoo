@@ -11,6 +11,7 @@ import com.sudo248.sudoo.data.api.auth.request.ChangePasswordRequest
 import com.sudo248.sudoo.data.api.auth.request.OtpRequest
 import com.sudo248.sudoo.data.dto.auth.TokenDto
 import com.sudo248.sudoo.domain.common.Constants
+import com.sudo248.sudoo.domain.entity.auth.AuthConfig
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -31,6 +32,9 @@ import retrofit2.http.Path
 @LoggingLever(level = Level.BODY)
 interface AuthService {
 
+    @GET("config")
+    suspend fun getAuthConfig(): Response<BaseResponse<AuthConfig>>
+
     @GET("refresh-token")
     suspend fun refreshToken(@Header("refresh-token") refreshToken: String): Response<BaseResponse<TokenDto>>
 
@@ -38,7 +42,7 @@ interface AuthService {
     suspend fun signIn(@Body accountRequest: AccountRequest): Response<BaseResponse<TokenDto>>
 
     @POST("sign-up")
-    suspend fun signUp(@Body accountRequest: AccountRequest): Response<BaseResponse<String>>
+    suspend fun signUp(@Body accountRequest: AccountRequest): Response<BaseResponse<Any>>
 
     @POST("change-password")
     suspend fun changePassword(@Body changePasswordRequest: ChangePasswordRequest): Response<BaseResponse<String>>
