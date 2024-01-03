@@ -21,7 +21,7 @@ class PredictionService:
         recommend_products = []
         if prediction == None:
             recommend_products = self.modelPredict(userId)
-            self.prediction.insert_one({'_id': user_id, 'user_id': user_id, 'recommend': recommend_products})
+            self.prediction.insert_one({'_id': userId, 'user_id': userId, 'recommend': recommend_products})
         elif len(prediction['recommend']) == 0:
             recommend_products = self.modelPredict(userId)
             self.prediction.update_one({'user_id': userId}, {'$set': {'recommend': recommend_products}}, upsert=True)
