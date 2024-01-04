@@ -1,1 +1,1 @@
-run server `flask run --debug` or `python3 server.py`
+run server `flask run --debug` or `python3 app.py`
