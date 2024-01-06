@@ -81,6 +81,7 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
             Payment payment = toEntity(paymentDto, order.get());
             String paymentUrl;
             if (paymentDto.getPaymentType().equalsIgnoreCase("cod")) {
+                payment.setStatus(PaymentStatus.SUCCESS);
                 paymentUrl = "";
             } else {
                 paymentUrl = getVnPayPaymentUrl(payment);
@@ -111,7 +112,7 @@ public class VnPayServiceImpl implements PaymentService, VnpayService {
         vnp_Params.put("vnp_ReturnUrl", VnPayConfig.vnp_ReturnUrl);
         vnp_Params.put("vnp_IpAddr", payment.getIpAddress());
 
-        Calendar cld = Calendar.getInstance(TimeZone.getTimeZone(payment.getZoneId()));
+        Calendar cld = Calendar.getInstance(TimeZone.getTimeZone(ZoneId.of(payment.getZoneId())));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
         String vnp_CreateDate = formatter.format(cld.getTime());
         vnp_Params.put("vnp_CreateDate", vnp_CreateDate);

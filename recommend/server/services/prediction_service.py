@@ -38,7 +38,7 @@ class PredictionService:
         elif offset+limit >= length:
             products = recommend_products[offset:]
         else :
-            products = recommend_products[offset, offset+limit]
+            products = recommend_products[offset:offset+limit]
         return {
             "total": len(products),
             "products": products
