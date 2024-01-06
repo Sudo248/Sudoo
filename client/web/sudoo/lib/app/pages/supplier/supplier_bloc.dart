@@ -128,7 +128,6 @@ class SupplierBloc extends BaseBloc implements ChooseAddressCallback {
     this.supplier = supplier;
     avatar.value = File.fromUrl(supplier.avatar);
     nameController.text = supplier.name;
-    // brandController.text = supplier.brand;
     contactUrlController.text = supplier.contactUrl;
     districtController.text = supplier.address.districtName;
     provinceController.text = supplier.address.provinceName;
@@ -139,10 +138,12 @@ class SupplierBloc extends BaseBloc implements ChooseAddressCallback {
   Supplier _getSupplier() {
     supplier ??= Supplier.empty();
     supplier!.name = nameController.text;
-    // supplier!.brand = brandController.text;
     supplier!.phoneNumber = phoneNumberController.text;
     supplier!.address.address = addressController.text;
     supplier!.contactUrl = contactUrlController.text;
+    if (supplier!.supplierId.isNullOrEmpty) {
+      supplier!.rate = 5.0;
+    }
     return supplier!;
   }
 
