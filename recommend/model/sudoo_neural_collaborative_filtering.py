@@ -144,7 +144,7 @@ out = Dense(1)(fc5)
 
 #Create model and compile it
 model = Model([[user_input, product_input], user_info_input, category_input], out)
-model.compile('adam', 'mean_squared_error')
+model.compile(optimizer='adam', loss='mean_absolute_error') #mean_absolute_error   mean_squared_error
 
 history = model.fit(
     [
@@ -316,3 +316,8 @@ def predict(model, user_id, user_info, products):
 for i in range(len(users)):
   recommend_products = predict(model, int(users.iloc[i]['_id']), users.iloc[i]['user_info'], products)
   sudoo.prediction.update_one({'_id': users.iloc[i]['user_id']}, {'$set': {'user_id': users.iloc[i]['user_id'], 'recommend': recommend_products}}, upsert=True)
+
+import time
+import os
+time.sleep(60)
+os.system('sudo poweroff')
