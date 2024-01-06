@@ -36,22 +36,10 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/imgBack"
-            app:layout_constraintEnd_toStartOf="@+id/txtSendReview"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/imgBack"
             app:layout_constraintTop_toTopOf="@id/imgBack" />
 
-        <TextView
-            android:id="@+id/txtSendReview"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:onClick="@{(v) -> viewModel.upsertReview()}"
-            android:padding="10dp"
-            android:text="@string/send"
-            android:textColor="@color/primaryColor"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/imgBack"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/imgBack" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -263,6 +251,24 @@
                     android:textSize="16sp"
                     app:layout_constraintHeight_percent="0.4"
                     app:layout_constraintTop_toBottomOf="@id/imgCommentProduct" />
+
+                <TextView
+                    android:id="@+id/txtSendReview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/bg_rectangle_conner_5"
+                    android:backgroundTint="@color/primaryColor"
+                    android:gravity="center"
+                    android:onClick="@{(v) -> viewModel.upsertReview()}"
+                    android:padding="10dp"
+                    android:text="@string/send"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtComment" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
 

@@ -35,7 +35,6 @@ class OrderListAdapter(
                         groupNextAction.visible()
                         txtDescription.text = itemView.context.getString(R.string.received_order_description)
                         txtNextAction.text = itemView.context.getString(R.string.received_order)
-
                     }
                     OrderStatus.RECEIVED -> {
                         groupNextAction.visible()
