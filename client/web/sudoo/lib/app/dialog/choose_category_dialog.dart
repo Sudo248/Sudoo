@@ -31,7 +31,7 @@ class _ChooseCategoryDialogState extends State<ChooseCategoryDialog> {
           minWidth: 300,
           minHeight: 400,
           maxWidth: size.width * 0.3,
-          maxHeight: size.height * 0.5,
+          maxHeight: size.height * 0.85,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
