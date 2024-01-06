@@ -8,8 +8,8 @@ data class OrderProductInfo(
     val images: List<String>,
     val price: Double,
     val brand: String,
-    val weight: Int,
-    val height: Int,
-    val length: Int,
-    val width: Int,
+    val weight: Float,
+    val height: Float,
+    val length: Float,
+    val width: Float,
 )
