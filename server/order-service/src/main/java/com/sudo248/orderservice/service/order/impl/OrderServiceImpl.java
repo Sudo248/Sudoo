@@ -410,20 +410,21 @@ public class OrderServiceImpl implements OrderService {
         final List<OrderSupplier> orderSuppliers = orderSupplierRepository.getAllBySupplierIdAndCreatedAtBetween(supplier.getSupplierId(), from.atStartOfDay(), to.atTime(LocalTime.MAX));
 //        orderSuppliers.sort(Comparator.comparing(OrderSupplier::getCreatedAt).reversed());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(condition.format);
-        Map<LocalDate, Double> response = new HashMap<>();
-        from.datesUntil(to).collect(Collectors.toList()).forEach((e) -> response.put(e, 0.0));
+        Map<String, Double> response = new HashMap<>();
+        from.datesUntil(to).collect(Collectors.toList()).forEach((e) -> response.put(formatter.format(e), 0.0));
         double total = 0.0;
         for (OrderSupplier orderSupplier : orderSuppliers) {
             if (orderSupplier.getRevenue() != null && orderSupplier.getRevenue() > 0.0) {
-                final LocalDate key = orderSupplier.getCreatedAt().toLocalDate();
-                final double currentValue = response.get(key);
+                final String key = formatter.format(orderSupplier.getCreatedAt().toLocalDate());
+                Double currentValue = response.get(key);
+                if (currentValue == null) currentValue = 0.0;
                 response.put(key, currentValue + orderSupplier.getRevenue());
                 total += orderSupplier.getTotalPrice();
             }
         }
 
         return RevenueStatisticData.builder()
-                .data(response.entrySet().stream().collect(Collectors.toMap((entry) -> formatter.format(entry.getKey()), Map.Entry::getValue)))
+                .data(response)
                 .total(total)
                 .build();
     }
