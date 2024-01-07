@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import com.google.android.gms.auth.api.phone.SmsRetriever
 import com.sudo248.base_android.base.BaseActivity
 import com.sudo248.base_android.utils.DialogUtils
+import com.sudo248.base_android.utils.KeyBoardUtils
 import com.sudo248.sudoo.R
 import com.sudo248.sudoo.databinding.ActivityOtpBinding
 import com.sudo248.sudoo.domain.common.Constants
@@ -74,5 +75,10 @@ class OtpActivity : BaseActivity<ActivityOtpBinding, OtpViewModel>() {
 
     private fun unregisterSmsReceive() {
         unregisterReceiver(smsReceiver)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        KeyBoardUtils.hide(this)
     }
 }

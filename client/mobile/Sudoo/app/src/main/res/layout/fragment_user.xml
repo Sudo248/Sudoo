@@ -34,12 +34,13 @@
 
                 <TextView
                     android:id="@+id/txtTitle"
-                    style="@style/textTitleMedium"
+                    style="@style/TextMedium"
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:gravity="center_vertical"
-                    android:paddingStart="15dp"
-                    android:text="@string/user_title"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="15dp"
+                    android:text="@string/account"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -152,7 +153,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            app:layout_constraintGuide_percent="0.6" />
+                            app:layout_constraintGuide_percent="0.5" />
 
                         <TextView
                             android:id="@+id/titleInformationUser"

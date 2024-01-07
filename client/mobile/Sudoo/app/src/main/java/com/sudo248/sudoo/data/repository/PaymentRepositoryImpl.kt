@@ -19,7 +19,7 @@ class PaymentRepositoryImpl @Inject constructor(
     private val paymentService: PaymentService,
     private val ioDispatcher: CoroutineDispatcher,
 ) : PaymentRepository {
-    override suspend fun payWithVnPay(payment: Payment): DataState<Payment, Exception> = stateOn(ioDispatcher) {
+    override suspend fun pay(payment: Payment): DataState<Payment, Exception> = stateOn(ioDispatcher) {
         val request = PaymentRequest(
             paymentType = payment.paymentType.value,
             bankCode = payment.bankCode,
@@ -34,9 +34,5 @@ class PaymentRepositoryImpl @Inject constructor(
         } else {
             throw response.error().errorBody()
         }
-    }
-
-    override suspend fun payWithCOD(payment: Payment): DataState<Payment, Exception> = stateOn(ioDispatcher){
-        TODO("Not yet implemented")
     }
 }

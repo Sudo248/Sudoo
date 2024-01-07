@@ -19,6 +19,27 @@
         android:background="@color/background"
         tools:context=".ui.activity.main.fragment.order_list.OrderListFragment">
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TextMedium"
+                android:text="@string/order"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:padding="15dp"/>
+
+            <ImageView
+                android:id="@+id/imgBack"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:onClick="@{(v) -> viewModel.back()}"
+                android:paddingHorizontal="15dp"
+                android:src="@drawable/ic_back" />
+        </FrameLayout>
+
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabOrderStatus"
             android:layout_width="match_parent"
@@ -27,7 +48,8 @@
             app:tabGravity="fill"
             app:tabSelectedTextColor="@color/primaryColor"
             app:tabTextAppearance="@style/standardTabLayout"
-            app:tabMode="scrollable">
+            app:tabMode="scrollable"
+            android:elevation="5dp">
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"

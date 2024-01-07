@@ -1,5 +1,6 @@
 package com.sudo248.sudoo.ui.activity.main.fragment.order_list
 
+import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavDirections
@@ -9,12 +10,14 @@ import com.sudo248.base_android.event.SingleEvent
 import com.sudo248.base_android.ktx.bindUiState
 import com.sudo248.base_android.ktx.onError
 import com.sudo248.base_android.ktx.onSuccess
+import com.sudo248.base_android.navigation.ResultCallback
 import com.sudo248.sudoo.data.dto.order.PatchOrderSupplierDto
 import com.sudo248.sudoo.domain.entity.order.OrderStatus
 import com.sudo248.sudoo.domain.entity.order.OrderSupplierInfo
 import com.sudo248.sudoo.domain.repository.OrderRepository
 import com.sudo248.sudoo.ui.activity.main.adapter.OrderListAdapter
 import com.sudo248.sudoo.ui.models.order.OrderStatusTab
+import com.sudo248.sudoo.ui.util.BundleKeys
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
@@ -58,8 +61,29 @@ class OrderListViewModel @Inject constructor(
     }
 
     fun refresh() {
+        refreshTab(currentTab)
+    }
+
+    private fun refreshTab(tab: OrderStatusTab) {
         _isRefresh.value = true
-        onClickTabItem(currentTab)
+        getOrderSuppliers(tab.statusValue)
+    }
+
+    fun onClickTabItem(tab: OrderStatusTab) {
+        currentTab = tab
+        if (currentTab == OrderStatusTab.RECEIVED) {
+            refresh()
+        } else {
+            getOrderSuppliers(tab.statusValue)
+        }
+    }
+
+    fun reset() {
+        currentTab = OrderStatusTab.PREPARE
+        orders[OrderStatusTab.PREPARE] = null
+        orders[OrderStatusTab.TAKE_ORDER] = null
+        orders[OrderStatusTab.SHIPPING] = null
+        orders[OrderStatusTab.RECEIVED] = null
     }
 
     private fun getOrderSuppliers(statusValue: String) = launch {
@@ -108,14 +132,12 @@ class OrderListViewModel @Inject constructor(
                 orders[OrderStatusTab.RECEIVED] = receivedOrderList
                 orders[OrderStatusTab.SHIPPING] = shippingOrderList
                 orderListAdapter.submitList(orders[currentTab])
+                _isEmptyOrder.postValue(orders[currentTab].isNullOrEmpty())
             }
             .onError {
                 error = SingleEvent(it.message)
             }.bindUiState(_uiState)
     }
 
-    fun onClickTabItem(tab: OrderStatusTab) {
-        currentTab = tab
-        getOrderSuppliers(tab.statusValue)
-    }
+    fun back() = navigator.back()
 }

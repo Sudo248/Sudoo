@@ -1,11 +1,14 @@
 package com.sudo248.sudoo.ui.activity.main.fragment.order_list
 
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.tabs.TabLayout
 import com.sudo248.base_android.base.BaseFragment
 import com.sudo248.base_android.utils.DialogUtils
 import com.sudo248.sudoo.databinding.FragmentOrderStatusBinding
+import com.sudo248.sudoo.ui.activity.main.MainActivity
 import com.sudo248.sudoo.ui.ktx.showErrorDialog
 import com.sudo248.sudoo.ui.models.order.OrderStatusTab
 import dagger.hilt.android.AndroidEntryPoint
@@ -14,9 +17,18 @@ import dagger.hilt.android.AndroidEntryPoint
 class OrderListFragment : BaseFragment<FragmentOrderStatusBinding, OrderListViewModel>() {
     override val enableStateScreen: Boolean = true
     override val viewModel: OrderListViewModel by viewModels()
+    private val args: OrderListFragmentArgs by navArgs()
 
     override fun initView() {
         binding.viewModel = viewModel
+        (activity as MainActivity).run {
+            binding.imgBack.isVisible = args.isHideBottomNav
+            if (args.isHideBottomNav) {
+                goneBottomNav()
+            } else {
+                showBottomNav()
+            }
+        }
         binding.rcvOrders.setHasFixedSize(true)
         binding.rcvOrders.adapter = viewModel.orderListAdapter
 
@@ -61,5 +73,13 @@ class OrderListFragment : BaseFragment<FragmentOrderStatusBinding, OrderListView
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.refresh()
+    }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.reset()
+    }
 }

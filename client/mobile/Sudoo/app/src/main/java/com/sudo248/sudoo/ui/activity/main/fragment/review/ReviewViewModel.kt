@@ -39,7 +39,7 @@ class ReviewViewModel @Inject constructor(
     fun upsertReview() = launch {
         viewController?.hideKeyboardIdNeeded()
         viewController?.getUpsertReview()?.let { upserReview ->
-            emitState(UiState.LOADING)
+            setState(UiState.LOADING)
             parentViewModel.imageUri.value?.let {
                 viewController?.run {
                     val imageUrl = storageRepository.uploadImage(getPathImageFromUri(it)).get()

@@ -6,6 +6,7 @@
     <data>
 
         <import type="com.sudo248.sudoo.ui.models.review.ReviewListTab" />
+        <import type="android.view.View" />
 
         <variable
             name="viewModel"
@@ -74,6 +75,7 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rcvReviewed"
                     android:layout_width="match_parent"
@@ -92,7 +94,16 @@
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_not_yet_review"
-                    android:visibility="visible"/>
+                    android:visibility="visible" />
+
+                <ImageView
+                    android:id="@+id/imgEmptyList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitStart"
+                    android:src="@drawable/img_empty_list"
+                    android:visibility="@{viewModel.isEmptyList() ? View.VISIBLE : View.GONE}"
+                    tools:visibility="gone" />
             </FrameLayout>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

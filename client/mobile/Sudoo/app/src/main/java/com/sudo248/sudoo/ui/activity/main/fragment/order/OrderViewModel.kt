@@ -110,7 +110,7 @@ class OrderViewModel @Inject constructor(
 
     suspend fun getVnPayPaymentUrl(): Deferred<String?> = async {
         emitState(UiState.LOADING)
-        val response = paymentRepository.payWithVnPay(
+        val response = paymentRepository.pay(
             Payment(
                 paymentType = PaymentType.VN_PAY,
                 orderId = _order.value!!.orderId,
@@ -134,7 +134,7 @@ class OrderViewModel @Inject constructor(
 
     private fun payWithCOD() = launch {
         setState(UiState.LOADING)
-        paymentRepository.payWithVnPay(
+        paymentRepository.pay(
             Payment(
                 paymentType = PaymentType.COD,
                 orderId = _order.value!!.orderId,

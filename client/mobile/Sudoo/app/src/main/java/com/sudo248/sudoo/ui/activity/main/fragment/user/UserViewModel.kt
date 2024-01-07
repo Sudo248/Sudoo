@@ -102,8 +102,14 @@ class UserViewModel @Inject constructor(
         setState(UiState.LOADING)
         parentViewModel.imageUri.value?.let {
             viewController?.run {
-                val imageUrl = storageRepository.uploadImage(getPathImageFromUri(it)).get()
-                _user.value?.avatar?.set(imageUrl)
+                storageRepository.uploadImage(getPathImageFromUri(it))
+                    .onSuccess {
+                        _user.value?.avatar?.set(it)
+                    }
+                    .onError {
+                        error = SingleEvent(it.message)
+                        return@launch
+                    }.bindUiState(_uiState)
             }
         }
         userRepository.updateUser(_user.value!!.toUser(), isUpdateLocation)

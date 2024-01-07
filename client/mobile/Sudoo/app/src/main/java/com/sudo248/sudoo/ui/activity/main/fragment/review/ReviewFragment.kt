@@ -25,6 +25,9 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ReviewFragment : BaseFragment<FragmentReviewBinding, ReviewViewModel>(), ViewController {
+    override val enableStateScreen: Boolean
+        get() = true
+
     override val viewModel: ReviewViewModel by viewModels()
     private val mainViewModel: MainViewModel by activityViewModels()
     private val args: ReviewFragmentArgs by navArgs()
@@ -32,7 +35,9 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding, ReviewViewModel>(), V
         binding.viewModel = viewModel
         viewModel.setViewController(this)
         viewModel.setActivityViewModel(mainViewModel)
-        setProduct(args.review.productInfo)
+        args.review.productInfo?.let {
+            setProduct(it)
+        }
         setupRating()
     }
 

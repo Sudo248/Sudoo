@@ -12,5 +12,5 @@ data class ReviewDto(
     val updatedAt: LocalDateTime,
     val createdAt: LocalDateTime,
     val userInfo: UserInfoDto,
-    val productInfo: ProductInfoDto,
+    val productInfo: ProductInfoDto? = null,
 )

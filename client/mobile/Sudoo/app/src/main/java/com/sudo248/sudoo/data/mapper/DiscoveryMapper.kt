@@ -4,7 +4,6 @@ import com.sudo248.sudoo.data.dto.discovery.CategoryDto
 import com.sudo248.sudoo.data.dto.discovery.CategoryInfoDto
 import com.sudo248.sudoo.data.dto.discovery.CommentDto
 import com.sudo248.sudoo.data.dto.discovery.CommentListDto
-import com.sudo248.sudoo.data.dto.discovery.LocationDto
 import com.sudo248.sudoo.data.dto.discovery.PaginationDto
 import com.sudo248.sudoo.data.dto.discovery.ProductDto
 import com.sudo248.sudoo.data.dto.discovery.ProductExtrasDto
@@ -20,7 +19,6 @@ import com.sudo248.sudoo.domain.entity.discovery.Category
 import com.sudo248.sudoo.domain.entity.discovery.CategoryInfo
 import com.sudo248.sudoo.domain.entity.discovery.Comment
 import com.sudo248.sudoo.domain.entity.discovery.CommentList
-import com.sudo248.sudoo.domain.entity.discovery.Location
 import com.sudo248.sudoo.domain.entity.discovery.Pagination
 import com.sudo248.sudoo.domain.entity.discovery.Product
 import com.sudo248.sudoo.domain.entity.discovery.ProductExtras
@@ -126,10 +124,6 @@ fun SupplierInfoDto.toSupplierInfo(): SupplierInfo {
     )
 }
 
-fun LocationDto.toLocation(): Location {
-    return Location(longitude, latitude)
-}
-
 fun CommentDto.toComment(): Comment {
     return Comment(
         commentId = commentId,
@@ -191,7 +185,7 @@ fun ReviewDto.toReview(): Review {
         updatedAt = updatedAt,
         createdAt = createdAt,
         userInfo = userInfo.toUserInfo(),
-        productInfo = productInfo.toProductInfo()
+        productInfo = productInfo?.toProductInfo()
     )
 }
 

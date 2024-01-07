@@ -161,7 +161,11 @@ class ProductDetailViewModel @Inject constructor(
     }
 
     fun navigateToCart() {
-        navigator.navigateTo(ProductDetailFragmentDirections.actionProductDetailFragmentToCartFragment())
+        navigator.navigateTo(
+            ProductDetailFragmentDirections.actionProductDetailFragmentToCartFragment(
+                isHideBottomNav = true
+            )
+        )
     }
 
     fun navigateToHome() {

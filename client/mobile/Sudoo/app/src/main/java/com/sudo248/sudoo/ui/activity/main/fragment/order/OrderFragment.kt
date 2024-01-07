@@ -160,13 +160,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>(), View
 
     override fun payWithCODSuccess() {
         // navigate to delivery
-        lifecycleScope.launch {
-            delay(500)
-            val intent = Intent(requireContext(), MainActivity::class.java)
-            intent.putExtra(Constants.Key.SCREEN, Constants.Screen.DISCOVERY)
-            startActivity(intent)
-            activity?.finish()
-        }
+        toast(R.string.payment_success)
+        navigateOff(OrderFragmentDirections.actionOrderFragmentToPaymentResultFragment(paymentResultSuccess = true))
     }
 
     override fun toast(message: String) {

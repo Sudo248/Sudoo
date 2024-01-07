@@ -1,6 +1,8 @@
 package com.sudo248.sudoo.ui.activity.main.fragment.cart
 
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.sudo248.base_android.base.BaseFragment
 import com.sudo248.base_android.ktx.gone
 import com.sudo248.base_android.ktx.visible
@@ -16,6 +18,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
     override val viewModel: CartViewModel by viewModels()
+    private val args: CartFragmentArgs by navArgs()
+
     override val enableStateScreen: Boolean
         get() = true
 
@@ -43,6 +47,15 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
     override fun initView() {
         binding.viewModel = viewModel
         binding.rcvItems.adapter = adapter
+        (activity as MainActivity).run {
+            binding.imgBack.isVisible = args.isHideBottomNav
+            if (args.isHideBottomNav) {
+                goneBottomNav()
+            } else {
+                showBottomNav()
+            }
+        }
+
         binding.refresh.setOnRefreshListener {
             viewModel.getActiveCart()
         }
@@ -67,10 +80,10 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
 
     private fun performCartItem(items: List<CartProduct>) {
         if (items.isEmpty()) {
-            binding.constraintCart.gone()
+            binding.groupCartContent.gone()
             binding.lnCartEmpty.visible()
         } else {
-            binding.constraintCart.visible()
+            binding.groupCartContent.visible()
             binding.lnCartEmpty.gone()
             adapter.submitList(items)
         }

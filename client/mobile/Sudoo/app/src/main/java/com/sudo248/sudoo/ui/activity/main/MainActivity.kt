@@ -23,6 +23,7 @@ import com.sudo248.sudoo.databinding.ActivityMainBinding
 import com.sudo248.sudoo.domain.common.Constants
 import com.sudo248.sudoo.ui.ktx.createTempPictureUri
 import com.sudo248.sudoo.ui.ktx.showErrorDialog
+import com.sudo248.sudoo.ui.util.BundleKeys
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -71,7 +72,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), ViewCon
         R.id.reviewFragment,
         R.id.orderFragment,
         R.id.orderDetailFragment,
-        R.id.paymentResultFragment
+        R.id.paymentResultFragment,
+        R.id.userEditFragment
     )
 
     private val listener = NavController.OnDestinationChangedListener { _, destination, _ ->

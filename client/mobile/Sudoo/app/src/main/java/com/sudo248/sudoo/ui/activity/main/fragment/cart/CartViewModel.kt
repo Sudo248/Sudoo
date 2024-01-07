@@ -97,4 +97,8 @@ class CartViewModel @Inject constructor(
     private fun getAddCartProducts(): AddCartProducts {
         return AddCartProducts(_cart.value!!.cartProducts)
     }
+
+    fun back() {
+        navigator.back()
+    }
 }

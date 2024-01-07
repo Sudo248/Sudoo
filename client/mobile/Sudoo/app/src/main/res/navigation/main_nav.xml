@@ -22,14 +22,18 @@
         android:id="@+id/orderStatusFragment"
         android:name="com.sudo248.sudoo.ui.activity.main.fragment.order_list.OrderListFragment"
         android:label="OrderStatusFragment"
-        tools:layout="@layout/fragment_order_status"
-        >
+        tools:layout="@layout/fragment_order_status">
         <action
             android:id="@+id/action_orderStatusFragment_to_reviewListFragment"
             app:destination="@id/reviewListFragment" />
         <action
             android:id="@+id/action_orderStatusFragment_to_orderDetailFragment"
             app:destination="@id/orderDetailFragment" />
+
+        <argument
+            android:name="isHideBottomNav"
+            android:defaultValue="false"
+            app:argType="boolean" />
     </fragment>
 
     <fragment
@@ -100,6 +104,11 @@
         <action
             android:id="@+id/action_cartFragment_to_discoveryFragment"
             app:destination="@id/discoveryFragment" />
+
+        <argument
+            android:name="isHideBottomNav"
+            android:defaultValue="false"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/promotionFragment"

@@ -31,6 +31,9 @@ class ReviewListViewModel @Inject constructor(
     private val _isRefresh: MutableLiveData<Boolean> = MutableLiveData(false)
     val isRefresh: LiveData<Boolean> = _isRefresh
 
+    private val _isEmptyList = MutableLiveData(false)
+    val isEmptyList: LiveData<Boolean> = _isEmptyList
+
     private var reviewedNextOffset: Offset = Offset()
     private var notYetReviewNextOffset: Offset = Offset()
 
@@ -107,6 +110,7 @@ class ReviewListViewModel @Inject constructor(
                     }
                     notYetReviewedAdapter.submitData(it.reviews, extend = isLoadMore)
                 }
+                _isEmptyList.postValue(it.reviews.isEmpty())
             }
             .onError {
                 error = SingleEvent(it.message)

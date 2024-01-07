@@ -3,6 +3,7 @@ package com.sudo248.sudoo.ui.activity.auth
 import androidx.activity.viewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.sudo248.base_android.base.BaseActivity
+import com.sudo248.base_android.utils.KeyBoardUtils
 import com.sudo248.sudoo.R
 import com.sudo248.sudoo.databinding.ActivityAuthBinding
 import com.sudo248.sudoo.ui.activity.auth.adapter.PageAuthAdapter
@@ -31,5 +32,10 @@ class AuthActivity : BaseActivity<ActivityAuthBinding, AuthViewModel>() {
 
     fun selectedTab(index: Int) {
         binding.tabAuth.getTabAt(index)?.select()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        KeyBoardUtils.hide(this)
     }
 }

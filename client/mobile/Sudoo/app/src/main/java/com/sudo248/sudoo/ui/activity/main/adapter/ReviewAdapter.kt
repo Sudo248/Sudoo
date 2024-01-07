@@ -42,12 +42,13 @@ class ReviewAdapter(
         BasePageViewHolder<Review, ItemNotYetReviewBinding>(binding) {
         override fun onBind(item: Review) {
             binding.apply {
-                loadImage(imgProduct, item.productInfo.images.first())
-                txtNameProduct.text = item.productInfo.name
-                txtBrand.text =
-                    itemView.context.getString(R.string.product_brand, item.productInfo.brand)
-                txtPrice.text = Utils.formatVnCurrency(item.productInfo.price)
-
+                item.productInfo?.let {
+                    loadImage(imgProduct, item.productInfo.images.first())
+                    txtNameProduct.text = item.productInfo.name
+                    txtBrand.text =
+                        itemView.context.getString(R.string.product_brand, item.productInfo.brand)
+                    txtPrice.text = Utils.formatVnCurrency(item.productInfo.price)
+                }
                 txtReview.setOnClickListener {
                     onClickReview?.invoke(item)
                 }
@@ -65,11 +66,12 @@ class ReviewAdapter(
                 rating.rating = item.rate
                 txtCommentTime.text = Utils.formatDateTime(item.updatedAt)
                 txtComment.text = item.comment
-                loadImage(imgProduct, item.productInfo.images.first())
-                txtNameProduct.text = item.productInfo.name
+                item.productInfo?.let {
+                    loadImage(imgProduct, item.productInfo.images.first())
+                    txtNameProduct.text = item.productInfo.name
+                }
             }
         }
-
     }
 
     val isEmpty
