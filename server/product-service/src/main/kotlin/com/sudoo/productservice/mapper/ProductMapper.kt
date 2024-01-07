@@ -1,5 +1,6 @@
 package com.sudoo.productservice.mapper
 
+import com.sudoo.domain.common.Constants
 import com.sudoo.domain.utils.IdentifyCreator
 import com.sudoo.productservice.dto.*
 import com.sudoo.productservice.ktx.orZero
@@ -8,6 +9,7 @@ import com.sudoo.productservice.model.Product
 import com.sudoo.productservice.model.ProductExtras
 import com.sudoo.productservice.model.ProductInfo
 import java.time.LocalDateTime
+import java.time.ZoneId
 
 fun UpsertProductDto.toProduct(supplierId: String, createAt: LocalDateTime? = null): Product {
     return Product(
@@ -31,7 +33,7 @@ fun UpsertProductDto.toProduct(supplierId: String, createAt: LocalDateTime? = nu
         height = height.orZero(),
         length = length.orZero(),
         width = width.orZero(),
-        createdAt = createAt ?: LocalDateTime.now()
+        createdAt = createAt ?: LocalDateTime.now(ZoneId.of(Constants.zoneId))
     ).also {
         it.isNewProduct = productId.isNullOrEmpty()
     }

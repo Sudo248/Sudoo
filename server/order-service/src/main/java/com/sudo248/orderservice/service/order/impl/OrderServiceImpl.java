@@ -20,13 +20,12 @@ import com.sudo248.orderservice.service.order.OrderService;
 import com.sudo248.orderservice.service.payment.PaymentService;
 import com.sudo248.orderservice.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -52,6 +51,9 @@ public class OrderServiceImpl implements OrderService {
     private final ProductService productService;
 
     private final AuthService authService;
+
+    @Value("${zoneId}")
+    private String zoneId;
 
     public OrderServiceImpl(
             OrderRepository orderRepository,
@@ -88,20 +90,21 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderDto> getOrdersByUserId(String userId) throws ApiException {
         List<Order> orders = orderRepository.getOrdersByUserId(userId);
         return orders.stream().filter((e) -> e.getPayment() != null).map(
-                (e) -> {
-                    try {
-                        return toDto(e);
-                    } catch (ApiException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                }
-        ).collect(Collectors.toList());
+                        (e) -> {
+                            try {
+                                return toDto(e, zoneId);
+                            } catch (ApiException ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        }
+                ).sorted(Comparator.comparing(OrderDto::getCreatedAt))
+                .collect(Collectors.toList());
     }
 
     @Override
     public OrderDto getOrderById(String orderId) throws ApiException {
         Order order = orderRepository.getReferenceById(orderId);
-        return toDto(order);
+        return toDto(order, zoneId);
     }
 
     @Override
@@ -126,7 +129,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         Order order = builder.build();
-        order.setOrderSuppliers(createOrderSuppliersByCart(order, cart, user));
+        order.setOrderSuppliers(createOrderSuppliersByCart(order, cart, user, zoneId));
         // He thong chua ho tro promotion cho tung staff
         order.calculateTotalPromotionPrice(promotionDto, null);
         order.calculateTotalShipmentPrice();
@@ -136,7 +139,7 @@ public class OrderServiceImpl implements OrderService {
 
         final LocalDateTime orderCreatedAt;
         if (order.getOrderSuppliers().isEmpty()) {
-            orderCreatedAt = LocalDateTime.now();
+            orderCreatedAt = LocalDateTime.now(ZoneId.of(zoneId));
         } else {
             orderCreatedAt = order.getOrderSuppliers().get(0).getCreatedAt();
         }
@@ -174,10 +177,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDto toDto(Order order) throws ApiException {
+    public OrderDto toDto(Order order, String zoneId) throws ApiException {
         final LocalDateTime orderCreatedAt;
         if (order.getOrderSuppliers().isEmpty()) {
-            orderCreatedAt = LocalDateTime.now();
+            orderCreatedAt = LocalDateTime.now(ZoneId.of(zoneId));
         } else {
             orderCreatedAt = order.getOrderSuppliers().get(0).getCreatedAt();
         }
@@ -301,29 +304,31 @@ public class OrderServiceImpl implements OrderService {
         }
 
         return orderSuppliers.stream().map((orderSupplier -> {
-            Order order = orderSupplier.getOrder();
-            String paymentType = null;
-            LocalDateTime paymentDateTime = null;
-            if (order.getPayment() != null) {
-                paymentType = order.getPayment().getPaymentType();
-                paymentDateTime = order.getPayment().getPaymentDateTime();
-            }
-            final UserDto userDto = getUserById(order.getUserId());
-            return OrderSupplierInfoDto.builder()
-                    .orderSupplierId(orderSupplier.getOrderSupplierId())
-                    .supplierId(supplier.getSupplierId())
-                    .supplierName(supplier.getName())
-                    .userFullName(userDto.getFullName())
-                    .userPhoneNumber(userDto.getEmailOrPhoneNumber())
-                    .paymentType(paymentType)
-                    .paymentDateTime(paymentDateTime)
-                    .status(orderSupplier.getStatus())
-                    .address(order.getAddress())
-                    .expectedReceiveDateTime(orderSupplier.getCreatedAt().plusSeconds(orderSupplier.getShipment().getDeliveryTime() / 1000))
-                    .totalPrice(orderSupplier.getTotalPrice())
-                    .createdAt(orderSupplier.getCreatedAt())
-                    .build();
-        })).collect(Collectors.toList());
+                    Order order = orderSupplier.getOrder();
+                    String paymentType = null;
+                    LocalDateTime paymentDateTime = null;
+                    if (order.getPayment() != null) {
+                        paymentType = order.getPayment().getPaymentType();
+                        paymentDateTime = order.getPayment().getPaymentDateTime();
+                    }
+                    final UserDto userDto = getUserById(order.getUserId());
+                    return OrderSupplierInfoDto.builder()
+                            .orderSupplierId(orderSupplier.getOrderSupplierId())
+                            .supplierId(supplier.getSupplierId())
+                            .supplierName(supplier.getName())
+                            .userFullName(userDto.getFullName())
+                            .userPhoneNumber(userDto.getEmailOrPhoneNumber())
+                            .paymentType(paymentType)
+                            .paymentDateTime(paymentDateTime)
+                            .status(orderSupplier.getStatus())
+                            .address(order.getAddress())
+                            .expectedReceiveDateTime(orderSupplier.getCreatedAt().plusSeconds(orderSupplier.getShipment().getDeliveryTime() / 1000))
+                            .totalPrice(orderSupplier.getTotalPrice())
+                            .createdAt(orderSupplier.getCreatedAt())
+                            .build();
+                }))
+                .sorted(Comparator.comparing(OrderSupplierInfoDto::getCreatedAt))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -359,7 +364,9 @@ public class OrderServiceImpl implements OrderService {
                                 .createdAt(orderSupplier.getCreatedAt())
                                 .build();
                     }
-            ).collect(Collectors.toList());
+            )
+                    .sorted(Comparator.comparing(OrderSupplierUserInfoDto::getCreatedAt))
+                    .collect(Collectors.toList());
             response.addAll(orderSupplierUserInfoDtos);
         }
         return response;
@@ -481,8 +488,8 @@ public class OrderServiceImpl implements OrderService {
         );
     }
 
-    private List<OrderSupplier> createOrderSuppliersByCart(Order order, CartDto cart, UserDto user) throws ApiException {
-        final LocalDateTime createdAt = LocalDateTime.now();
+    private List<OrderSupplier> createOrderSuppliersByCart(Order order, CartDto cart, UserDto user, String zoneId) throws ApiException {
+        final LocalDateTime createdAt = LocalDateTime.now(ZoneId.of(zoneId));
         final Map<String, List<OrderCartProductDto>> groupBySupplier = cart.getCartProducts().stream().collect(Collectors.groupingBy(orderCartProductDto ->
                 orderCartProductDto.getProduct().getSupplierId()
         ));
@@ -522,10 +529,10 @@ public class OrderServiceImpl implements OrderService {
                     .fromWardCode(supplier.getAddress().getWardCode())
                     .toDistrictId(user.getAddress().getDistrictID())
                     .toWardCode(user.getAddress().getWardCode())
-                    .weight((int)totalWeight)
-                    .length((int)totalLength)
-                    .width((int)totalWidth)
-                    .height((int)totalHeight)
+                    .weight((int) totalWeight)
+                    .length((int) totalLength)
+                    .width((int) totalWidth)
+                    .height((int) totalHeight)
                     .build();
 
             final CalculateExpectedTimeRequest calculateExpectedTimeRequest = CalculateExpectedTimeRequest.builder()
@@ -588,7 +595,7 @@ public class OrderServiceImpl implements OrderService {
         var transaction = TransactionDto.builder()
                 .ownerId(supplierId)
                 .amount(amount)
-                .description("Revenue for order #"+orderSupplierId)
+                .description("Revenue for order #" + orderSupplierId)
                 .build();
         var response = productService.createAddRevenueTransaction(transaction);
         if (response.getStatusCode() != HttpStatus.OK || !response.hasBody())

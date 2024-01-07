@@ -1,10 +1,12 @@
 package com.sudoo.productservice.mapper
 
+import com.sudoo.domain.common.Constants
 import com.sudoo.domain.utils.IdentifyCreator
 import com.sudoo.productservice.dto.*
 import com.sudoo.productservice.model.Supplier
 import com.sudoo.productservice.model.Transaction
 import java.time.LocalDateTime
+import java.time.ZoneId
 
 fun Supplier.toSupplierDto(totalProducts: Int, address: AddressDto): SupplierDto {
     return SupplierDto(
@@ -43,7 +45,7 @@ fun UpsertSupplierDto.toSupplier(userId: String, ghnShopId: Int): Supplier {
         contactUrl = contactUrl.orEmpty(),
         rate = rate ?: 5.0f,
         addressId = address?.addressId.orEmpty(),
-        createAt = createAt ?: LocalDateTime.now()
+        createAt = createAt ?: LocalDateTime.now(ZoneId.of(Constants.zoneId))
     ).also {
         it.isNewSupplier = supplierId.isNullOrEmpty()
     }

@@ -1,11 +1,13 @@
 package com.sudoo.productservice.model
 
+import com.sudoo.domain.common.Constants
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.Transient
 import org.springframework.data.domain.Persistable
 import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
 import java.time.LocalDateTime
+import java.time.ZoneId
 
 @Table("suppliers")
 data class Supplier(
@@ -41,7 +43,7 @@ data class Supplier(
     var income: Double = 0.0,
 
     @Column("create_at")
-    val createAt: LocalDateTime = LocalDateTime.now(),
+    val createAt: LocalDateTime = LocalDateTime.now(ZoneId.of(Constants.zoneId)),
 ) : Persistable<String> {
 
     @Transient

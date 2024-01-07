@@ -8,6 +8,7 @@ import com.sudo248.orderservice.repository.entity.order.OrderSupplier;
 import com.sudo248.orderservice.repository.entity.order.StatisticRevenueCondition;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +23,7 @@ public interface OrderService {
 
     boolean cancelOrderByUser(String orderId) throws ApiException;
 
-    OrderDto toDto(Order order) throws ApiException;
+    OrderDto toDto(Order order, String zoneId) throws ApiException;
 
     OrderSupplierDto toOrderSupplierDto(OrderSupplier orderSupplier) throws ApiException;
 

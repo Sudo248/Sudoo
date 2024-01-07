@@ -1,11 +1,13 @@
 package com.sudoo.authservice.model
 
+import com.sudoo.domain.common.Constants
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.Transient
 import org.springframework.data.domain.Persistable
 import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
 import java.time.LocalDateTime
+import java.time.ZoneId
 
 @Table("accounts")
 data class Account(
@@ -29,7 +31,7 @@ data class Account(
     var isValidated: Boolean = false,
 
     @Column("create_at")
-    var createAt: LocalDateTime = LocalDateTime.now(),
+    var createAt: LocalDateTime = LocalDateTime.now(ZoneId.of(Constants.zoneId)),
 ) : Persistable<String> {
 
     @Transient

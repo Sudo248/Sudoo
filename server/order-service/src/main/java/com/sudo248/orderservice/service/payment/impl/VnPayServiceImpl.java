@@ -17,8 +17,8 @@ import com.sudo248.orderservice.repository.entity.order.Order;
 import com.sudo248.orderservice.repository.entity.payment.Notification;
 import com.sudo248.orderservice.repository.entity.payment.Payment;
 import com.sudo248.orderservice.repository.entity.payment.PaymentStatus;
-import com.sudo248.orderservice.service.payment.VnpayService;
 import com.sudo248.orderservice.service.payment.PaymentService;
+import com.sudo248.orderservice.service.payment.VnpayService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,9 +33,6 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 @Service
 public class VnPayServiceImpl implements PaymentService, VnpayService {

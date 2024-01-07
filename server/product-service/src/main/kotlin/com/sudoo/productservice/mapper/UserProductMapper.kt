@@ -1,11 +1,13 @@
 package com.sudoo.productservice.mapper
 
+import com.sudoo.domain.common.Constants
 import com.sudoo.domain.exception.BadRequestException
 import com.sudoo.domain.utils.IdentifyCreator
 import com.sudoo.productservice.dto.*
 import com.sudoo.productservice.model.ProductInfo
 import com.sudoo.productservice.model.UserProduct
 import java.time.LocalDateTime
+import java.time.ZoneId
 
 fun UserProductDto.toUserProduct(userId: String): UserProduct {
     return UserProduct(
@@ -50,8 +52,8 @@ fun UpsertUserProductDto.toUserProduct(userId: String, isReviewed: Boolean): Use
         userId = this.userId ?: userId,
         rate = rate ?: 5f,
         isReviewed = isReviewed,
-        updatedAt = LocalDateTime.now(),
-        createdAt = createdAt ?: LocalDateTime.now(),
+        updatedAt = LocalDateTime.now(ZoneId.of(Constants.zoneId)),
+        createdAt = createdAt ?: LocalDateTime.now(ZoneId.of(Constants.zoneId)),
         comment = comment.orEmpty(),
     ).also {
         it.isNewUserProduct = userProductId.isNullOrEmpty()
@@ -65,7 +67,7 @@ fun UpsertUserProductDto.combine(userProduct: UserProduct): UserProduct {
         userId = userId ?: userProduct.userId,
         rate = rate ?: userProduct.rate,
         isReviewed = true,
-        updatedAt = LocalDateTime.now(),
+        updatedAt = LocalDateTime.now(ZoneId.of(Constants.zoneId)),
         createdAt = createdAt ?: userProduct.createdAt,
         comment = comment ?: userProduct.comment,
     )
