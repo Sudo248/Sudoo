@@ -334,10 +334,13 @@ class OrderPage extends BasePage<OrderBloc> {
           .map(
             (e) => Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Text(
-                e,
-                style: style.copyWith(
-                  fontWeight: FontWeight.bold,
+              child: Align(
+                alignment: Alignment.center,
+                child: Text(
+                  e,
+                  style: style.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
@@ -348,41 +351,46 @@ class OrderPage extends BasePage<OrderBloc> {
 
   TableRow _buildProductItem(
     OrderCartProduct orderCartProduct, {
-    double rowHeight = 60,
+    double rowHeight = 80,
   }) {
     return TableRow(
       children: [
-        SizedBox(
-          height: rowHeight,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              OnlineImage(
-                orderCartProduct.product.images.first,
-                width: rowHeight * 0.9,
-                height: rowHeight * 0.9,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(3),
-                  border: Border.all(color: Colors.grey, width: 0.3),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: SizedBox(
+            height: rowHeight,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                OnlineImage(
+                  orderCartProduct.product.images.first,
+                  width: rowHeight * 0.9,
+                  height: rowHeight * 0.9,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(3),
+                    border: Border.all(color: Colors.grey, width: 0.3),
+                  ),
+                  fit: BoxFit.contain,
                 ),
-                fit: BoxFit.contain,
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              Text(
-                "[${orderCartProduct.product.sku}] ${orderCartProduct.product.name}",
-                style: style,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
+                const SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: Text(
+                    "[${orderCartProduct.product.sku}] ${orderCartProduct.product.name}",
+                    style: style,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         SizedBox(
           height: rowHeight,
           child: Align(
-            alignment: Alignment.centerLeft,
+            alignment: Alignment.center,
             child: Text(
               orderCartProduct.quantity.toString(),
               style: style,
@@ -393,7 +401,7 @@ class OrderPage extends BasePage<OrderBloc> {
         SizedBox(
           height: rowHeight,
           child: Align(
-            alignment: Alignment.centerLeft,
+            alignment: Alignment.center,
             child: Text(
               orderCartProduct.product.price.formatCurrency(),
               style: style,
@@ -404,7 +412,7 @@ class OrderPage extends BasePage<OrderBloc> {
         SizedBox(
           height: rowHeight,
           child: Align(
-            alignment: Alignment.centerLeft,
+            alignment: Alignment.center,
             child: Text(
               orderCartProduct.totalPrice.formatCurrency(),
               style: style,

@@ -213,6 +213,9 @@ class AppRouter {
         case AppRoutes.orders:
           index = 3;
           break;
+        case AppRoutes.orderDetail:
+          index = 3;
+          break;
         case AppRoutes.statisticRevenue:
           index = 4;
           break;
@@ -265,8 +268,20 @@ class DashboardGoRouterObserver extends NavigatorObserver {
         case AppRoutes.createProduct:
           index = 2;
           break;
-        case AppRoutes.supplier:
+        case AppRoutes.orders:
           index = 3;
+          break;
+        case AppRoutes.orderDetail:
+          index = 3;
+          break;
+        case AppRoutes.statisticRevenue:
+          index = 4;
+          break;
+        case AppRoutes.historyTransaction:
+          index = 4;
+          break;
+        case AppRoutes.supplier:
+          index = 5;
           break;
         default:
           index = 0;
@@ -278,5 +293,3 @@ class DashboardGoRouterObserver extends NavigatorObserver {
     }
   }
 }
-
-class AppGoRouterObserver extends NavigatorObserver {}

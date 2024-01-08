@@ -7,10 +7,13 @@ class ConfirmButton extends StatelessWidget {
   final String textNegative;
   final VoidCallback onPositive;
   final VoidCallback? onNegative;
+  final MainAxisAlignment mainAxisAlignment;
+
   const ConfirmButton({
     super.key,
     this.textPositive = "OK",
     this.textNegative = "Cancel",
+    this.mainAxisAlignment = MainAxisAlignment.end,
     required this.onPositive,
     this.onNegative,
   });
@@ -18,7 +21,7 @@ class ConfirmButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment: mainAxisAlignment,
       children: [
         FilledButton(
           style: R.buttonStyle.filledButtonStyle(),

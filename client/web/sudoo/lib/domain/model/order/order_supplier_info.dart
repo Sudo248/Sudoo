@@ -36,4 +36,9 @@ class OrderSupplierInfo {
   factory OrderSupplierInfo.fromJson(Map<String, dynamic> json) => _$OrderSupplierInfoFromJson(json);
 
   Map<String, dynamic> toJson() => _$OrderSupplierInfoToJson(this);
+
+  @override
+  String toString() {
+    return status.value;
+  }
 }

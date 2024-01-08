@@ -95,15 +95,25 @@ class OrderListDataSource extends DataGridSource {
   DataGridRow _mapFromOrderSupplier(OrderSupplierInfo orderSupplierInfo) =>
       DataGridRow(cells: [
         DataGridCell(
-            columnName: ColumnName.orderInfo.name, value: orderSupplierInfo),
+          columnName: ColumnName.orderInfo.name,
+          value: orderSupplierInfo,
+        ),
         DataGridCell(
-            columnName: ColumnName.paymentInfo.name, value: orderSupplierInfo),
+          columnName: ColumnName.paymentInfo.name,
+          value: orderSupplierInfo,
+        ),
         DataGridCell(
-            columnName: ColumnName.orderStatus.name, value: orderSupplierInfo),
+          columnName: ColumnName.orderStatus.name,
+          value: orderSupplierInfo,
+        ),
         DataGridCell(
-            columnName: ColumnName.deliveryInfo.name, value: orderSupplierInfo),
+          columnName: ColumnName.deliveryInfo.name,
+          value: orderSupplierInfo,
+        ),
         DataGridCell(
-            columnName: ColumnName.action.name, value: orderSupplierInfo),
+          columnName: ColumnName.action.name,
+          value: orderSupplierInfo,
+        ),
       ]);
 
   void buildDataRows() {

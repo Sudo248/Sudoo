@@ -127,7 +127,7 @@ class StatisticRevenuePage extends BasePage<StatisticRevenueBloc> {
                 const Divider(
                   color: Colors.blueGrey,
                   height: 50,
-                  thickness: 10,
+                  thickness: 3,
                 ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
