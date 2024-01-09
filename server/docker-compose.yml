@@ -189,6 +189,18 @@ services:
           - node.hostname==sudoo-worker-3
     restart: always
 
+  model-service:
+    image: sudo248/sudoo-model
+    container_name: model-service
+    hostname: model-service
+    networks:
+      - sudoo-network
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname==sudoo-worker-4
+
 networks:
   sudoo-network:
     driver: overlay
