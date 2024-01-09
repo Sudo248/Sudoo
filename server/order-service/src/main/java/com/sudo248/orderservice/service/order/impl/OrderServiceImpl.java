@@ -97,7 +97,7 @@ public class OrderServiceImpl implements OrderService {
                                 throw new RuntimeException(ex);
                             }
                         }
-                ).sorted(Comparator.comparing(OrderDto::getCreatedAt))
+                ).sorted(Comparator.comparing(OrderDto::getCreatedAt).reversed())
                 .collect(Collectors.toList());
     }
 
@@ -327,7 +327,7 @@ public class OrderServiceImpl implements OrderService {
                             .createdAt(orderSupplier.getCreatedAt())
                             .build();
                 }))
-                .sorted(Comparator.comparing(OrderSupplierInfoDto::getCreatedAt))
+                .sorted(Comparator.comparing(OrderSupplierInfoDto::getCreatedAt).reversed())
                 .collect(Collectors.toList());
     }
 
@@ -365,7 +365,7 @@ public class OrderServiceImpl implements OrderService {
                                 .build();
                     }
             )
-                    .sorted(Comparator.comparing(OrderSupplierUserInfoDto::getCreatedAt))
+                    .sorted(Comparator.comparing(OrderSupplierUserInfoDto::getCreatedAt).reversed())
                     .collect(Collectors.toList());
             response.addAll(orderSupplierUserInfoDtos);
         }

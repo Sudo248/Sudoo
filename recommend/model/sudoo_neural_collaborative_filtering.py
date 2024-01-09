@@ -180,6 +180,8 @@ def getNextVersion(currentVersion: str) -> str:
     return '.'.join(map(str,versionNumbers))
 
 from datetime import datetime
+import pytz
+vntz = pytz.timezone("Asia/Ho_Chi_Minh")
 prediction = sudoo.prediction
 _id = 'prediction-infomation'
 infomation = prediction.find_one({'_id': _id})
@@ -193,7 +195,7 @@ if infomation == None:
             {
                 'version': currentVersion,
                 'evaluate': evaluate,
-                'build_at': datetime.now(),
+                'build_at': datetime.now(vntz),
                 'user_size': user_size,
                 'product_size': product_size,
                 'category_size': category_size,
@@ -203,12 +205,13 @@ if infomation == None:
     }
 else:
     versions = list(infomation['versions'])
-    currentVersion = versions[-1]['version']
-    nextVersion = getNextVersion(currentVersion)
+    if len(versions) > 0:
+      currentVersion = versions[-1]['version']
+      nextVersion = getNextVersion(currentVersion)
     versions.append({
         'version': nextVersion,
         'evaluate': evaluate,
-        'build_at': datetime.now(),
+        'build_at': datetime.now(vntz),
         'user_size': user_size,
         'product_size': product_size,
         'category_size': category_size,
@@ -275,20 +278,6 @@ if os.path.exists(model_name):
   os.remove(model_name)
   print("Remove local model")
 
-# notify to flask server
-import requests
-try:
-  recommendServiceUrl = infomation['recommendServiceUrl']
-  body = {
-      'version': infomation['versions'][-1],
-      'model_name': model_name,
-      'download_model_url': f"{infomation['storageUrl']}/{model_name}"
-  }
-  requests.post(f'{recommendServiceUrl}/update-model', json = body)
-  print('Notify recommend server successful!!!')
-except:
-  print("Something went wrong")
-
 # predict for all user
 def mapProduct(recommend_products, product_map):
   def f(index):
@@ -317,7 +306,18 @@ for i in range(len(users)):
   recommend_products = predict(model, int(users.iloc[i]['_id']), users.iloc[i]['user_info'], products)
   sudoo.prediction.update_one({'_id': users.iloc[i]['user_id']}, {'$set': {'user_id': users.iloc[i]['user_id'], 'recommend': recommend_products}}, upsert=True)
 
-import time
-import os
-time.sleep(60)
-os.system('sudo poweroff')
+print("Predict for all users success!!!")
+
+# notify to flask server
+import requests
+try:
+  recommendServiceUrl = infomation['recommendServiceUrl']
+  body = {
+      'version': infomation['versions'][-1],
+      'model_name': model_name,
+      'download_model_url': f"{infomation['storageUrl']}/{model_name}"
+  }
+  requests.post(f'{recommendServiceUrl}/update-model', json = body)
+  print('Notify recommend server success!!!')
+except:
+  print("Something went wrong")
