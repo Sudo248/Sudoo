@@ -200,6 +200,7 @@ services:
       placement:
         constraints:
           - node.hostname==sudoo-worker-4
+    restart: no
 
 networks:
   sudoo-network:
