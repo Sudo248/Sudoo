@@ -60,3 +60,4 @@ recommend/server/model.keras
 recommend/model/__pycache__/
 recommend/model/env/
 recommend/model/venv/
+recommend/model/service-account.json

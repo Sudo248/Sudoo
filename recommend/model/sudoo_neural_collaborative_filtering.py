@@ -228,42 +228,11 @@ model.save(model_name)
 # upload to google storage
 from gcloud import storage
 from oauth2client.service_account import ServiceAccountCredentials
+import json
 
-credentials_dict = {
-    'type': 'service_account',
-    'client_id': '102834532880102294285',
-    'client_email': '136779879298-compute@developer.gserviceaccount.com',
-    'private_key_id': '5b283a7423847ec591c699df3d5956d5fd373c14',
-    'private_key': '''-----BEGIN PRIVATE KEY-----
-MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCe50qYmhEPcyhu
-gd+WabWerro7hatnGPbFEfeDB7N7INZG7I2sm6geDCSvQmblJFcGa8JoK+ItcQ6Y
-Pctkf2qVww5KXZ52NYAqjdoKQqOnn+NMPPFzr/NCTfm2udxQWd4lw/Q2yf57y3MW
-cyorWftek93AjrUCSRgHb17vwXN1FghEE3PsbxPyjlKyDobnomnskFp4zIREyZIp
-TO1FLSmYJiRksQSnS1Df07BcOv5VEVn1t7+GjB0lWsaM2qWne9DJv9CC3+LXIQtu
-ZZkrAzxKdqEdTxZ3+lOHLquRPu9RAizwP5hOg5iZ9EQyPFLaypLlAfZntl4rQh4K
-n2KR1EtDAgMBAAECggEAGT+HMZvFRdmr3RyDV2XA0bpR5UmWFExkpVJ3VplU0iXD
-tkLkOJQGUI6TDkqJiTN5emUz32kdnSUfcbQxNZeDQCbdMJa91MAnzFsmqnEFNN9U
-S9WhHcXMFpxyJtpS9cIZvebBTn/7kKr2bzo+7eLJwdt9JW6SDI9q+H911mLmrVM3
-CgRt3gGZMNroPuQN7/BArHCbBFXvtcx3pv5IXvd2F0gIwWtd3EwEJGJd5BBp7J2c
-H+fGAB4UP1bA4ee3M7LnpzX6ZXViKlUf/G4sHnkmYJszTQGDxvgeOofxD+LI3qNK
-2cbbyFcV7ozyoVCRKu7vzm/OFCpxDCnzAZtvMz4ZDQKBgQDbxfBt09L+slWuFqyg
-Lz4QbM7QV+jtN8lRb4Z/Dqrhg/VizAnbZWK4w4dgmxxCnHwJldrMxF/rxoqgC+7u
-OLgH1XQojEdDhqdCJyDIriUScDgLM6Pvg8KovkJreGK3uIb15HoiKhSEFluGNzE/
-yG1ORIHxieelWpWjv4stR4V69wKBgQC5GMCJuuQownZQcZC/Ju8+azmzRpksH7vi
-nS9qtjQkpq1CGnzWKajDPOWHwDYNPu1dYh1zlStPpukW/K37mlNR2VCvX3Ui0HmI
-VnQx/EC0eQc4U+S73HnJJZfXleEJn/3uCHrnd3682wNW0IUaXoDZD8cqXLxMihN2
-Ce+rHC4zFQKBgQCBlhYtfDA2VAsnSmFhVlnfL3lG6f8DGNjQ9tS0SH7D2J4xMiRB
-xGdQkKJbeTpRoJmWwVCxWr1AdeI5eq/YsYL5w4fpfMVscJJg9FdlXSGo3Jh/KmTo
-jqWSABWD7wkuUVTq2lyVloBgXhp7akHU3SZudwCz3l/DZUVEt2WmPjzbgwKBgEa5
-8IgwQ5JXjAH9AwQnim9dZXTdWxYDIjXbPg0WhiIjFj0WBfGHhZbkpAgVKBIzo1t1
-bC+IJj6PVq2T658iPwgdc7kvToD5DBdOgaO/8bGENYAOfm5SNq7nkHeuK4kT+2GD
-GANuI51iSopXryR+S9mlL8M+IC1W7UzDSzMk13ppAoGAdvYkCUncukunNhlth6XU
-Hpf3WNOkuQv8t4aBAcwOKQLLWxWENBxb2ukM1lNdU+cMSRb8ETxWvYfFpFcGZzEq
-NAy5/Ae79OkKawW4Q8JPY1Vqqan+jjbFR2KHF0wMIKzKSBt/yHqseLul89bXIS7f
-OlJJerNhWmWMvbqu5T44Yfw=
------END PRIVATE KEY-----
-''',
-}
+credentials_dict = {}
+with open('service-account.json') as f:
+    credentials_dict = json.loads(f.read())
 
 credentials = ServiceAccountCredentials.from_json_keyfile_dict(
     credentials_dict
@@ -328,15 +297,21 @@ except:
 
 # stop google compute-engine
 from google.cloud import compute_v1
+from google.oauth2.service_account import Credentials
 
 def stopGooleComputeEngine():
+  credentials = Credentials.from_service_account_info(
+      credentials_dict,
+      scopes=['https://www.googleapis.com/auth/cloud-platform'],
+      subject=credentials_dict['client_email']
+  )
   # Create a client
-  client = compute_v1.InstancesClient()
+  client = compute_v1.InstancesClient(credentials=credentials)
 
   # Initialize request argument(s)
   request = compute_v1.StopInstanceRequest(
       instance="sudoo-worker-4",
-      project="sudoo-404614",
+      project=credentials_dict['project_id'],
       zone="asia-southeast1-b",
   )
 
