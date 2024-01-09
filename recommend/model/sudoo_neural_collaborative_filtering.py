@@ -310,6 +310,7 @@ print("Predict for all users success!!!")
 
 # notify to flask server
 import requests
+import time
 try:
   recommendServiceUrl = infomation['recommendServiceUrl']
   body = {
@@ -317,7 +318,36 @@ try:
       'model_name': model_name,
       'download_model_url': f"{infomation['storageUrl']}/{model_name}"
   }
-  requests.post(f'{recommendServiceUrl}/update-model', json = body)
+  print(f'request [POST]: {recommendServiceUrl}')
+  print(f'body: {body}')
+  response = requests.post(recommendServiceUrl, json = body)
+  print(f'response: {response}')
   print('Notify recommend server success!!!')
 except:
   print("Something went wrong")
+
+# stop google compute-engine
+from google.cloud import compute_v1
+
+def stopGooleComputeEngine():
+  # Create a client
+  client = compute_v1.InstancesClient()
+
+  # Initialize request argument(s)
+  request = compute_v1.StopInstanceRequest(
+      instance="sudoo-worker-4",
+      project="sudoo-404614",
+      zone="asia-southeast1-b",
+  )
+
+  # Make the request
+  response = client.stop(request=request)
+
+  # Handle the response
+  print(response)
+
+stopGooleComputeEngine()
+
+while True:
+  print('Wait for terminate')
+  time.sleep(5)
