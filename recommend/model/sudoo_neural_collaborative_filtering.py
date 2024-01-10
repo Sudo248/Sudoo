@@ -192,6 +192,7 @@ if infomation == None:
     infomation = {
         'storageUrl': 'https://storage.googleapis.com/sudoo-buckets/models',
         'recommendServiceUrl': 'http://recommend-service:5000/api/v1/update-model',
+        'autoTerminate': False,
         'versions': [
             {
                 'version': currentVersion,
@@ -322,7 +323,10 @@ def stopGooleComputeEngine():
   # Handle the response
   print(response)
 
-stopGooleComputeEngine()
+autoTerminate = infomation['autoTerminate']
+
+if autoTerminate != None and autoTerminate == True:
+  stopGooleComputeEngine()
 
 while True:
   print('Wait for terminate')
