@@ -419,7 +419,7 @@ public class OrderServiceImpl implements OrderService {
                 Double currentValue = response.get(key);
                 if (currentValue == null) currentValue = 0.0;
                 response.put(key, currentValue + orderSupplier.getRevenue());
-                total += orderSupplier.getTotalPrice();
+                total += orderSupplier.getRevenue();
             }
         }
 

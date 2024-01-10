@@ -132,6 +132,7 @@ class SupplierServiceImpl(
         if (abs(transactionDto.amount) > supplier.income) {
             throw BadRequestException("Not enough income to claim")
         }
+        transactionDto.ownerId = supplier.supplierId
         transactionDto.amount = -abs(transactionDto.amount)
         val transaction = transactionDto.toTransaction()
         transactionRepository.save(transaction)
