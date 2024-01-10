@@ -182,6 +182,7 @@ def getNextVersion(currentVersion: str) -> str:
 from datetime import datetime
 import pytz
 vntz = pytz.timezone("Asia/Ho_Chi_Minh")
+timeFormat = "%Y-%m-%d %H:%M:%S"
 prediction = sudoo.prediction
 _id = 'prediction-infomation'
 infomation = prediction.find_one({'_id': _id})
@@ -195,7 +196,7 @@ if infomation == None:
             {
                 'version': currentVersion,
                 'evaluate': evaluate,
-                'build_at': datetime.now(vntz),
+                'build_at': datetime.now(vntz).strftime(timeFormat),
                 'user_size': user_size,
                 'product_size': product_size,
                 'category_size': category_size,
@@ -211,7 +212,7 @@ else:
     versions.append({
         'version': nextVersion,
         'evaluate': evaluate,
-        'build_at': datetime.now(vntz),
+        'build_at': datetime.now(vntz).strftime(timeFormat),
         'user_size': user_size,
         'product_size': product_size,
         'category_size': category_size,
