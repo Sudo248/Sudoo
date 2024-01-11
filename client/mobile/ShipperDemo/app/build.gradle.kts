@@ -19,7 +19,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         //buildConfigField("String", "BASE_URL", "\"https://sudo.eastasia.cloudapp.azure.com/api/v1/\"")
-        buildConfigField("String", "BASE_URL", "\"http://192.168.1.33:8080/api/v1/\"")
+        buildConfigField("String", "BASE_URL", "\"https://service.sudoo.id.vn/api/v1/\"")
         buildConfigField("String", "USER_NAME", "\"admin\"")
         buildConfigField("String", "PASSWORD", "\"admin\"")
     }
