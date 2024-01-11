@@ -28,7 +28,7 @@ class QrDialog extends StatelessWidget {
               height: 10,
             ),
             Text(
-              "QR for order",
+              R.string.qrForOrder,
               style: R.style.h4_1.copyWith(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,

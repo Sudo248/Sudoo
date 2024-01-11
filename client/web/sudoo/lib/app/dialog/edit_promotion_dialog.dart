@@ -83,21 +83,21 @@ class EditPromotionDialog extends StatelessWidget {
                       color: Colors.grey,
                       borderRadius: BorderRadius.circular(15.0),
                     ),
-                    child: const Column(
+                    child: Column(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.add,
                           size: 50,
                           color: Colors.blueGrey,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 30,
                         ),
                         Text(
-                          "Upload",
-                          style: TextStyle(
+                          R.string.upload,
+                          style: const TextStyle(
                             fontSize: 24,
                             color: Colors.blueGrey,
                           ),
@@ -112,20 +112,20 @@ class EditPromotionDialog extends StatelessWidget {
               height: 15,
             ),
             ..._buildInputField(
-              "Name",
+              R.string.name,
               nameController..text = promotion.name,
               maxLength: 100,
               maxLines: 1,
             ),
             ..._buildInputField(
-              "Amount",
+              R.string.amount,
               amountController..text = promotion.totalAmount.toString(),
               maxLines: 1,
               maxLength: 5,
               keyboardType: TextInputType.number,
             ),
             ..._buildInputField(
-              "Value",
+              R.string.value,
               valueController..text = promotion.value.toStringAsFixed(1),
               maxLines: 1,
               keyboardType: TextInputType.number,
@@ -137,7 +137,7 @@ class EditPromotionDialog extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        "Enable: ",
+                        "${R.string.enable}: ",
                         style: R.style.h5.copyWith(color: Colors.black),
                       ),
                       const SizedBox(
@@ -162,7 +162,7 @@ class EditPromotionDialog extends StatelessWidget {
                 : const SizedBox.shrink(),
             const Expanded(child: SizedBox.shrink()),
             ConfirmButton(
-              textPositive: isCreate ? "Create" : "Update",
+              textPositive: isCreate ? R.string.create : R.string.update,
               onPositive: () {
                 promotion.name = nameController.text;
                 promotion.totalAmount =

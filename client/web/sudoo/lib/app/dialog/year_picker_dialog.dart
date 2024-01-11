@@ -12,7 +12,7 @@ void showYearPicker({
     builder: (context) {
       final Size size = MediaQuery.of(context).size;
       return AlertDialog(
-        title: Text('Select Year'),
+        title: const Text('Chọn năm'),
         // Changing default contentPadding to make the content looks better
         contentPadding: const EdgeInsets.all(10),
         content: YearPicker(

@@ -37,7 +37,7 @@ class _ChooseCategoryDialogState extends State<ChooseCategoryDialog> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              "Choose category",
+              R.string.chooseCategory,
               style: R.style.h4_1.copyWith(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,

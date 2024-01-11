@@ -22,7 +22,7 @@ class DateTimeSelector extends StatelessWidget {
     required this.lastDate,
     this.value,
     this.onSelectedDate,
-    this.hint = "Choose",
+    this.hint = "Chọn",
     this.isEditable = true,
     this.style,
     this.isExpandedIcon = false,

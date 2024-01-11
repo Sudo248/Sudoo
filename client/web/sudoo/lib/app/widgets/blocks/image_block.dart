@@ -10,6 +10,8 @@ import 'package:sudoo/domain/model/discovery/upsert_file.dart';
 import 'package:sudoo/extensions/list_ext.dart';
 import 'package:sudoo/utils/logger.dart';
 
+import '../../../resources/R.dart';
+
 class ImageBlock extends StatelessWidget {
   final String? productId;
   final ValueNotifier<List<domain.File>?> images;
@@ -62,21 +64,21 @@ class ImageBlock extends StatelessWidget {
           color: Colors.grey,
           borderRadius: BorderRadius.circular(5.0),
         ),
-        child: const Column(
+        child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
+            const Icon(
               Icons.add,
               size: 50,
               color: Colors.blueGrey,
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             Text(
-              "Upload",
-              style: TextStyle(
+              R.string.upload,
+              style: const TextStyle(
                 fontSize: 24,
                 color: Colors.blueGrey,
               ),

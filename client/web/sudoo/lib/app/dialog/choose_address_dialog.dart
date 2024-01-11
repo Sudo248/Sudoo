@@ -66,10 +66,10 @@ class ChooseAddressDialog extends StatelessWidget {
                       );
                     }
                     if (value.isEmpty) {
-                      return const Center(
+                      return Center(
                         child: Text(
-                          "Empty list",
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          R.string.emptyList,
+                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                       );
                     }

@@ -20,6 +20,7 @@ class AppString extends R {
   String get createProduct => "Tạo mới sản phẩm";
   String get productDetail => "Chi tiết sản phẩm";
   String get email => "Email";
+  String get emptyList => "Danh sách trống";
   String get password => "Mật khẩu";
   String get confirmPassword => "Xác nhận mật khẩu";
   String get invalidEmail => "Email không khả dụng";
@@ -32,6 +33,7 @@ class AppString extends R {
   String get dontHaveAccount => "Bạn chưa có tài khoản?";
   String get haveAccount => "Bạn đã có tài khoản?";
   String get sellerSKU => "Sku";
+  String get gender => "Giới tính";
   String get amount => "Số lượng";
   String get categories => "Danh mục";
   String get listCategory => "Danh sách danh mục";
@@ -40,6 +42,7 @@ class AppString extends R {
   String get listBanner => "Danh sách banner";
   String get listedPrice => "Giá niêm yết";
   String get quantity => "Số lượng";
+  String get qrForOrder => "Mã QR cho đơn hàng";
   String get price => "Giá bán";
   String get product => "Sản phẩm";
   String get saleInfo => "Thông tin bán";
@@ -67,6 +70,7 @@ class AppString extends R {
   String get enable3DViewer => "Tính năng 3D";
   String get enableARViewer => "Tính năng AR";
   String get chooseFile => "Chọn file";
+  String get chooseCategory => "Chọn thể loại";
   String get weight => "Trọng lượng";
   String get height => "Chiều cao";
   String get width => "Chiều rộng";
@@ -83,6 +87,7 @@ class AppString extends R {
   String get ward => "Phường/ Xã";
   String get address => "Địa chỉ";
   String get totalProduct => "Tổng sản phẩm";
+  String get totalAmount => "Tổng số lượng";
   String get createdAt => "Tạo lúc";
   String get customer => "Khách hàng";
   String get total => "Tổng cộng";
@@ -120,6 +125,8 @@ class AppString extends R {
   String get orderId => "Mã đơn hàng";
   String get version => "Phiên bản";
   String get evaluate => "Đánh giá";
+  String get enable => "Cho phép";
+  String get value => "Giá trị";
   String get buildAt => "Thời gian thực hiện";
   String get userSize => "Số lượng khách hàng";
   String get productSize => "Số lượng sản phẩm";
@@ -132,6 +139,8 @@ class AppString extends R {
   String get syncReviewDescription => "Đồng bộ tất cả đánh giá";
   String get syncAllDescription => "Đồng bộ tất cả dữ liệu";
   String get createCategory => "Tạo mới danh mục";
+  String get create => "Tạo mới";
+  String get update => "Cập nhật";
   String get updateCategory => "Cập nhật danh mục";
   String get createPromotion => "Tạo mới mã giảm giá";
   String get updatePromotion => "Cập nhật mã giảm giá";

@@ -144,7 +144,7 @@ class StatisticRevenuePage extends BasePage<StatisticRevenueBloc> {
                             TextSpan(
                               text: "${R.string.total}: ",
                               style: style.copyWith(
-                                fontSize: 20,
+                                fontSize: 18,
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -152,7 +152,7 @@ class StatisticRevenuePage extends BasePage<StatisticRevenueBloc> {
                             TextSpan(
                               text: value.formatCurrency(),
                               style: style.copyWith(
-                                fontSize: 20,
+                                fontSize: 18,
                               ),
                             )
                           ],
@@ -178,12 +178,12 @@ class StatisticRevenuePage extends BasePage<StatisticRevenueBloc> {
                         ),
                         child: DropdownButton<String>(
                           padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                          value: value.value,
+                          value: value.displayValue,
                           underline: const SizedBox.shrink(),
                           items: TypeDatePicker.values
                               .map<DropdownMenuItem<String>>(
                                 (e) => DropdownMenuItem(
-                                  value: e.value,
+                                  value: e.displayValue,
                                   child: _buildItemCondition(e),
                                 ),
                               )
@@ -195,7 +195,7 @@ class StatisticRevenuePage extends BasePage<StatisticRevenueBloc> {
                                   )
                                   .toList(),
                           onChanged: (value) => bloc.onChangedCondition(
-                            TypeDatePicker.fromValue(value),
+                            TypeDatePicker.fromDisplayValue(value),
                           ),
                         ),
                       ),
@@ -389,7 +389,7 @@ class StatisticRevenuePage extends BasePage<StatisticRevenueBloc> {
       child: Align(
         alignment: Alignment.centerLeft,
         child: Text(
-          type.value,
+          type.displayValue,
           textAlign: TextAlign.center,
           style: style.copyWith(fontWeight: FontWeight.bold),
         ),

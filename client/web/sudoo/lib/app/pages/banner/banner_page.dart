@@ -78,21 +78,21 @@ class BannerPage extends BasePage<BannerBloc> {
           color: Colors.grey,
           borderRadius: BorderRadius.circular(10.0),
         ),
-        child: const Column(
+        child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
+            const Icon(
               Icons.add,
               size: 50,
               color: Colors.blueGrey,
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             Text(
-              "Upload",
-              style: TextStyle(
+              R.string.upload,
+              style: const TextStyle(
                 fontSize: 24,
                 color: Colors.blueGrey,
               ),

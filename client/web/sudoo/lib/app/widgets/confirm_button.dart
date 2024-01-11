@@ -11,8 +11,8 @@ class ConfirmButton extends StatelessWidget {
 
   const ConfirmButton({
     super.key,
-    this.textPositive = "OK",
-    this.textNegative = "Cancel",
+    this.textPositive = "Đồng ý",
+    this.textNegative = "Hủy",
     this.mainAxisAlignment = MainAxisAlignment.end,
     required this.onPositive,
     this.onNegative,

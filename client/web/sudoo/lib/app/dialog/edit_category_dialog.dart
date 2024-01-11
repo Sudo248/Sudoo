@@ -81,21 +81,21 @@ class EditCategoryDialog extends StatelessWidget {
                       color: Colors.grey,
                       borderRadius: BorderRadius.circular(15.0),
                     ),
-                    child: const Column(
+                    child: Column(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.add,
                           size: 30,
                           color: Colors.blueGrey,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
                         Text(
-                          "Upload",
-                          style: TextStyle(
+                          R.string.upload,
+                          style: const TextStyle(
                             fontSize: 16,
                             color: Colors.blueGrey,
                           ),
@@ -110,7 +110,7 @@ class EditCategoryDialog extends StatelessWidget {
               height: 10,
             ),
             ..._buildInputField(
-              "Name",
+              R.string.name,
               nameController..text = category.name,
               maxLines: 1,
               maxLength: 50,
@@ -119,7 +119,7 @@ class EditCategoryDialog extends StatelessWidget {
                 ? Row(
                     children: [
                       Text(
-                        "Total product: ",
+                        "${R.string.totalProduct}: ",
                         style: style,
                       ),
                       const SizedBox(
@@ -139,7 +139,7 @@ class EditCategoryDialog extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  "Enable: ",
+                  "${R.string.enable}: ",
                   style: R.style.h5.copyWith(color: Colors.black),
                 ),
                 const SizedBox(
@@ -164,7 +164,7 @@ class EditCategoryDialog extends StatelessWidget {
             ),
             const Expanded(child: SizedBox.shrink()),
             ConfirmButton(
-              textPositive: isCreate ? "Create" : "Update",
+              textPositive: isCreate ? R.string.create : R.string.update,
               onPositive: () {
                 category.name = nameController.text;
                 context.pop();

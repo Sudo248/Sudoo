@@ -61,7 +61,7 @@ class CategoryItem extends StatelessWidget {
             ),
             category.countProduct != null
                 ? Text(
-                    "Total product: ${category.countProduct}",
+                    "${R.string.totalProduct}: ${category.countProduct}",
                     maxLines: 1,
                     style: R.style.h5.copyWith(
                       color: Colors.black,
@@ -75,7 +75,7 @@ class CategoryItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  "Enable: ",
+                  "${R.string.enable}: ",
                   style: R.style.h5.copyWith(color: Colors.black),
                 ),
                 const SizedBox(

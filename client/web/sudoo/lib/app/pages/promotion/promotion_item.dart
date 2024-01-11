@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sudoo/domain/model/promotion/promotion.dart';
+import 'package:sudoo/extensions/double_ext.dart';
 
 import '../../../resources/R.dart';
 import '../../widgets/online_image.dart';
@@ -60,7 +61,7 @@ class PromotionItem extends StatelessWidget {
               height: 10,
             ),
             Text(
-              "Total amount: ${promotion.totalAmount}",
+              "${R.string.totalAmount}: ${promotion.totalAmount}",
               maxLines: 1,
               style: R.style.h5.copyWith(
                 color: Colors.black,
@@ -70,7 +71,7 @@ class PromotionItem extends StatelessWidget {
               height: 10,
             ),
             Text(
-              "Value: ${promotion.value.toStringAsFixed(1)}đ",
+              "${R.string.value}: ${promotion.value.formatCurrency()}",
               maxLines: 1,
               style: R.style.h5.copyWith(
                 color: Colors.black,
@@ -84,7 +85,7 @@ class PromotionItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        "Enable: ",
+                        "${R.string.evaluate}: ",
                         style: R.style.h5.copyWith(color: Colors.black),
                       ),
                       const SizedBox(

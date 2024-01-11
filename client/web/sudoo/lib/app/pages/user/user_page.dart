@@ -156,6 +156,13 @@ class UserPage extends BasePage<UserBloc> {
 
   List<Widget> _buildGender(BuildContext context) {
     return [
+      Text(
+        R.string.gender,
+        style: style.copyWith(fontWeight: FontWeight.bold),
+      ),
+      const SizedBox(
+        height: 5,
+      ),
       DropdownMenu<Gender>(
         width: 500,
         controller: bloc.genderController,
@@ -177,6 +184,13 @@ class UserPage extends BasePage<UserBloc> {
 
   List<Widget> _buildDob(BuildContext context) {
     return [
+      Text(
+        R.string.dob,
+        style: style.copyWith(fontWeight: FontWeight.bold),
+      ),
+      const SizedBox(
+        height: 5,
+      ),
       ValueListenableBuilder(
         valueListenable: bloc.dob,
         builder: (context, value, child) => DateTimeSelector(
@@ -185,7 +199,7 @@ class UserPage extends BasePage<UserBloc> {
           value: value,
           hint: R.string.dob,
           onSelectedDate: (dob) => bloc.dob.value = dob,
-            isExpandedIcon: true,
+          isExpandedIcon: true,
         ),
       ),
       const SizedBox(
@@ -198,9 +212,10 @@ class UserPage extends BasePage<UserBloc> {
     showDialog(
       context: context,
       builder: (context) => ChooseAddressDialog(
-          suggestion: bloc.suggestion,
-          step: bloc.stepChooseAddress,
-          callback: bloc),
+        suggestion: bloc.suggestion,
+        step: bloc.stepChooseAddress,
+        callback: bloc,
+      ),
     );
   }
 }

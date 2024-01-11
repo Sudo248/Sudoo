@@ -113,9 +113,9 @@ class HistoryTransactionPage extends BasePage<HistoryTransactionBloc> {
                                         Expanded(
                                           child: Text(
                                             transaction.description,
-                                            style: style,
-                                            maxLines: 10,
-                                            overflow: TextOverflow.ellipsis,
+                                            style: style.copyWith(
+                                              color: Colors.black
+                                            ),
                                           ),
                                         ),
                                       )

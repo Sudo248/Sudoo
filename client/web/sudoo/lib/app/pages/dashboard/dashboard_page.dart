@@ -159,22 +159,24 @@ class DashboardPage extends BasePage<DashboardBloc> {
                                   const EdgeInsets.only(right: 100, left: 15),
                                 )
                             ),
-                            leadingIcon: const Icon(Icons.settings),
+                            leadingIcon: const Icon(Icons.info_outline),
                             child: const Text(
-                              "Settings",
+                              "Thông tin người dùng",
                               style: TextStyle(fontSize: 16),
                             ),
                             onPressed: () => context.go(AppRoutes.user),
                           ),
                           MenuItemButton(
                             style: ButtonStyle(
-                                padding: MaterialStateProperty.all<EdgeInsetsGeometry?>(
-                                  const EdgeInsets.only(right: 100, left: 15),
-                                )
-                            ),
+                                padding: MaterialStateProperty.all<
+                                    EdgeInsetsGeometry?>(
+                              const EdgeInsets.only(right: 100, left: 15),
+                            )),
                             leadingIcon: const Icon(Icons.logout),
-                            child: const Text("Logout",
-                                style: TextStyle(fontSize: 16)),
+                            child: const Text(
+                              "Đăng xuất",
+                              style: TextStyle(fontSize: 16),
+                            ),
                             onPressed: () => bloc.logout().then((value) =>
                                 context.pushReplacement(AppRoutes.auth)),
                           )
