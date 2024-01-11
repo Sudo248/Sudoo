@@ -11,7 +11,7 @@ class AppNavigationRail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppRouter.isAdmin
+    return AppRouter.isAdmin()
         ? ValueListenableBuilder(
             valueListenable: AppRouter.adminIndexDashboard,
             builder: (context, selectedIndex, child) => _buildNavigationRail(

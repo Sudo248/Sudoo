@@ -31,7 +31,7 @@ class DashboardPage extends BasePage<DashboardBloc> {
       : super(key: key ?? const ValueKey("DashboardPageKey"));
 
   void go(BuildContext context, int index) {
-    if (AppRouter.isAdmin) {
+    if (AppRouter.isAdmin()) {
       if (index == AppRouter.adminIndexDashboard.value) return;
       AppRouter.adminIndexDashboard.value = index;
       switch (index) {
@@ -156,7 +156,7 @@ class DashboardPage extends BasePage<DashboardBloc> {
                           MenuItemButton(
                             style: ButtonStyle(
                                 padding: MaterialStateProperty.all<EdgeInsetsGeometry?>(
-                                  const EdgeInsets.only(right: 100, left: 15),
+                                  const EdgeInsets.only(right: 80, left: 15),
                                 )
                             ),
                             leadingIcon: const Icon(Icons.info_outline),

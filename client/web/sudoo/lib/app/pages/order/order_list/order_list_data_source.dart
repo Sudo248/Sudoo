@@ -36,7 +36,7 @@ class OrderListDataSource extends DataGridSource {
             child: OrderInfoCell(
               orderSupplierId: cell.value.orderSupplierId,
               createdAt: cell.value.createdAt,
-              storeName: AppRouter.isAdmin ? cell.value.supplierName : null,
+              storeName: AppRouter.isAdmin() ? cell.value.supplierName : null,
               style: style,
             ),
           );

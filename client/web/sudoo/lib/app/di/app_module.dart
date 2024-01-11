@@ -44,15 +44,15 @@ class AppModule {
 
     getIt.registerFactory(() => UserBloc(getIt.get(), getIt.get()));
 
-    getIt.registerFactory(() => BannerBloc(getIt.get(), getIt.get()));
+    getIt.registerLazySingleton(() => BannerBloc(getIt.get(), getIt.get()));
 
-    getIt.registerFactory(() => StoresBloc(getIt.get()));
+    getIt.registerLazySingleton(() => StoresBloc(getIt.get()));
 
     getIt.registerFactory(() => OrderBloc(getIt.get(), getIt.get()));
 
     getIt.registerFactory(() => StatisticRevenueBloc(getIt.get(), getIt.get()));
 
-    getIt.registerFactory(() => HistoryTransactionBloc(getIt.get()));
+    getIt.registerLazySingleton(() => HistoryTransactionBloc(getIt.get()));
 
     getIt.registerFactory(() => ModelBloc(getIt.get(), getIt.get(), getIt.get()));
 

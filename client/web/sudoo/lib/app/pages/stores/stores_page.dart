@@ -43,7 +43,7 @@ class StoresPage extends BasePage<StoresBloc> {
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text: "Total: ",
+                            text: "${R.string.total}: ",
                             style: R.style.h5.copyWith(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,

@@ -55,9 +55,10 @@ class SplashBloc extends BaseBloc {
     try {
       final result = await authRepository.refreshToken();
       if (result.isSuccess) {
-        AppRouter.isAdmin = result.get().role == Role.ADMIN;
+        pref.setString(PrefKeys.role, result.get().role.value);
+        AppRouter.setAdmin(result.get().role == Role.ADMIN);
         // only check for staff
-        if (!AppRouter.isAdmin) {
+        if (!AppRouter.isAdmin()) {
           final resultSupplier = await productRepository.getSupplier();
           if (!resultSupplier.isSuccess) {
             SupplierBloc.isRegistered = false;

@@ -81,9 +81,9 @@ class AuthBloc extends BaseBloc {
       final result = await authRepository.signIn(account);
       loadingController.hideLoading();
       if (result.isSuccess) {
-        AppRouter.isAdmin = result.get().role == Role.ADMIN;
+        AppRouter.setAdmin(result.get().role == Role.ADMIN);
         // only check for staff
-        if (!AppRouter.isAdmin) {
+        if (!AppRouter.isAdmin()) {
           final resultSupplier = await productRepository.getSupplier();
           if (!resultSupplier.isSuccess) {
             SupplierBloc.isRegistered = false;
@@ -125,8 +125,8 @@ class AuthBloc extends BaseBloc {
     VerifyOtp verifyOtp = VerifyOtp(emailController.text, otpController.text);
     final result = await authRepository.submitOtp(verifyOtp);
     if (result.isSuccess) {
-      AppRouter.isAdmin = result.get().role == Role.ADMIN;
-      if (!AppRouter.isAdmin) {
+      AppRouter.setAdmin(result.get().role == Role.ADMIN);
+      if (!AppRouter.isAdmin()) {
         final resultSupplier = await productRepository.getSupplier();
         if (!resultSupplier.isSuccess) {
           _navigateToDashboard.call(AppRoutes.supplier);

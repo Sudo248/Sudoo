@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sudoo/app/pages/banner/banner_page.dart';
 import 'package:sudoo/app/pages/category/category_page.dart';
 import 'package:sudoo/app/pages/dashboard/dashboard_page.dart';
@@ -11,7 +12,10 @@ import 'package:sudoo/app/pages/stores/stores_page.dart';
 import 'package:sudoo/app/pages/supplier/supplier_page.dart';
 import 'package:sudoo/app/pages/user/user_page.dart';
 import 'package:sudoo/extensions/string_ext.dart';
+import 'package:sudoo/utils/di.dart';
 
+import '../../data/config/pref_keys.dart';
+import '../../domain/model/auth/role.dart';
 import '../pages/auth/views/auth_page.dart';
 import '../pages/home/home_page.dart';
 import '../pages/product/product/product_page.dart';
@@ -35,7 +39,21 @@ class AppRouter {
 
   static final ValueNotifier<int> indexDashboard = ValueNotifier(0);
   static final ValueNotifier<int> adminIndexDashboard = ValueNotifier(0);
-  static bool isAdmin = false;
+  static bool? _isAdmin;
+
+  static bool isAdmin() {
+    if (_isAdmin != null) {
+      return _isAdmin!;
+    } else {
+      _isAdmin = getIt.get<SharedPreferences>().getString(PrefKeys.role) ==
+          Role.ADMIN.value;
+      return _isAdmin!;
+    }
+  }
+
+  static void setAdmin(bool isAdmin) {
+    _isAdmin = isAdmin;
+  }
 
   static List<RouteBase> getAppRoutes() {
     return <RouteBase>[
@@ -175,7 +193,7 @@ class AppRouter {
   static updateIndexDashboard(String? routeName) {
     if (routeName.isNullOrEmpty) return;
     int index = 0;
-    if (AppRouter.isAdmin) {
+    if (AppRouter.isAdmin()) {
       switch (routeName) {
         case AppRoutes.adminCategories:
           index = 1;
@@ -242,13 +260,22 @@ class DashboardGoRouterObserver extends NavigatorObserver {
     final routeName = route.settings.name;
     if (routeName.isNullOrEmpty) return;
     int index = 0;
-    if (AppRouter.isAdmin) {
+    if (AppRouter.isAdmin()) {
       switch (routeName) {
         case AppRoutes.adminCategories:
           index = 1;
           break;
-        case AppRoutes.createProduct:
+        case AppRoutes.adminPromotions:
           index = 2;
+          break;
+        case AppRoutes.adminBanners:
+          index = 3;
+          break;
+        case AppRoutes.adminStores:
+          index = 4;
+          break;
+        case AppRoutes.adminModel:
+          index = 5;
           break;
         default:
           index = 0;
