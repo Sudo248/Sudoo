@@ -85,7 +85,7 @@ class PromotionItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        "${R.string.evaluate}: ",
+                        "${R.string.enable}: ",
                         style: R.style.h5.copyWith(color: Colors.black),
                       ),
                       const SizedBox(
