@@ -59,6 +59,12 @@ class EditPriceDialog extends StatelessWidget {
                     _buildListedPrice(style),
                   ],
                 ),
+                const TableRow(
+                  children: [
+                    SizedBox(height: 15,),
+                    SizedBox(height: 15,),
+                  ]
+                ),
                 TableRow(
                   children: [
                     _buildTitle(R.string.price, style),
@@ -68,7 +74,7 @@ class EditPriceDialog extends StatelessWidget {
               ],
             ),
             const SizedBox(
-              height: 20.0,
+              height: 30.0,
             ),
             ConfirmButton(
               onPositive: () {
@@ -108,10 +114,15 @@ class EditPriceDialog extends StatelessWidget {
       child: TextField(
         controller: listedPriceController,
         decoration: InputDecoration(
-          suffix: Text(
-            "đ",
-            style: style,
+          constraints: const BoxConstraints(
+            maxWidth: 200,
           ),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          suffixText: "đ",
+          suffixStyle: style.copyWith(fontWeight: FontWeight.bold),
+          border: const OutlineInputBorder(),
+          counterText: "",
         ),
         style: style,
         keyboardType: TextInputType.number,
@@ -137,17 +148,20 @@ class EditPriceDialog extends StatelessWidget {
               child: TextField(
                 controller: priceController,
                 decoration: InputDecoration(
-                  suffix: Text(
-                    "đ",
-                    style: style,
+                  constraints: const BoxConstraints(
+                    maxWidth: 200,
                   ),
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  suffixText: "đ",
+                  suffixStyle: style.copyWith(fontWeight: FontWeight.bold),
+                  border: const OutlineInputBorder(),
+                  counterText: "",
                 ),
                 style: style,
                 keyboardType: TextInputType.number,
                 maxLength: 11,
-                inputFormatters: [
-                  CurrencyValueTextInputFormatter()
-                ],
+                inputFormatters: [CurrencyValueTextInputFormatter()],
                 onChanged: onPriceChange,
               ),
             ),
@@ -162,14 +176,19 @@ class EditPriceDialog extends StatelessWidget {
               width: 5,
             ),
             SizedBox(
-              width: 50,
+              width: 80,
               child: TextField(
                 controller: discountController,
                 decoration: InputDecoration(
-                  suffix: Text(
-                    "%",
-                    style: style,
+                  constraints: const BoxConstraints(
+                    maxWidth: 80,
                   ),
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  suffixText: "%",
+                  suffixStyle: style.copyWith(fontWeight: FontWeight.bold),
+                  border: const OutlineInputBorder(),
+                  counterText: "",
                 ),
                 textAlign: TextAlign.center,
                 style: style,
