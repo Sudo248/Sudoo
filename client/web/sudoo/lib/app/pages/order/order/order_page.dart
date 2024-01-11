@@ -46,17 +46,21 @@ class OrderPage extends BasePage<OrderBloc> {
   Widget build(BuildContext context) {
     _currentContext = context;
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
           child: Text(
             R.string.orderDetail,
-            style: style.copyWith(
+            style: R.style.h4_1.copyWith(
               fontWeight: FontWeight.bold,
-              fontSize: 20,
+              color: Colors.black,
             ),
           ),
+        ),
+        const SizedBox(
+          height: 10,
         ),
         Expanded(
           child: orderSupplierId == null

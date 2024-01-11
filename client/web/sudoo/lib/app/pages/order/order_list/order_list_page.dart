@@ -53,18 +53,38 @@ class OrderListPage extends BasePage<OrderListBloc> {
 
     final size = MediaQuery.sizeOf(context);
     final itemHeight = size.height * 0.13;
-    return ValueListenableBuilder(
-      valueListenable: bloc.totalOrders,
-      builder: (context, value, child) =>
-          value <= 0 ? const EmptyList() : child!,
-      child: SfDataGrid(
-        headerGridLinesVisibility: GridLinesVisibility.both,
-        gridLinesVisibility: GridLinesVisibility.both,
-        headerRowHeight: 60,
-        rowHeight: itemHeight,
-        source: bloc.orderListDatSource,
-        columns: _columns(size.width),
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+          child: Text(
+            R.string.listOrder,
+            style: R.style.h4_1.copyWith(
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Expanded(
+          child: ValueListenableBuilder(
+            valueListenable: bloc.totalOrders,
+            builder: (context, value, child) =>
+                value <= 0 ? const EmptyList() : child!,
+            child: SfDataGrid(
+              headerGridLinesVisibility: GridLinesVisibility.both,
+              gridLinesVisibility: GridLinesVisibility.both,
+              headerRowHeight: 60,
+              rowHeight: itemHeight,
+              source: bloc.orderListDatSource,
+              columns: _columns(size.width),
+            ),
+          ),
+        ),
+      ],
     );
   }
 

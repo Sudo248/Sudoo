@@ -95,8 +95,8 @@ class ClaimIncomeDialog extends StatelessWidget {
     Bank      : ${bankController.text}
     Number    : ${numberSerialBankController.text}
     Full name : ${fullNameController.text}
-    Amount    : ${double.parse(amountController.text).formatCurrency}
-    Created at: ${DateTime.now().formatDateTime}
+    Amount    : ${double.parse(amountController.text).formatCurrency()}
+    Created at: ${DateTime.now().formatDateTime()}
     """.trim();
   }
 

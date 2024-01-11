@@ -11,102 +11,63 @@ abstract class R {
 
 class AppString extends R {
   String get appName => "Sudoo";
-
+  String get todo => "Job to do";
+  String get type => "Type";
+  String get code => "Code";
+  String get updatedAt => "Updated at";
+  String get appDescription => "Sales solutions for businesses";
   String get home => "Home";
-
   String get listProduct => "List product";
-
   String get createProduct => "Create product";
-
+  String get productDetail => "Product detail";
   String get email => "Email";
-
   String get password => "Password";
-
   String get confirmPassword => "Confirm password";
-
   String get invalidEmail => "Invalid email";
-
   String get invalidPassword => "Password must be at least 8 character";
-
   String get wrongPassword => "Wrong password";
-
   String get signIn => "Sign in";
-
   String get signUp => "Sign up";
-
   String get welcomeBack => "Welcome back!!!";
-
   String get welcomeTo => "Welcome to Sudoo";
-
   String get dontHaveAccount => "I don't have an account?";
-
   String get haveAccount => "I have an account?";
-
   String get sellerSKU => "Seller SKU";
-
   String get amount => "Amount";
-
   String get categories => "Categories";
-
+  String get listCategory => "List category";
   String get promotions => "Promotions";
-
   String get banner => "Banner";
-
+  String get listBanner => "List banner";
   String get listedPrice => "Listed price";
-
   String get quantity => "Quantity";
-
   String get price => "Price";
-
   String get product => "Product";
-
   String get saleInfo => "Sale information";
-
   String get saleStatus => "Sale status";
-
   String get action => "Action";
-
   String get from => "From";
-
   String get to => "To";
-
   String get otpAuthentication => "OTP Authentication";
-
   String get otpDescription => "We will send the verification code to your email.";
-
   String get resendOtp => "Resend OTP";
-
   String get notReceiveOtp => "Don't receive OTP?";
-
   String get submit => "Submit";
-
+  String get supplier => "Supplier";
   String get images => "Images";
-
   String get name => "Name";
   String get fullName => "Full name";
-
   String get brand => "Brand";
-
   String get phoneNumber => "Phone number";
-
   String get contactUrl => "Contact URL";
-
   String get description => "Description";
-
   String get optional => "Optional";
-
   String get save => "Save";
-
   String get upload => "Upload";
-
   String get extras => "Extras";
-
   String get enable3DViewer => "Enable 3D viewer";
-
   String get enableARViewer => "Enable AR viewer";
-
   String get chooseFile => "Choose file";
-
   String get weight => "Weight";
   String get height => "Height";
   String get width => "Width";
@@ -116,6 +77,7 @@ class AppString extends R {
   String get store => "Store";
   String get model => "Model";
   String get stores => "Stores";
+  String get listStore => "List store";
   String get dob => "Date of birth";
   String get province => "Province";
   String get district => "District";
@@ -135,6 +97,7 @@ class AppString extends R {
   String get edit => "Edit";
   String get detail => "Detail";
   String get orderDetail => "Order detail";
+  String get listOrder => "List orders";
   String get orderInfo => "Order information";
   String get paymentInfo => "Payment information";
   String get orderStatus => "Order status";
@@ -150,6 +113,7 @@ class AppString extends R {
   String get history => "History";
   String get numberSerialBank => "Number serial bank";
   String get transaction => "Transaction";
+  String get historyTransaction => "History transaction";
   String get bank => "Bank";
   String get download => "Download";
   String get statisticBy => "Statistic by";
@@ -162,6 +126,8 @@ class AppString extends R {
   String get productSize => "Product size";
   String get categorySize => "Category size";
   String get reviewSize => "Review size";
+  String get syncData => "Sync data";
+  String get listModelVersions => "List model versions";
   String get syncUserDescription => "Sync all current users to recommend service";
   String get syncProductDescription => "Sync all current products to recommend service";
   String get syncReviewDescription => "Sync all current reviews to recommend service";

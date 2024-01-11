@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -23,15 +25,16 @@ class StatisticRevenuePage extends BasePage<StatisticRevenueBloc> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
           child: Text(
             R.string.revenue,
-            style: style.copyWith(
+            style: R.style.h4_1.copyWith(
               fontWeight: FontWeight.bold,
-              fontSize: 20,
+              color: Colors.black,
             ),
           ),
         ),
@@ -245,21 +248,36 @@ class StatisticRevenuePage extends BasePage<StatisticRevenueBloc> {
                           )
                         : value.isEmpty
                             ? const EmptyList()
-                            : AspectRatio(
-                                aspectRatio: value.length > 10 ? 2 : 1.5,
-                                child: BarChart(
-                                  BarChartData(
-                                    gridData: const FlGridData(show: false),
-                                    barGroups: getBarGroup(value),
-                                    titlesData: getTitle(value.keys.toList()),
-                                    alignment: BarChartAlignment.spaceAround,
-                                    barTouchData: getBarTouchData(),
-                                    borderData: borderData,
+                            : Row(
+                                children: [
+                                  Expanded(
+                                    child: LayoutBuilder(
+                                      builder: (context, constraints) =>
+                                          BarChart(
+                                        BarChartData(
+                                          gridData:
+                                              const FlGridData(show: false),
+                                          barGroups: getBarGroup(
+                                            value,
+                                            width: min(35, (constraints.maxWidth - (value.keys.length+1)*10) / value.keys.length),
+                                          ),
+                                          titlesData:
+                                              getTitle(value.keys.toList()),
+                                          alignment:
+                                              BarChartAlignment.spaceAround,
+                                          barTouchData: getBarTouchData(),
+                                          borderData: borderData,
+                                        ),
+                                        swapAnimationDuration:
+                                            const Duration(seconds: 3),
+                                        swapAnimationCurve: Curves.linear,
+                                      ),
+                                    ),
                                   ),
-                                  swapAnimationDuration:
-                                      const Duration(milliseconds: 500),
-                                  swapAnimationCurve: Curves.linear,
-                                ),
+                                  const SizedBox(
+                                    width: 30,
+                                  )
+                                ],
                               ),
                   ),
                 ),
@@ -274,7 +292,8 @@ class StatisticRevenuePage extends BasePage<StatisticRevenueBloc> {
     );
   }
 
-  List<BarChartGroupData>? getBarGroup(Map<String, dynamic>? data) {
+  List<BarChartGroupData>? getBarGroup(Map<String, dynamic>? data,
+      {double width = 1}) {
     if (data == null || data.isEmpty) return null;
     int index = 0;
     return data.values
@@ -290,6 +309,7 @@ class StatisticRevenuePage extends BasePage<StatisticRevenueBloc> {
                   topLeft: Radius.circular(3),
                   topRight: Radius.circular(3),
                 ),
+                width: width,
                 borderSide: BorderSide(
                   color: R.color.primaryColorDark,
                   width: 0.5,
@@ -311,7 +331,7 @@ class StatisticRevenuePage extends BasePage<StatisticRevenueBloc> {
           reservedSize: 130,
           getTitlesWidget: (value, meta) {
             return Text(
-              value.toStringAsFixed(1),
+              value.formatCurrency(),
               style: style,
               textAlign: TextAlign.center,
               maxLines: 1,
@@ -325,7 +345,7 @@ class StatisticRevenuePage extends BasePage<StatisticRevenueBloc> {
             reservedSize: 30,
             getTitlesWidget: (value, meta) {
               return Transform.rotate(
-                angle: keys.length > 10 ? 45 : 0,
+                angle: keys.length > 15 ? 45 : 0,
                 alignment: Alignment.centerLeft,
                 child: Text(keys[value.toInt()]),
               );
@@ -349,7 +369,7 @@ class StatisticRevenuePage extends BasePage<StatisticRevenueBloc> {
             int rodIndex,
           ) {
             return BarTooltipItem(
-              "${rod.toY}",
+              rod.toY.formatCurrency(),
               style,
             );
           }),

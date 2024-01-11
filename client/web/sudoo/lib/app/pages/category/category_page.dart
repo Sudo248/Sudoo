@@ -5,6 +5,8 @@ import 'package:sudoo/app/pages/category/category_bloc.dart';
 import 'package:sudoo/app/pages/category/category_item.dart';
 import 'package:sudoo/domain/model/discovery/category.dart';
 
+import '../../../resources/R.dart';
+
 class CategoryPage extends BasePage<CategoryBloc> {
   CategoryPage({super.key});
 
@@ -17,33 +19,53 @@ class CategoryPage extends BasePage<CategoryBloc> {
   }
 
   Widget _buildCategories(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: bloc.categories,
-      builder: (context, value, child) => GridView.builder(
-        itemCount: value.length + 1,
-        padding: const EdgeInsets.all(20),
-        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 210,
-          mainAxisSpacing: 30,
-          crossAxisSpacing: 30,
-          childAspectRatio: 3 / 4.2,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+          child: Text(
+            R.string.listCategory,
+            style: R.style.h4_1.copyWith(
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
         ),
-        itemBuilder: (context, index) {
-          if (index < value.length) {
-            return CategoryItem(
-              category: value[index],
-              onItemClick: (category) => _showEditCategoryDialog(
-                context,
-                category: category,
+        const SizedBox(
+          height: 10,
+        ),
+        Expanded(
+          child: ValueListenableBuilder(
+            valueListenable: bloc.categories,
+            builder: (context, value, child) => GridView.builder(
+              itemCount: value.length + 1,
+              padding: const EdgeInsets.all(20),
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 210,
+                mainAxisSpacing: 30,
+                crossAxisSpacing: 30,
+                childAspectRatio: 3 / 4.2,
               ),
-              upsertCategory: bloc.upsertCategory,
-            );
-          } else {
-            return child;
-          }
-        },
-      ),
-      child: _buildAddCategory(context),
+              itemBuilder: (context, index) {
+                if (index < value.length) {
+                  return CategoryItem(
+                    category: value[index],
+                    onItemClick: (category) => _showEditCategoryDialog(
+                      context,
+                      category: category,
+                    ),
+                    upsertCategory: bloc.upsertCategory,
+                  );
+                } else {
+                  return child;
+                }
+              },
+            ),
+            child: _buildAddCategory(context),
+          ),
+        ),
+      ],
     );
   }
 

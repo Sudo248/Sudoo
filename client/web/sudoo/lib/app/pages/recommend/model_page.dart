@@ -17,12 +17,19 @@ class ModelPage extends BasePage<ModelBloc> {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          "Sync data",
-          style: R.style.h4_1.copyWith(
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+            child: Text(
+              R.string.syncData,
+              style: R.style.h4_1.copyWith(
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
           ),
         ),
         const SizedBox(
@@ -54,29 +61,37 @@ class ModelPage extends BasePage<ModelBloc> {
         const SizedBox(
           height: 15,
         ),
-        Text(
-          "List model versions",
-          style: R.style.h4_1.copyWith(
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+            child: Text(
+              R.string.listModelVersions,
+              style: R.style.h4_1.copyWith(
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
           ),
         ),
         const SizedBox(
           height: 10,
         ),
-        ValueListenableBuilder(
-          valueListenable: bloc.models,
-          builder: (context, value, child) {
-            if (value.isEmpty) {
-              return const EmptyList();
-            } else {
-              return ListView.separated(
-                itemBuilder: (context, index) => ModelItem(model: value[index]),
-                separatorBuilder: (context, index) => const Divider(),
-                itemCount: value.length,
-              );
-            }
-          },
+        Expanded(
+          child: ValueListenableBuilder(
+            valueListenable: bloc.models,
+            builder: (context, value, child) {
+              if (value.isEmpty) {
+                return const EmptyList();
+              } else {
+                return ListView.separated(
+                  itemBuilder: (context, index) => ModelItem(model: value[index]),
+                  separatorBuilder: (context, index) => const Divider(),
+                  itemCount: value.length,
+                );
+              }
+            },
+          ),
         )
       ],
     );

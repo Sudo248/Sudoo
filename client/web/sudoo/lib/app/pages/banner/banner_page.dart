@@ -6,6 +6,7 @@ import 'package:sudoo/domain/model/discovery/file.dart';
 import 'package:sudoo/extensions/list_ext.dart';
 import 'package:sudoo/utils/logger.dart';
 
+import '../../../resources/R.dart';
 import '../../widgets/online_image.dart';
 
 class BannerPage extends BasePage<BannerBloc> {
@@ -16,15 +17,35 @@ class BannerPage extends BasePage<BannerBloc> {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: bloc.banners,
-      builder: (context, images, child) {
-        return Container(
-          padding: const EdgeInsets.all(20),
-          child: _buildListImage(context, images, child!),
-        );
-      },
-      child: _buildAddImageButton(),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+          child: Text(
+            R.string.listBanner,
+            style: R.style.h4_1.copyWith(
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Expanded(
+          child: ValueListenableBuilder(
+            valueListenable: bloc.banners,
+            builder: (context, images, child) {
+              return Container(
+                padding: const EdgeInsets.all(20),
+                child: _buildListImage(context, images, child!),
+              );
+            },
+            child: _buildAddImageButton(),
+          ),
+        ),
+      ],
     );
   }
 

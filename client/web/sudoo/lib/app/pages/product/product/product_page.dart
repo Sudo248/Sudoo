@@ -38,13 +38,17 @@ class ProductPage extends BasePage<ProductBloc> {
     return SingleChildScrollView(
       controller: bloc.scrollController,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            productId != null ? "Product detail" : "Create Product",
-            style: R.style.h4.copyWith(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+            child: Text(
+              productId != null ? R.string.productDetail : R.string.createProduct,
+              style: R.style.h4_1.copyWith(
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
             ),
           ),
           const SizedBox(

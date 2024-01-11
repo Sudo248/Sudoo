@@ -18,45 +18,65 @@ class ProductListPage extends BasePage<ProductListBloc> {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: bloc.totalProducts,
-      builder: (context, value, child) => value <= 0
-          ? const EmptyList()
-          : Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: "Total product: ",
-                            style: R.style.h4_1.copyWith(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+          child: Text(
+            R.string.listProduct,
+            style: R.style.h4_1.copyWith(
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Expanded(
+          child: ValueListenableBuilder(
+            valueListenable: bloc.totalProducts,
+            builder: (context, value, child) => value <= 0
+                ? const EmptyList()
+                : Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: "${R.string.total}: ",
+                                  style: R.style.h4_1.copyWith(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: "$value",
+                                  style: R.style.h5.copyWith(
+                                    color: Colors.black,
+                                  ),
+                                )
+                              ],
                             ),
                           ),
-                          TextSpan(
-                            text: "$value",
-                            style: R.style.h5.copyWith(
-                              color: Colors.black,
-                            ),
-                          )
-                        ],
+                        ),
                       ),
-                    ),
+                      child!
+                    ],
                   ),
-                ),
-                child!
-              ],
+            child: Expanded(
+              child: ProductListDataTable(
+                productDataSource: bloc.productDataSource,
+              ),
             ),
-      child: Expanded(
-        child: ProductListDataTable(
-          productDataSource: bloc.productDataSource,
+          ),
         ),
-      ),
+      ],
     );
   }
 }

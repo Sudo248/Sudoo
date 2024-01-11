@@ -15,6 +15,7 @@ class ModelItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ..._buildTextView(R.string.version, model.version, style),
           ..._buildTextView(R.string.evaluate, model.evaluate.toStringAsFixed(3), style),

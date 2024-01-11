@@ -24,103 +24,124 @@ class SupplierPage extends BasePage<SupplierBloc> {
   }
 
   Widget _buildSupplier(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: SingleChildScrollView(
-        primary: true,
-        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            AvatarImage(
-              avatar: bloc.avatar,
-              height: 150,
-              width: 150,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+          child: Text(
+            R.string.store,
+            style: R.style.h4_1.copyWith(
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            ConstrainedBox(
-              constraints: const BoxConstraints(minWidth: 100, maxWidth: 500),
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Expanded(
+          child: SizedBox(
+            width: double.infinity,
+            child: SingleChildScrollView(
+              primary: true,
+              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ..._buildInputField(
-                    R.string.name,
-                    bloc.nameController,
-                    maxLines: 1,
+                  AvatarImage(
+                    avatar: bloc.avatar,
+                    height: 150,
+                    width: 150,
                   ),
-                  ValueListenableBuilder(
-                    valueListenable: bloc.showInputPhoneNumber,
-                    builder: (context, value, child) =>
-                        value ? child! : const SizedBox.shrink(),
-                    child: _buildPhoneNumberField(),
+                  const SizedBox(
+                    height: 20,
                   ),
-                  ..._buildInputField(
-                    R.string.contactUrl,
-                    bloc.contactUrlController,
-                    maxLines: 1,
+                  ConstrainedBox(
+                    constraints:
+                        const BoxConstraints(minWidth: 100, maxWidth: 500),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ..._buildInputField(
+                          R.string.name,
+                          bloc.nameController,
+                          maxLines: 1,
+                        ),
+                        ValueListenableBuilder(
+                          valueListenable: bloc.showInputPhoneNumber,
+                          builder: (context, value, child) =>
+                              value ? child! : const SizedBox.shrink(),
+                          child: _buildPhoneNumberField(),
+                        ),
+                        ..._buildInputField(
+                          R.string.contactUrl,
+                          bloc.contactUrlController,
+                          maxLines: 1,
+                        ),
+                        ..._buildInputField(
+                          R.string.province,
+                          bloc.provinceController,
+                          maxLines: 1,
+                          readOnly: true,
+                          onTap: () {
+                            bloc.onChooseProvince();
+                            showDialogChooseAddress(context);
+                          },
+                        ),
+                        ..._buildInputField(
+                          R.string.district,
+                          bloc.districtController,
+                          maxLines: 1,
+                          readOnly: true,
+                          onTap: () {
+                            bloc.onChooseDistrict();
+                            showDialogChooseAddress(context);
+                          },
+                        ),
+                        ..._buildInputField(
+                          R.string.ward,
+                          bloc.wardCodeController,
+                          maxLines: 1,
+                          readOnly: true,
+                          onTap: () {
+                            bloc.onChooseWard();
+                            showDialogChooseAddress(context);
+                          },
+                        ),
+                        ..._buildInputField(
+                          R.string.address,
+                          bloc.addressController,
+                          maxLines: 5,
+                          maxLength: 100,
+                          keyboardType: TextInputType.multiline,
+                        ),
+                      ],
+                    ),
                   ),
-                  ..._buildInputField(
-                    R.string.province,
-                    bloc.provinceController,
-                    maxLines: 1,
-                    readOnly: true,
-                    onTap: () {
-                      bloc.onChooseProvince();
-                      showDialogChooseAddress(context);
-                    },
+                  const SizedBox(
+                    height: 30,
                   ),
-                  ..._buildInputField(
-                    R.string.district,
-                    bloc.districtController,
-                    maxLines: 1,
-                    readOnly: true,
-                    onTap: () {
-                      bloc.onChooseDistrict();
-                      showDialogChooseAddress(context);
-                    },
+                  FilledButton(
+                    style: R.buttonStyle.filledButtonStyle(),
+                    onPressed: bloc.onSave,
+                    child: Text(
+                      R.string.save,
+                      style: R.style.h5,
+                    ),
                   ),
-                  ..._buildInputField(
-                    R.string.ward,
-                    bloc.wardCodeController,
-                    maxLines: 1,
-                    readOnly: true,
-                    onTap: () {
-                      bloc.onChooseWard();
-                      showDialogChooseAddress(context);
-                    },
-                  ),
-                  ..._buildInputField(
-                    R.string.address,
-                    bloc.addressController,
-                    maxLines: 5,
-                    maxLength: 100,
-                    keyboardType: TextInputType.multiline,
+                  const SizedBox(
+                    height: 30,
                   ),
                 ],
               ),
             ),
-            const SizedBox(
-              height: 30,
-            ),
-            FilledButton(
-              style: R.buttonStyle.filledButtonStyle(),
-              onPressed: bloc.onSave,
-              child: Text(
-                R.string.save,
-                style: R.style.h5,
-              ),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 

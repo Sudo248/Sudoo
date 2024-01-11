@@ -78,7 +78,7 @@ class AppRouter {
         parentNavigatorKey: _dashboardNavigatorKey,
         name: AppRoutes.home,
         path: AppRoutes.home,
-        builder: (context, state) => HomePage(),
+        builder: (context, state) => const HomePage(),
       ),
       GoRoute(
           parentNavigatorKey: _dashboardNavigatorKey,
