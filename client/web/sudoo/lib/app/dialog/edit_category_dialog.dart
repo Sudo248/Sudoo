@@ -50,7 +50,7 @@ class EditCategoryDialog extends StatelessWidget {
             Align(
               alignment: Alignment.center,
               child: Text(
-                isCreate ? "Create category" : "Edit category",
+                isCreate ? R.string.createCategory : R.string.updateCategory,
                 style: R.style.h4_1.copyWith(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,

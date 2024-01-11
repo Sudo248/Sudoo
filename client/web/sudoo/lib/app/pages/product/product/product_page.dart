@@ -221,12 +221,15 @@ class ProductPage extends BasePage<ProductBloc> {
           const SizedBox(
             height: 30,
           ),
-          FilledButton(
-            style: R.buttonStyle.filledButtonStyle(),
-            onPressed: bloc.onSave,
-            child: Text(
-              R.string.save,
-              style: R.style.h5,
+          Align(
+            alignment: Alignment.center,
+            child: FilledButton(
+              style: R.buttonStyle.filledButtonStyle(),
+              onPressed: bloc.onSave,
+              child: Text(
+                R.string.save,
+                style: R.style.h5,
+              ),
             ),
           ),
           const SizedBox(

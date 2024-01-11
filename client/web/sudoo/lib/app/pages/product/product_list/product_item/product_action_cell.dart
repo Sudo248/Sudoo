@@ -7,7 +7,7 @@ import 'package:sudoo/domain/model/discovery/product_info.dart';
 import '../../../../../resources/R.dart';
 
 enum ProductAction {
-  edit("Edit"),
+  edit("Chỉnh sửa"),
   manageImages("Manage images"),
   delete("Delete");
 

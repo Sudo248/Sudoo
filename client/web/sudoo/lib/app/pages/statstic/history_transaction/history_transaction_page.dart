@@ -44,6 +44,9 @@ class HistoryTransactionPage extends BasePage<HistoryTransactionBloc> {
                           child: DataTable(
                             dataRowMinHeight: 50,
                             dataRowMaxHeight: 150,
+                            headingRowColor: MaterialStateProperty.all<Color?>(
+                              Colors.grey.shade300
+                            ),
                             columns: [
                               DataColumn(
                                 label: Text(

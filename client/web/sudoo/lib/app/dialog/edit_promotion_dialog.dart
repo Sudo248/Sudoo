@@ -52,7 +52,7 @@ class EditPromotionDialog extends StatelessWidget {
             Align(
               alignment: Alignment.center,
               child: Text(
-                isCreate ? "Create promotion" : "Edit promotion",
+                isCreate ? R.string.createPromotion : R.string.updatePromotion,
                 style: R.style.h4_1.copyWith(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,

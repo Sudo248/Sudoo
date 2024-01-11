@@ -91,12 +91,12 @@ class ClaimIncomeDialog extends StatelessWidget {
 
   String _getDescription() {
     return """
-    Claim income
-    Bank      : ${bankController.text}
-    Number    : ${numberSerialBankController.text}
-    Full name : ${fullNameController.text}
-    Amount    : ${double.parse(amountController.text).formatCurrency()}
-    Created at: ${DateTime.now().formatDateTime()}
+    Nhận thu nhập
+    Ngân hàng              : ${bankController.text}
+    Số serial ngân hàng    : ${numberSerialBankController.text}
+    Họ và tên              : ${fullNameController.text}
+    Số tiền                : ${double.parse(amountController.text).formatCurrency()}
+    Tạo lúc                : ${DateTime.now().formatDateTime()}
     """.trim();
   }
 

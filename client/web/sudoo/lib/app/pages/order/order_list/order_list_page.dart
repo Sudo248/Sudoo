@@ -94,7 +94,7 @@ class OrderListPage extends BasePage<OrderListBloc> {
           width: width * 0.15,
           label: Container(
             alignment: Alignment.centerLeft,
-            color: Colors.grey.shade100,
+            color: Colors.grey.shade300,
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Text(
               R.string.orderInfo,
@@ -102,7 +102,7 @@ class OrderListPage extends BasePage<OrderListBloc> {
               maxLines: 2,
               style: const TextStyle(
                 color: Colors.black,
-                fontSize: 18,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -113,7 +113,7 @@ class OrderListPage extends BasePage<OrderListBloc> {
           width: width * 0.2,
           label: Container(
             alignment: Alignment.centerLeft,
-            color: Colors.grey.shade100,
+            color: Colors.grey.shade300,
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Text(
               R.string.paymentInfo,
@@ -121,7 +121,7 @@ class OrderListPage extends BasePage<OrderListBloc> {
               maxLines: 2,
               style: const TextStyle(
                 color: Colors.black,
-                fontSize: 18,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -136,23 +136,12 @@ class OrderListPage extends BasePage<OrderListBloc> {
           width: 200,
           label: Container(
             alignment: Alignment.centerLeft,
-            color: Colors.grey.shade100,
+            color: Colors.grey.shade300,
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  R.string.orderStatus,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
                 MenuAnchor(
                   controller: _menuController,
                   style: menuStyle,
@@ -171,9 +160,9 @@ class OrderListPage extends BasePage<OrderListBloc> {
                     MenuItemButton(
                       style: ButtonStyle(
                           padding:
-                              MaterialStateProperty.all<EdgeInsetsGeometry?>(
-                        const EdgeInsets.only(right: 100, left: 15),
-                      )),
+                          MaterialStateProperty.all<EdgeInsetsGeometry?>(
+                            const EdgeInsets.only(right: 100, left: 15),
+                          )),
                       leadingIcon: const Icon(Icons.filter_alt_off_sharp),
                       child: const Text(
                         "Clear filter",
@@ -198,7 +187,18 @@ class OrderListPage extends BasePage<OrderListBloc> {
                     ),
                   ],
                   child: const Icon(Icons.filter_alt_sharp),
-                )
+                ),
+                Text(
+                  R.string.orderStatus,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ],
             ),
           ),
@@ -208,7 +208,7 @@ class OrderListPage extends BasePage<OrderListBloc> {
           columnWidthMode: ColumnWidthMode.fill,
           label: Container(
             alignment: Alignment.centerLeft,
-            color: Colors.grey.shade100,
+            color: Colors.grey.shade300,
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Text(
               R.string.deliveryInfo,
@@ -216,7 +216,7 @@ class OrderListPage extends BasePage<OrderListBloc> {
               maxLines: 2,
               style: const TextStyle(
                 color: Colors.black,
-                fontSize: 18,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -227,7 +227,7 @@ class OrderListPage extends BasePage<OrderListBloc> {
           width: 150,
           label: Container(
             alignment: Alignment.centerLeft,
-            color: Colors.grey.shade100,
+            color: Colors.grey.shade300,
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Text(
               R.string.action,
@@ -235,7 +235,7 @@ class OrderListPage extends BasePage<OrderListBloc> {
               maxLines: 2,
               style: const TextStyle(
                 color: Colors.black,
-                fontSize: 18,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),

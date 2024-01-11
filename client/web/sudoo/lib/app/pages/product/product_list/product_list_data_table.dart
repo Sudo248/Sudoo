@@ -80,7 +80,7 @@ class ProductListDataTable extends StatelessWidget {
           width: width * 0.18,
           label: Container(
             alignment: Alignment.centerLeft,
-            color: Colors.grey.shade100,
+            color: Colors.grey.shade300,
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Text(
               R.string.product,
@@ -99,7 +99,7 @@ class ProductListDataTable extends StatelessWidget {
           columnWidthMode: ColumnWidthMode.fill,
           label: Container(
             alignment: Alignment.centerLeft,
-            color: Colors.grey.shade100,
+            color: Colors.grey.shade300,
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Text(
               R.string.saleInfo,
@@ -118,7 +118,7 @@ class ProductListDataTable extends StatelessWidget {
           width: 120,
           label: Container(
             alignment: Alignment.center,
-            color: Colors.grey.shade100,
+            color: Colors.grey.shade300,
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Text(
               R.string.saleStatus,
@@ -138,7 +138,7 @@ class ProductListDataTable extends StatelessWidget {
           width: 150,
           label: Container(
             alignment: Alignment.center,
-            color: Colors.grey.shade100,
+            color: Colors.grey.shade300,
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Text(
               R.string.action,
