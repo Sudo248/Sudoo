@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.sudo248.sudoo.ui.widget.CollapsibleToolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/primaryColor"
+    android:minHeight="56dp"
+    app:layoutDescription="@xml/customer_ui_home_header"
+    app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">
+
+    <View
+        android:id="@+id/decorView"
+        android:layout_width="0dp"
+        android:layout_height="16dp"
+        android:background="@drawable/bg_rectangle_top"
+        android:backgroundTint="@color/background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/search"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bg_rectangle_conner_10dp"
+        android:backgroundTint="@color/bg_search"
+        app:layout_constraintBottom_toTopOf="@id/decorView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/tvSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:drawablePadding="5dp"
+            android:gravity="center_vertical"
+            android:text="@string/search"
+            android:textColor="@color/white_B3"
+            app:drawableLeftCompat="@drawable/ic_search"
+            app:drawableTint="@color/white_B3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/imgLogo"
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:scaleType="fitStart"
+        android:src="@drawable/img_logo_header" />
+
+    <View
+        android:id="@+id/headerMenu"
+        android:layout_width="0dp"
+        android:layout_height="0dp" />
+
+</com.sudo248.sudoo.ui.widget.CollapsibleToolbar>

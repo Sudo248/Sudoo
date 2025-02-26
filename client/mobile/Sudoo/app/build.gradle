@@ -1,0 +1,122 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
+    id 'androidx.navigation.safeargs.kotlin'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.appdistribution'
+}
+
+android {
+    namespace 'com.sudo248.sudoo'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.sudo248.sudoo"
+        minSdk 28
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "STORAGE_URL", "\"https://storage.googleapis.com/sudoo-buckets/\"")
+        buildConfigField("String", "BASE_URL", "\"https://service.sudoo.id.vn/api/v1/\"")
+//        buildConfigField("String", "BASE_URL", "\"http://192.168.1.205:8080/api/v1/\"")
+        buildConfigField("boolean", "ENABLE_OTP", "false")
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    signingConfigs {
+        release {
+            storeFile file('key-store/sudoo.jks')
+            storePassword '7480201'
+            keyAlias 'key-store'
+            keyPassword '7480201'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+    buildFeatures{
+        dataBinding true
+        viewBinding true
+        buildConfig true
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar","*.aar"])
+
+    implementation "androidx.core:core-ktx:$core_version"
+    implementation "androidx.appcompat:appcompat:$appcompat_version"
+    implementation "com.google.android.material:material:$material_version"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.1.2'
+    implementation 'com.google.firebase:firebase-dynamic-links-ktx:21.1.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    // base from sudo248
+    implementation "io.github.sudo248:base-android:$base_version"
+
+    // coroutine
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
+
+    // dagger hilt
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+
+    // retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+
+    // JSON Parsing
+    implementation "com.google.code.gson:gson:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+
+    // navigation fragment
+    implementation "androidx.navigation:navigation-fragment-ktx:$safeargs_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$safeargs_version"
+
+    // glide
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+
+    // SMS User Consent API
+    implementation "com.google.android.gms:play-services-auth:$sms_user_consent_version"
+
+    // vnpay
+    implementation files("libs/merchant-1.0.25.aar")
+
+    // support for vnpay sdk
+    implementation("com.android.support:support-v4:19.0.0")
+
+    // location
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+
+    //facebook
+    implementation ('com.facebook.android:facebook-android-sdk:13.0.0')
+
+    // swipe layout
+    implementation("com.apachat:swipereveallayout-android:1.1.2")
+
+    // slide image
+    implementation 'com.github.denzcoskun:ImageSlideshow:0.1.2'
+
+    // ar
+    implementation("com.google.ar:core:1.40.0")
+    implementation(project(":sceneform-ux"))
+}
+
+kapt {
+    correctErrorTypes true
+}
